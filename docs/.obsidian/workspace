@@ -1,0 +1,136 @@
+{
+  "main": {
+    "id": "52e1d2069bc524a6",
+    "type": "split",
+    "children": [
+      {
+        "id": "adf4b0d16bdcb053",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "04.迎刃而解/20.Linux栈问题汇总/01.Centos的yum源误删解决方法.md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "2ad33af0c3f37f87",
+    "type": "split",
+    "children": [
+      {
+        "id": "f2e0db80161c84fb",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2f5ac71b3e198fbb",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "ded5e55e34031e02",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "bfc58fb1ad78accf",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "9eb6839a8c1b4284",
+    "type": "split",
+    "children": [
+      {
+        "id": "67e4a811202c3898",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "748056f50079c839",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "04.迎刃而解/20.Linux栈问题汇总/01.Centos的yum源误删解决方法.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "cd3e8067d0efe1a0",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "04.迎刃而解/20.Linux栈问题汇总/01.Centos的yum源误删解决方法.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3b89c642070d12b6",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "42fe361bc7738ded",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "04.迎刃而解/20.Linux栈问题汇总/01.Centos的yum源误删解决方法.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "adf4b0d16bdcb053",
+  "lastOpenFiles": [
+    "04.迎刃而解/01.Python栈问题汇总/02.多语言之间的RSA加解密问题.md",
+    "04.迎刃而解/01.Python栈问题汇总/01.conda修改虚拟环境名导致异常.md"
+  ]
+}
