@@ -1,7 +1,6 @@
 // set your global feed options - override in page frontmatter `feed`
 const feed_options = {
-  // canonical_base: 'https://wiki.sswtk.net',
-  canonical_base: 'https://sswtk.github.io',
+  canonical_base: 'https://sswfive.github.io',
   count: 5000,
 };
 
@@ -9,8 +8,7 @@ const autometa_options = {
   site: {
     name: 'sswtk',
   },
-  // canonical_base: 'https://wiki.sswtk.net',
-  canonical_base: 'https://sswtk.github.io',
+  canonical_base: 'https://sswfive.github.io',
 };
 
 // 插件配置
@@ -143,9 +141,9 @@ module.exports = [
       options: {
         clientID: '6379e12325ba2211c9f1',
         clientSecret: 'ef1a74332c1ca9b132574350c979abb35cf6dd37',
-        repo: 'sswtk.github.io', // GitHub 仓库
-        owner: 'sswtk', // GitHub仓库所有者
-        admin: ['sswtk'], // 对仓库有写权限的人
+        repo: 'sswfive.github.io', // GitHub 仓库
+        owner: 'sswfive', // GitHub仓库所有者
+        admin: ['sswfive'], // 对仓库有写权限的人
         // distractionFreeMode: true,
         pagerDirection: 'last', // 'first'正序 | 'last'倒序
         id: '<%- (frontmatter.permalink || frontmatter.to.path).slice(-16) %>', //  页面的唯一标识,长度不能超过50

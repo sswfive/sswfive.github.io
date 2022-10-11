@@ -11,7 +11,7 @@ module.exports = [
       ],
   },
   {
-    text: '技术世界',
+    text: '技无止尽',
     link: '/thub/',
     items: [
       { text: '机器学习', link: '/ml/' },
@@ -21,7 +21,7 @@ module.exports = [
     ],
   },
   {
-    text: '悟方法论',
+    text: '悟道习之',
     link: '/methods/',
     items: [
       { text: '微服务学习', link: '/miniservice/' },
@@ -37,7 +37,7 @@ module.exports = [
     ],
   },
   {
-    text: '个人选集',
+    text: '资源甄选',
     link: '/collection/',
     items: [
       { text: '技术选集', link: '/pages/60ad0d/' },
@@ -45,17 +45,17 @@ module.exports = [
       { text: '一言选集', link: '/pages/902440/' },
     ],
   },
-  {
-    text: '生活记忆',
-    link: '/lifetime/',
-    items: [
-      { text: '阅读', link: '/read/' },
-      { text: '随想', link: '/yiyan/' },
-      { text: '观影', link: '/pages/37189e/' },
-      { text: '音乐', link: '/yiyan/' },
-      { text: '旅行', link: '/life/' },
-    ],
-  },
+  // {
+  //   text: '生活记忆',
+  //   link: '/lifetime/',
+  //   items: [
+  //     { text: '阅读', link: '/read/' },
+  //     { text: '随想', link: '/yiyan/' },
+  //     { text: '观影', link: '/pages/37189e/' },
+  //     { text: '音乐', link: '/yiyan/' },
+  //     { text: '旅行', link: '/life/' },
+  //   ],
+  // },
   {
     text: '索引',
     link: '/archives/',

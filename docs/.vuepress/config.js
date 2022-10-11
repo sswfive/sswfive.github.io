@@ -7,7 +7,7 @@ module.exports = {
   theme: 'vdoing', // 使用npm包主题
   // theme: require.resolve('../../theme-vdoing'), // 使用本地主题
 
-  title: "咖啡续时间",
+  title: "Coffee-Time",
   description: '记录是对思维的缓存',
   base: '/', // 格式：'/<仓库名>/'， 默认'/'
   markdown: {

@@ -20,7 +20,7 @@ module.exports = {
   // 当.md文件的front matter不存在extendFrontmatter内相应的字段时，将在运行开发服务dev或打包build时自动添加，但不会覆盖已有的数据。
   // https://doc.xugaoyi.com/pages/a20ce8/#extendfrontmatter
   extendFrontmatter: {
-    titleTag: '原创',
+    // titleTag: '原创',
     // feed:{  enable: true },
     // description: '',
   },
@@ -72,13 +72,13 @@ module.exports = {
 
   author: {
     // 文章默认的作者信息，可在md文件中单独配置此信息 String | {name: String, link: String}
-    name: 'sswtk', // 必需
-    link: 'https://github.com/sswtk', // 可选的
+    name: 'sswfive', // 必需
+    link: 'https://github.com/sswfive', // 可选的
   },
   blogger: {
     // 博主信息，显示在首页侧边栏
     avatar: '/img/dengxia.gif',
-    name: '咖啡续时间',
+    name: 'Coffee-Time',
     slogan: ' 可以不完美，但重要的是马上开始 ',
   },
   social: {
@@ -88,7 +88,7 @@ module.exports = {
       {
         iconClass: 'icon-github',
         title: 'GitHub',
-        link: 'https://github.com/sswtk',
+        link: 'https://github.com/sswfive',
       },
       {
         iconClass: 'icon-youjian',
@@ -108,6 +108,6 @@ module.exports = {
     // 页脚信息
     createYear: 2022, // 博客创建年份
     copyrightInfo:
-    '| sswtk |', // 博客版权信息，支持a标签
+    '| sswfive |', // 博客版权信息，支持a标签
   },
 }
