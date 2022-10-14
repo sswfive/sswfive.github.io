@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../eryajf.github.io"
+		},
+		{
+			"path": "../../../../sswtk.github.io"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}
