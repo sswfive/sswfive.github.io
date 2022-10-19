@@ -37,12 +37,13 @@ module.exports = [
     ],
   },
   {
-    text: '资源甄选',
+    text: '杂项资源',
     link: '/collection/',
     items: [
-      { text: '技术选集', link: '/pages/60ad0d/' },
-      { text: '工具选集', link: '/tcollection/' },
-      { text: '一言选集', link: '/pages/902440/' },
+      { text: '技术之外', link: '/pages/974c9d/' },
+      { text: '开源项目', link: '/pages/60ad0d/' },
+      { text: '效率工具', link: '/tcollection/' },
+      { text: '甄选博客', link: '/pages/902440/' },
     ],
   },
   // {
