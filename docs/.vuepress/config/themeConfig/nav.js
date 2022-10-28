@@ -40,6 +40,7 @@ module.exports = [
     text: '杂项资源',
     link: '/collection/',
     items: [
+      { text: '常用工具', link: '/pages/927478/' },
       { text: '技术之外', link: '/pages/974c9d/' },
       { text: '开源项目', link: '/pages/60ad0d/' },
       { text: '效率工具', link: '/tcollection/' },
