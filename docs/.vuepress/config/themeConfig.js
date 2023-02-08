@@ -8,7 +8,7 @@ module.exports = {
   nav, // 顶部导航栏
   sidebarDepth: 2, // 侧边栏显示深度，默认1，最大2（显示到h3标题）
   logo: '/img/backimg2.JPG', // 导航栏logo
-  repo: 'sswtk/sswtk.github.io', // 导航栏右侧生成Github链接
+  repo: 'sswfive/sswfive.github.io', // 导航栏右侧生成Github链接
   searchMaxSuggestions: 10, // 搜索结果显示最大数
   lastUpdated: '最后更新时间', // 开启更新时间，并配置前缀文字   string | boolean (取值为git提交时间)
   editLinks: false, // 关闭编辑按钮,此编辑无实际意义
@@ -57,7 +57,7 @@ module.exports = {
 
   // 博客站点信息（首页）
   blogInfo: {
-    blogCreate: '2022-06-03', // 博客创建时间
+    blogCreate: '2022-01-01', // 博客创建时间
     indexView: true,  // 开启首页的访问量和排名统计，默认 true（开启）
     pageView: true,  // 开启文章页的浏览量统计，默认 true（开启）
     mdFileCountType: 'archives',  // 开启文档数。1. archives 获取归档的文档数（默认）。2. 数组 readFileList(['xx']) 排除 xx 目录（可多个，可不传参数），获取其他目录的文档数。提示：readFileList() 获取 docs 下所有的 md 文档（除了 `.vuepress` 和 `@pages` 目录下的文档）

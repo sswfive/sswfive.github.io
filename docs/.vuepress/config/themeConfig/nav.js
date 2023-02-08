@@ -6,8 +6,9 @@ module.exports = [
     link: '/corehub/', //目录页链接，此处link是vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
     items: [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
-        { text: '【Python】', link: '/pages/409686/' },
-        { text: '【数据结构与算法】', link: '/pages/ef2635/' }
+        { text: '【 Python 】', link: '/pages/409686/' },
+        { text: '【 Go 】', link: '/pages/ec6412/' },
+        { text: '【 数据结构与算法 】', link: '/pages/ef2635/' }
       ],
   },
   {
