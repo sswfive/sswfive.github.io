@@ -16,7 +16,7 @@ module.exports = [
     link: '/thub/',
     items: [
       { text: '机器学习', link: '/ml/' },
-      { text: 'Docker', link: '/pages/f36fc5' },
+      { text: '【 Docker 】', link: '/pages/4a2ec2/' },
       { text: 'Kubernetes', link: '/k8s/' },
       { text: 'BigData', link: '/pages/52219d/' },
     ],
