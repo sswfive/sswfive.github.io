@@ -6,59 +6,51 @@ module.exports = [
     link: '/corehub/', //目录页链接，此处link是vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
     items: [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
-        { text: '【 Python 】', link: '/pages/409686/' },
-        { text: '【 Go 】', link: '/pages/ec6412/' },
-        { text: '【 数据结构与算法 】', link: '/pages/ef2635/' }
+        { text: ' Python编程 ', link: '/corehub/python/' },
+        { text: ' Go编程', link: '/corehub/go/' },
+        { text: ' 数据结构与算法', link: '/corehub/datastruct/' },
+        { text: ' 设计模式', link: '/corehub/design/' },
+        { text: ' 软件工程 ', link: '/corehub/project/' },
       ],
   },
   {
     text: '技无止尽',
     link: '/thub/',
     items: [
-      { text: '机器学习', link: '/ml/' },
-      { text: '【 Docker 】', link: '/pages/4a2ec2/' },
-      { text: 'Kubernetes', link: '/k8s/' },
-      { text: 'BigData', link: '/pages/52219d/' },
+      { text: ' 计算存储 ', link: '/thub/stroage/' },
+      { text: ' 机器学习 ', link: '/thub/ml/' },
+      { text: ' 容器云 ', link: '/thub/container/' },
+      { text: ' 中间件 ', link: '/thub/middleware/' },
+      { text: 'Linux相关', link: '/thub/linux/' },
+      { text: 'Shell编程', link: '/thub/shell/' },
+      { text: 'Vim笔记', link: '/thub/vim/' },
+      { text: 'Git笔记', link: '/thub/git/' },
     ],
   },
   {
-    text: '悟道习之',
-    link: '/methods/',
+    text: '技术之外',
+    link: '/outtech/',
     items: [
-      { text: '微服务学习', link: '/miniservice/' },
-      { text: 'DDD学习', link: '/structure/' },
+      { text: '关于学习', link: '/outtech/study/' },
+      { text: '关于管理', link: '/outtech/manage/' },
     ],
   },
   {
     text: '迎刃而解',
     link: '/bugrecord/',
     items: [
-      { text: 'Python栈', link: '/pybug/' },
-      { text: 'Linux栈', link: '/linuxbug/' },
+      { text: 'Bug-Python栈', link: '/pybug/' },
+      { text: 'Go-Python栈', link: '/gobug/' },
+      { text: 'Bug-Linux栈', link: '/linuxbug/' },
     ],
   },
   {
-    text: '杂项资源',
+    text: '甄选收藏',
     link: '/collection/',
     items: [
-      { text: '常用工具', link: '/pages/927478/' },
-      { text: '技术之外', link: '/pages/974c9d/' },
-      { text: '开源项目', link: '/pages/60ad0d/' },
-      { text: '效率工具', link: '/tcollection/' },
-      { text: '甄选博客', link: '/pages/902440/' },
+      { text: '优质博客', link: '/collection/blog/' },
     ],
   },
-  // {
-  //   text: '生活记忆',
-  //   link: '/lifetime/',
-  //   items: [
-  //     { text: '阅读', link: '/read/' },
-  //     { text: '随想', link: '/yiyan/' },
-  //     { text: '观影', link: '/pages/37189e/' },
-  //     { text: '音乐', link: '/yiyan/' },
-  //     { text: '旅行', link: '/life/' },
-  //   ],
-  // },
   {
     text: '索引',
     link: '/archives/',

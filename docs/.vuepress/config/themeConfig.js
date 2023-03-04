@@ -20,7 +20,7 @@ module.exports = {
   // 当.md文件的front matter不存在extendFrontmatter内相应的字段时，将在运行开发服务dev或打包build时自动添加，但不会覆盖已有的数据。
   // https://doc.xugaoyi.com/pages/a20ce8/#extendfrontmatter
   extendFrontmatter: {
-    simplePostListLength: 15, //首页文章数量，默认10条
+    simplePostListLength: 20, //首页文章数量，默认10条
     // titleTag: '原创',
     // feed:{  enable: true },
     // description: '',
@@ -77,10 +77,10 @@ module.exports = {
     link: 'https://github.com/sswfive', // 可选的
   },
   blogger: {
-    // 博主信息，显示在首页侧边栏
+    // 博主信息，显示在首页侧边栏ß
     avatar: '/img/dengxia.gif',
     name: 'Coffee-Time',
-    slogan: ' 可以不完美，但重要的是马上开始 ',
+    slogan: '|| 直到世界的尽头 > > >...',
   },
   social: {
     // 社交图标，显示于博主信息栏和页脚栏

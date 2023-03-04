@@ -6,7 +6,7 @@ const feed_options = {
 
 const autometa_options = {
   site: {
-    name: 'sswtk',
+    name: 'sswfive',
   },
   canonical_base: 'https://sswfive.github.io',
 };
