@@ -8,9 +8,9 @@ module.exports = [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
         { text: ' Python编程 ', link: '/corehub/python/' },
         { text: ' Go编程', link: '/corehub/go/' },
+        { text: ' 软件工程 ', link: '/corehub/project/' },
         { text: ' 数据结构与算法', link: '/corehub/datastruct/' },
         { text: ' 设计模式', link: '/corehub/design/' },
-        { text: ' 软件工程 ', link: '/corehub/project/' },
       ],
   },
   {
