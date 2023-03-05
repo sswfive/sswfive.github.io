@@ -6,11 +6,11 @@ module.exports = [
     link: '/corehub/', //目录页链接，此处link是vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
     items: [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
-        { text: ' Python编程 ', link: '/corehub/python/' },
-        { text: ' Go编程', link: '/corehub/go/' },
-        { text: ' 软件工程 ', link: '/corehub/project/' },
-        { text: ' 数据结构与算法', link: '/corehub/datastruct/' },
-        { text: ' 设计模式', link: '/corehub/design/' },
+        { text: ' 《Python编程》 ', link: '/corehub/python/' },
+        { text: ' 《Go编程》', link: '/corehub/go/' },
+        { text: ' 《软件工程》 ', link: '/corehub/project/' },
+        { text: ' 《数据结构与算法》', link: '/corehub/datastruct/' },
+        { text: ' 《设计模式》', link: '/corehub/design/' },
       ],
   },
   {
@@ -25,13 +25,14 @@ module.exports = [
       { text: 'Shell编程', link: '/thub/shell/' },
       { text: 'Vim笔记', link: '/thub/vim/' },
       { text: 'Git笔记', link: '/thub/git/' },
+      
     ],
   },
   {
     text: '技术之外',
     link: '/outtech/',
     items: [
-      { text: '关于学习', link: '/outtech/study/' },
+      { text: '关于学习', link: '/pages/974c9d/' },
       { text: '关于管理', link: '/outtech/manage/' },
     ],
   },
@@ -42,6 +43,7 @@ module.exports = [
       { text: 'Bug-Python栈', link: '/pybug/' },
       { text: 'Go-Python栈', link: '/gobug/' },
       { text: 'Bug-Linux栈', link: '/linuxbug/' },
+      { text: '运维手记', link: '/pages/d60525/' },
     ],
   },
   {
