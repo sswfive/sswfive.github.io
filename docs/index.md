@@ -1,7 +1,7 @@
 ---
 home: true
 # heroImage: /img/web.png
-heroText: PyGoerの时光
+heroText: PyGoerのCafeTime
 tagline: 一切看似逝去的，都不曾离开，你所给予的爱与温暖，让我执着地守护着这里
 # actionText: 立刻进入 →
 # actionLink: /ops/

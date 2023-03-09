@@ -25,7 +25,6 @@ module.exports = [
       { text: 'Shell编程', link: '/thub/shell/' },
       { text: 'Vim笔记', link: '/thub/vim/' },
       { text: 'Git笔记', link: '/thub/git/' },
-      
     ],
   },
   {
