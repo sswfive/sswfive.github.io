@@ -39,10 +39,10 @@ module.exports = [
     text: '迎刃而解',
     link: '/bugrecord/',
     items: [
+      { text: '运维手记', link: '/pages/d60525/' },
       { text: 'Bug-Python栈', link: '/pybug/' },
       { text: 'Go-Python栈', link: '/gobug/' },
       { text: 'Bug-Linux栈', link: '/linuxbug/' },
-      { text: '运维手记', link: '/pages/d60525/' },
     ],
   },
   {

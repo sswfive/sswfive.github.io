@@ -79,8 +79,8 @@ module.exports = {
   blogger: {
     // 博主信息，显示在首页侧边栏ß
     avatar: '/img/dengxia.gif',
-    name: 'Coffee-Time',
-    slogan: '|| 编程是思考，而不是打字 ...',
+    name: 'PyGoer',
+    slogan: '|| 记录是对思维的缓存 ...',
   },
   social: {
     // 社交图标，显示于博主信息栏和页脚栏
