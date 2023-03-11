@@ -11,7 +11,7 @@ bannerBg: /img/iTab.png # auto => 网格纹背景(有bodyBgImg时无背景)，�
 features: # 可选的
   - title: 《 「博 & 客」 》
     details: Thinking | Sharing
-    link: /thub/
+    link: /blog/
   - title: 《 「笔 & 记」 》
     details: Learning | Coding
     link: /corehub/ # 可选

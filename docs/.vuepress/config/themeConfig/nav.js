@@ -2,7 +2,14 @@
 module.exports = [
   { text: '首页', link: '/' },
   {
-    text: '编程工匠',
+    text: '博客专栏',
+    link: '/blog/',
+    // items: [
+    //   { text: '文章列表', link: ' /pages/23088e/' }
+    // ]
+  },
+  {
+    text: '学习笔记',
     link: '/corehub/', //目录页链接，此处link是vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
     items: [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
@@ -14,7 +21,7 @@ module.exports = [
       ],
   },
   {
-    text: '技无止尽',
+    text: '技术实践',
     link: '/thub/',
     items: [
       { text: ' 计算存储 ', link: '/thub/stroage/' },
