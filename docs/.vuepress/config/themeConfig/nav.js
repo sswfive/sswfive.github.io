@@ -24,9 +24,9 @@ module.exports = [
     text: '技术实践',
     link: '/thub/',
     items: [
+      { text: ' 容器技术 ', link: '/pages/486e3f/' },
       { text: ' 计算存储 ', link: '/thub/stroage/' },
       { text: ' 机器学习 ', link: '/thub/ml/' },
-      { text: ' 容器云 ', link: '/thub/container/' },
       { text: ' 中间件 ', link: '/thub/middleware/' },
       { text: 'Linux相关', link: '/thub/linux/' },
       { text: 'Shell编程', link: '/thub/shell/' },
@@ -47,9 +47,9 @@ module.exports = [
     link: '/bugrecord/',
     items: [
       { text: '运维手记', link: '/pages/d60525/' },
-      { text: 'Bug-Python栈', link: '/pybug/' },
-      { text: 'Go-Python栈', link: '/gobug/' },
-      { text: 'Bug-Linux栈', link: '/linuxbug/' },
+      { text: 'Bug-Python栈', link: '/bugrecord/pybug/' },
+      { text: 'Go-Python栈', link: '/bugrecord/gobug/' },
+      { text: 'Bug-Linux栈', link: '/bugrecord/linuxbug/' },
     ],
   },
   {
