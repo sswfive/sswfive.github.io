@@ -1,23 +1,23 @@
 // nav
 module.exports = [
-  { text: '首页', link: '/' },
+  { text: 'HOME首页', link: '/' },
+  // {
+  //   text: '博客专栏',
+  //   link: '/blog/',
+  //   // items: [
+  //   //   { text: '文章列表', link: ' /pages/23088e/' }
+  //   // ]
+  // },
   {
-    text: '博客专栏',
-    link: '/blog/',
-    // items: [
-    //   { text: '文章列表', link: ' /pages/23088e/' }
-    // ]
-  },
-  {
-    text: '学习笔记',
+    text: '编程笔记',
     link: '/corehub/', //目录页链接，此处link是vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
     items: [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
         { text: ' 《Python编程》 ', link: '/corehub/python/' },
         { text: ' 《Go编程》', link: '/corehub/go/' },
-        { text: ' 《软件工程》 ', link: '/corehub/project/' },
         { text: ' 《数据结构与算法》', link: '/corehub/datastruct/' },
         { text: ' 《设计模式》', link: '/corehub/design/' },
+        { text: ' 《软件工程》 ', link: '/corehub/project/' },
       ],
   },
   {
@@ -35,14 +35,6 @@ module.exports = [
     ],
   },
   {
-    text: '技术之外',
-    link: '/outtech/',
-    items: [
-      { text: '关于学习', link: '/pages/974c9d/' },
-      { text: '关于管理', link: '/outtech/manage/' },
-    ],
-  },
-  {
     text: '迎刃而解',
     link: '/bugrecord/',
     items: [
@@ -53,16 +45,19 @@ module.exports = [
     ],
   },
   {
-    text: '甄选收藏',
-    link: '/collection/',
-    items: [
-      { text: '优质博客', link: '/collection/blog/' },
-    ],
+    text: '技术之外',
+    link: '/outtech/',
+    // items: [
+    //   { text: '关于学习', link: '/pages/974c9d/' },
+    //   { text: '关于管理', link: '/outtech/manage/' },
+    // ],
   },
+ 
   {
-    text: '索引',
+    text: '更多内容',
     link: '/archives/',
     items: [
+      { text: '工具收藏夹', link: '/pages/7d84fc/' },
       { text: '分类', link: '/categories/' },
       { text: '标签', link: '/tags/' },
       { text: '归档', link: '/archives/' },
