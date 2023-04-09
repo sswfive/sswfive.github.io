@@ -52,12 +52,19 @@ module.exports = [
     //   { text: '关于管理', link: '/outtech/manage/' },
     // ],
   },
- 
   {
-    text: '更多内容',
-    link: '/archives/',
+    text: '甄选收藏',
+    link: '/collections/',
     items: [
       { text: '工具收藏夹', link: '/pages/7d84fc/' },
+      { text: 'MacOS常用快捷键', link: '/pages/301dd1/' },
+    ],
+  },
+ 
+  {
+    text: '更多',
+    link: '/archives/',
+    items: [
       { text: '分类', link: '/categories/' },
       { text: '标签', link: '/tags/' },
       { text: '归档', link: '/archives/' },
