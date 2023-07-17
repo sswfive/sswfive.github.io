@@ -16,6 +16,7 @@ module.exports = {
   // editLinkText: '编辑',
   sidebarHoverTriggerOpen: true, // 侧边栏自动隐藏
   //*** 以下配置是Vdoing主题改动和新增的配置 ***//
+  
 
   // 当.md文件的front matter不存在extendFrontmatter内相应的字段时，将在运行开发服务dev或打包build时自动添加，但不会覆盖已有的数据。
   // https://doc.xugaoyi.com/pages/a20ce8/#extendfrontmatter
