@@ -1,32 +1,30 @@
 // nav
 module.exports = [
-  { text: 'HOME首页', link: '/' },
-  // {
-  //   text: '博客专栏',
-  //   link: '/blog/',
-  //   // items: [
-  //   //   { text: '文章列表', link: ' /pages/23088e/' }
-  //   // ]
-  // },
   {
     text: '编程笔记',
     link: '/corehub/', //目录页链接，此处link是vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
     items: [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
-        { text: ' 《Python编程》 ', link: '/corehub/python/' },
-        { text: ' 《Go编程》', link: '/corehub/go/' },
+        { text: ' 《Python编程手记》 ', link: '/corehub/python/' },
+        { text: ' 《Go编程手记》', link: '/corehub/go/' },
         { text: ' 《数据结构与算法》', link: '/corehub/datastruct/' },
         { text: ' 《设计模式》', link: '/corehub/design/' },
         { text: ' 《软件工程》 ', link: '/corehub/project/' },
       ],
   },
   {
-    text: '技术实践',
+    text: '技术聚焦',
+    link: '/tfocus/',
+    items: [
+      { text: ' 机器学习 ', link: '/tfocus/ml/' },
+      { text: ' 容器技术 ', link: '/pages/486e3f/' },
+      { text: ' 计算存储 ', link: '/tfocus/stroage/' },
+    ],
+  },
+  {
+    text: '技术视界',
     link: '/thub/',
     items: [
-      { text: ' 容器技术 ', link: '/pages/486e3f/' },
-      { text: ' 计算存储 ', link: '/thub/stroage/' },
-      { text: ' 机器学习 ', link: '/thub/ml/' },
       { text: ' 中间件 ', link: '/thub/middleware/' },
       { text: 'Linux相关', link: '/thub/linux/' },
       { text: 'Shell编程', link: '/thub/shell/' },
