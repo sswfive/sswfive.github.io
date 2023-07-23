@@ -5,64 +5,51 @@ module.exports = [
     link: '/corehub/', //目录页链接，此处link是vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
     items: [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
-        { text: ' 《Python编程手记》 ', link: '/corehub/python/' },
-        { text: ' 《Go编程手记》', link: '/corehub/go/' },
-        { text: ' 《数据结构与算法》', link: '/corehub/datastruct/' },
-        { text: ' 《设计模式》', link: '/corehub/design/' },
-        { text: ' 《软件工程》 ', link: '/corehub/project/' },
+        { text: ' 《 Python编程 》 ', link: '/corehub/python/' },
+        { text: ' 《 Go编程 》', link: '/corehub/go/' },
+        { text: ' 《 数据结构与算法 》', link: '/corehub/algo/' },
+        { text: ' 《 设计模式 》', link: '/corehub/design/' },
       ],
   },
   {
-    text: '技术聚焦',
+    text: '技术专题',
     link: '/tfocus/',
     items: [
-      { text: ' 机器学习 ', link: '/tfocus/ml/' },
-      { text: ' 容器技术 ', link: '/pages/486e3f/' },
-      { text: ' 计算存储 ', link: '/tfocus/stroage/' },
+      { text: ' WEB开发(软件工程）', link: 'tfocus/project/'},
+      { text: ' 机器学习(AI应用) ', link: '/tfocus/ml/' },
+      { text: ' 容器技术(云原生) ', link: '/tfocus/container/' },
+      { text: ' 存储与计算(大数据) ', link: '/tfocus/bigdata/' },
     ],
   },
   {
     text: '技术视界',
     link: '/thub/',
-    items: [
-      { text: ' 中间件 ', link: '/thub/middleware/' },
-      { text: 'Linux相关', link: '/thub/linux/' },
-      { text: 'Shell编程', link: '/thub/shell/' },
-      { text: 'Vim笔记', link: '/thub/vim/' },
-      { text: 'Git笔记', link: '/thub/git/' },
-    ],
   },
+  {
+    text: ' 技术管理',
+    link: '/techm/'
+  },
+  {
+    text: ' 技术周记',
+    link: '/weeklog/'
+  },
+
   {
     text: '迎刃而解',
     link: '/bugrecord/',
     items: [
-      { text: '运维手记', link: '/pages/d60525/' },
-      { text: 'Bug-Python栈', link: '/bugrecord/pybug/' },
-      { text: 'Go-Python栈', link: '/bugrecord/gobug/' },
-      { text: 'Bug-Linux栈', link: '/bugrecord/linuxbug/' },
+      // { text: '运维手记', link: '/pages/d60525/' },
+      // { text: 'Bug-Python栈', link: '/bugrecord/pybug/' },
+      // { text: 'Go-Python栈', link: '/bugrecord/gobug/' },
+      // { text: 'Bug-Linux栈', link: '/bugrecord/linuxbug/' },
     ],
   },
   {
-    text: '技术之外',
-    link: '/outtech/',
-    // items: [
-    //   { text: '关于学习', link: '/pages/974c9d/' },
-    //   { text: '关于管理', link: '/outtech/manage/' },
-    // ],
-  },
-  {
-    text: '甄选收藏',
-    link: '/collections/',
+    text: '更多...',
+    link: '/more/',
     items: [
-      { text: '工具收藏夹', link: '/pages/7d84fc/' },
-      { text: 'MacOS常用快捷键', link: '/pages/301dd1/' },
-    ],
-  },
- 
-  {
-    text: '更多',
-    link: '/archives/',
-    items: [
+      { text: '关于我', link: '/myself/' },
+      { text: '甄选', link: '/collections/' },
       { text: '分类', link: '/categories/' },
       { text: '标签', link: '/tags/' },
       { text: '归档', link: '/archives/' },

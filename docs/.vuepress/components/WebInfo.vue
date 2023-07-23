@@ -65,7 +65,7 @@ export default {
       createToNowDay: 0, // 博客创建时间距今多少天
       lastActiveDate: "", // 最后活动时间
       totalWords: 0, // 本站总字数
-      indexView: true, // 开启访问量和排名统计
+      // indexView: true, // 开启访问量和排名统计
     };
   },
   computed: {
