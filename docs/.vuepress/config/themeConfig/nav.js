@@ -15,7 +15,7 @@ module.exports = [
     text: '技术专题',
     link: '/tfocus/',
     items: [
-      { text: ' WEB开发(软件工程）', link: 'tfocus/project/'},
+      { text: ' WEB开发(软件工程）', link: '/tfocus/project/'},
       { text: ' 机器学习(AI应用) ', link: '/tfocus/ml/' },
       { text: ' 容器技术(云原生) ', link: '/tfocus/container/' },
       { text: ' 存储与计算(大数据) ', link: '/tfocus/bigdata/' },
