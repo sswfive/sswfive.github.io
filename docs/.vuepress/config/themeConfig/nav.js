@@ -30,8 +30,8 @@ module.exports = [
     link: '/techm/'
   },
   {
-    text: ' 技术周记',
-    link: '/weeklog/'
+    text: ' ARTS',
+    link: '/arts/'
   },
 
   {
