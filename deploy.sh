@@ -16,7 +16,9 @@ cd docs/.vuepress/dist
 
 if [ -z "$GITHUB_TOKEN" ]; then
   msg='deploy'
-  githubUrl=git@github.com:sswfive/sswfive.github.io.git
+  githubUrl=https://sswfive:${GITHUB_TOKEN}@github.com/sswfive/sswfive.github.io.git
+  git config --global user.name "sswfive"
+  git config --global user.email "sswss5@aliyun.com"
 else
   Date=`date '+%Y%m%d%H%M%S'`
   echo $Date
