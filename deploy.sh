@@ -5,7 +5,6 @@ set -e
 
 # 生成静态文件
 npm run build
-
 # 进入生成的文件夹
 cd docs/.vuepress/dist
 
@@ -14,14 +13,14 @@ cd docs/.vuepress/dist
 
 # cat CNAME
 
-if [ -z "$ACCESS_TOKEN" ]; then
+if [ -z "$GITHUB_TOKEN" ]; then
   msg='deploy'
   githubUrl=git@github.com:sswfive/sswfive.github.io.git
 else
   Date=`date '+%Y%m%d%H%M%S'`
   echo $Date
   msg='From Github Action Auto Deploy'
-  githubUrl=https://sswfive:${ACCESS_TOKEN}@github.com/sswfive/sswfive.github.io.git
+  githubUrl=https://sswfive:${GITHUB_TOKEN}@github.com/sswfive/sswfive.github.io.git
   git config --global user.name "sswfive"
   git config --global user.email "sswss5@aliyun.com"
 fi
