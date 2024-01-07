@@ -6,6 +6,7 @@ module.exports = [
     items: [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
         { text: ' 《 Python编程实践 》 ', link: '/corehub/python/' },
+        { text: ' 《 Python每日一库 》 ', link: '/corehub/pylibs/' },
         // { text: ' 《 Go编程 》', link: '/corehub/go/' },
         { text: ' 《 数据结构与算法笔记 》', link: '/corehub/algo/' },
         // { text: ' 《 设计模式 》', link: '/corehub/design/' },
