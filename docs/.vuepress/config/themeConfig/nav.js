@@ -6,7 +6,7 @@ module.exports = [
     items: [
       // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
         { text: ' 《 Python语法规范 》 ', link: '/pycore/basic/' },
-        { text: ' 《 Python常用库 》 ', link: '/pycore/pylibs/' },
+        { text: ' 《 Python每日一库 》 ', link: '/pycore/pylibs/' },
         { text: ' 《 PyWeb系列 》', link: '/pycore/pyweb/' },
         { text: ' 《 Python工程系列 》', link: '/pycore/pyproject/' },
       ],
