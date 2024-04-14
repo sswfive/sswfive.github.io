@@ -12,6 +12,14 @@ module.exports = [
       ],
   },
   {
+    text: ' 容器技术',
+    link: '/container/',
+  },
+  {
+    text: ' 分布式技术',
+    link: '/distributed/',
+  },
+  {
     text: ' 工具箱',
     link: '/tools/',
   },
