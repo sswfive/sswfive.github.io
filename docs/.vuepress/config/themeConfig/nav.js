@@ -12,6 +12,10 @@ module.exports = [
       ],
   },
   {
+    text: ' 工具箱',
+    link: '/tools/',
+  },
+  {
     text: ' ARTS',
     link: '/arts/',
   },
