@@ -1,0 +1,3 @@
+Sitemap: https://sswtk.github.io/sitemap.xml
+
+User-agent: *

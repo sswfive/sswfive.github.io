@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>APScheduler-&gt; 定时任务工具 | 空谷幽兰</title>
+    <meta name="generator" content="VuePress 1.8.0">
+    <link rel="icon" href="/img/backimg2.JPG">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_3114978_qe0b39no76.css">
+    <script language="javascript" type="text/javascript" src="/js/pgmanor-self.js"></script>
+    <meta name="description" content="不依赖于Linux系统的crontab系统定时，独立运行">
+    <meta name="twitter:title" content="APScheduler-> 定时任务工具">
+    <meta name="twitter:description" content="不依赖于Linux系统的crontab系统定时，独立运行">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://sswfive.github.io/11.Python%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93/12.APScheduler%E4%B9%8B%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="APScheduler-> 定时任务工具">
+    <meta property="og:description" content="不依赖于Linux系统的crontab系统定时，独立运行">
+    <meta property="og:url" content="https://sswfive.github.io/11.Python%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93/12.APScheduler%E4%B9%8B%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.html">
+    <meta property="og:site_name" content="sswfive">
+    <meta property="article:published_time" content="2023-03-01T07:48:12.000Z">
+    <meta property="article:tag" content="python库">
+    <meta itemprop="name" content="APScheduler-> 定时任务工具">
+    <meta itemprop="description" content="不依赖于Linux系统的crontab系统定时，独立运行">
+    <meta name="keywords" content="python、go、java、technologypool、life">
+    <meta name="baidu-site-verification" content="code-LTKHwOecxI">
+    <meta name="theme-color" content="#11a8cd">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <link rel="preload" href="/assets/css/0.styles.4b8b0999.css" as="style"><link rel="preload" href="/assets/js/app.763b1f0e.js" as="script"><link rel="preload" href="/assets/js/2.e690bb18.js" as="script"><link rel="preload" href="/assets/js/24.b5c8617b.js" as="script"><link rel="preload" href="/assets/js/7.91d1ee3d.js" as="script"><link rel="preload" href="/assets/js/4.8431db64.js" as="script"><link rel="prefetch" href="/assets/js/10.1f00ffb9.js"><link rel="prefetch" href="/assets/js/11.898e8432.js"><link rel="prefetch" href="/assets/js/12.cf8b961f.js"><link rel="prefetch" href="/assets/js/13.931c6119.js"><link rel="prefetch" href="/assets/js/14.183d74e6.js"><link rel="prefetch" href="/assets/js/15.14e2161a.js"><link rel="prefetch" href="/assets/js/16.5d4aeddb.js"><link rel="prefetch" href="/assets/js/17.565ec7ac.js"><link rel="prefetch" href="/assets/js/18.cd6d8c4b.js"><link rel="prefetch" href="/assets/js/19.1000ebbf.js"><link rel="prefetch" href="/assets/js/20.035eb6b0.js"><link rel="prefetch" href="/assets/js/21.61ca9002.js"><link rel="prefetch" href="/assets/js/22.0b847fe2.js"><link rel="prefetch" href="/assets/js/23.cf4c6004.js"><link rel="prefetch" href="/assets/js/25.eb9ad48d.js"><link rel="prefetch" href="/assets/js/26.7844a868.js"><link rel="prefetch" href="/assets/js/27.e0d0daad.js"><link rel="prefetch" href="/assets/js/28.8726afff.js"><link rel="prefetch" href="/assets/js/29.f7580ec6.js"><link rel="prefetch" href="/assets/js/3.c010132d.js"><link rel="prefetch" href="/assets/js/30.3db63b7e.js"><link rel="prefetch" href="/assets/js/31.044121a5.js"><link rel="prefetch" href="/assets/js/32.54424c82.js"><link rel="prefetch" href="/assets/js/33.b7199d6a.js"><link rel="prefetch" href="/assets/js/34.18479464.js"><link rel="prefetch" href="/assets/js/35.2d0c9b11.js"><link rel="prefetch" href="/assets/js/36.53459b99.js"><link rel="prefetch" href="/assets/js/37.3af8a08d.js"><link rel="prefetch" href="/assets/js/38.1cfaf7f2.js"><link rel="prefetch" href="/assets/js/39.89abcb65.js"><link rel="prefetch" href="/assets/js/40.ac8c4774.js"><link rel="prefetch" href="/assets/js/41.d256acaf.js"><link rel="prefetch" href="/assets/js/42.d67ada5d.js"><link rel="prefetch" href="/assets/js/43.cdb95295.js"><link rel="prefetch" href="/assets/js/44.ef449967.js"><link rel="prefetch" href="/assets/js/45.f74e5f64.js"><link rel="prefetch" href="/assets/js/46.41278414.js"><link rel="prefetch" href="/assets/js/47.4dd0d8d5.js"><link rel="prefetch" href="/assets/js/5.6e4d7e57.js"><link rel="prefetch" href="/assets/js/6.b1b7c75c.js"><link rel="prefetch" href="/assets/js/8.150894dc.js"><link rel="prefetch" href="/assets/js/9.fdb3a9c0.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.4b8b0999.css">
+  </head>
+  <body class="theme-mode-light">
+    <div id="app" data-server-rendered="true"><div class="theme-container sidebar-open have-rightmenu"><header class="navbar blur"><div title="目录" class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/img/pici.png" alt="空谷幽兰" class="logo"> <span class="site-name can-hide">空谷幽兰</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Python编程实践" class="dropdown-title"><a href="/pycore/" class="link-title">Python编程实践</a> <span class="title" style="display:none;">Python编程实践</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pycore/basic/" class="nav-link"> 《 Python语法规范 》 </a></li><li class="dropdown-item"><!----> <a href="/pycore/pylibs/" class="nav-link"> 《 Python每日一库 》 </a></li><li class="dropdown-item"><!----> <a href="/pycore/pyweb/" class="nav-link"> 《 PyWeb系列 》</a></li><li class="dropdown-item"><!----> <a href="/pycore/pyproject/" class="nav-link"> 《 Python工程系列 》</a></li></ul></div></div><div class="nav-item"><a href="/container/" class="nav-link"> 容器技术</a></div><div class="nav-item"><a href="/distributed/" class="nav-link"> 分布式技术</a></div><div class="nav-item"><a href="/tools/" class="nav-link"> 工具箱</a></div><div class="nav-item"><a href="/arts/" class="nav-link"> ARTS</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多..." class="dropdown-title"><a href="/more/" class="link-title">更多...</a> <span class="title" style="display:none;">更多...</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/myself/" class="nav-link">关于我</a></li><li class="dropdown-item"><!----> <a href="/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/archives/" class="nav-link">归档</a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar-hover-trigger"></div> <aside class="sidebar" style="display:none;"><div class="blogger"><img src="/img/dengxia.gif"> <div class="blogger-info"><h3>sswfive</h3> <span>|| 记录是对思维的缓存 ...</span></div></div> <nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Python编程实践" class="dropdown-title"><a href="/pycore/" class="link-title">Python编程实践</a> <span class="title" style="display:none;">Python编程实践</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pycore/basic/" class="nav-link"> 《 Python语法规范 》 </a></li><li class="dropdown-item"><!----> <a href="/pycore/pylibs/" class="nav-link"> 《 Python每日一库 》 </a></li><li class="dropdown-item"><!----> <a href="/pycore/pyweb/" class="nav-link"> 《 PyWeb系列 》</a></li><li class="dropdown-item"><!----> <a href="/pycore/pyproject/" class="nav-link"> 《 Python工程系列 》</a></li></ul></div></div><div class="nav-item"><a href="/container/" class="nav-link"> 容器技术</a></div><div class="nav-item"><a href="/distributed/" class="nav-link"> 分布式技术</a></div><div class="nav-item"><a href="/tools/" class="nav-link"> 工具箱</a></div><div class="nav-item"><a href="/arts/" class="nav-link"> ARTS</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多..." class="dropdown-title"><a href="/more/" class="link-title">更多...</a> <span class="title" style="display:none;">更多...</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/myself/" class="nav-link">关于我</a></li><li class="dropdown-item"><!----> <a href="/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/archives/" class="nav-link">归档</a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/pages/02c78d/" class="sidebar-link">Python常用库汇总</a></li><li><a href="/pages/66e4a3/" class="sidebar-link">Python每日一库总览</a></li><li><a href="/pages/fccc90/" class="sidebar-link">Numpy-&gt; 数据分析工具</a></li><li><a href="/pages/f5be21/" class="sidebar-link">Pandas-&gt; 数据分析工具</a></li><li><a href="/pages/17aa03/" aria-current="page" class="active sidebar-link">APScheduler-&gt; 定时任务工具</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header level2"><a href="/pages/17aa03/#apscheduler概述" class="sidebar-link">APScheduler概述</a></li><li class="sidebar-sub-header level2"><a href="/pages/17aa03/#_1-安装" class="sidebar-link">1.安装</a></li><li class="sidebar-sub-header level2"><a href="/pages/17aa03/#_2-使用方式" class="sidebar-link">2.使用方式</a></li><li class="sidebar-sub-header level2"><a href="/pages/17aa03/#_3-调度器scheduler" class="sidebar-link">3.调度器Scheduler</a></li><li class="sidebar-sub-header level2"><a href="/pages/17aa03/#_4-执行器-executors" class="sidebar-link">4.执行器 executors</a></li><li class="sidebar-sub-header level2"><a href="/pages/17aa03/#_5-触发器-trigger" class="sidebar-link">5.触发器 Trigger</a></li><li class="sidebar-sub-header level2"><a href="/pages/17aa03/#_6-配置方法" class="sidebar-link">6. 配置方法</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header level3"><a href="/pages/17aa03/#方法1" class="sidebar-link">方法1</a></li><li class="sidebar-sub-header level3"><a href="/pages/17aa03/#方法2" class="sidebar-link">方法2</a></li></ul></li><li class="sidebar-sub-header level2"><a href="/pages/17aa03/#_7-启动" class="sidebar-link">7. 启动</a></li><li class="sidebar-sub-header level2"><a href="/pages/17aa03/#_8-扩展" class="sidebar-link">8.扩展</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header level3"><a href="/pages/17aa03/#任务管理" class="sidebar-link">任务管理</a></li><li class="sidebar-sub-header level4"><a href="/pages/17aa03/#方式一" class="sidebar-link">方式一</a></li><li class="sidebar-sub-header level4"><a href="/pages/17aa03/#方式二" class="sidebar-link">方式二</a></li><li class="sidebar-sub-header level3"><a href="/pages/17aa03/#调整任务调度周期" class="sidebar-link">调整任务调度周期</a></li><li class="sidebar-sub-header level3"><a href="/pages/17aa03/#停止apscheduler运行" class="sidebar-link">停止APScheduler运行</a></li></ul></li></ul></li><li><a href="/pages/f9d8f8/" class="sidebar-link">MLflow-&gt; 模型生命周期管理</a></li><li><a href="/pages/f8d7cc/" class="sidebar-link">PyFlink-&gt; 分布式计算</a></li><li><a href="/pages/17604e/" class="sidebar-link">Supervisor-&gt; 进程管理工具</a></li><li><a href="/pages/14f9c8/" class="sidebar-link">subprocess-&gt;子进程管理</a></li><li><a href="/pages/92ad63/" class="sidebar-link">pathlib-&gt;使用面向对象的方式操作路径</a></li></ul> </aside> <div><main class="page"><div class="theme-vdoing-wrapper "><div class="articleInfo-wrap" data-v-06225672><div class="articleInfo" data-v-06225672><ul class="breadcrumbs" data-v-06225672><li data-v-06225672><a href="/" title="首页" class="iconfont icon-home router-link-active" data-v-06225672></a></li> <li data-v-06225672><a href="/categories/?category=Python%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93" title="分类" data-v-06225672>Python每日一库</a></li></ul> <div class="info" data-v-06225672><div title="作者" class="author iconfont icon-touxiang" data-v-06225672><a href="https://github.com/sswfive" target="_blank" title="作者" class="beLink" data-v-06225672>sswfive</a></div> <div title="创建时间" class="date iconfont icon-riqi" data-v-06225672><a href="javascript:;" data-v-06225672>2023-03-01</a></div> <!----></div></div></div> <!----> <div class="content-wrapper"><div class="right-menu-wrapper"><div class="right-menu-margin"><div class="right-menu-title">目录</div> <div class="right-menu-content"></div></div></div> <h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABGpJREFUSA3tVVtoXFUU3fvOI53UlmCaKIFmwEhsE7QK0ipFEdHEKpXaZGrp15SINsXUWvBDpBgQRKi0+KKoFeJHfZA+ED9KKoIU2gYD9UejTW4rVIzm0VSTziPzuNu1z507dibTTjL4U/DAzLn3nL3X2o91ziX6f9wMFdh6Jvbm9nNSV0msViVO6tN1Rm7NMu2OpeJ9lWBUTDxrJbYTS0hInuwciu9eLHlFxCLCZEk3MegsJmZ5K/JD6t7FkFdEvGUo1g7qJoG3MHImqRIn8/nzY1K9UPKKiJmtnUqHVE3Gbuay6vJE/N2FEmuxFjW2nUuE0yQXRRxLiTUAzs36zhZvOXJPdX850EVnnLZkB8prodQoM5JGj7Xk2mvC7JB8tG04Ef5PiXtG0UtxupRQSfTnBoCy554x18yJHI6I+G5Eru4LHmPJZEQsrvPUbMiA8G/WgMK7w7I+ez7++o2ANfbrjvaOl1tFMs+htG3IrZH9/hDX1Pr8Tc0UvH8tcX29KzAgIGcEkINyW5BF9x891hw6VYqgJHEk0huccS7vh3C6gTiODL+26huuBtbct8eZnqLML8PkxGYpuPZBqtqwkSjgc4mB5gbgig5i+y0UDK35LMxXisn9xQtK+nd26gTIHsHe/oblK/b29fUmN/8Y+9jAQrnBp56m1LcDlDp9irKTExSKduXJVWSqdBMA08pEJnEIOB3FPPMybu/oeV8zFeYN3xx576Q6RH+VmplE4ncQV5v+5rzSoyOU7PuEAg8g803PwBJ0CExno/jcMbN8tONYeOmHiuUNryvm3fRUy4tMPVLdAGkUhNWuggGrJcXPv+ouCjz0MKUHz1J2/E8IC9nqTabcxgaBYM0hPhD5Y65FsbxRQKxCQrDjDctW7PUM3HuZunFyifSAqEfuzCp48Il24luWUWZoyJCaPR82jE0+kFA643wRFVni4RYSq3ohJO2pZ7B5dO4xkDWbEpossJPLSrPjYID8rS2UHTlvyNxqIGsg674XJJ7vnh5L7PNwC4hh2sjCI96mzszOTpxLF0T7l88Yz7lAuK6OnL8gXLOnTvpzSb22YG8W7us3jSebFHeeqnXRG1vt+MoUM84LQIBmMsCTAcOauTh0T0l0neQK7m2bLMt2mGxU3HYssS0J2cdv5wljlPsrIuZLAG/2DOZIXgCYT8uMGZN+e2kSirfxZOPCsC0f24nTZzspnVn9VePS1Z5vubmAGGXG8ZFno9Hel0yfA5ZPhF7Dh972BQJ2qCpgH67lmWtBYbvk6sz02wjky2vXyz0XErP/kFB619js1BtwfOV4OPRqOQBjy3Qbk18vigUPPSD5ceHnwck7W9bhAqZdd7SuG7w4/P2F/GaJh8c7e9qgow+Q7cGBo+98WsLkuktFqiZabtXuQTu/Y5ETbR0v7tNSFnvrmu6pjdoan2KjMu8q/Hmj1EfCO2ZGfEIbIXKUlw8qaX9/b2oeSJmFksSeT/Fn0V3nSypChh4Gjh74ybO9aeZ/AN2dwciu2/MhAAAAAElFTkSuQmCC">APScheduler-&gt; 定时任务工具<!----></h1>  <div class="theme-vdoing-content content__default"><h2 id="apscheduler概述"><a href="#apscheduler概述" class="header-anchor">#</a> APScheduler概述</h2> <ul><li><p>APScheduler （advanceded python scheduler）是一款Python开发的定时任务工具。</p></li> <li><p>文档地址 https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler</p></li> <li><p>特点：</p> <ul><li><p>不依赖于Linux系统的crontab系统定时，独立运行</p></li> <li><p>可以动态添加新的定时任务，如</p></li> <li><p>下单后30分钟内必须支付，否则取消订单，就可以借助此工具（每下一单就要添加此订单的定时任务）</p></li> <li><p>对添加的定时任务可以做持久保存</p></li></ul></li></ul> <h2 id="_1-安装"><a href="#_1-安装" class="header-anchor">#</a> 1.安装</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>pip install apscheduler
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h2 id="_2-使用方式"><a href="#_2-使用方式" class="header-anchor">#</a> 2.使用方式</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>from apscheduler.schedulers.background import BackgroundScheduler
+
+# 创建定时任务的调度器对象
+scheduler = BackgroundScheduler()
+
+# 定义定时任务
+def my_job(param1, param2):
+    pass
+
+# 向调度器中添加定时任务
+scheduler.add_job(my_job, 'date', args=[100, 'python'])
+
+# 启动定时任务调度器工作
+scheduler.start()
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><h2 id="_3-调度器scheduler"><a href="#_3-调度器scheduler" class="header-anchor">#</a> 3.调度器Scheduler</h2> <p><strong>负责管理定时任务</strong></p> <ul><li>BlockingScheduler: 作为独立进程时使用</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>from apscheduler.schedulers.blocking import BlockingScheduler
+
+  scheduler = BlockingScheduler()
+  scheduler.start()  # 此处程序会发生阻塞
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><ul><li>BackgroundScheduler: 在框架程序（如Django、Flask）中使用</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code> from apscheduler.schedulers.background import BackgroundScheduler
+
+  scheduler = BackgroundScheduler()
+  scheduler.start()  # 此处程序不会发生阻塞
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h2 id="_4-执行器-executors"><a href="#_4-执行器-executors" class="header-anchor">#</a> 4.执行器 executors</h2> <p><strong>在定时任务该执行时，以进程或线程方式执行任务</strong></p> <ul><li>ThreadPoolExecutor</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>  from apscheduler.executors.pool import ThreadPoolExecutor
+  ThreadPoolExecutor(max_workers)  
+  ThreadPoolExecutor(20) # 最多20个线程同时执行
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><blockquote><p>使用方法</p></blockquote> <div class="language- line-numbers-mode"><pre class="language-text"><code> executors = {
+      'default': ThreadPoolExecutor(20)
+  }
+  scheduler = BackgroundScheduler(executors=executors)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><ul><li>ProcessPoolExecutor</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code> from apscheduler.executors.pool import ProcessPoolExecutor
+  ProcessPoolExecutor(max_workers)
+  ProcessPoolExecutor(5) # 最多5个进程同时执行
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><blockquote><p>使用方法</p></blockquote> <div class="language- line-numbers-mode"><pre class="language-text"><code>  executors = {
+      'default': ProcessPoolExecutor(3)
+  }
+  scheduler = BackgroundScheduler(executors=executors)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h2 id="_5-触发器-trigger"><a href="#_5-触发器-trigger" class="header-anchor">#</a> 5.触发器 Trigger</h2> <p><strong>指定定时任务执行的时机</strong></p> <p><strong>1） date 在特定的时间日期执行</strong></p> <div class="language- line-numbers-mode"><pre class="language-text"><code>from datetime import date
+
+# 在2019年11月6日00:00:00执行
+sched.add_job(my_job, 'date', run_date=date(2009, 11, 6))
+
+# 在2019年11月6日16:30:05
+sched.add_job(my_job, 'date', run_date=datetime(2009, 11, 6, 16, 30, 5))
+sched.add_job(my_job, 'date', run_date='2009-11-06 16:30:05')
+
+# 立即执行
+sched.add_job(my_job, 'date')  
+sched.start()
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p><strong>2） interval 经过指定的时间间隔执行</strong></p> <ul><li>weeks (int) – number of weeks to wait</li> <li>days (int) – number of days to wait</li> <li>hours (int) – number of hours to wait</li> <li>minutes (int) – number of minutes to wait</li> <li>seconds (int) – number of seconds to wait</li> <li>start_date (datetime|str) – starting point for the interval calculation</li> <li>end_date (datetime|str) – latest possible date/time to trigger on</li> <li>timezone (datetime.tzinfo|str) – time zone to use for the date/time calculations</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>from datetime import datetime
+
+# 每两小时执行一次
+sched.add_job(job_function, 'interval', hours=2)
+
+# 在2010年10月10日09:30:00 到2014年6月15日的时间内，每两小时执行一次
+sched.add_job(job_function, 'interval', hours=2, start_date='2010-10-10 09:30:00', end_date='2014-06-15 11:00:00')
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p><strong>3） cron 按指定的周期执行</strong></p> <ul><li>year (int|str) – 4-digit year</li> <li>month (int|str) – month (1-12)</li> <li>day (int|str) – day of the (1-31)</li> <li>week (int|str) – ISO week (1-53)</li> <li>day_of_week (int|str) – number or name of weekday (0-6 or mon,tue,wed,thu,fri,sat,sun)</li> <li>hour (int|str) – hour (0-23)</li> <li>minute (int|str) – minute (0-59)</li> <li>second (int|str) – second (0-59)</li> <li>start_date (datetime|str) – earliest possible date/time to trigger on (inclusive)</li> <li>end_date (datetime|str) – latest possible date/time to trigger on (inclusive)</li> <li>timezone (datetime.tzinfo|str) – time zone to use for the date/time calculations (defaults to scheduler timezone)</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code># 在6、7、8、11、12月的第三个周五的00:00, 01:00, 02:00和03:00 执行
+sched.add_job(job_function, 'cron', month='6-8,11-12', day='3rd fri', hour='0-3')
+
+# 在2014年5月30日前的周一到周五的5:30执行
+sched.add_job(job_function, 'cron', day_of_week='mon-fri', hour=5, minute=30, end_date='2014-05-30')
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><h2 id="_6-配置方法"><a href="#_6-配置方法" class="header-anchor">#</a> 6. 配置方法</h2> <h3 id="方法1"><a href="#方法1" class="header-anchor">#</a> 方法1</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.executors.pool import ThreadPoolExecutor
+
+executors = {
+    'default': ThreadPoolExecutor(20),
+}
+scheduler = BackgroundScheduler(executors=executors)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h3 id="方法2"><a href="#方法2" class="header-anchor">#</a> 方法2</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>from pytz import utc
+
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from apscheduler.executors.pool import ProcessPoolExecutor
+
+executors = {
+    'default': {'type': 'threadpool', 'max_workers': 20},
+    'processpool': ProcessPoolExecutor(max_workers=5)
+}
+
+scheduler = BackgroundScheduler()
+
+# .. 此处可以编写其他代码
+
+# 使用configure方法进行配置
+scheduler.configure(executors=executors)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><h2 id="_7-启动"><a href="#_7-启动" class="header-anchor">#</a> 7. 启动</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>scheduler.start()
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><ul><li>对于BlockingScheduler ，程序会阻塞在这，防止退出</li> <li>对于BackgroundScheduler，程序会立即返回，后台运行</li></ul> <h2 id="_8-扩展"><a href="#_8-扩展" class="header-anchor">#</a> 8.扩展</h2> <h3 id="任务管理"><a href="#任务管理" class="header-anchor">#</a> 任务管理</h3> <h4 id="方式一"><a href="#方式一" class="header-anchor">#</a> 方式一</h4> <div class="language- line-numbers-mode"><pre class="language-text"><code>job = scheduler.add_job(myfunc, 'interval', minutes=2)  # 添加任务
+job.remove()  # 删除任务
+job.pause() # 暂定任务
+job.resume()  # 恢复任务
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h4 id="方式二"><a href="#方式二" class="header-anchor">#</a> 方式二</h4> <div class="language- line-numbers-mode"><pre class="language-text"><code>scheduler.add_job(myfunc, 'interval', minutes=2, id='my_job_id')  # 添加任务    
+scheduler.remove_job('my_job_id')  # 删除任务
+scheduler.pause_job('my_job_id')  # 暂定任务
+scheduler.resume_job('my_job_id')  # 恢复任务
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h3 id="调整任务调度周期"><a href="#调整任务调度周期" class="header-anchor">#</a> 调整任务调度周期</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>job.modify(max_instances=6, name='Alternate name')
+
+scheduler.reschedule_job('my_job_id', trigger='cron', minute='*/5')
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h3 id="停止apscheduler运行"><a href="#停止apscheduler运行" class="header-anchor">#</a> 停止APScheduler运行</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>scheduler.shutdown()
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></div></div>  <div class="page-edit"><!----> <div class="tags"><a href="/tags/?tag=python%E5%BA%93" title="标签">#python库</a></div> <div class="last-updated"><span class="prefix">最后更新时间:</span> <span class="time">2024/01/17, 23:27:22</span></div></div> <div class="page-nav-wapper"><!----> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/pages/f5be21/" class="prev">Pandas-&gt; 数据分析工具</a></span> <span class="next"><a href="/pages/f9d8f8/">MLflow-&gt; 模型生命周期管理</a>→
+      </span></p></div></div></div> <div class="article-list"><div class="article-title"><a href="/archives/" class="iconfont icon-bi">最近更新</a></div> <div class="article-wrapper"><dl><dd>01</dd> <dt><a href="/pages/e56634/"><div>
+            git同时配置多个平台的SSH
+            <!----></div></a> <span class="date">04-14</span></dt></dl><dl><dd>02</dd> <dt><a href="/pages/ce4e21/"><div>
+            ARTS第03期(0115-0121)
+            <!----></div></a> <span class="date">01-21</span></dt></dl><dl><dd>03</dd> <dt><a href="/pages/92ad63/"><div>
+            pathlib-&gt;使用面向对象的方式操作路径
+            <!----></div></a> <span class="date">01-17</span></dt></dl> <dl><dd></dd> <dt><a href="/archives/" class="more">更多文章&gt;</a></dt></dl></div></div></main></div> <div class="footer"><div class="icons"><a href="https://github.com/sswfive" title="GitHub" target="_blank" class="iconfont icon-github"></a><a href="mailto:1292265801@qq.com" title="发邮件" target="_blank" class="iconfont icon-youjian"></a><a href="https://music.163.com/#/playlist?id=755597173" title="听音乐" target="_blank" class="iconfont icon-erji"></a></div> 
+  Theme by
+  <a href="https://github.com/xugaoyi/vuepress-theme-vdoing" target="_blank" title="本站主题">Vdoing</a> 
+    | Copyright © 2019-2024
+    <span>| sswfive |</span></div> <div class="buttons"><div title="返回顶部" class="button blur go-to-top iconfont icon-fanhuidingbu" style="display:none;"></div> <div title="去评论" class="button blur go-to-comment iconfont icon-pinglun" style="display:none;"></div> <div title="主题模式" class="button blur theme-mode-but iconfont icon-zhuti"><ul class="select-box" style="display:none;"><li class="iconfont icon-zidong">
+          跟随系统
+        </li><li class="iconfont icon-rijianmoshi">
+          浅色模式
+        </li><li class="iconfont icon-yejianmoshi">
+          深色模式
+        </li><li class="iconfont icon-yuedu">
+          阅读模式
+        </li></ul></div></div> <!----> <!----> <!----></div><div class="global-ui"><canvas id="vuepress-canvas-cursor"></canvas><!----><div></div><div></div><div></div></div></div>
+    <script src="/assets/js/app.763b1f0e.js" defer></script><script src="/assets/js/2.e690bb18.js" defer></script><script src="/assets/js/24.b5c8617b.js" defer></script><script src="/assets/js/7.91d1ee3d.js" defer></script><script src="/assets/js/4.8431db64.js" defer></script>
+  </body>
+</html>
