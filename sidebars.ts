@@ -32,7 +32,25 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       link: { type: 'generated-index' },
       items:[
-        'skill/cloudnative/ktconnect-usage'
+        {
+          label: 'Kubernetes',
+          type: 'category',
+          link: { type: 'generated-index' },
+          items:[
+            'skill/cloudnative/k8s/helm-usage',
+            'skill/cloudnative/k8s/longhorn-deploy',
+            'skill/cloudnative/k8s/ktconnect-usage',
+          ],
+        },
+        // {
+        //   label: 'Docker',
+        //   type: 'category',
+        //   link: { type: 'generated-index' },
+        //   items:[
+        //     'skill/cloudnative/docker/docker-image-pull-problem-for-solution',
+        //   ],
+        // }
+        
       ]
     },
   ],
@@ -47,11 +65,12 @@ const sidebars: SidebarsConfig = {
       ],
     },
     {
-      label: '常用类库',
+      label: '每日一库',
       type: 'category',
       link: { type: 'generated-index' },
       items: [
-        'python/PythonLibs/python-libs-awesome'
+        'python/PythonLibs/python-libs-awesome',
+        'python/PythonLibs/pathlib-usage',
       ],
     }
   ],

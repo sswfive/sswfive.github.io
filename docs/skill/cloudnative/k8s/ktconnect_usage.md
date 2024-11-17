@@ -2,7 +2,7 @@
 id: ktconnect-usage
 slug: ktconnect-usage
 title: k8s开发工具之KtConnect
-tags: [K8S, KtConnect]
+tags: [K8S, 开发工具]
 last_update:
   date: 2024-11-13T20:00:00
 ---
