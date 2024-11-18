@@ -3,28 +3,46 @@ import type { SidebarsConfig } from '@docusaurus/plugin-content-docs'
 const sidebars: SidebarsConfig = {
   skill: [
     'skill/introduction',
-    {
-      label: '编程语言',
-      type: 'category',
-      link: { type: 'generated-index' },
-      items:[
-        {
-          label: 'Python',
-          type: 'category',
-          link: { type: 'generated-index' },
-          items:[
-            'skill/codelang/python/env-package-selection',
-          ],
-        }
-      ]
-    },
+    // {
+    //   label: '编程语言',
+    //   type: 'category',
+    //   link: { type: 'generated-index' },
+    //   items:[
+    //     {
+    //       label: 'Python',
+    //       type: 'category',
+    //       link: { type: 'generated-index' },
+    //       items:[
+    //       ],
+    //     }
+    //   ]
+    // },
     {
       label: 'ModelOps技术',
       type: 'category',
       link: { type: 'generated-index' },
       items:[
-       'skill/modelops/modelops-common-tech',
-       'skill/modelops/kserve-deploy',
+        {
+          label: '机器学习基础',
+          type: 'category',
+          link: { type: 'generated-index' },
+          items:[
+            'skill/modelops/ml_basic/ml-basic',
+            'skill/modelops/ml_basic/ml-work-flow',
+            'skill/modelops/ml_basic/model-evalution',
+            'skill/modelops/ml_basic/data-mining',
+          ],
+        },
+        {
+          label: '模型工程化',
+          type: 'category',
+          link: { type: 'generated-index' },
+          items:[
+            'skill/modelops/model_ops/modelops-common-tech',
+            'skill/modelops/model_ops/kserve-deploy',
+          ],
+        },
+       
       ]
     },
     {
@@ -51,6 +69,25 @@ const sidebars: SidebarsConfig = {
         //   ],
         // }
         
+      ]
+    },
+    {
+      label: '大数据技术',
+      type: 'category',
+      link: { type: 'generated-index' },
+      items:[
+        {
+          label: 'Spark',
+          type: 'category',
+          link: { type: 'generated-index' },
+          items:[
+            'skill/bigdata/spark/spark-first-know',
+            'skill/bigdata/spark/spark-rdd',
+            'skill/bigdata/spark/spark-scheduler-system',
+            'skill/bigdata/spark/spark-shuffle',
+            'skill/bigdata/spark/spark-distribute-compute',
+          ],
+        }
       ]
     },
   ],
