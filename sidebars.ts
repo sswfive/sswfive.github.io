@@ -82,7 +82,17 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       link: { type: 'generated-index' },
       items: [
-        'tools/devtools/common-dev-tools-install',
+        'tools/toolbox/common-dev-tools-install',
+      ]
+    },
+    {
+      label: '综合类工具',
+      type: 'category',
+      link: { type: 'generated-index' },
+      items: [
+        'tools/toolbox/dev-tools',
+        'tools/toolbox/design-tools',
+        'tools/toolbox/typing-practice-website',
       ]
     },
     {
