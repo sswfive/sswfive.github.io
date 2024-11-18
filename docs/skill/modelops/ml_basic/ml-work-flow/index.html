@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-skill/modelops/ml_basic/ml-work-flow" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.6.1">
+<title data-rh="true">机器学习的通用流程 | PyShe&amp;Blog</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://sswfive.github.io/img/head.png"><meta data-rh="true" name="twitter:image" content="https://sswfive.github.io/img/head.png"><meta data-rh="true" property="og:url" content="https://sswfive.github.io/docs/skill/modelops/ml_basic/ml-work-flow"><meta data-rh="true" property="og:locale" content="zh_CN"><meta data-rh="true" name="docusaurus_locale" content="zh-CN"><meta data-rh="true" name="docsearch:language" content="zh-CN"><meta data-rh="true" name="author" content="PyShen"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="机器学习的通用流程 | PyShe&amp;Blog"><meta data-rh="true" name="description" content="机器学习的背景"><meta data-rh="true" property="og:description" content="机器学习的背景"><meta data-rh="true" name="keywords" content="机器学习"><link data-rh="true" rel="icon" href="/img/head.png"><link data-rh="true" rel="canonical" href="https://sswfive.github.io/docs/skill/modelops/ml_basic/ml-work-flow"><link data-rh="true" rel="alternate" href="https://sswfive.github.io/docs/skill/modelops/ml_basic/ml-work-flow" hreflang="zh-CN"><link data-rh="true" rel="alternate" href="https://sswfive.github.io/docs/skill/modelops/ml_basic/ml-work-flow" hreflang="x-default"><link rel="preconnect" href="https://www.google-analytics.com">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S4SD5NXWXF"></script>
+<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-S4SD5NXWXF",{anonymize_ip:!0})</script>
+
+
+
+
+
+<link rel="icon" href="/img/logo.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#12affa">
+<link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="PyShen RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="PyShen Atom Feed">
+<link rel="alternate" type="application/json" href="/blog/feed.json" title="PyShen JSON Feed">
+
+<script>document.firstChild?.nodeType!==Node.COMMENT_NODE&&document.prepend(document.createComment("\n          This Webisite Powered By PyShen Blog.\n          Written by Docusaurus, Coding with Love.\n          --------\n          Love what you do and do what you love.\n          "))</script>
+<meta name="description" content="PyShen的个人博客">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans@4.0.0/lib/Normal/MiSans-Normal.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans@4.0.0/lib/Normal/MiSans-Medium.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans@4.0.0/lib/Normal/MiSans-Semibold.min.css"><link rel="stylesheet" href="/assets/css/styles.4d5fe24e.css">
+<script src="/assets/js/runtime~main.ac295183.js" defer="defer"></script>
+<script src="/assets/js/main.0655da80.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard" data-theme="light">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();t(null!==e?e:"light")}(),function(){try{const n=new URLSearchParams(window.location.search).entries();for(var[t,e]of n)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="跳到主要内容"><a class="skipToContent_GQ_m" href="#__docusaurus_skipToContent_fallback">跳到主要内容</a></div><nav aria-label="主导航" class="navbar navbar--fixed-top navbarHideable_jvwV"><div class="navbar__inner"><div class="navbar__items"><button aria-label="切换导航栏" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/"><div class="navbar__logo"><img src="/img/head.png" alt="PyShen" class="themedComponent_J_xB themedComponent--light_OJb8"><img src="/img/head.png" alt="PyShen" class="themedComponent_J_xB themedComponent--dark_mvD8"></div></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/docs/skill">技术笔记</a><a class="navbar__item navbar__link" href="/docs/python">捕蛇者说</a><a class="navbar__item navbar__link" href="/docs/tools">工欲善器</a></div><div class="navbar__items navbar__items--right"><a class="navbar__item navbar__link" href="/blog">博客</a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link">更多</a><ul class="dropdown__menu"><li><a class="dropdown__link" href="/blog/archive">归档</a></li><li><a class="dropdown__link" href="/blog/tags">标签</a></li><li><a class="dropdown__link" href="/about">关于</a></li></ul></div><div class="toggle_zSAq colorModeToggle_x44X"><button class="clean-btn toggleButton_itfZ toggleButtonDisabled_C1i3" type="button" disabled="" title="切换浅色/暗黑模式（当前为浅色模式）" aria-label="切换浅色/暗黑模式（当前为浅色模式）" aria-live="polite" aria-pressed="false"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_KXdV"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_KeBi"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></button></div><div class="navbarSearchContainer_dCNk"><div class="dsla-search-wrapper"><div class="dsla-search-field" data-tags="default,docs-default-current"></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_EQuy"><div class="docsWrapper__DQJ"><button aria-label="回到顶部" class="clean-btn theme-back-to-top-button backToTopButton_f4oz" type="button"></button><div class="docRoot_uOMF"><aside class="theme-doc-sidebar-container docSidebarContainer_kvJ8"><div class="sidebarViewport_lbgt"><div class="sidebar_z6v1 sidebarWithHideableNavbar_ZXyp"><a tabindex="-1" class="sidebarLogo__RoD" href="/"><img src="/img/head.png" alt="PyShen" class="themedComponent_J_xB themedComponent--light_OJb8"><img src="/img/head.png" alt="PyShen" class="themedComponent_J_xB themedComponent--dark_mvD8"></a><nav aria-label="文档侧边栏" class="menu thin-scrollbar menu_VNCf"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/docs/skill">技术笔记</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--active" href="/docs/category/modelops技术">ModelOps技术</a><button aria-label="折叠侧边栏分类 &#x27;ModelOps技术&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--active" tabindex="0" href="/docs/category/机器学习基础">机器学习基础</a><button aria-label="折叠侧边栏分类 &#x27;机器学习基础&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/skill/modelops/ml_basic/ml-basic">机器学习的常见术语</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/docs/skill/modelops/ml_basic/ml-work-flow">机器学习的通用流程</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/skill/modelops/ml_basic/model-evalution">机器学习模型的评估方法</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/skill/modelops/ml_basic/data-mining">关于数据挖掘的基础</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" tabindex="0" href="/docs/category/模型工程化">模型工程化</a><button aria-label="展开侧边栏分类 &#x27;模型工程化&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/docs/category/云原生技术">云原生技术</a><button aria-label="展开侧边栏分类 &#x27;云原生技术&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/docs/category/大数据技术">大数据技术</a><button aria-label="展开侧边栏分类 &#x27;大数据技术&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav><button type="button" title="收起侧边栏" aria-label="收起侧边栏" class="button button--secondary button--outline collapseSidebarButton_cn5N"><svg width="20" height="20" aria-hidden="true" class="collapseSidebarButtonIcon_AwbT"><g fill="#7a7a7a"><path d="M9.992 10.023c0 .2-.062.399-.172.547l-4.996 7.492a.982.982 0 01-.828.454H1c-.55 0-1-.453-1-1 0-.2.059-.403.168-.551l4.629-6.942L.168 3.078A.939.939 0 010 2.528c0-.548.45-.997 1-.997h2.996c.352 0 .649.18.828.45L9.82 9.472c.11.148.172.347.172.55zm0 0"></path><path d="M19.98 10.023c0 .2-.058.399-.168.547l-4.996 7.492a.987.987 0 01-.828.454h-3c-.547 0-.996-.453-.996-1 0-.2.059-.403.168-.551l4.625-6.942-4.625-6.945a.939.939 0 01-.168-.55 1 1 0 01.996-.997h3c.348 0 .649.18.828.45l4.996 7.492c.11.148.168.347.168.55zm0 0"></path></g></svg></button></div></div></aside><main class="docMainContainer_nqlk"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_U5cg"><div class="docItemContainer_p_iJ"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_gyW1" aria-label="页面路径"><ul class="breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="breadcrumbs__item"><a aria-label="主页面" class="breadcrumbs__link" href="/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_gr6m"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item"><a class="breadcrumbs__link" itemprop="item" href="/docs/category/modelops技术"><span itemprop="name">ModelOps技术</span></a><meta itemprop="position" content="1"></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item"><a class="breadcrumbs__link" itemprop="item" href="/docs/category/机器学习基础"><span itemprop="name">机器学习基础</span></a><meta itemprop="position" content="2"></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link" itemprop="name">机器学习的通用流程</span><meta itemprop="position" content="3"></li></ul></nav><div class="tocCollapsible_zsfT theme-doc-toc-mobile tocMobile_cGIj"><button type="button" class="clean-btn tocCollapsibleButton_FMKe">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>机器学习的通用流程</h1></header><h2 class="anchor anchorWithHideOnScrollNavbar_NW94" id="机器学习的背景">机器学习的背景<a href="#机器学习的背景" class="hash-link" aria-label="机器学习的背景的直接链接" title="机器学习的背景的直接链接">​</a></h2>
+<p>在机器学习领域有两大学派：频率学派和贝叶斯学派，而概率又是机器学习的核心角色，正是因为这两个学派的对概率的认知不同，于是产生了统计机器学习和概率图模型（符号学习）：</p>
+<ul>
+<li>统计机器学习（基于数据）：<!-- -->
+<ul>
+<li>核心是数据，利用不同的模型去拟合数据背后的规  律，并用拟合出来的规律去判断和预测未知的结果。</li>
+<li>统计机器学习中最基础的模型就是线性回归，几乎所有其他模型都是从不同的角度对线性回归模型做出扩展和修正。</li>
+</ul>
+</li>
+<li>概率图模型（基于关系）：<!-- -->
+<ul>
+<li>和基于数据的统计学习相比，基于关系的图模型更多的代表了因果推理的发展方向。</li>
+<li>贝叶斯注意到也需要计算待学习对象的概率分布，但它利用的不是海量的具体数据，而是变量之间的相互关系，每个变量的先验分布和大量复杂的积分技巧。</li>
+<li>图模型的学习方案是从 表示、推断、学习 三大方向进行开展。</li>
+</ul>
+</li>
+</ul>
+<p>统计机器学习是频率学派的核心观点，其解决问题的思路是：参数是确定的，数据是随机的，利用随机的数据推断确定的参数，得到的结果也是随机的；</p>
+<ul>
+<li>概率表示的是事件发生频率的极限值，即当重复试验的次数趋近于无穷大时，事件发生的频率会收敛到真实的概率之上（这种观点的前提是：概率是一个确定的值，并不会受到单次观察结果的影响）</li>
+<li>频率统计理论的核心在于认定待估计的参数是固定不变的常量，讨论参数的概率分布是没有意义的；而用来估计参数的数据是随机的变量，每个数据都是参数支配下一次独立重复试验的结果。由于参数本身是确定的，那频率的波动就并非来源于参数本身的不确定性，而是由有限次观察造成的干扰而导致</li>
+</ul>
+<p>频率学派认为概率是随机事件发生频率的极限值，在执行参数估计时，<strong>视参数为确定取值，视数据为随机变量</strong>，主要采用 <strong>最大似然估计法，让数据在给定参数下的似然概率最大化，</strong>
+<strong>频率学派对应机器学习中的统计学习，以经验风险最小化作为模型选择的准则。</strong></p>
+<h2 class="anchor anchorWithHideOnScrollNavbar_NW94" id="机器学习的概述">机器学习的概述<a href="#机器学习的概述" class="hash-link" aria-label="机器学习的概述的直接链接" title="机器学习的概述的直接链接">​</a></h2>
+<ul>
+<li>定义：<!-- -->
+<ul>
+<li>机器学习的定义：机器学习是一门研究通过计算的手段利用经验来改善系统自身性能的学科（源自：机器学习领域元老-汤姆·米切尔(Tom M. Mitchell)之口）</li>
+<li>统计机器学习的定义：通过对给定的指标（比如似然函数或者均方误差）进行最优化，来估计模型中参数的取值，估计是并不考虑参数的不确定性，也就是不考虑未知参数的先验分布。<strong>和参数相关的信息全部来源于数据，输出的则是未知参数唯一的估计结果，这是统计机器学习的核心特征</strong></li>
+</ul>
+</li>
+<li>机器学习的任务：<!-- -->
+<ul>
+<li>基于对已知数据构造概率模型，再运用概率模型对未知数据进行预测与分析</li>
+</ul>
+</li>
+<li>统计机器学习的精度如何衡量？<!-- -->
+<ul>
+<li>引入经验风险来解决，用训练数据的经验分布替换掉原始表达式中数据的真实分布，借此将风险函数转化成可计算的数值（<strong>损失函数（loss funciton</strong>）直接定义了模型性能的度量方式，其数学期望被称为风险（risk）,风险最小化就是参数估计的依据和准测</li>
+<li>所谓的最优模型也就是使经验风险最小化（empirical risk minimization）的那个模型</li>
+</ul>
+</li>
+</ul>
+<h2 class="anchor anchorWithHideOnScrollNavbar_NW94" id="统计机器学习核心">统计机器学习核心<a href="#统计机器学习核心" class="hash-link" aria-label="统计机器学习核心的直接链接" title="统计机器学习核心的直接链接">​</a></h2>
+<blockquote>
+<p>下文关于机器学习的表达均指统计机器学习，简称：机器学习</p>
+</blockquote>
+<p>从历史数  据中自动分析获取模型，并利用模型对未知数据进行预测</p>
+<h3 class="anchor anchorWithHideOnScrollNavbar_NW94" id="机器学习通用流程">机器学习通用流程<a href="#机器学习通用流程" class="hash-link" aria-label="机器学习通用流程的直接链接" title="机器学习通用流程的直接链接">​</a></h3>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step1-获取数据">step1: 获取数据<a href="#step1-获取数据" class="hash-link" aria-label="step1: 获取数据的直接链接" title="step1: 获取数据的直接链接">​</a></h4>
+<ul>
+<li>获取数据的方式有：爬虫、物联网设备、数据库、文件等等</li>
+</ul>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step2数据基本处理">step2:数据基本处理<a href="#step2数据基本处理" class="hash-link" aria-label="step2:数据基本处理的直接链接" title="step2:数据基本处理的直接链接">​</a></h4>
+<ul>
+<li>对数据进行缺失值、去除异常值等处理</li>
+</ul>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step3特征工程">step3:特征工程<a href="#step3特征工程" class="hash-link" aria-label="step3:特征工程的直接链接" title="step3:特征工程的直接链接">​</a></h4>
+<blockquote>
+<p>数据和特征决定了机器学习的上限，而模型和算法只是逼近这个上限而已。</p>
+</blockquote>
+<ul>
+<li>概念：<!-- -->
+<ul>
+<li>特征工程是指使用专业背景知识和技巧处理数据，使得特征能在几区学习算法上发挥更好的作用的过程</li>
+<li>特征工程的意义：会直接影响技机器学习的效果</li>
+</ul>
+</li>
+<li>方法：<!-- -->
+<ul>
+<li><strong>特征提取</strong>：将任意数据（文本或图像）转换为可用机器学习的数字特征。</li>
+<li><strong>特征预处理</strong>：通过一些转换函数将特征数据转换成更适合算法模型的特征数据过程。</li>
+<li><strong>特征降维</strong>：指在某些限定条件下，降低  随机变量(特征)的个数，得到一组“不相关”主变量额过程</li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step4机器学习模型训练">step4:机器学习（模型训练）<a href="#step4机器学习模型训练" class="hash-link" aria-label="step4:机器学习（模型训练）的直接链接" title="step4:机器学习（模型训练）的直接链接">​</a></h4>
+<ul>
+<li>选择合适的算法对模型进行训练</li>
+</ul>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step5模型评估">step5:模型评估<a href="#step5模型评估" class="hash-link" aria-label="step5:模型评估的直接链接" title="step5:模型评估的直接链接">​</a></h4>
+<ul>
+<li>概念：<!-- -->
+<ul>
+<li>对训练好的模型进行评估</li>
+</ul>
+</li>
+<li>方法：<!-- -->
+<ul>
+<li>分类模型评估<!-- -->
+<ul>
+<li>准确率</li>
+<li>精确率</li>
+<li>召回率</li>
+<li>Fl-score</li>
+<li>AUC指标</li>
+</ul>
+</li>
+<li>回归模型评估<!-- -->
+<ul>
+<li>均方根误差</li>
+<li>相对平方误差</li>
+<li>平均绝对误差</li>
+<li>相对绝对误差</li>
+<li>决定系数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorWithHideOnScrollNavbar_NW94" id="机器学习的完整流程">机器学习的完整流程<a href="#机器学习的完整流程" class="hash-link" aria-label="机器学习的完整流程的直接链接" title="机器学习的完整流程的直接链接">​</a></h3>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step1抽象成数据问题">step1:抽象成数据问题<a href="#step1抽象成数据问题" class="hash-link" aria-label="step1:抽象成数据问题的直接链接" title="step1:抽象成数据问题的直接链接">​</a></h4>
+<p>明确问题是进行机器学习的第一步。机器学习的训练过程通常都是一件非常耗时的事情，胡乱尝试时间成本是非常高的。这里的抽象成数学问题，指的明确我们可以获得什么样的数据，抽象出的问题，是一个分类还是 回归或者是聚类的问题。</p>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step2获取数据">step2:获取数据<a href="#step2获取数据" class="hash-link" aria-label="step2:获取数据的直接链接" title="step2:获取数据的直接链接">​</a></h4>
+<p>数据要有代表性，否则必然会过拟合。对于分类问题，数据偏斜不能过于严重，不同类别的数据数量不要有数量级的差距。
+而且还要对数据的量级有一个评估，多少个样本，多少个特征，可以估算出其对内存的消耗程度，判断训练过程中内存是否能够放得下。如果放不下就得考虑改进算法或者使用一些降维的技巧了。如果数据量实在太大，那就要考虑分布式了。</p>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step3特征预处理与特征选择">step3:特征预处理与特征选择<a href="#step3特征预处理与特征选择" class="hash-link" aria-label="step3:特征预处理与特征选择的直接链接" title="step3:特征预处理与特征选择的直接链接">​</a></h4>
+<p>良好的数据要能够提取出良好的特征才能真正发挥作用。
+特征预处理、数据清洗是很关键的步骤，往往能够使得算法的效果和性能得到显著提高。
+归一化、离散化、因子化、缺失值处理、去除共线性等，数据挖掘过程中很多时间就花在它们上面。这些工作简单可复制，收益稳定可预期，是机器学习的基础必备步骤。
+筛选出显著特征、摒弃非显著特征，需要机器学习工程师反复理解业务。这对很多结果有决定性的影响。特征选择好了，非常简单的算法也能得出良好、稳定的结果。这需要运用特征有效性分析的相关技术，如相关系数、卡方检验、平均互信息、条件熵、后验概率、逻辑回归权重等方法。</p>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step4训练模型与调优">step4:训练模型与调优<a href="#step4训练模型与调优" class="hash-link" aria-label="step4:训练模型与调优的直接链接" title="step4:训练模型与调优的直接链接">​</a></h4>
+<p>直到这一步才用到我们上面说的算法进行训练。现在很多算法都能够封装成黑盒供人使用。但是真正考验水平的是调整这些算法的（超）参数，使得结果变得更加优良。这需要我们对算法的原理有深入的理解。理解越深入，就越能发现问题的症结，提出良好的调优方案。</p>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step5模型诊断">step5:模型诊断<a href="#step5模型诊断" class="hash-link" aria-label="step5:模型诊断的直接链接" title="step5:模型诊断的直接链接">​</a></h4>
+<p>如何确定模型调优的方向与思路呢？这就需要对模型进行诊断的技术。
+过拟合、欠拟合 判断是模型诊断中至关重要的一步。常见的方法如交叉验证，绘制学习曲线等。过拟合的基本调优思路是增加数据量，降低模型复杂度。欠拟合的基本调优思路是提高特征数量和质量，增加模型复杂度。
+误差分析 也是机器学习至关重要的步骤。通过观察误差样本全面分析产生误差的原因:是参数的问题还是算法选择的问题，是特征的问题还是数据本身的问题……
+诊断后的模型需要进行调优，调优后的新模型需要重新进行诊断，这是一个反复迭代不断逼近的过程，需要不断地尝试， 进而达到最优状态。</p>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step6模型融合">step6:模型融合<a href="#step6模型融合" class="hash-link" aria-label="step6:模型融合的直接链接" title="step6:模型融合的直接链接">​</a></h4>
+<p>一般来说，模型融合后都能使得效果有一定提升。而且效果很好。
+工程上，主要提升算法准确度的方法是分别在模型的前端（特征清洗和预处理，不同的采样模式）与后端（模型融合）上下功夫。因为他们比较标准可复制，效果比较稳定。而直接调参的工作不会很多，毕竟大量数据训练起来太慢了，而且效果难以保证。</p>
+<h4 class="anchor anchorWithHideOnScrollNavbar_NW94" id="step7上线运行">step7:上线运行<a href="#step7上线运行" class="hash-link" aria-label="step7:上线运行的直接链接" title="step7:上线运行的直接链接">​</a></h4>
+<p>这一部分内容主要跟工程实现的相关性比较大。工程上是结果导向，模型在线上运行的效果直接决定模型的成败。 不单纯包括其准确程度、误差等情况，还包括其运行的速度(时间复杂度)、资源消耗程度（空间复杂度）、稳定性是否可接受。
+这些工作流程主要是工程实践上总结出的一些经验。并不是每个项目都包含完整的一个流程。</p></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-tags-row"><div class="col"><b>标签：</b><ul class="tags_i611 padding--none margin-left--sm"><li class="tag_V9fD"><a class="tag_d0Lz tagRegular_bmnp" href="/docs/tags/机器学习">机器学习</a></li></ul></div></div><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col"></div><div class="col lastUpdated_IGg4"><span class="theme-last-updated">最后<!-- -->于 <b><time datetime="2023-08-16T08:23:41.000Z" itemprop="dateModified">2023年8月16日</time></b> <!-- -->更新</span></div></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="文件选项卡"><a class="pagination-nav__link border-2 border-link hover:bg-[#a1d8f71b] pagination-nav__link--prev" href="/docs/skill/modelops/ml_basic/ml-basic"><div class="pagination-nav__sublabel">上一页</div><div class="pagination-nav__label">机器学习的常见术语</div></a><a class="pagination-nav__link border-2 border-link hover:bg-[#a1d8f71b] pagination-nav__link--next" href="/docs/skill/modelops/ml_basic/model-evalution"><div class="pagination-nav__sublabel">下一页</div><div class="pagination-nav__label">机器学习模型的评估方法</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_jeP5 thin-scrollbar theme-doc-toc-desktop" style="opacity:0.0001;transform:translateX(100px) translateZ(0)"><ul class="table-of-contents pl-0"><li><a href="#机器学习的背景" class="table-of-contents__link toc-highlight">机器学习的背景</a></li><li><a href="#机器学习的概述" class="table-of-contents__link toc-highlight">机器学习的概述</a></li><li><a href="#统计机器学习核心" class="table-of-contents__link toc-highlight">统计机器学习核心</a><ul><li><a href="#机器学习通用流程" class="table-of-contents__link toc-highlight">机器学习通用流程</a><ul><li><a href="#step1-获取数据" class="table-of-contents__link toc-highlight">step1: 获取数据</a></li><li><a href="#step2数据基本处理" class="table-of-contents__link toc-highlight">step2:数据基本处理</a></li><li><a href="#step3特征工程" class="table-of-contents__link toc-highlight">step3:特征工程</a></li><li><a href="#step4机器学习模型训练" class="table-of-contents__link toc-highlight">step4:机器学习（模型训练）</a></li><li><a href="#step5模型评估" class="table-of-contents__link toc-highlight">step5:模型评估</a></li></ul></li><li><a href="#机器学习的完整流程" class="table-of-contents__link toc-highlight">机器学习的完整流程</a><ul><li><a href="#step1抽象成数据问题" class="table-of-contents__link toc-highlight">step1:抽象成数据问题</a></li><li><a href="#step2获取数据" class="table-of-contents__link toc-highlight">step2:获取数据</a></li><li><a href="#step3特征预处理与特征选择" class="table-of-contents__link toc-highlight">step3:特征预处理与特征选择</a></li><li><a href="#step4训练模型与调优" class="table-of-contents__link toc-highlight">step4:训练模型与调优</a></li><li><a href="#step5模型诊断" class="table-of-contents__link toc-highlight">step5:模型诊断</a></li><li><a href="#step6模型融合" class="table-of-contents__link toc-highlight">step6:模型融合</a></li><li><a href="#step7上线运行" class="table-of-contents__link toc-highlight">step7:上线运行</a></li></ul></li></ul></li></ul><hr class="hr_UhE0"><span class="percent_H6RK">0%<!-- --> </span></div></div></div></div></main></div></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">
+        <p>Copyright © 20241111 - 2024 PyShen. | Built with Docusaurus.</p>
+        </div></div></div></footer></div>
+</body>
+</html>
