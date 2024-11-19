@@ -113,27 +113,21 @@ const sidebars: SidebarsConfig = {
   ],
   tools: [
     'tools/introduction',
-    'tools/common-dev-tools-collection',
-    {
-      label: '开发类工具',
-      type: 'category',
-      link: { type: 'generated-index' },
-      items: [
-        'tools/toolbox/common-dev-tools-install',
-      ]
-    },
+    'tools/toolbox/open-source-solution',
+    'tools/toolbox/quickly-deploy-solution',
+    'tools/toolbox/dev-tools',
     {
       label: '综合类工具',
       type: 'category',
       link: { type: 'generated-index' },
       items: [
-        'tools/toolbox/dev-tools',
+        'tools/toolbox/common-dev-tools-collection',
         'tools/toolbox/design-tools',
         'tools/toolbox/typing-practice-website',
       ]
     },
     {
-      label: 'Plugins',
+      label: '常用插件',
       type: 'category',
       link: {
         type: 'doc',

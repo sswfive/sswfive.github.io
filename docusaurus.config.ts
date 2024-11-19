@@ -5,7 +5,7 @@ import type { GiscusConfig } from './src/components/Comment';
 
 
 const config: Config = {
-  title: 'PyShe&Blog',
+  title: 'PyShen&Blog',
   url: 'https://sswfive.github.io/',
   baseUrl: '/',
   favicon: 'img/head.png',
@@ -45,10 +45,11 @@ const config: Config = {
       },
       hideOnScroll: true,
       items: [
-        { label: '技术笔记', position: 'left', to: 'docs/skill' },
+        { label: '博客文章', position: 'left', to: 'blog' },
         { label: '捕蛇者说', position: 'left', to: 'docs/python' },
-        { label: '工欲善器', position: 'left', to: 'docs/tools' },
-        { label: '博客', position: 'right', to: 'blog' },
+        { label: '综合知识库', position: 'left', to: 'docs/skill' },
+        
+        { label: '工欲善器', position: 'right', to: 'docs/tools' },
         {
           label: '更多',
           position: 'right',
@@ -176,7 +177,7 @@ const config: Config = {
         path: 'blog',
         blogDescription: '编程是一种技艺，一种需要用心学习的技艺',
         blogSidebarCount: 10,
-        blogSidebarTitle: '博客主页',
+        blogSidebarTitle: '博客文章',
         postsPerPage: 12,
         showReadingTime: true,
         readingTime: ({ content, frontMatter, defaultReadingTime }) =>

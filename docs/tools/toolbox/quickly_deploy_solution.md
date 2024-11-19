@@ -1,7 +1,7 @@
 ---
-id: common-dev-tools-install
-slug: /common-dev-tools-install
-title: 开发工具的快速安装指南
+id: quickly-deploy-solution
+slug: /quickly-deploy-solution
+title: 快速部署解决方案
 tags: [tools, docker, docker-compose]
 keywords: [tools, docker, docker-compose]
 last_update:

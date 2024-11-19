@@ -1,7 +1,7 @@
 ---
 id: vscode-plugins
 slug: /vscode-plugins
-title: 常用的vscode插件
+title: 常用的Vscode插件
 date: 2024-11-03 23:16:14
 authors: [PyShen]
 tags: [Vscode, Plugins, Tools]
