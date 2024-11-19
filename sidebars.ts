@@ -107,6 +107,9 @@ const sidebars: SidebarsConfig = {
       link: { type: 'generated-index' },
       items: [
         'python/PythonLibs/python-libs-awesome',
+        'python/PythonLibs/apscheduler-usage',
+        'python/PythonLibs/supervisor-usage',
+        'python/PythonLibs/subprocess-usage',
         'python/PythonLibs/pathlib-usage',
       ],
     }
