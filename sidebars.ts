@@ -90,6 +90,23 @@ const sidebars: SidebarsConfig = {
         }
       ]
     },
+    {
+      label: '算法学习笔记',
+      type: 'category',
+      link: { type: 'generated-index' },
+      items:[
+        {
+          label: '基础知识',
+          type: 'category',
+          description: '本部分内容主要是对数据结构与算法的学习总结（文章均以倒序排列)',
+          link: { type: 'generated-index' },
+          items:[
+            'skill/algods/base/algods-understand',
+            'skill/algods/base/algods-learn-docs',
+          ],
+        }
+      ]
+    },
   ],
   python: [
     'python/introduction',
