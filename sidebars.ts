@@ -101,6 +101,7 @@ const sidebars: SidebarsConfig = {
           description: '本部分内容主要是对数据结构与算法的学习总结（文章均以倒序排列)',
           link: { type: 'generated-index' },
           items:[
+            'skill/algods/base/big-O',
             'skill/algods/base/algods-understand',
             'skill/algods/base/algods-learn-docs',
           ],
