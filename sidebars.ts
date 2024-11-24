@@ -105,6 +105,15 @@ const sidebars: SidebarsConfig = {
             'skill/algods/base/algods-understand',
             'skill/algods/base/algods-learn-docs',
           ],
+        },
+        {
+          label: '数据结构',
+          type: 'category',
+          link: { type: 'generated-index' },
+          items:[
+            'skill/algods/datastruct/datastruct-list',
+            'skill/algods/datastruct/datastruct-array',
+          ],
         }
       ]
     },
