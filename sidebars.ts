@@ -113,6 +113,19 @@ const sidebars: SidebarsConfig = {
           items:[
             'skill/algods/datastruct/datastruct-list',
             'skill/algods/datastruct/datastruct-array',
+            'skill/algods/datastruct/datastruct-equeue',
+            'skill/algods/datastruct/datastruct-stack',
+          ],
+        },
+        {
+          label: '常用算法',
+          type: 'category',
+          link: { type: 'generated-index' },
+          items:[
+            'skill/algods/algo/algo-recursion',
+            'skill/algods/algo/algo-sort',
+            'skill/algods/algo/algo-hash',
+            'skill/algods/algo/algo-encrypt',
           ],
         }
       ]

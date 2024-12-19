@@ -1,7 +1,7 @@
 ---
 id: datastruct-array
 slug: datastruct-array
-title: 数组的基础知识与应用
+title: 数组 (Array)
 tags: [算法与数据结构]
 keywords: [算法与数据结构]
 last_update:

@@ -1,7 +1,7 @@
 ---
 id: datastruct-list
 slug: datastruct-list
-title: 链表的基础知识与应用
+title: 链表 (List)
 tags: [数据结构算法]
 keywords: [数据结构算法]
 last_update:
