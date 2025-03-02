@@ -1,5 +1,5 @@
 ---
-title: python中的那些编码规范
+title: Python中的那些编码规范
 date: 2025-03-02 23:47:29
 tags:
   - 编程规范
