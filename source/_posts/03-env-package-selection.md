@@ -2,8 +2,7 @@
 title: 关于Python中的版本和包管理工具
 date: 2025-03-03 07:50:07
 tags:
-  - 环境管理
-  - 依赖管理
+  - python工程实践
 categories:
   - Python
 ---

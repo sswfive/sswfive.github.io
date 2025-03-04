@@ -2,7 +2,7 @@
 title: Python中的那些编码规范
 date: 2025-03-02 23:47:29
 tags:
-  - 编程规范
+  - python工程实践
 categories:
   - Python
  
