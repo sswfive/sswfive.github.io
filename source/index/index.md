@@ -4,13 +4,10 @@ date: 2025-03-02 22:44:40
 ---
 
 
-###### 2025-03-03 15:15:15
+<p style="text-align: center;"><span style="background: linear-gradient(to right, #ff9966, #ff99cc, #ccb3ff, #9966ff);-webkit-background-clip: text;color: transparent;"> 循此苦旅 以达星辰... </span></p>
 
 
 <div class="circle-blue">
-
-> 年少的时日从我身边滑过，而我从来都不知道，那已是生活, 往后的岁月中，循此苦旅 以达星辰...
-
 
 我们在时间的线条上行走
 横轴与纵轴追赶着交叉
