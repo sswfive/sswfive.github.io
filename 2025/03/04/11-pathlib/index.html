@@ -189,13 +189,13 @@
             <div class="post-head-meta-center">
         
                 
-                    <span>最近更新：2025-03-06</span> 
+                    <span>最近更新：2025-03-08</span> 
                 
                 
                     
                         &nbsp; | &nbsp;
                     
-                     <span>字数总计：2.7k</span>
+                     <span>字数总计：2.8k</span>
                 
                 
                     
@@ -221,7 +221,7 @@
             
         
         <div class=".article-gallery"><blockquote>
-<p>Reference：</p>
+<p>Reference：  </p>
 </blockquote>
 <blockquote>
 <ul>
@@ -233,130 +233,102 @@
 <li><a target="_blank" rel="noopener" href="https://peps.python.org/pep-0428/">pep-0428</a></li>
 </ul>
 </blockquote>
-<h2 id="模块概述">模块概述</h2>
-<h3 id="应用场景：">应用场景：</h3>
-<p>如果你厌倦了使用os包提供的接口去操作文件路径……</p>
+<h2 id="模块概述"><a href="#模块概述" class="headerlink" title="模块概述"></a>模块概述</h2><h3 id="应用场景："><a href="#应用场景：" class="headerlink" title="应用场景："></a>应用场景：</h3><p>如果你厌倦了使用os包提供的接口去操作文件路径……</p>
 <p>如果你更喜欢以面向对象的方式去操作文件路径……</p>
-<p>那么，pathlib 也许是一个不错的选择！！！</p>
-<h3 id="模块介绍">模块介绍</h3>
-<p>pathlib（Object-oriented filesystem paths）是python官方封装提供的一种使用面向对象的方式操作文件路径的工具包，在python3.4中发布，可以支持跨平台（Unix和Windows），pathlib基于是否有I/O操作提供了两种方式来操作文件路径,一种是提供纯计算操作而没有I/O的<strong>纯路径</strong>，另一种是提供I/O操作的<strong>具体路径</strong>。</p>
+<p>那么，pathlib 也许是一个不错的选择！！！ </p>
+<h3 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h3><p>pathlib（Object-oriented filesystem paths）是python官方封装提供的一种使用面向对象的方式操作文件路径的工具包，在python3.4中发布，可以支持跨平台（Unix和Windows），pathlib基于是否有I&#x2F;O操作提供了两种方式来操作文件路径,一种是提供纯计算操作而没有I&#x2F;O的<strong>纯路径</strong>，另一种是提供I&#x2F;O操作的<strong>具体路径</strong>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">         +----------+</span><br><span class="line">                |          |</span><br><span class="line">       ---------| PurePath |--------</span><br><span class="line">       |        |          |       |</span><br><span class="line">       |        +----------+       |</span><br><span class="line">       |             |             |</span><br><span class="line">       |             |             |</span><br><span class="line">       v             |             v</span><br><span class="line">+---------------+    |    +-----------------+</span><br><span class="line">|               |    |    |                 |</span><br><span class="line">| PurePosixPath |    |    | PureWindowsPath |</span><br><span class="line">|               |    |    |                 |</span><br><span class="line">+---------------+    |    +-----------------+</span><br><span class="line">       |             v             |</span><br><span class="line">       |          +------+         |</span><br><span class="line">       |          |      |         |</span><br><span class="line">       |   -------| Path |------   |</span><br><span class="line">       |   |      |      |     |   |</span><br><span class="line">       |   |      +------+     |   |</span><br><span class="line">       |   |                   |   |</span><br><span class="line">       |   |                   |   |</span><br><span class="line">       v   v                   v   v</span><br><span class="line">  +-----------+           +-------------+</span><br><span class="line">  |           |           |             |</span><br><span class="line">  | PosixPath |           | WindowsPath |</span><br><span class="line">  |           |           |             |</span><br><span class="line">  +-----------+           +-------------+</span><br></pre></td></tr></table></figure>
-<h3 id="实现原理：">实现原理：</h3>
-<p>pathlib包主要组成结构：</p>
+<h3 id="实现原理："><a href="#实现原理：" class="headerlink" title="实现原理："></a>实现原理：</h3><p>pathlib包主要组成结构：</p>
 <ul>
-<li>
-<p><strong>PurePath(object): 该类提供一套基于非I/O操作的文件路径的接口。</strong></p>
+<li><p><strong>PurePath(object): 该类提供一套基于非I&#x2F;O操作的文件路径的接口。</strong></p>
 </li>
-<li>
-<p>PurePosixPath(PurePath): 该提供一套在Unix环境中基于非I/O操作的文件路径接口。</p>
+<li><p>PurePosixPath(PurePath): 该提供一套在Unix环境中基于非I&#x2F;O操作的文件路径接口。</p>
 </li>
-<li>
-<p>PureWindowsPath(PurePath): 该提供一套在Windows环境中基于非I/O操作的文件路径接口。</p>
+<li><p>PureWindowsPath(PurePath): 该提供一套在Windows环境中基于非I&#x2F;O操作的文件路径接口。</p>
 </li>
-<li>
-<p><strong>Path(PurePath): 该类提供一套基于I/O操作的文件路径接口。</strong></p>
+<li><p><strong>Path(PurePath): 该类提供一套基于I&#x2F;O操作的文件路径接口。</strong></p>
 </li>
-<li>
-<p>PosixPath(Path, PurePosixPath): 该类提供一套在Unix环境中基于I/O操作的文件路径接口。</p>
+<li><p>PosixPath(Path, PurePosixPath): 该类提供一套在Unix环境中基于I&#x2F;O操作的文件路径接口。</p>
 </li>
-<li>
-<p>WindowsPath(Path, PureWindowsPath): 该类提供一套在windows环境中基于I/O操作的文件路径接口。</p>
+<li><p>WindowsPath(Path, PureWindowsPath): 该类提供一套在windows环境中基于I&#x2F;O操作的文件路径接口。</p>
 </li>
 </ul>
 <p><strong>通常，Path是在日常开发中使用频率最高的类，可以类比os.path。</strong></p>
-<h2 id="Path类的常用接口">Path类的常用接口</h2>
-<blockquote>
+<h2 id="Path类的常用接口"><a href="#Path类的常用接口" class="headerlink" title="Path类的常用接口"></a>Path类的常用接口</h2><blockquote>
 <p>备注：下列仅列出了日常开发中常用的接口，更全的接口清单请见官方文档</p>
 </blockquote>
-<h3 id="路径（查找）接口：">路径（查找）接口：</h3>
-<ul>
-<li>
-<p>Path.cwd()：</p>
+<h3 id="路径（查找）接口："><a href="#路径（查找）接口：" class="headerlink" title="路径（查找）接口："></a>路径（查找）接口：</h3><ul>
+<li><p>Path.cwd()： </p>
 <ul>
 <li>返回一个新的表示当前目录的路径对象（和 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.html#os.getcwd">os.getcwd()</a> 返回的相同）</li>
 </ul>
 </li>
-<li>
-<p>Path.home()：</p>
+<li><p>Path.home()：</p>
 <ul>
 <li>返回一个表示用户家目录的新路径对象（与带 ~ 构造的 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.path.html#os.path.expanduser">os.path.expanduser()</a> 所返回的相同）。 如果无法解析家目录，则会引发 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/exceptions.html#RuntimeError">RuntimeError</a></li>
 </ul>
 </li>
-<li>
-<p>Path.exists(*, follow_symlinks=True):</p>
+<li><p>Path.exists(*, follow_symlinks&#x3D;True):</p>
 <ul>
 <li>如果路径指向现有的文件或目录则返回 True</li>
 </ul>
 </li>
-<li>
-<p>Path.glob(pattern, *, case_sensitive=None):</p>
+<li><p>Path.glob(pattern, *, case_sensitive&#x3D;None):</p>
 <ul>
 <li>解析相对于此路径的通配符 <em>pattern</em>，产生所有匹配的文件，pattern 的形式与 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/fnmatch.html#module-fnmatch">fnmatch — Unix 文件名模式匹配</a> 的相同，还增加了 “**” 表示 “此目录以及所有子目录，递归”。 换句话说，它启用递归通配</li>
 <li>在一个较大的目录树中使用 “**” 模式可能会消耗非常多的时间。</li>
 </ul>
 </li>
-<li>
-<p>Path.rglob(pattern, *, case_sensitive=None):</p>
+<li><p>Path.rglob(pattern, *, case_sensitive&#x3D;None):</p>
 <ul>
-<li>递归地对给定的相对 <em>pattern</em> 执行 glob 通配。 这类似于当调用 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/pathlib.html#pathlib.Path.glob">Path.glob()</a> 时在 <em>pattern</em> 之前加上 “**/”，其中 <em>patterns</em> 与 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/fnmatch.html#module-fnmatch">fnmatch</a> 中的相同:</li>
+<li>递归地对给定的相对 <em>pattern</em> 执行 glob 通配。 这类似于当调用 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/pathlib.html#pathlib.Path.glob">Path.glob()</a> 时在 <em>pattern</em> 之前加上 “**&#x2F;“，其中 <em>patterns</em> 与 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/fnmatch.html#module-fnmatch">fnmatch</a> 中的相同:</li>
 </ul>
 </li>
-<li>
-<p>Path.iterdir():</p>
+<li><p>Path.iterdir():</p>
 <ul>
-<li>当路径指向一个目录时，产生该路径下的对象的路径， 子条目会以任意顺序生成，并且不包括特殊条目 ‘.’ 和 ‘…’。 如果迭代器创建之后有文件在目录中被移除或添加，是否要包括该文件所对应的路径对象并没有明确规定。</li>
+<li>当路径指向一个目录时，产生该路径下的对象的路径， 子条目会以任意顺序生成，并且不包括特殊条目 ‘.’ 和 ‘..’。 如果迭代器创建之后有文件在目录中被移除或添加，是否要包括该文件所对应的路径对象并没有明确规定。</li>
 </ul>
 </li>
-<li>
-<p>Path.walk(top_down=True, on_error=None, follow_symlinks=False)</p>
+<li><p>Path.walk(top_down&#x3D;True, on_error&#x3D;None, follow_symlinks&#x3D;False)</p>
 <ul>
-<li>通过对目录树自上而下或自下而上的遍历来生成其中的文件名。对于根位置为 <em>self</em> 的目录树中的每个目录（包括 <em>self</em> 但不包括 ‘.’ 和 ‘…’），该方法会产生一个 3 元组 (dirpath, dirnames, filenames)。
-<ul>
+<li>通过对目录树自上而下或自下而上的遍历来生成其中的文件名。对于根位置为 <em>self</em> 的目录树中的每个目录（包括 <em>self</em> 但不包括 ‘.’ 和 ‘..’），该方法会产生一个 3 元组 (dirpath, dirnames, filenames)。<ul>
 <li>dirpath_ 是指向当前正被遍历到的目录的 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/pathlib.html#pathlib.Path">Path</a>，</li>
-<li>dirnames_ 是由表示 <em>dirpath</em> 中子目录名称的字符串组成的列表 (不包括 ‘.’ 和 ‘…’)，</li>
-<li>filenames_ 是由表示 <em>dirpath</em> 中非目录文件名称的字符串组成的列表。 要获取 <em>dirpath</em> 中文件或目录的完整路径 (以 <em>self</em> 开头)，可使用 dirpath / name。 这些列表是否排序取决于具体的文件系统。</li>
+<li>dirnames_ 是由表示 <em>dirpath</em> 中子目录名称的字符串组成的列表 (不包括 ‘.’ 和 ‘..’)，</li>
+<li>filenames_ 是由表示 <em>dirpath</em> 中非目录文件名称的字符串组成的列表。 要获取 <em>dirpath</em> 中文件或目录的完整路径 (以 <em>self</em> 开头)，可使用 dirpath &#x2F; name。 这些列表是否排序取决于具体的文件系统。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>
-<p>Path.absolute():</p>
+<li><p>Path.absolute():</p>
 <ul>
 <li>改为绝对路径</li>
 </ul>
 </li>
-<li>
-<p>Path.resolve(strict=False):</p>
+<li><p>Path.resolve(strict&#x3D;False):</p>
 <ul>
 <li>将路径绝对化</li>
 </ul>
 </li>
 </ul>
-<h3 id="路径（判断）接口">路径（判断）接口</h3>
-<ul>
-<li>
-<p>Path.is_dir():</p>
+<h3 id="路径（判断）接口"><a href="#路径（判断）接口" class="headerlink" title="路径（判断）接口"></a>路径（判断）接口</h3><ul>
+<li><p>Path.is_dir():</p>
 <ul>
 <li>如果路径指向一个目录（或者一个指向目录的符号链接）则返回 True，如果指向其他类型的文件则返回 False。</li>
 </ul>
 </li>
-<li>
-<p>Path.is_file():</p>
+<li><p>Path.is_file():</p>
 <ul>
 <li>如果路径指向一个正常的文件（或者一个指向正常文件的符号链接）则返回 True，如果指向其他类型的文件则返回 False。</li>
 </ul>
 </li>
-<li>
-<p>Path.<strong>samefile</strong>(<em>other_path</em>):</p>
+<li><p>Path.<strong>samefile</strong>(<em>other_path</em>):</p>
 <ul>
 <li>返回此目录是否指向与可能是字符串或者另一个路径对象的 <em>other_path</em> 相同的文件。语义类似于 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.path.html#os.path.samefile">os.path.samefile()</a> 与 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.path.html#os.path.samestat">os.path.samestat()</a>。</li>
 </ul>
 </li>
 </ul>
-<h3 id="路径（读写）接口">路径（读写）接口</h3>
-<ul>
-<li>
-<p>Path.mkdir(mode=0o777, parents=False, exist_ok=False):</p>
+<h3 id="路径（读写）接口"><a href="#路径（读写）接口" class="headerlink" title="路径（读写）接口"></a>路径（读写）接口</h3><ul>
+<li><p>Path.mkdir(mode&#x3D;0o777, parents&#x3D;False, exist_ok&#x3D;False):</p>
 <ul>
 <li>新建给定路径的目录。如果给出了 <em>mode</em> ，它将与当前进程的 umask 值合并来决定文件模式和访问标志。如果路径已经存在，则抛出 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/exceptions.html#FileExistsError">FileExistsError</a>。</li>
 <li><em>parents</em> -&gt;True: 任何找不到的父目录都会伴随着此路径被创建；它们会以默认权限被创建，而不考虑 <em>mode</em> 设置</li>
@@ -365,84 +337,70 @@
 <li><em>exist_ok</em> 为 true， 则 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/exceptions.html#FileExistsError">FileExistsError</a> 异常将被忽略（和 POSIX mkdir -p 命令行为相同），但是只有在最后一个路径组件不是现存的非目录文件时才生效。</li>
 </ul>
 </li>
-<li>
-<p>Path.rmdir():</p>
+<li><p>Path.rmdir():</p>
 <ul>
 <li>移除此目录。此目录必须为空的。</li>
 </ul>
 </li>
-<li>
-<p>Path.touch(mode=0o666, exist_ok=True)</p>
+<li><p>Path.touch(mode&#x3D;0o666, exist_ok&#x3D;True)</p>
 <ul>
 <li>将给定的路径创建为文件。如果给出了 <em>mode</em> 它将与当前进程的 umask 值合并以确定文件的模式和访问标志。如果文件已经存在，则当 <em>exist_ok</em> 为 true 则函数仍会成功（并且将它的修改事件更新为当前事件），否则抛出 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/exceptions.html#FileExistsError">FileExistsError</a>。</li>
 </ul>
 </li>
-<li>
-<p>Path.rename(target):</p>
+<li><p>Path.rename(target):</p>
 <ul>
 <li>将文件名目录重命名为给定的 <em>target</em>，并返回一个新的指向 <em>target</em> 的 Path 实例。 在 Unix 上，如果 <em>target</em> 存在且为一个文件，如果用户有足够权限则它将被静默地替换。 在 Windows 上，如果 <em>target</em> 存在，则将会引发 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/exceptions.html#FileExistsError">FileExistsError</a>。 <em>target</em> 可以是一个字符串或者另一个路径对象:</li>
 </ul>
 </li>
-<li>
-<p>Path.open(mode=‘r’, buffering=- 1, encoding=None, errors=None, newline=None):</p>
+<li><p>Path.open(mode&#x3D;’r’, buffering&#x3D;- 1, encoding&#x3D;None, errors&#x3D;None, newline&#x3D;None):</p>
 <ul>
 <li>打开路径指向的文件，就像内置的 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/functions.html#open">open()</a> 函数所做的一样</li>
 </ul>
 </li>
-<li>
-<p>Path.read_bytes():</p>
+<li><p>Path.read_bytes():</p>
 <ul>
 <li>以字节对象的形式返回路径指向的文件的二进制内容</li>
 </ul>
 </li>
-<li>
-<p>Path.read_text(encoding=None, errors=None):</p>
+<li><p>Path.read_text(encoding&#x3D;None, errors&#x3D;None):</p>
 <ul>
 <li>以字符串形式返回路径指向的文件的解码后文本内容。</li>
 </ul>
 </li>
-<li>
-<p>Path.write_bytes(data):</p>
+<li><p>Path.write_bytes(data):</p>
 <ul>
 <li>将文件以二进制模式打开，写入 <em>data</em> 并关闭,一个同名的现存文件将被覆盖。</li>
 </ul>
 </li>
-<li>
-<p>Path.write_text(data, encoding=None, errors=None, newline=None):</p>
+<li><p>Path.write_text(data, encoding&#x3D;None, errors&#x3D;None, newline&#x3D;None):</p>
 <ul>
 <li>将文件以文本模式打开，写入 <em>data</em> 并关闭,同名的现有文件会被覆盖。 可选形参的含义与 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/functions.html#open">open()</a> 的相同。</li>
 </ul>
 </li>
-<li>
-<p>Path.stat(*, follow_symlinks=True):</p>
+<li><p>Path.stat(*, follow_symlinks&#x3D;True):</p>
 <ul>
 <li>返回一个 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.html#os.stat_result">os.stat_result</a> 对象，其中包含有关此路径的信息，例如 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.html#os.stat">os.stat()</a>。 结果会在每次调用此方法时重新搜索。</li>
 </ul>
 </li>
 </ul>
-<h3 id="路径（权限）接口">路径（权限）接口</h3>
-<ul>
-<li>
-<p>Path.chmod(mode, *, follow_symlinks=True)</p>
+<h3 id="路径（权限）接口"><a href="#路径（权限）接口" class="headerlink" title="路径（权限）接口"></a>路径（权限）接口</h3><ul>
+<li><p>Path.chmod(mode, *, follow_symlinks&#x3D;True)</p>
 <ul>
 <li>改变文件模式和权限，和 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.html#os.chmod">os.chmod()</a> 一样。</li>
 </ul>
 </li>
-<li>
-<p>Path.owner():</p>
+<li><p>Path.owner():</p>
 <ul>
 <li>返回拥有此文件的用户名。如果文件的 UID 无法在系统数据库中找到，则抛出 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/exceptions.html#KeyError">KeyError</a>。</li>
 </ul>
 </li>
-<li>
-<p>Path.group():</p>
+<li><p>Path.group():</p>
 <ul>
 <li>返回拥有此文件的用户组。如果文件的 GID 无法在系统数据库中找到，将抛出 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/exceptions.html#KeyError">KeyError</a> 。</li>
 </ul>
 </li>
 </ul>
-<h2 id="pathlib和os接口对照">pathlib和os接口对照</h2>
-<table>
+<h2 id="pathlib和os接口对照"><a href="#pathlib和os接口对照" class="headerlink" title="pathlib和os接口对照"></a>pathlib和os接口对照</h2><table>
 <thead>
 <tr>
 <th><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/pathlib.html#module-pathlib">pathlib</a></th>
@@ -450,8 +408,7 @@
 <th><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.html#module-os">os</a> 和 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.path.html#module-os.path">os.path</a></th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/pathlib.html#pathlib.Path.absolute">Path.absolute()</a> <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/pathlib.html#id5">1</a></td>
 <td>改为绝对路径，返回新的路径对象</td>
 <td><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.path.html#os.path.abspath">os.path.abspath()</a></td>
@@ -591,25 +548,27 @@
 <td>获取文件名称，获取文件后缀</td>
 <td><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.path.html#os.path.splitext">os.path.splitext()</a></td>
 </tr>
-</tbody>
-</table>
-<h2 id="实践应用">实践应用</h2>
-<blockquote>
+</tbody></table>
+<h2 id="实践应用"><a href="#实践应用" class="headerlink" title="实践应用"></a>实践应用</h2><blockquote>
 <p>前置说明：方便起见，导包路径不在下列案例中重复添加</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br></pre></td></tr></table></figure>
-<h3 id="获取文件的父级目录">获取文件的父级目录</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pathlib写法</span></span><br><span class="line">pathlib.Path.cwd().parent</span><br><span class="line"></span><br><span class="line"><span class="comment"># os写法</span></span><br><span class="line">os.path.dirname(os.path.dirname(os.getcwd()))</span><br></pre></td></tr></table></figure>
-<h3 id="路径拼接">路径拼接</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pathlib写法</span></span><br><span class="line">paths = (<span class="string">&#x27;ssw&#x27;</span>, <span class="string">&#x27;test&#x27;</span>)</span><br><span class="line">pathlib.Path.cwd().parent.joinpath(*paths) </span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">pathlib.Path.cwd().parent / <span class="string">&#x27;ssw&#x27;</span> / <span class="string">&#x27;test&#x27;</span></span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">pathlib.Path.cwd().parent / <span class="string">&#x27;ssw/test&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># os写法</span></span><br><span class="line">os.path.join(os.path.dirname(os.getcwd()), <span class="string">&#x27;ssw&#x27;</span>, <span class="string">&#x27;test&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="判断文件类别">判断文件类别</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">5</span>]: path_tmp = Path(<span class="string">&#x27;/data/sswang/projects/test/opserver/manage.py&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: Path(path_tmp).parent</span><br><span class="line">Out[<span class="number">6</span>]: PosixPath(<span class="string">&#x27;/data/sswang/projects/test/opserver&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: Path(path_tmp).parents</span><br><span class="line">Out[<span class="number">7</span>]: &lt;PosixPath.parents&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: <span class="built_in">list</span>(Path(path_tmp).parents)</span><br><span class="line">Out[<span class="number">10</span>]: </span><br><span class="line">[PosixPath(<span class="string">&#x27;/data/sswang/projects/test/opserver&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/data/sswang/projects/test&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/data/sswang/projects&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/data/sswang&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/data&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/&#x27;</span>)]</span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]: Path(path_tmp).name</span><br><span class="line">Out[<span class="number">11</span>]: <span class="string">&#x27;manage.py&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">12</span>]: Path(path_tmp).stem</span><br><span class="line">Out[<span class="number">12</span>]: <span class="string">&#x27;manage&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">13</span>]: Path(path_tmp).suffix</span><br><span class="line">Out[<span class="number">13</span>]: <span class="string">&#x27;.py&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: Path(path_tmp).suffixes</span><br><span class="line">Out[<span class="number">14</span>]: [<span class="string">&#x27;.py&#x27;</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="打开文件">打开文件</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">39</span>]: <span class="keyword">with</span> p.<span class="built_in">open</span>() <span class="keyword">as</span> f:</span><br><span class="line">    ...:     f.readline()</span><br><span class="line">    ...: </span><br><span class="line"></span><br><span class="line">In [<span class="number">40</span>]: p.read_text()</span><br><span class="line">Out[<span class="number">40</span>]: <span class="string">&#x27;#!/usr/bin/env python\n&quot;&quot;&quot;Django\&#x27;s command-line utility for administrative tasks.&quot;&quot;&quot;\nimport os\nimport sys\n\n\ndef main():\n    &quot;&quot;&quot;Run administrative tasks.&quot;&quot;&quot;\n    os.environ.setdefault(\&#x27;DJANGO_SETTINGS_MODULE\&#x27;, \&#x27;main.settings\&#x27;)\n    try:\n        from django.core.management import execute_from_command_line\n    except ImportError as exc:\n        raise ImportError(\n            &quot;Couldn\&#x27;t import Django. Are you sure it\&#x27;s installed and &quot;\n            &quot;available on your PYTHONPATH environment variable? Did you &quot;\n            &quot;forget to activate a virtual environment?&quot;\n        ) from exc\n    execute_from_command_line(sys.argv)\n\n\nif __name__ == \&#x27;__main__\&#x27;:\n    main()\n&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="获取文件信息">获取文件信息</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> pathlib <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: p1= Path.cwd()</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: p1</span><br><span class="line">Out[<span class="number">3</span>]: PosixPath(<span class="string">&#x27;/data/sswang/projects/test/opserver&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: p2 = Path(<span class="string">&#x27;/data/sswang/projects/test/opserver/manage.py&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: p2.stat()</span><br><span class="line">Out[<span class="number">7</span>]: os.stat_result(st_mode=<span class="number">33188</span>, st_ino=<span class="number">219153651</span>, st_dev=<span class="number">2081</span>, st_nlink=<span class="number">1</span>, st_uid=<span class="number">0</span>, st_gid=<span class="number">0</span>, st_size=<span class="number">682</span>, st_atime=<span class="number">1619528866</span>, st_mtime=<span class="number">1619528322</span>, st_ctime=<span class="number">1619528322</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: p2.stat().st_size</span><br><span class="line">Out[<span class="number">9</span>]: <span class="number">682</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: p2.stat().st_atime</span><br><span class="line">Out[<span class="number">10</span>]: <span class="number">1619528866.8391194</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]: p2.stat().st_mode</span><br><span class="line">Out[<span class="number">11</span>]: <span class="number">33188</span></span><br></pre></td></tr></table></figure>
-<h3 id="查找文件">查找文件</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">12</span>]: p3= Path(<span class="string">&#x27;.&#x27;</span>).glob(<span class="string">&quot;*.py&quot;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">13</span>]: p</span><br><span class="line">Out[<span class="number">13</span>]: &lt;generator <span class="built_in">object</span> Path.glob at <span class="number">0x7f7baf232810</span>&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: p= Path(<span class="string">&#x27;.&#x27;</span>).glob(<span class="string">&quot;*.py&quot;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: <span class="built_in">list</span>(p)</span><br><span class="line">Out[<span class="number">16</span>]: </span><br><span class="line">[PosixPath(<span class="string">&#x27;config_local.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;config_public.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;config.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;manage.py&#x27;</span>)]</span><br><span class="line"></span><br><span class="line">In [<span class="number">17</span>]: p1= Path(<span class="string">&#x27;.&#x27;</span>).glob(<span class="string">&quot;**/*.py&quot;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">18</span>]: <span class="built_in">list</span>(p1)</span><br><span class="line">Out[<span class="number">18</span>]: </span><br><span class="line">[PosixPath(<span class="string">&#x27;config_local.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;config_public.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;config.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;manage.py&#x27;</span>),  </span><br><span class="line"> PosixPath(<span class="string">&#x27;opserver/apps.py&#x27;</span>),</span><br><span class="line"> ......</span><br><span class="line">]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="获取文件的父级目录"><a href="#获取文件的父级目录" class="headerlink" title="获取文件的父级目录"></a>获取文件的父级目录</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pathlib写法</span></span><br><span class="line">pathlib.Path.cwd().parent</span><br><span class="line"></span><br><span class="line"><span class="comment"># os写法</span></span><br><span class="line">os.path.dirname(os.path.dirname(os.getcwd()))</span><br></pre></td></tr></table></figure>
+<h3 id="路径拼接"><a href="#路径拼接" class="headerlink" title="路径拼接"></a>路径拼接</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pathlib写法</span></span><br><span class="line">paths = (<span class="string">&#x27;ssw&#x27;</span>, <span class="string">&#x27;test&#x27;</span>)</span><br><span class="line">pathlib.Path.cwd().parent.joinpath(*paths) </span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">pathlib.Path.cwd().parent / <span class="string">&#x27;ssw&#x27;</span> / <span class="string">&#x27;test&#x27;</span></span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">pathlib.Path.cwd().parent / <span class="string">&#x27;ssw/test&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># os写法</span></span><br><span class="line">os.path.join(os.path.dirname(os.getcwd()), <span class="string">&#x27;ssw&#x27;</span>, <span class="string">&#x27;test&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="判断文件类别"><a href="#判断文件类别" class="headerlink" title="判断文件类别"></a>判断文件类别</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">5</span>]: path_tmp = Path(<span class="string">&#x27;/data/sswang/projects/test/opserver/manage.py&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: Path(path_tmp).parent</span><br><span class="line">Out[<span class="number">6</span>]: PosixPath(<span class="string">&#x27;/data/sswang/projects/test/opserver&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: Path(path_tmp).parents</span><br><span class="line">Out[<span class="number">7</span>]: &lt;PosixPath.parents&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: <span class="built_in">list</span>(Path(path_tmp).parents)</span><br><span class="line">Out[<span class="number">10</span>]: </span><br><span class="line">[PosixPath(<span class="string">&#x27;/data/sswang/projects/test/opserver&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/data/sswang/projects/test&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/data/sswang/projects&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/data/sswang&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/data&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;/&#x27;</span>)]</span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]: Path(path_tmp).name</span><br><span class="line">Out[<span class="number">11</span>]: <span class="string">&#x27;manage.py&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">12</span>]: Path(path_tmp).stem</span><br><span class="line">Out[<span class="number">12</span>]: <span class="string">&#x27;manage&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">13</span>]: Path(path_tmp).suffix</span><br><span class="line">Out[<span class="number">13</span>]: <span class="string">&#x27;.py&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: Path(path_tmp).suffixes</span><br><span class="line">Out[<span class="number">14</span>]: [<span class="string">&#x27;.py&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">39</span>]: <span class="keyword">with</span> p.<span class="built_in">open</span>() <span class="keyword">as</span> f:</span><br><span class="line">    ...:     f.readline()</span><br><span class="line">    ...: </span><br><span class="line"></span><br><span class="line">In [<span class="number">40</span>]: p.read_text()</span><br><span class="line">Out[<span class="number">40</span>]: <span class="string">&#x27;#!/usr/bin/env python\n&quot;&quot;&quot;Django\&#x27;s command-line utility for administrative tasks.&quot;&quot;&quot;\nimport os\nimport sys\n\n\ndef main():\n    &quot;&quot;&quot;Run administrative tasks.&quot;&quot;&quot;\n    os.environ.setdefault(\&#x27;DJANGO_SETTINGS_MODULE\&#x27;, \&#x27;main.settings\&#x27;)\n    try:\n        from django.core.management import execute_from_command_line\n    except ImportError as exc:\n        raise ImportError(\n            &quot;Couldn\&#x27;t import Django. Are you sure it\&#x27;s installed and &quot;\n            &quot;available on your PYTHONPATH environment variable? Did you &quot;\n            &quot;forget to activate a virtual environment?&quot;\n        ) from exc\n    execute_from_command_line(sys.argv)\n\n\nif __name__ == \&#x27;__main__\&#x27;:\n    main()\n&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="获取文件信息"><a href="#获取文件信息" class="headerlink" title="获取文件信息"></a>获取文件信息</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> pathlib <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: p1= Path.cwd()</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: p1</span><br><span class="line">Out[<span class="number">3</span>]: PosixPath(<span class="string">&#x27;/data/sswang/projects/test/opserver&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: p2 = Path(<span class="string">&#x27;/data/sswang/projects/test/opserver/manage.py&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: p2.stat()</span><br><span class="line">Out[<span class="number">7</span>]: os.stat_result(st_mode=<span class="number">33188</span>, st_ino=<span class="number">219153651</span>, st_dev=<span class="number">2081</span>, st_nlink=<span class="number">1</span>, st_uid=<span class="number">0</span>, st_gid=<span class="number">0</span>, st_size=<span class="number">682</span>, st_atime=<span class="number">1619528866</span>, st_mtime=<span class="number">1619528322</span>, st_ctime=<span class="number">1619528322</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: p2.stat().st_size</span><br><span class="line">Out[<span class="number">9</span>]: <span class="number">682</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: p2.stat().st_atime</span><br><span class="line">Out[<span class="number">10</span>]: <span class="number">1619528866.8391194</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]: p2.stat().st_mode</span><br><span class="line">Out[<span class="number">11</span>]: <span class="number">33188</span></span><br></pre></td></tr></table></figure>
+<h3 id="查找文件"><a href="#查找文件" class="headerlink" title="查找文件"></a>查找文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">12</span>]: p3= Path(<span class="string">&#x27;.&#x27;</span>).glob(<span class="string">&quot;*.py&quot;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">13</span>]: p</span><br><span class="line">Out[<span class="number">13</span>]: &lt;generator <span class="built_in">object</span> Path.glob at <span class="number">0x7f7baf232810</span>&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: p= Path(<span class="string">&#x27;.&#x27;</span>).glob(<span class="string">&quot;*.py&quot;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: <span class="built_in">list</span>(p)</span><br><span class="line">Out[<span class="number">16</span>]: </span><br><span class="line">[PosixPath(<span class="string">&#x27;config_local.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;config_public.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;config.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;manage.py&#x27;</span>)]</span><br><span class="line"></span><br><span class="line">In [<span class="number">17</span>]: p1= Path(<span class="string">&#x27;.&#x27;</span>).glob(<span class="string">&quot;**/*.py&quot;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">18</span>]: <span class="built_in">list</span>(p1)</span><br><span class="line">Out[<span class="number">18</span>]: </span><br><span class="line">[PosixPath(<span class="string">&#x27;config_local.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;config_public.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;config.py&#x27;</span>),</span><br><span class="line"> PosixPath(<span class="string">&#x27;manage.py&#x27;</span>),  </span><br><span class="line"> PosixPath(<span class="string">&#x27;opserver/apps.py&#x27;</span>),</span><br><span class="line"> ......</span><br><span class="line">]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
 </div>
     </div>
 

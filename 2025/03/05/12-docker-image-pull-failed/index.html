@@ -189,13 +189,13 @@
             <div class="post-head-meta-center">
         
                 
-                    <span>最近更新：2025-03-06</span> 
+                    <span>最近更新：2025-03-08</span> 
                 
                 
                     
                         &nbsp; | &nbsp;
                     
-                     <span>字数总计：971</span>
+                     <span>字数总计：970</span>
                 
                 
                     
@@ -221,12 +221,10 @@
             
         
         <div class=".article-gallery"><p>自2024年5月底6月初，由于某些原因，突然间在国内就无法正常访问和拉取Docker镜像源，鉴于笔者目前从事云原生ModelOps工作，几乎每天都要和K8S、Docker打交道，镜像无法拉取一直让人很苦恼和无奈，所以在日常工作和探索中，总结汇总了如下可以拉去的官方镜像源的解决方案，由于之前都是零零散散的记录在不同的笔记中，一直想找个时间系统的整理汇总一下，拖了很久，终于在这个周末挤出了一些时间进行了整理汇总，详见下文四个方案，在此，这些方案可能会随着时间的推移无法使用，若是如此请见谅!</p>
-<h2 id="方案一：在线下载">方案一：在线下载</h2>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://docker.aityp.com/">渡渡鸟的容器镜像小站</a>：本站作者宣传100%同步官方镜像，目前支持同步镜像源：<a target="_blank" rel="noopener" href="http://gcr.io">gcr.io</a> <a target="_blank" rel="noopener" href="http://ghcr.io">ghcr.io</a> <a target="_blank" rel="noopener" href="http://quay.io">quay.io</a> <a target="_blank" rel="noopener" href="http://k8s.gcr.io">k8s.gcr.io</a> <a target="_blank" rel="noopener" href="http://docker.io">docker.io</a> <a target="_blank" rel="noopener" href="http://registry.k8s.io">registry.k8s.io</a> <a target="_blank" rel="noopener" href="http://docker.elastic.co">docker.elastic.co</a> <a target="_blank" rel="noopener" href="http://skywalking.docker.scarf.sh">skywalking.docker.scarf.sh</a> 单个镜像大小限制2G，截止目前，全站目前镜像索引数量7516，同步5213GB;</li>
+<h2 id="方案一：在线下载"><a href="#方案一：在线下载" class="headerlink" title="方案一：在线下载"></a>方案一：在线下载</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docker.aityp.com/">渡渡鸟的容器镜像小站</a>：本站作者宣传100%同步官方镜像，目前支持同步镜像源：gcr.io ghcr.io quay.io k8s.gcr.io docker.io registry.k8s.io docker.elastic.co skywalking.docker.scarf.sh 单个镜像大小限制2G，截止目前，全站目前镜像索引数量7516，同步5213GB;</li>
 </ul>
-<h2 id="方案二：在拉取镜像加上下列前缀">方案二：在拉取镜像加上下列前缀</h2>
-<ul>
+<h2 id="方案二：在拉取镜像加上下列前缀"><a href="#方案二：在拉取镜像加上下列前缀" class="headerlink" title="方案二：在拉取镜像加上下列前缀"></a>方案二：在拉取镜像加上下列前缀</h2><ul>
 <li>推荐项目1：<a target="_blank" rel="noopener" href="https://github.com/DaoCloud/public-image-mirror">https://github.com/DaoCloud/public-image-mirror</a></li>
 <li>推荐项目2：<a target="_blank" rel="noopener" href="https://github.com/kubesre/docker-registry-mirrors">https://github.com/kubesre/docker-registry-mirrors</a></li>
 </ul>
@@ -237,80 +235,79 @@
 <th><strong>替换为</strong></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><a target="_blank" rel="noopener" href="http://cr.l5d.io">cr.l5d.io</a></td>
+<tbody><tr>
+<td>cr.l5d.io</td>
 <td>l5d.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://docker.elastic.co">docker.elastic.co</a></td>
+<td>docker.elastic.co</td>
 <td>elastic.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://docker.io">docker.io</a></td>
+<td>docker.io</td>
 <td>dhub.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://gcr.io">gcr.io</a></td>
+<td>gcr.io</td>
 <td>gcr.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://ghcr.io">ghcr.io</a></td>
+<td>ghcr.io</td>
 <td>ghcr.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://k8s.gcr.io">k8s.gcr.io</a></td>
+<td>k8s.gcr.io</td>
 <td>k8s-gcr.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://registry.k8s.io">registry.k8s.io</a></td>
+<td>registry.k8s.io</td>
 <td>k8s.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://mcr.microsoft.com">mcr.microsoft.com</a></td>
+<td>mcr.microsoft.com</td>
 <td>mcr.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://nvcr.io">nvcr.io</a></td>
+<td>nvcr.io</td>
 <td>nvcr.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://quay.io">quay.io</a></td>
+<td>quay.io</td>
 <td>quay.kubesre.xyz</td>
 </tr>
 <tr>
-<td><a target="_blank" rel="noopener" href="http://registry.jujucharms.com">registry.jujucharms.com</a></td>
+<td>registry.jujucharms.com</td>
 <td>jujucharms.kubesre.xy</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line">docker pull k8s.kubesre.xyz/ingress-nginx/opentelemetry-1.25.3-v20240813-b93310d</span><br></pre></td></tr></table></figure>
 <p><a href="/images/pics/12-image_pull_error.jpg" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/images/pics/12-image_pull_error.jpg" alt="img"></a></p>
-<h2 id="方案三：通过配置Docker加速源">方案三：通过配置Docker加速源</h2>
-<p>在完成安装Docker后，创建或修改<code>/etc/docker/daemon.json</code></p>
+<h2 id="方案三：通过配置Docker加速源"><a href="#方案三：通过配置Docker加速源" class="headerlink" title="方案三：通过配置Docker加速源"></a>方案三：通过配置Docker加速源</h2><p>在完成安装Docker后，创建或修改<code>/etc/docker/daemon.json</code> </p>
 <ul>
-<li>添加加速源
-<ul>
+<li>添加加速源<ul>
 <li>关于加速源可参见文末 【拓展：最新稳定加速元列表】</li>
 </ul>
 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/docker/daemon.json &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    &quot;registry-mirrors&quot;: [</span></span><br><span class="line"><span class="string">        &quot;https://docker.1ms.run&quot;,</span></span><br><span class="line"><span class="string">        &quot;https://hub.rat.dev&quot;,</span></span><br><span class="line"><span class="string">        &quot;https://docker.1panel.live&quot;</span></span><br><span class="line"><span class="string">    ]</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>重启Docker服务</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload &amp;&amp; <span class="built_in">sudo</span> systemctl restart docker</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用<code>docker info</code> 检查是否配置生效，如何输出下列内容则说明配置成功</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Registry Mirrors:</span><br><span class="line"> [...]</span><br><span class="line"> https://docker.1panel.live</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>如果当前的docker服务不方便重启，可以使用如下方式进行镜像拉取</p>
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker pull &lt;加速源&gt;/library/mysql:5.7</span></span><br><span class="line">docker pull docker.1panel.live/library/mysql:5.7</span><br></pre></td></tr></table></figure>
-<h2 id="方案四：-通过开源项目的-issue">方案四： 通过开源项目的 issue</h2>
-<blockquote>
-<p>此方案适用于可以访问Docker镜像仓库，但无法访问其他镜像仓库（<a target="_blank" rel="noopener" href="http://registry.k8s.io">registry.k8s.io</a>、<a target="_blank" rel="noopener" href="http://gcr.io">gcr.io</a> 等）。</p>
+
+<h2 id="方案四：-通过开源项目的-issue"><a href="#方案四：-通过开源项目的-issue" class="headerlink" title="方案四： 通过开源项目的 issue"></a>方案四： 通过开源项目的 issue</h2><blockquote>
+<p>此方案适用于可以访问Docker镜像仓库，但无法访问其他镜像仓库（registry.k8s.io、gcr.io 等）。</p>
 </blockquote>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/myysophia/hub-mirror">https://github.com/myysophia/hub-mirror</a></li>
@@ -320,12 +317,11 @@
 <li>在该项目中创建一个新issue，会出现一个模板，将模板内容修改为需要拉去的镜像，提交issue，就会触发github的CI，就会进行拉去拉取镜像，并推送到公开Docker仓库。</li>
 </ol>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;hub-mirror&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;你需要转换的镜像&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;你需要转换的镜像&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;每次最多 11 个&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;改这个 json 就可以了&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;别乱改内容&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;标题随意，保持阵型是最好的&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;hub-mirror 标签是必选的&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;......&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">####################PS改成下面这个################</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;hub-mirror&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">  <span class="string">&quot;registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.4.3&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">####################PS改成下面这个################</span><br></pre></td></tr></table></figure>
+
 <ol start="2">
-<li>然后从docker镜像仓库拉去所需要的镜像<br>
-<a href="/images/pics/12-image_issue_pull.png" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/images/pics/12-image_issue_pull.png" alt="img"></a></li>
+<li>然后从docker镜像仓库拉去所需要的镜像<br><a href="/images/pics/12-image_issue_pull.png" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/images/pics/12-image_issue_pull.png" alt="img"></a></li>
 </ol>
-<h2 id="拓展：最新稳定加速源列表">拓展：最新稳定加速源列表</h2>
-<table>
+<h2 id="拓展：最新稳定加速源列表"><a href="#拓展：最新稳定加速源列表" class="headerlink" title="拓展：最新稳定加速源列表"></a>拓展：最新稳定加速源列表</h2><table>
 <thead>
 <tr>
 <th>提供者</th>
@@ -334,8 +330,7 @@
 <th>加速类型</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td><a target="_blank" rel="noopener" href="https://hub.rat.dev/">耗子面板</a></td>
 <td><code>https://hub.rat.dev</code></td>
 <td>无限制</td>
@@ -375,7 +370,7 @@
 <td><a target="_blank" rel="noopener" href="https://doc.nju.edu.cn/">南京大学</a></td>
 <td><code>https://ghcr.nju.edu.cn</code></td>
 <td>暂无限制</td>
-<td><a target="_blank" rel="noopener" href="http://ghcr.io">ghcr.io</a></td>
+<td>ghcr.io</td>
 </tr>
 <tr>
 <td><a target="_blank" rel="noopener" href="https://cloudlayer.icu/">Docker Layer ICU</a></td>
@@ -383,8 +378,7 @@
 <td>暂无限制</td>
 <td>Docker Hub</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 </div>
     </div>
 
