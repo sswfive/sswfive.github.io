@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="Python常用库汇总[awesome]" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/head.png">
+    <title>PyShen</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">PyShen</a> 
+            <span class="description"></span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/tags/">标签</a></li>
+            
+        
+            
+                <li><a href="/categories/">分类</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    Python常用库汇总[awesome]
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-03-03</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：839</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：3分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Web%E5%BC%80%E5%8F%91%E5%BA%93"><span class="post-toc-text">Web开发库</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Python-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%BA%93"><span class="post-toc-text">Python 机器学习库</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Python-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%BA%93"><span class="post-toc-text">Python 数据处理库</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ORM-%E5%BA%93"><span class="post-toc-text">ORM 库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8C%85%E7%AE%A1%E7%90%86%E5%BA%93"><span class="post-toc-text">环境包管理库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BB%BB%E5%8A%A1%E5%BA%93"><span class="post-toc-text">任务库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%BA%93"><span class="post-toc-text">性能分析库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BB%A3%E7%A0%81%E7%BC%96%E8%AF%91%E5%8A%A0%E5%AF%86%E5%BA%93"><span class="post-toc-text">代码编译加密库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%B5%8B%E8%AF%95%E5%BA%93"><span class="post-toc-text">测试库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E6%A1%86%E6%9E%B6"><span class="post-toc-text">依赖注入框架</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%87%8D%E8%AF%95%E5%BA%93%EF%BC%9A"><span class="post-toc-text">重试库：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E5%BA%93"><span class="post-toc-text">进程管理库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%93%8D%E4%BD%9C%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E5%BA%93"><span class="post-toc-text">操作日期时间库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%93%8D%E4%BD%9CJson%E6%96%87%E4%BB%B6"><span class="post-toc-text">操作Json文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%93%8D%E4%BD%9CYAML%E6%96%87%E4%BB%B6"><span class="post-toc-text">操作YAML文件</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9C%AA%E5%88%86%E7%B1%BB"><span class="post-toc-text">未分类</span></a></li></ol>
+            
+        
+        <div class=".article-gallery"><h2 id="Web开发库"><a href="#Web开发库" class="headerlink" title="Web开发库"></a>Web开发库</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/django/django">Django</a>: 一款全面且重量（大而全）的Web框架，当前star数： 82.6k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tiangolo/fastapi">FastAPI</a>: 一款高性能、异步的轻量级Web框架，当前star数：81.6k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pallets/flask">Flask</a>: 一款轻量级用于构建Web应用程序的Python微框架， 当前star数：69k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/streamlit/streamlit">streamlit</a>: 一款快速搭建数据共享与可视化的Web应用框架，当前star数：29.7k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/encode/django-rest-framework">django-rest-framework</a>: 一款基于Django，用于快速开发Web API程序的扩展框架，当前star数：27k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/gradio-app/gradio">gradio</a>:  一款用于快速构建AI算法可视化部署的框架，当前star数：25.7k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tornadoweb/tornado">Tornado</a>: 一款异步的网络库，可用于快速开发Web应用的框架，当前star数：21.4k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/sanic-org/sanic">sanic</a>: 一款快速构建、快速开发的异步Web框架，当前star数：17.6k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/falconry/falcon">Falcon</a>：面向python开发人员的简单Web数据平面API和微服务框架，当前star数： 9.3k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/zauberzeug/nicegui">nicegui</a>: 一款使用python开发的Web用户界面，当前star数： 6.4k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nameko/nameko">nameko</a>:一款用于构建微服务的Python框架，当前star数：4.6k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cherrypy/cherrypy">cherrypy</a>: 一个轻量级、Pythonic、面向对象的HTTP 框架，当前star数：1.8k</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/miguelgrinberg/microdot">Microdot</a>: 适用于Python和Microdot的超小型Web框架；当前star数：1.2k</li>
+</ul>
+<h2 id="Python-机器学习库"><a href="#Python-机器学习库" class="headerlink" title="Python 机器学习库"></a>Python 机器学习库</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/sb-ai-lab/LightAutoML">lightautoml</a>：一款全自动机器学习框架， 当前 star 数：720</li>
+</ul>
+<h2 id="Python-数据处理库"><a href="#Python-数据处理库" class="headerlink" title="Python 数据处理库"></a>Python 数据处理库</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/alecthomas/voluptuous">voluptuous</a>: 一个 Python 数据验证库,当前 star 数：1.8k</li>
+</ul>
+<h3 id="ORM-库"><a href="#ORM-库" class="headerlink" title="ORM 库"></a>ORM 库</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/sqlalchemy/sqlalchemy">sqlalchemy</a>: Python 数据库工具包</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/encode/databases">databases</a>: Python的异步数据库支持</li>
+<li><a target="_blank" rel="noopener" href="https://pypi.org/project/django-orm/">django-orm</a>:</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/coleifer/peewee">peewee</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tortoise/tortoise-orm">tortoise-orm</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/sqlalchemy/alembic">alembic</a>: 数据库迁移工具</li>
+</ul>
+<h3 id="环境包管理库"><a href="#环境包管理库" class="headerlink" title="环境包管理库"></a>环境包管理库</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/conda/conda">conda</a>: 包管理工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/python-poetry/poetry">poetry</a>: 依赖管理工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pdm-project/pdm">pdm</a>: 依赖管理工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pipxproject/pipx">pipx</a>: 管理Python包的工具,在隔离环境中安装和运行 Python 应用程序</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pypa/pipenv">pipenv</a>: 管理Python包的工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pypa/virtualenv">virtualenv</a>: 虚拟环境管理工具</li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/venv.html">venv</a>: 虚拟环境管理工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/virtualenvwrapper/virtualenvwrapper">virtualenvwrapper</a>: 虚拟环境管理工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pyenv/pyenv">pyenv</a>: Python版本管理工具</li>
+</ul>
+<h3 id="任务库"><a href="#任务库" class="headerlink" title="任务库"></a>任务库</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/celery/celery">celery</a>: 分布式任务调度框架</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/agronholm/apscheduler">apscheduler</a>: 定时任务调度框架</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ydf0509/funboost">funboost</a>: 异步任务调度框架</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rq/rq">rq</a>: 轻量级任务调度框架</li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/sched.html">sched</a>: 轻量级任务调度框架</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dbader/schedule">schedule</a>: 轻量级任务调度框架</li>
+</ul>
+<h3 id="性能分析库"><a href="#性能分析库" class="headerlink" title="性能分析库"></a>性能分析库</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/profile.html">cProfile</a>: 标准库自带的性能分析</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pythonprofilers/memory_profiler">memory_profiler</a>: 内存分析工具，监控Python代码的内存使用情况</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rkern/line_profiler">line_profiler</a>: 行级性能分析工具，</li>
+</ul>
+<h3 id="代码编译加密库"><a href="#代码编译加密库" class="headerlink" title="代码编译加密库"></a>代码编译加密库</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Nuitka/Nuitka">Nuitka</a>: 代码加密工具,一个用 Python 编写的 Python 编译器</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dashingsoft/pyarmor">pyarmor</a>: 代码加密工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cckuailong/py2sec">py2sec</a>: 一个跨平台、快速且灵活的工具，可将 .py 更改为 .so（Linux 和 Mac）或 .pyd（Win）</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pyinstaller/pyinstaller">pyinstaller</a>: 代码打包工具,将 Python 程序冻结（打包）为独立的可执行文件</li>
+</ul>
+<h3 id="测试库"><a href="#测试库" class="headerlink" title="测试库"></a>测试库</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/pytest-dev/pytest">pytest</a>: 测试框架</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/python/cpython/tree/3.11/Lib/unittest">unittest</a>: 单元测试框架</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pytest-dev/pytest-html">pytest-html</a>: 测试报告生成工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/testing-cabal/mock">mock</a>: 模拟对象库</li>
+</ul>
+<h3 id="依赖注入框架"><a href="#依赖注入框架" class="headerlink" title="依赖注入框架"></a>依赖注入框架</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ets-labs/python-dependency-injector">dependency-injector</a>: 依赖注入框架</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ZechCodes/Bevy">bevy</a>: 依赖注入框架</li>
+</ul>
+<h3 id="重试库："><a href="#重试库：" class="headerlink" title="重试库："></a>重试库：</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/invl/retry">retry</a>: 重试库</li>
+</ul>
+<h3 id="进程管理库"><a href="#进程管理库" class="headerlink" title="进程管理库"></a>进程管理库</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Supervisor/supervisor">supervisor</a>: 进程管理工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/benoitc/gunicorn">gunicorn</a>: 进程管理工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/unbit/uwsgi">uwsgi</a>: 进程管理工具</li>
+</ul>
+<h3 id="操作日期时间库"><a href="#操作日期时间库" class="headerlink" title="操作日期时间库"></a>操作日期时间库</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/time.html">time</a>: 官方内置库</li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/datetime.html">datetime</a>: 官方内置库</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/arrow-py/arrow">arrow</a>: 日期时间库</li>
+<li><a target="_blank" rel="noopener" href="https://dateutil.readthedocs.io/en/stable/">dateutil</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/arrow-py/arrow">arrow</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/myusuf3/delorean">delorean</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/spulec/freezegun">Freezegun</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/zachwill/moment">moment</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kennethreitz/maya">maya</a></li>
+</ul>
+<h3 id="操作Json文件"><a href="#操作Json文件" class="headerlink" title="操作Json文件"></a>操作Json文件</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/json.html">Json</a>:官方内置库 </li>
+<li>【☆】<a target="_blank" rel="noopener" href="https://github.com/jmespath/jmespath.py">Jmespath</a>: 是一个json查询库，可以使用声明的方式从Json中提取元素</li>
+</ul>
+<h3 id="操作YAML文件"><a href="#操作YAML文件" class="headerlink" title="操作YAML文件"></a>操作YAML文件</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/yaml/pyyaml">PyYAML</a></li>
+</ul>
+<h2 id="未分类"><a href="#未分类" class="headerlink" title="未分类"></a>未分类</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/joke2k/faker">Faker</a>: 一个用于生成虚拟数据的python库</li>
+</ul>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-03-03</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/python%E5%BA%93/'>
+                            python库
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/Python/'>
+                            Python
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/03/04/06-modelops-tech/'>关于ModelOps的相关技术</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/03/03/04-pypi-source-usage/">常用的Pypi源汇总及使用</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2018～2025 China 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>

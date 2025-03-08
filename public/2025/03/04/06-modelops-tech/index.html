@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="关于ModelOps的相关技术" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/head.png">
+    <title>PyShen</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">PyShen</a> 
+            <span class="description"></span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/tags/">标签</a></li>
+            
+        
+            
+                <li><a href="/categories/">分类</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    关于ModelOps的相关技术
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-03-04</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：843</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：3分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A1%86%E6%9E%B6%E7%BA%A7"><span class="post-toc-text">框架级</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91"><span class="post-toc-text">模型开发</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Scikit-learn%EF%BC%88SKlearn%EF%BC%89"><span class="post-toc-text">Scikit-learn（SKlearn）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#PyTorch"><span class="post-toc-text">PyTorch</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%A7%A3%E9%87%8A"><span class="post-toc-text">模型解释</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Alibi-Explain"><span class="post-toc-text">Alibi Explain</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%A3%80%E6%B5%8B"><span class="post-toc-text">模型检测</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Alibi-Detect"><span class="post-toc-text">Alibi Detect</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%AE%A1%E7%90%86"><span class="post-toc-text">模型管理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#MLflow"><span class="post-toc-text">MLflow</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2"><span class="post-toc-text">模型部署</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Seldon-core"><span class="post-toc-text">Seldon-core</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Kserve"><span class="post-toc-text">Kserve</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Ray"><span class="post-toc-text">Ray</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Polyaxon"><span class="post-toc-text">Polyaxon</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%9C%8D%E5%8A%A1"><span class="post-toc-text">模型服务</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B9%B3%E5%8F%B0%E7%BA%A7"><span class="post-toc-text">平台级</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SkyPilot"><span class="post-toc-text">SkyPilot</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cloudpods"><span class="post-toc-text">Cloudpods</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#BentoML"><span class="post-toc-text">BentoML</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%B6%E4%BB%96"><span class="post-toc-text">其他</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cog"><span class="post-toc-text">Cog</span></a></li></ol></li></ol>
+            
+        
+        <div class=".article-gallery"><h2 id="框架级"><a href="#框架级" class="headerlink" title="框架级"></a>框架级</h2><h3 id="模型开发"><a href="#模型开发" class="headerlink" title="模型开发"></a>模型开发</h3><h4 id="Scikit-learn（SKlearn）"><a href="#Scikit-learn（SKlearn）" class="headerlink" title="Scikit-learn（SKlearn）"></a>Scikit-learn（SKlearn）</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/">官网</a></li>
+<li>简介：一个基于 SciPy 构建的用于机器学习的 Python 模块，并根据 3-Clause BSD 许可证分发</li>
+</ul>
+<h4 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a><a target="_blank" rel="noopener" href="https://pytorch.org/">PyTorch</a></h4><ul>
+<li><a target="_blank" rel="noopener" href="https://pytorch.org/">官网</a></li>
+<li>简介：Python 中的张量和动态神经网络，具有强大的 GPU 加速功能</li>
+</ul>
+<h3 id="模型解释"><a href="#模型解释" class="headerlink" title="模型解释"></a>模型解释</h3><h4 id="Alibi-Explain"><a href="#Alibi-Explain" class="headerlink" title="Alibi Explain"></a>Alibi Explain</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.seldon.io/projects/alibi/en/stable/">官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SeldonIO/alibi">Github</a></li>
+<li>简介：</li>
+</ul>
+<h3 id="模型检测"><a href="#模型检测" class="headerlink" title="模型检测"></a>模型检测</h3><h4 id="Alibi-Detect"><a href="#Alibi-Detect" class="headerlink" title="Alibi Detect"></a>Alibi Detect</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.seldon.io/projects/alibi-detect/en/stable/">官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SeldonIO/alibi-detect">Github</a> </li>
+<li>简介：是一个 Python 开源库，专注于异常值、对抗性、和漂移检测。该库涵盖表格数据、文本、图像和时间序列的在线和离线检测器，TensorFlow 和 PyTorch 后端都支持漂移检测。</li>
+</ul>
+<h3 id="模型管理"><a href="#模型管理" class="headerlink" title="模型管理"></a>模型管理</h3><h4 id="MLflow"><a href="#MLflow" class="headerlink" title="MLflow"></a>MLflow</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://mlflow.org/">官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mlflow/mlflow">Github</a></li>
+<li>简介：MLflow 是一个开源平台，专门用于帮助机器学习从业者和团队处理机器学习过程的复杂性，专注于机器学习项目的整个生命周期，确保每个阶段都是可管理、可追溯和可再现的。</li>
+</ul>
+<h3 id="模型部署"><a href="#模型部署" class="headerlink" title="模型部署"></a>模型部署</h3><h4 id="Seldon-core"><a href="#Seldon-core" class="headerlink" title="Seldon-core"></a>Seldon-core</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://www.seldon.io/solutions/core-plus">官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SeldonIO/seldon-core">Github</a></li>
+<li>简介：一款用于打包、部署、监控和管理数千个生产机器学习模型的 MLOps 框架</li>
+</ul>
+<h4 id="Kserve"><a href="#Kserve" class="headerlink" title="Kserve"></a>Kserve</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://kserve.github.io/website/latest/">官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kserve/kserve">Github</a></li>
+<li>简介：一款基于 Kubernetes 高度可扩展且基于标准的模型部署与推理平台</li>
+</ul>
+<h4 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://www.ray.io/">官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ray-project/ray">Github</a></li>
+<li>简介：一款 AI 计算引擎，管理、执行和优化 AI 工作负载的计算需求。它通过单一、灵活的框架统一基础设施，支持从数据处理到模型训练再到模型服务等任何人工智能工作负载。</li>
+</ul>
+<h4 id="Polyaxon"><a href="#Polyaxon" class="headerlink" title="Polyaxon"></a><a target="_blank" rel="noopener" href="https://github.com/polyaxon/polyaxon">Polyaxon</a></h4><ul>
+<li><a target="_blank" rel="noopener" href="https://polyaxon.com/">官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/polyaxon/polyaxon">Github</a></li>
+<li>简介：一个用于构建、训练和监控大规模深度学习应用程序的平台,用于管理和编排机器学习生命周期的 MLOps 工具</li>
+</ul>
+<h3 id="模型服务"><a href="#模型服务" class="headerlink" title="模型服务"></a>模型服务</h3><p>MLServer</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mlserver.readthedocs.io/en/latest/getting-started/index.html">官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SeldonIO/MLServer/">Github</a></li>
+<li>简介：一款 Python 开发的、适用于机器学习模型的推理服务器，旨在提供一种简单的方法来通过 REST 和 gRPC 接口开始为您的机器学习模型提供服务，完全符合KFServing 的 V2 Dataplane规范。</li>
+</ul>
+<h2 id="平台级"><a href="#平台级" class="headerlink" title="平台级"></a>平台级</h2><h3 id="SkyPilot"><a href="#SkyPilot" class="headerlink" title="SkyPilot"></a><a target="_blank" rel="noopener" href="https://skypilot.readthedocs.io/en/latest/docs/index.html">SkyPilot</a></h3><ul>
+<li>简介：是一个用于在任何基础设施上运行 AI 和批处理工作负载的框架，提供统一执行、高成本节省和高 GPU 可用性。</li>
+<li><a target="_blank" rel="noopener" href="https://skypilot.readthedocs.io/en/latest/docs/index.html">文档链接</a>, <a target="_blank" rel="noopener" href="https://github.com/skypilot-org/skypilot">Github地址</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cloudpods.org/blog/introduction-to-the-skypilot-open-source-project">相关博客介绍</a></li>
+</ul>
+<h3 id="Cloudpods"><a href="#Cloudpods" class="headerlink" title="Cloudpods"></a><a target="_blank" rel="noopener" href="https://github.com/yunionio/cloudpods">Cloudpods</a></h3><ul>
+<li>简介：一个使用Golang开发的云原生开源统一多云&#x2F;混合云平台，即Cloudpods是<em>云上的云</em>。 Cloudpods 不仅能够管理本地 KVM&#x2F;裸机，还能够管理来自许多云提供商的许多云帐户的资源。它隐藏了底层云提供商的差异，并公开了一组 API，允许以编程方式与众多云进行交互。</li>
+<li><a target="_blank" rel="noopener" href="https://www.cloudpods.org/">文档链接</a></li>
+</ul>
+<h3 id="BentoML"><a href="#BentoML" class="headerlink" title="BentoML"></a>BentoML</h3><ul>
+<li>简介:是一个 Python 库，用于构建针对 AI 应用程序和模型推理进行优化的在线服务系统, 服务 AI 应用程序和模型的最简单方法 - 构建模型推理 API、作业队列、 LLM应用程序、多模型管道等</li>
+<li><a target="_blank" rel="noopener" href="https://bentoml.com/">文档地址</a>、<a target="_blank" rel="noopener" href="https://github.com/bentoml/BentoML">Github地址</a></li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="Cog"><a href="#Cog" class="headerlink" title="Cog"></a><a target="_blank" rel="noopener" href="https://github.com/replicate/cog">Cog</a></h3><ul>
+<li>简介：Cog 是将机器学习模型打包到容器的工具。可通过配置将机器学习模型所需的环境和依赖，自动打包到容器里方便部署，让你不再为编写 Docker 文件和 CUDA 而痛苦，还能自动启动 HTTP 接口服务方便调用</li>
+<li><a target="_blank" rel="noopener" href="https://cog.run/">文档地址</a>、<a target="_blank" rel="noopener" href="https://github.com/replicate/cog">Github地址</a></li>
+</ul>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-03-04</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/ModelOps/'>
+                            ModelOps
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/AI/'>
+                            AI
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/03/04/07-py-data-struct-usage/'>Python中的常用数据类型与用法</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/03/03/05-py-lib-awesome/">Python常用库汇总[awesome]</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2018～2025 China 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>

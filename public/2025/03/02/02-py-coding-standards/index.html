@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="Python中的那些编码规范" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/head.png">
+    <title>PyShen</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">PyShen</a> 
+            <span class="description"></span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/tags/">标签</a></li>
+            
+        
+            
+                <li><a href="/categories/">分类</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    Python中的那些编码规范
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-03-04</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：1.9k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：7分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%98%E9%87%8F%E7%9A%84%E5%91%BD%E5%90%8D"><span class="post-toc-text">关于变量的命名</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%80%E4%BA%9B%E5%A5%BD%E7%9A%84%E5%AE%9E%E8%B7%B5"><span class="post-toc-text">一些好的实践</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="post-toc-text">关于注释的使用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%B3%E4%BA%8E%E5%AF%BC%E5%8C%85%E7%9A%84%E8%A7%84%E8%8C%83"><span class="post-toc-text">关于导包的规范</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%80%E4%BA%9B%E5%A5%BD%E7%9A%84%E5%AE%9E%E8%B7%B5-1"><span class="post-toc-text">一些好的实践</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%B3%E4%BA%8E%E7%BC%A9%E8%BF%9B%E5%92%8C%E6%8D%A2%E8%A1%8C"><span class="post-toc-text">关于缩进和换行</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%B3%E4%BA%8E%E7%A9%BA%E8%A1%8C%E5%92%8C%E7%A9%BA%E6%A0%BC"><span class="post-toc-text">关于空行和空格</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%B3%E4%BA%8E%E7%B1%BB%E6%88%96%E5%87%BD%E6%95%B0%EF%BC%88%E6%96%B9%E6%B3%95%EF%BC%89%E7%9A%84%E6%B3%A8%E9%87%8A"><span class="post-toc-text">关于类或函数（方法）的注释</span></a></li></ol>
+            
+        
+        <div class=".article-gallery"><blockquote>
+<ol>
+<li>我们也许都知道，好的变量名和注释其实并非为计算机而写，而是为阅读者或维护者而写。</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>2.对于下列介绍的规范及建议，除了自身训练形成习惯，还可以通过社区里提供的相关工具（如ruff）来提高效率。</p>
+</blockquote>
+<h2 id="关于变量的命名"><a href="#关于变量的命名" class="headerlink" title="关于变量的命名"></a>关于变量的命名</h2><blockquote>
+<p>程序中，数据都是临时存储在内存中，为了更快速查找或使用这个数据，通常把这个数据在内存中存储之后定义一个名称，这个名称就是变量， 简言之，变量就是用来标记数据在内存中的存储位置。</p>
+</blockquote>
+<p>在主流的编程语言中，变量命名风格主要分为驼峰命名派（CameCase）和蛇形命名派（snake_case），其中驼峰又分为大驼峰（CameCase）和小驼峰（cameCase）,在Python中，大驼峰和蛇形命名两种风格在不同场景中应用的都比较频繁，大驼峰命名主要应用在类名的定义上，其他场景绝大部分都是使用蛇形命名， 如：</p>
+<ul>
+<li><strong>普通变量名</strong>：变量名，要全部小写，多个词通过下划线连接,即蛇形命名；</li>
+<li><strong>常量名</strong>：要全部大写，多个词通过下划线连接；</li>
+<li><strong>函数(或方法)名</strong>：要全部小写，多个词通过下划线连接；</li>
+<li><strong>类名</strong>：要以驼峰形式命名，即单词首字母大写，多个词的话，每个词首字母大写然后直接拼接;</li>
+<li><strong>类的私有变量名</strong>: 变量名前需要加2个下划线；</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Public</strong></th>
+<th><strong>Internal</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Modules</td>
+<td>lower_with_under</td>
+<td>_lower_with_under</td>
+</tr>
+<tr>
+<td>Packages</td>
+<td>lower_with_under</td>
+<td></td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>CapWords</td>
+<td>_CapWords</td>
+</tr>
+<tr>
+<td>Exceptions</td>
+<td>CapWords</td>
+<td></td>
+</tr>
+<tr>
+<td>Functions</td>
+<td>lower_with_under()</td>
+<td>_lower_with_under()</td>
+</tr>
+<tr>
+<td>Global&#x2F;Class Constants</td>
+<td>CAPS_WITH_UNDER</td>
+<td>_CAPS_WITH_UNDER</td>
+</tr>
+<tr>
+<td>Global&#x2F;Class Variables</td>
+<td>lower_with_under</td>
+<td>_lower_with_under</td>
+</tr>
+<tr>
+<td>Instance Variables</td>
+<td>lower_with_under</td>
+<td>_lower_with_under (protected) or __lower_with_under (private)</td>
+</tr>
+<tr>
+<td>Method Names</td>
+<td>lower_with_under()</td>
+<td>_lower_with_under() (protected) or __lower_with_under() (private)</td>
+</tr>
+<tr>
+<td>Function&#x2F;Method Parameters</td>
+<td>lower_with_under</td>
+<td></td>
+</tr>
+<tr>
+<td>Local Variables</td>
+<td>lower_with_under</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="一些好的实践"><a href="#一些好的实践" class="headerlink" title="一些好的实践"></a>一些好的实践</h3><ul>
+<li>遵循PEP 8原则（Python官方制定的编码风格指南和建议）；</li>
+<li>命名需要做到名如其意，不要吝啬名字的长度，但除了一些特殊场景，变量名一般不建议超过4个单词;</li>
+<li>变量的描述性要强，比如：冬天的梅花比花的描述性更强；</li>
+<li>当命名与关键字冲突时，在变量末尾加下划线，比如：class_;</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># (bad) 描述性弱的名字，看不懂在做什么</span></span><br><span class="line">value = process(s.strip())</span><br><span class="line"><span class="comment"># (good) 描述性强的名字，尝试从用户输入里解析一个用户名</span></span><br><span class="line">username = extract_username(input_string.strip())</span><br><span class="line"></span><br><span class="line"><span class="comment"># (good) 配合布尔值类型的变量名</span></span><br><span class="line">is_superuser</span><br><span class="line">has_errors</span><br><span class="line">allow_enmpy</span><br><span class="line"></span><br><span class="line"><span class="comment"># (good) 匹配int/float类型的变量名</span></span><br><span class="line">port、age  <span class="comment"># 释义为数字的所有单词</span></span><br><span class="line">user_id, host_id  <span class="comment"># 使用_id结尾的单词</span></span><br><span class="line">length_of_usernmae、max_length、users_count <span class="comment"># 使用以length/count开头或结尾的单词</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不建议拿一个名词的复数形式作为int类型的变量名；</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="关于注释的使用"><a href="#关于注释的使用" class="headerlink" title="关于注释的使用"></a>关于注释的使用</h2><p>Python中的注释主要分为以<code>#</code>开头的单行注释、和以三连字符串（<code>&quot;&quot;&quot;...&quot;&quot;&quot;</code>）表示的多行注释或文档注释。</p>
+<ul>
+<li>代码块注释，在代码块上一行的相同缩进处以 # 开始书写注释；代码块注释最需要写注释的地方是代码中那些技巧性的部分；对于复杂的操作，应该在其操作开始之前写上若干行注释，对于不是一目了然的代码，应该在其行尾添加注释；</li>
+<li>代码行注释，在代码行的尾部跟2个空格，然后以 # 开始书写注释，行注释尽量少写；</li>
+<li>TODO注释应该在所有开头处包含“TODO”字符串，紧跟着用括号括起来你的名字，email地址或其他标识符，然后是一个可选的冒号；</li>
+<li>对于TODO注释的目的是用来表示“将来做某件事”，建议添加指定的日期；</li>
+<li>英文注释开头要大写，结尾要写标点符号，避免语法错误和逻辑错误，中文注释也是相同要求；</li>
+<li>改动代码逻辑时，一定要及时更新相关的注释；</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># TODO(ssw@gmail.com): Use a &quot;*&quot; here for string repetition.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># TODO(Luke) Change this to use relations.</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="关于导包的规范"><a href="#关于导包的规范" class="headerlink" title="关于导包的规范"></a>关于导包的规范</h2><p>在导包时，导入的内容总应该放在文件顶部, 位于模块注释和文档字符串之后,模块全局变量和常量之前. 导入应该按照从最通用到最不通用的顺序分组: </p>
+<ol>
+<li>标准库导入</li>
+<li>第三方库导入</li>
+<li>应用程序指定导入</li>
+</ol>
+<h3 id="一些好的实践-1"><a href="#一些好的实践-1" class="headerlink" title="一些好的实践"></a>一些好的实践</h3><ul>
+<li>当使用 import xxx时， 通常建议每行import只导入一个对象；</li>
+<li>当使用from xxx import xxx时，import后面跟着的对象要是一个package(包对应代码目录)或者module(模块对应代码文件)，不要是一个类或者一个函数，</li>
+<li>当使用from xxx import xxx时，原则上建议一行导入一个包，若实在想要在一行导入多个包，建议使用（）括号括起来；</li>
+<li>当导入的包名较长时，建议使用as 进行局部重命名；</li>
+<li>在工程开发上，建议引入格式化工具进行优化，当下开源的这类工具太多太多了，如isort、black，ruff（内置了前两种）;</li>
+</ul>
+<h2 id="关于缩进和换行"><a href="#关于缩进和换行" class="headerlink" title="关于缩进和换行"></a>关于缩进和换行</h2><ul>
+<li>在python中，通常使用四个空格、或1个tab键实现缩进。但非常不建议Tab和空格混合使用；</li>
+<li>一般通过代码逻辑拆分等手段来控制每行的最大长度不超过120个字符，但有些时候单行代码还是不可避免的会超过这个限制，这个时候就需要通过换行来解决问题了：<ul>
+<li>第一种，通过小括号进行封装，此时虽然跨行，但是仍处于一个逻辑引用之下。比如函数参数列表的场景、过长的运算语句场景<br>第二种，直接通过换行符()实现；</li>
+</ul>
+</li>
+</ul>
+<h2 id="关于空行和空格"><a href="#关于空行和空格" class="headerlink" title="关于空行和空格"></a>关于空行和空格</h2><ul>
+<li>空行规范<ul>
+<li>全局的(文件级别的)类和全局的函数上方要有两个空行</li>
+<li>类中的函数上方要有一个空行</li>
+<li>函数内部不同意群的代码块之前要有一个空行</li>
+<li>不要把多行语句合并为一行(即不要使用分号分隔多条语句)</li>
+<li>当使用控制语句if&#x2F;while&#x2F;for时，即使执行语句只有一行命令，也需要另起一行</li>
+<li>代码文件尾部有且只有一个空行</li>
+</ul>
+</li>
+<li>空格规范<ul>
+<li>函数的参数之间要有一个空格</li>
+<li>列表、元组、字典的元素之间要有一个空格</li>
+<li>字典的冒号之后要有一个空格</li>
+<li>使用#注释的话，#后要有一个空格</li>
+<li>操作符(例如+，-，*，&#x2F;，&amp;，|，&#x3D;，&#x3D;&#x3D;，!&#x3D;)两边都要有一个空格，不过括号(包括小括号、中括号和大括号)内的两端不需要空格</li>
+</ul>
+</li>
+</ul>
+<h2 id="关于类或函数（方法）的注释"><a href="#关于类或函数（方法）的注释" class="headerlink" title="关于类或函数（方法）的注释"></a>关于类或函数（方法）的注释</h2><p>通常使用三个双引号开始，三个双引号结尾来实现文档注释；</p>
+<ol>
+<li>首先用一句话简单说明这个函数是做什么，然后跟一段话来详细解释；</li>
+<li>再往后就是参数列表、参数格式、返回值格式的描述；</li>
+</ol>
+<p><strong>示例：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SampleClass</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Summary of class here.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Longer class information....</span></span><br><span class="line"><span class="string">    Longer class information....</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Attributes:</span></span><br><span class="line"><span class="string">        likes_spam: A boolean indicating if we like SPAM or not.</span></span><br><span class="line"><span class="string">        eggs: An integer count of the eggs we have laid.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, likes_spam=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Inits SampleClass with blah.&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.likes_spam = likes_spam</span><br><span class="line">        <span class="variable language_">self</span>.eggs = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">public_method</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Performs operation blah.&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> i &amp; (i-<span class="number">1</span>) == <span class="number">0</span>:        <span class="comment"># true iff i is a power of 2</span></span><br></pre></td></tr></table></figure>
+
+
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-03-02</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/python%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/'>
+                            python工程实践
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/Python/'>
+                            Python
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/03/03/03-env-package-selection/'>关于Python中的版本和包管理工具</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/03/02/01-letsgo/">一切都是新的开始</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2018～2025 China 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
