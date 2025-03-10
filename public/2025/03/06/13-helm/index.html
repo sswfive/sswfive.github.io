@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="包管理工具Helm的使用" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/head.png">
+    <title>PyShen</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">PyShen</a> 
+            <span class="description"></span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/tags/">标签</a></li>
+            
+        
+            
+                <li><a href="/categories/">分类</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    包管理工具Helm的使用
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-03-06</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：1.1k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：4分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Helm%E6%A6%82%E8%BF%B0"><span class="post-toc-text">Helm概述</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="post-toc-text">基本信息</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Helm%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="post-toc-text">Helm是什么？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Helm%E6%9E%B6%E6%9E%84"><span class="post-toc-text">Helm架构</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Helm%E7%BB%84%E6%88%90"><span class="post-toc-text">Helm组成</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Helm%E5%AE%89%E8%A3%85"><span class="post-toc-text">Helm安装</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%85%88%E5%86%B3%E6%9D%A1%E4%BB%B6"><span class="post-toc-text">先决条件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="post-toc-text">安装步骤</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Helm%E4%BD%BF%E7%94%A8"><span class="post-toc-text">Helm使用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Helm%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB"><span class="post-toc-text">Helm常用命令汇总</span></a></li></ol>
+            
+        
+        <div class=".article-gallery"><h2 id="Helm概述"><a href="#Helm概述" class="headerlink" title="Helm概述"></a>Helm概述</h2><h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><ul>
+<li>Github地址：<a target="_blank" rel="noopener" href="https://github.com/helm/helm">Helm</a></li>
+<li><a target="_blank" rel="noopener" href="https://helm.sh/">文档地址</a></li>
+<li>当前最新版本v3.15.4，当前Star数26.6k.</li>
+<li>Chart包托管平台：<a target="_blank" rel="noopener" href="https://artifacthub.io/">ArtifactHub</a></li>
+</ul>
+<h3 id="Helm是什么？"><a href="#Helm是什么？" class="headerlink" title="Helm是什么？"></a>Helm是什么？</h3><p>Helm是Kubernetes（K8S）的包管理工具，Helm主要是用来管理Chart包，类似于Python的pip、CentOS的yum、MacOS的brew等。Helm主要有三大基本概念，分别为：</p>
+<ul>
+<li><strong>Chart</strong>: 代表一个Helm包，它包含了在K8S集群中运行的应用程序、工具或服务所需要的所有YAML格式的资源定义文件以及这些资源的配置，可以通过Helm Chart包来整体维护这些资源。</li>
+<li><strong>Repository</strong>：它是用来存放和共享Helm Chart的地方，类似于存放源码的Github的Repository，以及存放镜像的Docker的Repository。</li>
+<li><strong>Release</strong>: 它是运行在K8S集群中的Chart的实例。一个Chart通常可以在同一个集群中安装多次。每一次安装都会创建一个新的Release。</li>
+</ul>
+<p>Helm也提供了一个helm命令行工具，该工具可以基于Chartb包一键创建应用，在创建应用时，可以自定义Chart配置。应用发布者可以通过Helm打包应用、管理应用依赖管理，管理应用版本、并发布应用到软件仓库。</p>
+<ul>
+<li>对于使用者来说，使用Helm后不需要写复杂的应用部署文件，可以非常方便的在K8S上查找、安装、升级、回滚以及卸载应用程序。</li>
+</ul>
+<h3 id="Helm架构"><a href="#Helm架构" class="headerlink" title="Helm架构"></a>Helm架构</h3><p><a href="/images/pics/13-helm_arch.png" title="helm_arch" class="gallery-item" style="box-shadow: none;"> <img src="/images/pics/13-helm_arch.png" alt="helm_arch"></a></p>
+<p>Helm Client（helm命令）和Helm Chart包时核心，helm命令可以从Chart Repository中下载Helm Chart包，读取kubeconfig文件，并构建kube-apiserver REST API 接口的HTTP请求，通过调用K8S提供的REST API 接口，将Chart包中包含的YAML格式定义的K8S资源，在K8S集群中创建， 这些资源以Release的形式存在与K8S集群中，每个Release 又包含多个K8S资源，如Deployment、Pod、Service等。</p>
+<h3 id="Helm组成"><a href="#Helm组成" class="headerlink" title="Helm组成"></a>Helm组成</h3><p><a href="/images/pics/13-helm_struct.png" title="struct" class="gallery-item" style="box-shadow: none;"> <img src="/images/pics/13-helm_struct.png" alt="struct"></a></p>
+<ul>
+<li><p>模板文件</p>
+<ul>
+<li>【通常有多个】，基于<code>text/template</code> 模板文件，提供了强大的模板渲染能力。Helm可以将配置文件中的值渲染进模板文件中，最终生成一个可以部署的K8S YAML格式的资源定义文件。</li>
+</ul>
+</li>
+<li><p>配置文件</p>
+<ul>
+<li>【通常有一个】</li>
+</ul>
+</li>
+</ul>
+<p>总结：</p>
+<ul>
+<li>在Helm中，<strong>部署一个应用可以简化为Chart模板（多个服务）+ Chart配置 —&gt; 应用</strong>。</li>
+<li>Chart模板一个应用只用编写一次，可以重复使用，再部署时，可以指定不同的配置，从而将应用部署到不同环境或同一环境部署不同配置的应用。</li>
+</ul>
+<p><a href="/images/pics/13-helm_deploy_app.png" title="deploy" class="gallery-item" style="box-shadow: none;"> <img src="/images/pics/13-helm_deploy_app.png" alt="deploy"></a></p>
+<h2 id="Helm安装"><a href="#Helm安装" class="headerlink" title="Helm安装"></a>Helm安装</h2><h3 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h3><ul>
+<li>一个可用的K8S集群</li>
+<li>确定安装版本和安全配置</li>
+<li>安装和配置Helm</li>
+</ul>
+<p>安装</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://helm.sh/zh/docs/intro/install/">官方安装指南</a></li>
+<li>Helm 各个版本安装包：<a target="_blank" rel="noopener" href="https://github.com/helm/helm/releases">Helm Releases</a></li>
+</ul>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://get.helm.sh/helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ tar -xvzf helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ <span class="built_in">mv</span> linux-amd64/helm /usr/local/bin/helm</span><br><span class="line">$ <span class="built_in">chmod</span> +x /usr/local/bin/helm</span><br><span class="line">$ helm version  <span class="comment"># 输出版本号即表示安装成功</span></span><br><span class="line"><span class="comment">######log info ########</span></span><br><span class="line">version.BuildInfo&#123;Version:<span class="string">&quot;v3.15.4&quot;</span>, GitCommit:<span class="string">&quot;fa9efb07d9d8debbb4306d72af76a383895aa8c4&quot;</span>, GitTreeState:<span class="string">&quot;clean&quot;</span>, GoVersion:<span class="string">&quot;go1.22.6&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>安装helm命令自动补全脚本（非必须）</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_completion/">文档参考</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm completion bash &gt; /etc/bash_completion.d/helm</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行 helm comp，就会自动补全为helm completion。</li>
+</ul>
+<h2 id="Helm使用"><a href="#Helm使用" class="headerlink" title="Helm使用"></a>Helm使用</h2><h2 id="Helm常用命令汇总"><a href="#Helm常用命令汇总" class="headerlink" title="Helm常用命令汇总"></a>Helm常用命令汇总</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>completion</td>
+<td>生成指定Shell的自动补全脚本，比如bash、zsh等</td>
+</tr>
+<tr>
+<td>create</td>
+<td>创建一个 Chart 并指定名字</td>
+</tr>
+<tr>
+<td>dependency</td>
+<td>管理 Chart 依赖</td>
+</tr>
+<tr>
+<td>env</td>
+<td>打印Helm客户端的环境变量信息，例如HELM_CACHE_HOME、HELM_NAMESPACE、HELM_REPOSITORY_CONFIG等</td>
+</tr>
+<tr>
+<td>get</td>
+<td>下载一个 Release。可用子命令：all、hooks、manifest、notes、values</td>
+</tr>
+<tr>
+<td>help</td>
+<td>打印helm命令的帮助信息</td>
+</tr>
+<tr>
+<td>history</td>
+<td>获取 Release历史</td>
+</tr>
+<tr>
+<td>install</td>
+<td>安装一个 Chart</td>
+</tr>
+<tr>
+<td>lint</td>
+<td>检查一个Chart包，并打印潜在的问题</td>
+</tr>
+<tr>
+<td>list</td>
+<td>列出 Release</td>
+</tr>
+<tr>
+<td>package</td>
+<td>将 Chart 目录打包到 Chart 存储文件中</td>
+</tr>
+<tr>
+<td>plugin</td>
+<td>Helm插件</td>
+</tr>
+<tr>
+<td>pull</td>
+<td>从远程仓库中下载 Chart 并解压到本地，例如helm pull stable&#x2F;redis –untar</td>
+</tr>
+<tr>
+<td>repo</td>
+<td>添加（add）、列出（list）、移除（remove）、更新（update）和索引（index）Chart 仓库</td>
+</tr>
+<tr>
+<td>rollback</td>
+<td>从之前版本回滚</td>
+</tr>
+<tr>
+<td>search</td>
+<td>根据关键字搜索 Charts，可用子命令：hub、repo</td>
+</tr>
+<tr>
+<td>show</td>
+<td>查看 Chart 详细信息。可用子命令：all、chart、readme、values</td>
+</tr>
+<tr>
+<td>status</td>
+<td>显示已命名版本的状态</td>
+</tr>
+<tr>
+<td>template</td>
+<td>本地呈现模板</td>
+</tr>
+<tr>
+<td>test</td>
+<td>在 Release 中运行 Helm 中的预定义测试</td>
+</tr>
+<tr>
+<td>uninstall</td>
+<td>卸载一个 Release</td>
+</tr>
+<tr>
+<td>upgrade</td>
+<td>更新一个 Release</td>
+</tr>
+<tr>
+<td>verify</td>
+<td>验证给定路径的Chart是否已被签名且有效</td>
+</tr>
+<tr>
+<td>version</td>
+<td>查看 Helm 客户端版本</td>
+</tr>
+</tbody></table>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-03-06</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/K8S/'>
+                            K8S
+                        </a>
+                    
+                        <a href='/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/'>
+                            包管理工具
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/'>
+                            云原生
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/03/06/14-longhorn/'>储存组件Longhorn部署使用</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/03/05/12-docker-image-pull-failed/">Docker镜像无法拉取问题的解决方案</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2018～2025 China 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>

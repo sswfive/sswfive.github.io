@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
     
@@ -528,3 +529,523 @@
             
     </body>
 </html>
+||||||| 4fe7d0d
+=======
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="任务管理工具之APScheduler" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/head.png">
+    <title>PyShen</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">PyShen</a> 
+            <span class="description"></span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/tags/">标签</a></li>
+            
+        
+            
+                <li><a href="/categories/">分类</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    任务管理工具之APScheduler
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-03-04</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：1.1k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：5分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#APScheduler%E4%B9%8B%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%B7%A5%E5%85%B7"><span class="post-toc-text">APScheduler之定时任务工具</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#APScheduler%E6%A6%82%E8%BF%B0"><span class="post-toc-text">APScheduler概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-%E5%AE%89%E8%A3%85"><span class="post-toc-text">1.安装</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="post-toc-text">2.使用方式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-%E8%B0%83%E5%BA%A6%E5%99%A8Scheduler"><span class="post-toc-text">3.调度器Scheduler</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4-%E6%89%A7%E8%A1%8C%E5%99%A8-executors"><span class="post-toc-text">4.执行器 executors</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-%E8%A7%A6%E5%8F%91%E5%99%A8-Trigger"><span class="post-toc-text">5.触发器 Trigger</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#6-%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="post-toc-text">6. 配置方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%B9%E6%B3%951"><span class="post-toc-text">方法1</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%B9%E6%B3%952"><span class="post-toc-text">方法2</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#7-%E5%90%AF%E5%8A%A8"><span class="post-toc-text">7. 启动</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#8-%E6%89%A9%E5%B1%95"><span class="post-toc-text">8.扩展</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="post-toc-text">任务管理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80"><span class="post-toc-text">方式一</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C"><span class="post-toc-text">方式二</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%B0%83%E6%95%B4%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%91%A8%E6%9C%9F"><span class="post-toc-text">调整任务调度周期</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%81%9C%E6%AD%A2APScheduler%E8%BF%90%E8%A1%8C"><span class="post-toc-text">停止APScheduler运行</span></a></li></ol></li></ol></li></ol>
+            
+        
+        <div class=".article-gallery"><h1 id="APScheduler之定时任务工具"><a href="#APScheduler之定时任务工具" class="headerlink" title="APScheduler之定时任务工具"></a>APScheduler之定时任务工具</h1><h2 id="APScheduler概述"><a href="#APScheduler概述" class="headerlink" title="APScheduler概述"></a>APScheduler概述</h2><ul>
+<li><p>APScheduler （advanceded python scheduler）是一款Python开发的定时任务工具。</p>
+</li>
+<li><p>文档地址 <a target="_blank" rel="noopener" href="https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler">https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler</a></p>
+</li>
+<li><p>特点：</p>
+<ul>
+<li><p>不依赖于Linux系统的crontab系统定时，独立运行</p>
+</li>
+<li><p>可以动态添加新的定时任务，如</p>
+</li>
+<li><p>下单后30分钟内必须支付，否则取消订单，就可以借助此工具（每下一单就要添加此订单的定时任务）</p>
+</li>
+<li><p>对添加的定时任务可以做持久保存</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install apscheduler</span><br></pre></td></tr></table></figure>
+<h2 id="2-使用方式"><a href="#2-使用方式" class="headerlink" title="2.使用方式"></a>2.使用方式</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建定时任务的调度器对象</span></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义定时任务</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">my_job</span>(<span class="params">param1, param2</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 向调度器中添加定时任务</span></span><br><span class="line">scheduler.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, args=[<span class="number">100</span>, <span class="string">&#x27;python&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动定时任务调度器工作</span></span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+<h2 id="3-调度器Scheduler"><a href="#3-调度器Scheduler" class="headerlink" title="3.调度器Scheduler"></a>3.调度器Scheduler</h2><p><strong>负责管理定时任务</strong></p>
+<ul>
+<li>BlockingScheduler: 作为独立进程时使用</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序会发生阻塞</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>BackgroundScheduler: 在框架程序（如Django、Flask）中使用</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序不会发生阻塞</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-执行器-executors"><a href="#4-执行器-executors" class="headerlink" title="4.执行器 executors"></a>4.执行器 executors</h2><p><strong>在定时任务该执行时，以进程或线程方式执行任务</strong></p>
+<ul>
+<li>ThreadPoolExecutor</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">ThreadPoolExecutor(max_workers)  </span><br><span class="line">ThreadPoolExecutor(<span class="number">20</span>) <span class="comment"># 最多20个线程同时执行</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ProcessPoolExecutor</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">ProcessPoolExecutor(max_workers)</span><br><span class="line">ProcessPoolExecutor(<span class="number">5</span>) <span class="comment"># 最多5个进程同时执行</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ProcessPoolExecutor(<span class="number">3</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-触发器-Trigger"><a href="#5-触发器-Trigger" class="headerlink" title="5.触发器 Trigger"></a>5.触发器 Trigger</h2><p><strong>指定定时任务执行的时机</strong></p>
+<p><strong>1） date 在特定的时间日期执行</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日00:00:00执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=date(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日16:30:05</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=datetime(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>, <span class="number">16</span>, <span class="number">30</span>, <span class="number">5</span>))</span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=<span class="string">&#x27;2009-11-06 16:30:05&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 立即执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>)  </span><br><span class="line">sched.start()</span><br></pre></td></tr></table></figure>
+<p><strong>2） interval 经过指定的时间间隔执行</strong></p>
+<ul>
+<li>weeks (int) – number of weeks to wait</li>
+<li>days (int) – number of days to wait</li>
+<li>hours (int) – number of hours to wait</li>
+<li>minutes (int) – number of minutes to wait</li>
+<li>seconds (int) – number of seconds to wait</li>
+<li>start_date (datetime|str) – starting point for the interval calculation</li>
+<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on</li>
+<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2010年10月10日09:30:00 到2014年6月15日的时间内，每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>, start_date=<span class="string">&#x27;2010-10-10 09:30:00&#x27;</span>, end_date=<span class="string">&#x27;2014-06-15 11:00:00&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>3） cron 按指定的周期执行</strong></p>
+<ul>
+<li>year (int|str) – 4-digit year</li>
+<li>month (int|str) – month (1-12)</li>
+<li>day (int|str) – day of the (1-31)</li>
+<li>week (int|str) – ISO week (1-53)</li>
+<li>day_of_week (int|str) – number or name of weekday (0-6 or mon,tue,wed,thu,fri,sat,sun)</li>
+<li>hour (int|str) – hour (0-23)</li>
+<li>minute (int|str) – minute (0-59)</li>
+<li>second (int|str) – second (0-59)</li>
+<li>start_date (datetime|str) – earliest possible date&#x2F;time to trigger on (inclusive)</li>
+<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on (inclusive)</li>
+<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations (defaults to scheduler timezone)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在6、7、8、11、12月的第三个周五的00:00, 01:00, 02:00和03:00 执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, month=<span class="string">&#x27;6-8,11-12&#x27;</span>, day=<span class="string">&#x27;3rd fri&#x27;</span>, hour=<span class="string">&#x27;0-3&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2014年5月30日前的周一到周五的5:30执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, day_of_week=<span class="string">&#x27;mon-fri&#x27;</span>, hour=<span class="number">5</span>, minute=<span class="number">30</span>, end_date=<span class="string">&#x27;2014-05-30&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="6-配置方法"><a href="#6-配置方法" class="headerlink" title="6. 配置方法"></a>6. 配置方法</h2><h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>),</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pytz <span class="keyword">import</span> utc</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.jobstores.sqlalchemy <span class="keyword">import</span> SQLAlchemyJobStore</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;threadpool&#x27;</span>, <span class="string">&#x27;max_workers&#x27;</span>: <span class="number">20</span>&#125;,</span><br><span class="line">    <span class="string">&#x27;processpool&#x27;</span>: ProcessPoolExecutor(max_workers=<span class="number">5</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># .. 此处可以编写其他代码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用configure方法进行配置</span></span><br><span class="line">scheduler.configure(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-启动"><a href="#7-启动" class="headerlink" title="7. 启动"></a>7. 启动</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对于BlockingScheduler ，程序会阻塞在这，防止退出</li>
+<li>对于BackgroundScheduler，程序会立即返回，后台运行</li>
+</ul>
+<h2 id="8-扩展"><a href="#8-扩展" class="headerlink" title="8.扩展"></a>8.扩展</h2><h3 id="任务管理"><a href="#任务管理" class="headerlink" title="任务管理"></a>任务管理</h3><h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">job = scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>)  <span class="comment"># 添加任务</span></span><br><span class="line">job.remove()  <span class="comment"># 删除任务</span></span><br><span class="line">job.pause() <span class="comment"># 暂定任务</span></span><br><span class="line">job.resume()  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>, <span class="built_in">id</span>=<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 添加任务    </span></span><br><span class="line">scheduler.remove_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 删除任务</span></span><br><span class="line">scheduler.pause_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 暂定任务</span></span><br><span class="line">scheduler.resume_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="调整任务调度周期"><a href="#调整任务调度周期" class="headerlink" title="调整任务调度周期"></a>调整任务调度周期</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">job.modify(max_instances=<span class="number">6</span>, name=<span class="string">&#x27;Alternate name&#x27;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.reschedule_job(<span class="string">&#x27;my_job_id&#x27;</span>, trigger=<span class="string">&#x27;cron&#x27;</span>, minute=<span class="string">&#x27;*/5&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="停止APScheduler运行"><a href="#停止APScheduler运行" class="headerlink" title="停止APScheduler运行"></a>停止APScheduler运行</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scheduler.shutdown()</span><br></pre></td></tr></table></figure>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-03-04</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/python%E5%BA%93/'>
+                            python库
+                        </a>
+                    
+                        <a href='/tags/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/'>
+                            任务管理
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/Python/'>
+                            Python
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/03/04/09-supervisor/'>进程管理工具之Supervisor</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/03/04/07-py-data-struct-usage/">Python中的常用数据类型与用法</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2018～2025 China 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
+>>>>>>> d637c7874a7bc509e9a34c59b8da582945ee617c

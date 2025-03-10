@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="开发工具之KtConnect的使用" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/head.png">
+    <title>PyShen</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">PyShen</a> 
+            <span class="description"></span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/tags/">标签</a></li>
+            
+        
+            
+                <li><a href="/categories/">分类</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    开发工具之KtConnect的使用
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-03-06</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：627</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：3分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85"><span class="post-toc-text">安装</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E4%B8%8B%E8%BD%BDkubectl-client-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7"><span class="post-toc-text">1、下载kubectl client 命令行工具</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%B9%B6%E9%AA%8C%E8%AF%81"><span class="post-toc-text">2、配置环境变量并验证</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E9%85%8D%E7%BD%AEK8S%E9%9B%86%E7%BE%A4%E7%9A%84config"><span class="post-toc-text">3、配置K8S集群的config</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E8%83%BD%E8%BF%9E%E6%8E%A5%E5%88%B0k8s%E9%9B%86%E7%BE%A4"><span class="post-toc-text">4、验证是否能连接到k8s集群</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E4%B8%8B%E8%BD%BDktconnect%E5%B9%B6%E9%85%8D%E7%BD%AE"><span class="post-toc-text">5、下载ktconnect并配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6%E3%80%81%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="post-toc-text">6、验证是否安装成功</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#7%E3%80%81%E5%90%AF%E5%8A%A8"><span class="post-toc-text">7、启动</span></a></li></ol></li></ol>
+            
+        
+        <div class=".article-gallery"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://alibaba.github.io/kt-connect/">官网链接</a></li>
+</ul>
+<p>KtConnect 是阿里开源的一款云原生协同开发测试解决方案,旨在提升开发者在Kubernetes 场景下的本地开发测试效率,它通过建立本地到K8S集群的双向通道,允许开发者在本地直接访问K8S集群服务,或将K8S集群的流量转发到本地.简言之,KtConnect是面向K8S的本地开发者辅助工具.</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://alibaba.github.io/kt-connect/#/zh-cn/guide/downloads">下载链接</a></li>
+</ul>
+<h3 id="1、下载kubectl-client-命令行工具"><a href="#1、下载kubectl-client-命令行工具" class="headerlink" title="1、下载kubectl client 命令行工具"></a>1、下载kubectl client 命令行工具</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.22.md#v1222">链接</a></li>
+</ul>
+<h3 id="2、配置环境变量并验证"><a href="#2、配置环境变量并验证" class="headerlink" title="2、配置环境变量并验证"></a>2、配置环境变量并验证</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kubectl version --client</span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4]❯ kubectl version --client</span><br><span class="line">Client Version: v1.29.2</span><br><span class="line">Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、配置K8S集群的config"><a href="#3、配置K8S集群的config" class="headerlink" title="3、配置K8S集群的config"></a>3、配置K8S集群的config</h3><ul>
+<li>将k8s集群的config配置文件拷贝到<code>C:\Users\xxxx\.kube</code> 文件夹中</li>
+</ul>
+<h3 id="4、验证是否能连接到k8s集群"><a href="#4、验证是否能连接到k8s集群" class="headerlink" title="4、验证是否能连接到k8s集群"></a>4、验证是否能连接到k8s集群</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">kubectl cluster-info</span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4] ❯ kubectl cluster-info</span><br><span class="line">Kubernetes control plane is running at https://172.x.x.x:6443</span><br><span class="line">CoreDNS is running at https://172.16.2.129:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy</span><br><span class="line"></span><br><span class="line">To further debug and diagnose cluster problems, use <span class="string">&#x27;kubectl cluster-info dump&#x27;</span>.</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、下载ktconnect并配置"><a href="#5、下载ktconnect并配置" class="headerlink" title="5、下载ktconnect并配置"></a>5、下载ktconnect并配置</h3><ul>
+<li>下载 kt connect 并将其放到和kubectl client 的同一个 bin目录下</li>
+</ul>
+<h3 id="6、验证是否安装成功"><a href="#6、验证是否安装成功" class="headerlink" title="6、验证是否安装成功"></a>6、验证是否安装成功</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ktctl -v</span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4] ❯ ktctl -v</span><br><span class="line">ktctl version 0.3.7</span><br></pre></td></tr></table></figure>
+
+<h3 id="7、启动"><a href="#7、启动" class="headerlink" title="7、启动"></a>7、启动</h3><ul>
+<li>使用管理员启动Powershell,并启动kt-connect</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">ktctl connect -n &lt;namespace name&gt; --excludeIps 172.16.2.0/24   <span class="comment"># &lt;网关地址需要更换成为自己的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4] ❯ ktctl connect -n bluewhale-platform --excludeIps 172.16.2.0/24</span><br><span class="line">4:15PM INF Using cluster context kubernetes-admin@kubernetes (kubernetes)</span><br><span class="line">4:15PM INF KtConnect 0.3.7 start at 22548 (windows amd64)</span><br><span class="line">4:15PM INF Fetching cluster <span class="keyword">time</span> ...</span><br><span class="line">4:15PM INF Using tun2socks mode</span><br><span class="line">4:15PM INF Successful create config map kt-connect-shadow-odtnt</span><br><span class="line">4:15PM INF Deploying shadow pod kt-connect-shadow-odtnt <span class="keyword">in</span> namespace bluewhale-platform</span><br><span class="line">4:15PM INF Waiting <span class="keyword">for</span> pod kt-connect-shadow-odtnt ...</span><br><span class="line">4:15PM INF Pod kt-connect-shadow-odtnt is ready</span><br><span class="line">4:15PM INF Port forward <span class="built_in">local</span>:10441 -&gt; pod kt-connect-shadow-odtnt:22 established</span><br><span class="line">4:15PM INF Socks proxy established</span><br><span class="line">2024/08/23 16:15:17 Using existing driver 0.14</span><br><span class="line">2024/08/23 16:15:17 Creating adapter</span><br><span class="line">4:15PM INF Tun device KtConnectTunnel is ready</span><br><span class="line">2024/08/23 16:15:17 Removed orphaned adapter <span class="string">&quot;KtConnectTunnel 1&quot;</span></span><br><span class="line">4:15PM INF Adding route to 10.96.0.0/16</span><br><span class="line">4:15PM INF Adding route to 100.90.254.0/24</span><br><span class="line">4:15PM INF Adding route to 100.82.112.0/24</span><br><span class="line">4:15PM INF Adding route to 100.85.170.0/24</span><br><span class="line">4:15PM INF Adding route to 100.103.44.0/24</span><br><span class="line">4:15PM INF Route to tun device completed</span><br><span class="line">4:15PM INF Setting up dns <span class="keyword">in</span> <span class="built_in">local</span> mode</span><br><span class="line">4:15PM INF Port forward <span class="built_in">local</span>:45198 -&gt; pod kt-connect-shadow-odtnt:53 established</span><br><span class="line">4:15PM INF Setup <span class="built_in">local</span> DNS with upstream [tcp:127.0.0.1:45198 udp:172.16.1.117:53]</span><br><span class="line">4:15PM INF Creating udp dns on port 53</span><br><span class="line">4:15PM INF ---------------------------------------------------------------</span><br><span class="line">4:15PM INF  All looks good, now you can access to resources <span class="keyword">in</span> the kubernetes cluster</span><br><span class="line">4:15PM INF ---------------------------------------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-03-06</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/K8S/'>
+                            K8S
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/'>
+                            云原生
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/03/06/14-longhorn/">储存组件Longhorn部署使用</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2018～2025 China 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
