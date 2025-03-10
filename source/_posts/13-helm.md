@@ -31,13 +31,13 @@ Helm也提供了一个helm命令行工具，该工具可以基于Chartb包一键
 
 ### Helm架构
 
-![helm_arch](/images/pics/13-helm_arch.png)
+![helm_arch](/images/13-helm_arch.png)
 
 Helm Client（helm命令）和Helm Chart包时核心，helm命令可以从Chart Repository中下载Helm Chart包，读取kubeconfig文件，并构建kube-apiserver REST API 接口的HTTP请求，通过调用K8S提供的REST API 接口，将Chart包中包含的YAML格式定义的K8S资源，在K8S集群中创建， 这些资源以Release的形式存在与K8S集群中，每个Release 又包含多个K8S资源，如Deployment、Pod、Service等。
 
 ### Helm组成
 
-![struct](/images/pics/13-helm_struct.png)
+![struct](/images/13-helm_struct.png)
 
 - 模板文件
 
@@ -52,7 +52,7 @@ Helm Client（helm命令）和Helm Chart包时核心，helm命令可以从Chart 
 - 在Helm中，**部署一个应用可以简化为Chart模板（多个服务）+ Chart配置 —> 应用**。
 - Chart模板一个应用只用编写一次，可以重复使用，再部署时，可以指定不同的配置，从而将应用部署到不同环境或同一环境部署不同配置的应用。
 
-![deploy](/images/pics/13-helm_deploy_app.png)
+![deploy](/images/13-helm_deploy_app.png)
 
 ## Helm安装
 

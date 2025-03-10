@@ -888,7 +888,7 @@ kubectl -n longhorn-system patch -p '{"value": "true"}' --type=merge lhs deletin
 ### 删除标志设置：方式二，界面
 
 - 勾选**Deleting Confirmation Flag选项**
-![longhorn](/images/pics/14-longhorn_delete.png)
+![longhorn](/images/14-longhorn_delete.png)
 
 ### 删除操作
 ```yaml

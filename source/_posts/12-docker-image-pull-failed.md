@@ -38,7 +38,7 @@ categories:
 # 示例
 docker pull k8s.kubesre.xyz/ingress-nginx/opentelemetry-1.25.3-v20240813-b93310d
 ```
-![img](/images/pics/12-image_pull_error.jpg)
+![img](/images/12-image_pull_error.jpg)
 
 
 
@@ -116,7 +116,7 @@ docker pull docker.1panel.live/library/mysql:5.7
 ```
 
 2. 然后从docker镜像仓库拉去所需要的镜像
-![img](/images/pics/12-image_issue_pull.png)
+![img](/images/12-image_issue_pull.png)
 
 ## 拓展：最新稳定加速源列表
 
