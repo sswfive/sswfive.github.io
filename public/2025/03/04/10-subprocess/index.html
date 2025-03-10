@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="子进程管理工具之subprocess" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/head.png">
+    <title>PyShen</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">PyShen</a> 
+            <span class="description"></span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/tags/">标签</a></li>
+            
+        
+            
+                <li><a href="/categories/">分类</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    子进程管理工具之subprocess
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-03-06</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：4.4k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：19分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A8%A1%E5%9D%97%E6%A6%82%E8%BF%B0"><span class="post-toc-text">模块概述</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="post-toc-text">介绍：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0"><span class="post-toc-text">版本更新</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="post-toc-text">应用场景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4"><span class="post-toc-text">执行系统命令</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%B0%83%E7%94%A8%E5%85%B6%E4%BB%96%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E6%88%96%E8%84%9A%E6%9C%AC"><span class="post-toc-text">调用其他的可执行文件或脚本</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E7%9A%84%E8%BF%9B%E7%A8%8B%E4%BA%A4%E4%BA%92"><span class="post-toc-text">与其他的进程交互</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="post-toc-text">实现异步任务</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9B%BF%E4%BB%A3os-system"><span class="post-toc-text">替代os.system()</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B8%B8%E7%94%A8%E6%8E%A5%E5%8F%A3"><span class="post-toc-text">常用接口</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%87%8D%E8%A6%81%E6%8E%A5%E5%8F%A3"><span class="post-toc-text">重要接口</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3%E5%88%86%E6%9E%90%E4%B9%8Bsubprocess-run"><span class="post-toc-text">核心接口分析之subprocess.run()</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%87%BD%E6%95%B0%E7%89%B9%E7%82%B9%EF%BC%9A"><span class="post-toc-text">函数特点：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0%EF%BC%9Aargs"><span class="post-toc-text">重要参数：args</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0%EF%BC%9Astdin%E3%80%81stdout%E3%80%81sterr"><span class="post-toc-text">重要参数：stdin、stdout、sterr</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="post-toc-text">使用示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3%E5%88%86%E6%9E%90%E4%B9%8Bsubprocess-Popen"><span class="post-toc-text">核心接口分析之subprocess.Popen()</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%87%BD%E6%95%B0%E7%89%B9%E7%82%B9%EF%BC%9A-2"><span class="post-toc-text">函数特点：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%87%8D%E8%A6%81%E5%B1%9E%E6%80%A7-Popen%E5%AF%B9%E8%B1%A1"><span class="post-toc-text">重要属性-Popen对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="post-toc-text">使用示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#subprocess%E5%B8%B8%E7%94%A8%E5%BC%82%E5%B8%B8%E7%B1%BB"><span class="post-toc-text">subprocess常用异常类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SubprocessError"><span class="post-toc-text">SubprocessError</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#TimeoutExpired"><span class="post-toc-text">TimeoutExpired</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#CalledProcessError"><span class="post-toc-text">CalledProcessError</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B"><span class="post-toc-text">实践案例</span></a></li></ol>
+            
+        
+        <div class=".article-gallery"><blockquote>
+<p>Reference：<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html">官方文档</a></p>
+</blockquote>
+<h2 id="模块概述">模块概述</h2>
+<h3 id="介绍：">介绍：</h3>
+<p>subprocess是Python内置库中用于管理子进程的模块，支持在Windows、Linux、MacOS平台中使用；</p>
+<p>该模块通过创建启动一个子进程来执行系统级命令、调用其他的可执行文件或脚本、与其他进程进行交互等等；其主要通过管道技术连接进程间的输入/输出/错误管道，从而获得返回值。</p>
+<p>在subprocess模块发布后，官方建议使用该模块去替换标准库中的os.system()、os.spawn*()等方法去执行系统命令；</p>
+<h3 id="版本更新">版本更新</h3>
+<ol>
+<li>subprocess是python2.4中新增的模块；</li>
+<li>在python3.5之前，可以通过subprocess.call()，subprocess.getoutput()、subprocess.check_output()等等方法实现模块功能；</li>
+<li>在python3.5之后，新增subprocess.run()方法，并且官方文档建议通过subprocess.run()或者subprocess.Popen()来替换原有的老版本的功能函数；</li>
+</ol>
+<h2 id="应用场景">应用场景</h2>
+<h3 id="执行系统命令">执行系统命令</h3>
+<ul>
+<li>在程序内部执行系统级命令，如ls、kill、mkdir、awk等，可以使用subprocess实现；</li>
+</ul>
+<h3 id="调用其他的可执行文件或脚本">调用其他的可执行文件或脚本</h3>
+<ul>
+<li>在程序内部执行其他的执行文件或脚本，可以使用subprocess实现；</li>
+</ul>
+<h3 id="与其他的进程交互">与其他的进程交互</h3>
+<ul>
+<li>在需要与其他进程进行交互，比如向某个进程发送数据、从某个进程读取数据等，可以使用subprocess实现；</li>
+</ul>
+<h3 id="实现异步任务">实现异步任务</h3>
+<ul>
+<li>在程序内部中需要实现异步任务，可以使用subprocess实现；</li>
+</ul>
+<h3 id="替代os-system">替代os.system()</h3>
+<ul>
+<li>不想使用os.system()或os.system()无法实现需求时，可以subprocess实现；</li>
+</ul>
+<h2 id="常用接口">常用接口</h2>
+<h3 id="重要接口">重要接口</h3>
+<table>
+<thead>
+<tr>
+<th><strong>接口类别</strong></th>
+<th><strong>接口方法名</strong></th>
+<th><strong>功能描述</strong></th>
+<th><strong>返回结果</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高阶接口</td>
+<td>subprocess.run()</td>
+<td>执行命令并等待命令完成，返回一个对象，包含了命令的输出信息</td>
+<td>阻塞等待；返回一个对象，包含状态码、输出信息（stdin/stdout/stderr）</td>
+</tr>
+<tr>
+<td>等层接口</td>
+<td>subprocess.Popen()</td>
+<td>执行命令不等待完成，返回一个对象</td>
+<td>非阻塞等待；返回一个对象，包含状态码、输出信息（stdin/stdout/stderr）</td>
+</tr>
+<tr>
+<td>低版本接口（基本已被高阶的run()方法替代了）</td>
+<td>subprocess.call()</td>
+<td>执行命令，返回命令的结果和执行状态</td>
+<td>阻塞等待；0或者非0</td>
+</tr>
+<tr>
+<td></td>
+<td>subprocess.check_call()</td>
+<td>执行命令，返回结果和状态</td>
+<td>阻塞等待；正常为0 ，执行错误则抛出异常</td>
+</tr>
+<tr>
+<td></td>
+<td>subprocess.getstatusoutput()</td>
+<td>接受字符串形式的命令，返回 一个元组形式的结果，</td>
+<td>阻塞等待；第一个元素是命令执行状态，第二个为执行结果。</td>
+</tr>
+<tr>
+<td></td>
+<td>subprocess.getoutput()</td>
+<td>接收字符串形式的命令，返回结果</td>
+<td>阻塞等待；返回执行结果</td>
+</tr>
+<tr>
+<td></td>
+<td>subprocess.check_output()</td>
+<td>执行命令，如何执行状态码为0则返回命令的结果，否则抛出异常</td>
+<td>阻塞等待；0或抛出异常</td>
+</tr>
+</tbody>
+</table>
+<h2 id="核心接口分析之subprocess-run">核心接口分析之subprocess.run()</h2>
+<h3 id="函数特点：">函数特点：</h3>
+<ul>
+<li>输入：默认情况下，子进程会继承父进程的设置，会将输出显示在终端上</li>
+<li>输出：阻塞等待，执行成功returncode为0， 非0，表示执行异常</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">subprocess.run(</span><br><span class="line">    args,   <span class="comment"># 要执行的shell命令，默认应该是一个字符串序列，如[‘df’, ‘-Th’]或(‘df’, ‘-Th’)，也可以是一个字符串，如’df -Th’，但是此时需要把shell参数的值置为True；</span></span><br><span class="line">    *, </span><br><span class="line">    stdin=<span class="literal">None</span>, <span class="comment"># 子进程的标准输入。有三个参数可选：subprocess.PIPE 创建一个管道，允许与子进程进行通信；subprocess.DEVNULL 特殊的文件对象，可以将其用于丢弃子进程的输出；一个打开的文件对象，将内容写入文件</span></span><br><span class="line">    <span class="built_in">input</span>=<span class="literal">None</span>, <span class="comment"># 将参数传递给 Popen.communicate() 以及子进程的 stdin,允许将字节或字符串传递给子进程的标准输入(stdin);</span></span><br><span class="line">    stdout=<span class="literal">None</span>, <span class="comment"># 子进程的标准输出(stdout);</span></span><br><span class="line">    stderr=<span class="literal">None</span>, <span class="comment"># 子进程的标准错误(stderr);</span></span><br><span class="line">    capture_output=<span class="literal">False</span>, <span class="comment">#参数控制是否捕获外部命令的标准输出(stdout)和标准错误(stderr)。如果将其设置为True，run()函数将返回一个CompletedProcess对象，该对象具有stdout和stderr属性，分别存储了命令的标准输出和标准错误输出。如果设置为False，标准输出和标准错误将被发送到控制台。默认为False</span></span><br><span class="line">    shell=<span class="literal">False</span>,  <span class="comment"># 指定是否通过shell来执行命令。如果为True，命令将在shell中执行；如果为False，则直接调用可执行文件；</span></span><br><span class="line">    cwd=<span class="literal">None</span>,  <span class="comment"># 设置子进程的工作目录。默认为None，表示使用当前工作目录；</span></span><br><span class="line">    timeout=<span class="literal">None</span>, <span class="comment">#设置子进程的超时时间（秒）。如果子进程在指定的时间内没有运行完成，则会引发TimeoutExpired异常；</span></span><br><span class="line">    check=<span class="literal">False</span>, <span class="comment"># 设置是否检查子进程的返回码。如果为True，并且子进程的返回码不为零，则会引发CalledProcessError异常；</span></span><br><span class="line">    encoding=<span class="literal">None</span>, <span class="comment"># 默认是字节数据，如果指定了编码格式，则输出为字符串；</span></span><br><span class="line">    errors=<span class="literal">None</span>, <span class="comment"># 该参数定义在解码输出时如何处理编码错误，常用的值包括&quot;strict&quot; (默认值，抛出异常)、&quot;ignore&quot; (忽略错误字符) 和 &quot;replace&quot; (用替代字符代替错误字符);</span></span><br><span class="line">    text=<span class="literal">None</span>,  <span class="comment"># 指定是否将输出结果以文本形式返回。如果为True，则结果以字符串形式返回，同时input或者stdin参数也需要输入String；如果为False，则返回字节流。默认为False。</span></span><br><span class="line">    env=<span class="literal">None</span>, <span class="comment"># 该参数允许您为子进程指定环境变量。它可以接受一个字典类型的对象，其中键是环境变量的名称，值是环境变量的值。通过设置env参数，可以在子进程中使用特定的环境变量。</span></span><br><span class="line">    universal_newlines=<span class="literal">None</span>, <span class="comment"># 该参数影响的是输入与输出的数据格式，比如它的值默认为False，此时stdout和stderr的输出是字节序列；当该参数的值设置为True时，stdout和stderr的输出是字符串。</span></span><br><span class="line">    **other_popen_kwargs</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="重要参数：args">重要参数：args</h3>
+<ul>
+<li>可以接收两种方法：字符串或列表。</li>
+<li>使用列表形式subprocess.run([“ls”, “-al”])</li>
+<li>使用字符串形式 subprocess.run(“ls -al”, shell=True)。使用字符串形式必须设置参数shell=True</li>
+</ul>
+<h3 id="重要参数：stdin、stdout、sterr">重要参数：stdin、stdout、sterr</h3>
+<ul>
+<li>用来设置标准输入，标准输出，标准错误的。默认情况下，子进程会继承父进程的设置，会将输出显示在控制台；</li>
+<li>subprocess.PIPE 创建一个管道，允许与子进程进行通信；</li>
+<li>subprocess.DEVNULL 特殊的文件对象，可以将其用于丢弃子进程的输出</li>
+<li>一个打开的文件对象，将内容写入文件</li>
+</ul>
+<h3 id="使用示例">使用示例</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: subprocess.run(<span class="string">&quot;ls -al&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line">total <span class="number">16</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">55</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br><span class="line">Out[<span class="number">3</span>]: CompletedProcess(args=<span class="string">&#x27;ls -al&#x27;</span>, returncode=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>])</span><br><span class="line">total <span class="number">16</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">55</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br><span class="line">Out[<span class="number">4</span>]: CompletedProcess(args=[<span class="string">&#x27;ls&#x27;</span>, <span class="string">&#x27;-al&#x27;</span>], returncode=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: subprocess.run([<span class="string">&quot;ls&quot;</span>, <span class="string">&quot;-l&quot;</span>, <span class="string">&quot;/dev/null&quot;</span>], capture_output=<span class="literal">True</span>)</span><br><span class="line">Out[<span class="number">5</span>]: CompletedProcess(args=[<span class="string">&#x27;ls&#x27;</span>, <span class="string">&#x27;-l&#x27;</span>, <span class="string">&#x27;/dev/null&#x27;</span>], returncode=<span class="number">0</span>, stdout=<span class="string">b&#x27;crw-rw-rw- 1 experiment root 1, 3 2023-07-19 15:53:04 /dev/null\n&#x27;</span>, stderr=<span class="string">b&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>])</span><br><span class="line">total <span class="number">16</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">55</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: res.returncode</span><br><span class="line">Out[<span class="number">7</span>]: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>,<span class="string">&quot;./cmd_output&quot;</span>], stdout=subprocess.PIPE)</span><br><span class="line">ls: cannot access ./cmd_output: No such file <span class="keyword">or</span> directory</span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>,<span class="string">&quot;./&quot;</span>], stdout=subprocess.PIPE)</span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: res.stdout</span><br><span class="line">Out[<span class="number">10</span>]: <span class="string">b&#x27;total 16\ndrwxr-xr-x   3 root root 4096 2024-01-12 16:18:55 .\ndrwxr-xr-x. 14 root root 4096 2024-01-12 16:17:37 ..\n-rw-r--r--   1 root root    0 2024-01-12 16:18:08 find_big_file.log\n-rwxr-xr-x   1 root root 1453 2024-01-12 16:18:00 find_big_file.sh\ndrwxr-xr-x   2 root root 4096 2024-01-12 16:18:56 shell_demo\n&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]: res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>,<span class="string">&quot;./&quot;</span>], stdout=subprocess.PIPE, text=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">12</span>]: res.stdout</span><br><span class="line">Out[<span class="number">12</span>]: <span class="string">&#x27;total 16\ndrwxr-xr-x   3 root root 4096 2024-01-12 16:18:55 .\ndrwxr-xr-x. 14 root root 4096 2024-01-12 16:17:37 ..\n-rw-r--r--   1 root root    0 2024-01-12 16:18:08 find_big_file.log\n-rwxr-xr-x   1 root root 1453 2024-01-12 16:18:00 find_big_file.sh\ndrwxr-xr-x   2 root root 4096 2024-01-12 16:18:56 shell_demo\n&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;cmd_output.txt&quot;</span>, <span class="string">&quot;a+&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    ...:     res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>,<span class="string">&quot;./&quot;</span>], stdout=f, text=<span class="literal">True</span>)</span><br><span class="line">    ...:     <span class="built_in">print</span>(<span class="string">f&quot;code:<span class="subst">&#123;res.returncode&#125;</span>&quot;</span>)</span><br><span class="line">    ...:     <span class="built_in">print</span>(<span class="string">f&quot;stdout: <span class="subst">&#123;res.stdout&#125;</span>&quot;</span>)</span><br><span class="line">    ...: </span><br><span class="line">code:<span class="number">0</span></span><br><span class="line">stdout: <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: ls</span><br><span class="line">cmd_output.txt  find_big_file.log  find_big_file.sh*  shell_demo/</span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: res = subprocess.run([<span class="string">&quot;cat&quot;</span>,<span class="string">&quot;cmd_output.txt&quot;</span>])</span><br><span class="line">total <span class="number">16</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">27</span>:<span class="number">11</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">27</span>:<span class="number">11</span> cmd_output.txt</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br><span class="line">total <span class="number">20</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">27</span>:<span class="number">11</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root  <span class="number">375</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">27</span>:<span class="number">11</span> cmd_output.txt</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br></pre></td></tr></table></figure>
+<h2 id="核心接口分析之subprocess-Popen">核心接口分析之subprocess.Popen()</h2>
+<h3 id="函数特点：-2">函数特点：</h3>
+<ul>
+<li><strong>run()方法底层调用的是Popen()方法，当run方法无法满足需求是，使用Popen()方法去实现；</strong></li>
+<li>输入：执行的命令</li>
+<li>输出：非阻塞输出，执行后立即返回，执行结果通过返回对象获取</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">subprocess.Popen(</span><br><span class="line">    args,  <span class="comment">#同run()方法</span></span><br><span class="line">    bufsize=- <span class="number">1</span>, <span class="comment"># 定义子进程的缓冲大小，默认值-1表示使用系统默认的缓冲大小；</span></span><br><span class="line">    executable=<span class="literal">None</span>, <span class="comment"># 指定要执行的程序路径，若未指定，则通过PATH环境变量来确定可执行文件位置；</span></span><br><span class="line">    stdin=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    stdout=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    stderr=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    preexec_fn=<span class="literal">None</span>, <span class="comment"># 指定在子进程启动之前要执行的函数，该函数在fork()调用成功，在exec()调用之前被调用；</span></span><br><span class="line">    close_fds=<span class="literal">True</span>, <span class="comment"># 指定是否关闭所有文件描述符，</span></span><br><span class="line">    shell=<span class="literal">False</span>, <span class="comment"># # 同run()方法</span></span><br><span class="line">    cwd=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    env=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    universal_newlines=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    startupinfo=<span class="literal">None</span>, <span class="comment"># 一个可选的subprocess.STARTUPINFO对象，用于指定子进程的启动信息，如窗口大小、窗口标题等</span></span><br><span class="line">    creationflags=<span class="number">0</span>, <span class="comment"># 用于指定子进程的创建标志，控制子进程的各种行为。可以使用subprocess.CREATE_NEW_CONSOLE、subprocess.CREATE_NEW_PROCESS_GROUP等常量进行设置</span></span><br><span class="line">    restore_signals=<span class="literal">True</span>, <span class="comment"># 用于确定是否在子进程中恢复信号处理程序的默认行为</span></span><br><span class="line">    start_new_session=<span class="literal">False</span>, <span class="comment"># 用于代替使用 preexec_fn 的代码来在子进程中调用 os.setsid() 或 os.setpgid()；如果 start_new_session 为真值则 setsid() 系统调用将在执行子进程之前在子进程中执行</span></span><br><span class="line">    pass_fds=(), <span class="comment"># 是一个可选的在父子进程间保持打开的文件描述符序列。提供任何 pass_fds 将强制 close_fds 为 True</span></span><br><span class="line">    *, </span><br><span class="line">    group=<span class="literal">None</span>, <span class="comment">#（仅 POSIX）: 如果 group 不为 None，则 setregid() 系统调用将于子进程执行之前在下级进程中进行。 如果所提供的值为一个字符串，将通过 grp.getgrnam() 来查找它，并将使用 gr_gid 中的值。 如果该值为一个整数，它将被原样传递</span></span><br><span class="line">    extra_groups=<span class="literal">None</span>, <span class="comment"># （仅 POSIX）: 如果 extra_groups 不为 None，则 setgroups() 系统调用将于子进程之前在下级进程中进行。 在 extra_groups 中提供的字符串将通过 grp.getgrnam() 来查找，并将使用 gr_gid 中的值。 整数值将被原样传递</span></span><br><span class="line">    user=<span class="literal">None</span>, <span class="comment"># 仅 POSIX）: 如果 user 不为 None，则 setreuid() 系统调用将于子进程执行之前在下级进程中进行。 如果所提供的值为一个字符串，将通过 pwd.getpwnam() 来查找它，并将使用 pw_uid 中的值。 如果该值为一个整数，它将被原样传递</span></span><br><span class="line">    umask=- <span class="number">1</span>, <span class="comment"># 如果 umask 不为负值，则 umask() 系统调用将在子进程执行之前在下级进程中进行</span></span><br><span class="line">    encoding=<span class="literal">None</span>,  <span class="comment"># 同run()方法</span></span><br><span class="line">    errors=<span class="literal">None</span>,  <span class="comment"># 同run()方法</span></span><br><span class="line">    text=<span class="literal">None</span>,  <span class="comment"># 同run()方法</span></span><br><span class="line">    pipesize=- <span class="number">1</span>, <span class="comment"># 当 PIPE 被用作 stdin, stdout 或 stderr 时 pipesize 可被用于改变管道的大小。 管道的大小仅会在受支持的平台上被改变（当撰写本文档时只有 Linux 支持）</span></span><br><span class="line">    process_group=<span class="literal">None</span> <span class="comment"># 用于代替使用 preexec_fn 的代码来在子进程中调用 os.setsid() 或 os.setpgid()；如果 start_new_session 为真值则 setsid() 系统调用将在执行子进程之前在子进程中执行</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="重要属性-Popen对象">重要属性-Popen对象</h3>
+<p><a target="_blank" rel="noopener" href="https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&amp;clientId=u0bfed3c2-e7cc-4&amp;from=paste&amp;height=150&amp;id=u92fe8a26&amp;originHeight=150&amp;originWidth=850&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9909&amp;status=done&amp;style=none&amp;taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&amp;title=&amp;width=850" title="image.png" class="gallery-item" style="box-shadow: none;"> <img src="https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&amp;clientId=u0bfed3c2-e7cc-4&amp;from=paste&amp;height=150&amp;id=u92fe8a26&amp;originHeight=150&amp;originWidth=850&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9909&amp;status=done&amp;style=none&amp;taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&amp;title=&amp;width=850" alt="image.png"></a></p>
+<ul>
+<li>Popen.<strong>communicate</strong>(<em>input=None</em>, <em>timeout=None</em>)
+<ul>
+<li>与进程交互：将数据发送到 stdin。 从 stdout 和 stderr 读取数据，直到抵达文件结尾。 等待进程终止并设置 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.Popen.returncode">returncode</a> 属性，可选的 <em>input</em> 参数应为要发送到下级进程的数据，或者如果没有要发送到下级进程的数据则为 None。 如果流是以文本模式打开的，则 <em>input</em> 必须为字符串。 在其他情况下，它必须为字节串。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.Popen.communicate">communicate()</a> 返回一个 (stdout_data, stderr_data) 元组。如果文件以文本模式打开则为字符串；否则字节。</li>
+</ul>
+</li>
+<li>Popen.<strong>poll</strong>()
+<ul>
+<li>检查子进程是否已被终止。设置并返回 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.Popen.returncode">returncode</a> 属性。否则返回 None。</li>
+</ul>
+</li>
+<li>Popen.<strong>wait</strong>(<em>timeout=None</em>)
+<ul>
+<li>等待子进程被终止。设置并返回 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.Popen.returncode">returncode</a> 属性。</li>
+</ul>
+</li>
+<li>Popen.<strong>send_signal</strong>(<em>signal</em>)
+<ul>
+<li>将信号 <em>signal</em> 发送给子进程，如SIGINT、SIGTERM等</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用示例-2">使用示例</h3>
+<ul>
+<li>基本操作</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: res = subprocess.Popen(<span class="string">&quot;sleep 10 &amp;&amp; pwd&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: res</span><br><span class="line">Out[<span class="number">3</span>]: &lt;Popen: returncode: <span class="literal">None</span> args: <span class="string">&#x27;sleep 10 &amp;&amp; pwd&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: res.stdout</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: res.stdout</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: /data/sswang/subprocess_demo</span><br><span class="line">In [<span class="number">7</span>]: </span><br></pre></td></tr></table></figure>
+<ul>
+<li>案例</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">使用subprocess的Popen来执行shell命令，这种方式会创建一个新的进程来执行shell</span></span><br><span class="line"><span class="string">使用要放在后台一直执行的shell进程，比如通过shell启动某种服务，如果通过上面</span></span><br><span class="line"><span class="string">的方式，就会遇到当python被关闭时，shell启动的程序也被关闭</span></span><br><span class="line"><span class="string">需要注意的是close_fds参数，默认为false，表示继承fb，即文件资源符，如果继承fb，那么当父进程关闭时</span></span><br><span class="line"><span class="string">shell启动的子进程会去继承父进程相应的资源，如Flask web服务中通过shell启动了某个服务，此时Flask关闭了</span></span><br><span class="line"><span class="string">但原本Flask监听的端口依旧会被shell子进程占用，这样就导致Flask无法再次启动。</span></span><br><span class="line"><span class="string">将close_fds设置为false可以避免这种情况</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">execshell2</span>(<span class="params">self,shell</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        p = subprocess.Popen(shell, shell=<span class="literal">True</span>,stdout=subprocess.PIPE ,stderr=subprocess.STDOUT, close_fds=<span class="literal">True</span>)</span><br><span class="line">        output = p.stdout.read()</span><br><span class="line">        <span class="comment"># p.terminate()</span></span><br><span class="line">        code = <span class="number">0</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;%s execute success!&#x27;</span> % shell)</span><br><span class="line">    <span class="keyword">except</span> subprocess.CalledProcessError <span class="keyword">as</span> e:</span><br><span class="line">        code = e.returncode</span><br><span class="line">        output = e.output</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;%s execute error: exit_status [%s] err [%s]&#x27;</span> % (shell, <span class="built_in">str</span>(code), output))</span><br><span class="line">        exit()</span><br><span class="line">    <span class="keyword">return</span> code, output</span><br></pre></td></tr></table></figure>
+<h2 id="subprocess常用异常类">subprocess常用异常类</h2>
+<h3 id="SubprocessError">SubprocessError</h3>
+<ul>
+<li>此模块的其他异常</li>
+</ul>
+<h3 id="TimeoutExpired">TimeoutExpired</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.SubprocessError">SubprocessError</a> 的子类，等待子进程的过程中发生超时时被抛出</li>
+</ul>
+<h3 id="CalledProcessError">CalledProcessError</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.SubprocessError">SubprocessError</a> 的子类，当一个由 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.check_call">check_call()</a>, <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.check_output">check_output()</a> 或 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.run">run()</a> (附带 check=True) 运行的进程返回了非零退出状态码时将被引发</li>
+</ul>
+<h2 id="实践案例">实践案例</h2>
+<ul>
+<li><strong>需求：使用typer+subprocess实现了一个用于管理项目依赖和执行一些常见任务的脚本的工具。</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> click</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UpgradeDependencies</span>:</span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_build_args</span>(<span class="params">cls, dependencies</span>):</span><br><span class="line">        <span class="comment"># 解析依赖项并构建参数</span></span><br><span class="line">        packs, specials = [], &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> dep <span class="keyword">in</span> dependencies:</span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;:&quot;</span> <span class="keyword">in</span> dep:</span><br><span class="line">                k, v = dep.split(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">                specials[k.strip()] = v.strip().split()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                packs.append(dep.strip())</span><br><span class="line">        <span class="keyword">return</span> packs, specials</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_parse_dependencies</span>(<span class="params">cls, text, title</span>):</span><br><span class="line">        <span class="comment"># 从文本中解析依赖项</span></span><br><span class="line">        main, dev = text.split(title)</span><br><span class="line">        devs = dev.split(<span class="string">&quot;[tool.&quot;</span>)[<span class="number">0</span>].strip().splitlines()</span><br><span class="line">        mains = main.strip().splitlines()</span><br><span class="line">        prod_packs, specials = cls._build_args(mains)</span><br><span class="line">        dev_packs, specials = cls._build_args(devs)</span><br><span class="line">        <span class="keyword">return</span> prod_packs, dev_packs, specials</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_args</span>(<span class="params">cls</span>):</span><br><span class="line">        <span class="comment"># 获取依赖项参数</span></span><br><span class="line">        dev_title = <span class="string">&quot;[tool.poetry.group.dev.dependencies]&quot;</span></span><br><span class="line">        dev_flag = <span class="string">&quot;--group dev&quot;</span></span><br><span class="line">        main_args, dev_args, others = [], [], []</span><br><span class="line">        <span class="keyword">if</span> dev_title <span class="keyword">in</span> text:</span><br><span class="line">            main_title = <span class="string">&quot;[tool.poetry.dependencies]&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            dev_flag = <span class="string">&quot;--group dev&quot;</span></span><br><span class="line">            dev_title = <span class="string">&quot;[tool.poetry.group.dev.dependencies]&quot;</span></span><br><span class="line">        main_args, dev_args, others = cls._parse_dependencies(text, main_title, dev_title, dev_flag)</span><br><span class="line">        <span class="keyword">return</span> main_args, dev_args, others, dev_flag</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">gen_cmd</span>(<span class="params">cls</span>):</span><br><span class="line">        <span class="comment"># 生成升级依赖项的命令</span></span><br><span class="line">        main_args, dev_args, others, dev_flag = cls.get_args()</span><br><span class="line">        command = <span class="string">f&quot;poetry add <span class="subst">&#123;<span class="string">&#x27; &#x27;</span>.join(main_args)&#125;</span> &amp;&amp; poetry add <span class="subst">&#123;dev_flag&#125;</span> <span class="subst">&#123;<span class="string">&#x27; &#x27;</span>.join(dev_args)&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">for</span> packages <span class="keyword">in</span> others:</span><br><span class="line">            command += <span class="string">f&quot; &amp;&amp; poetry add <span class="subst">&#123;<span class="string">&#x27; &#x27;</span>.join(packages)&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">return</span> command</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">exit_if_run_failed</span>(<span class="params">cmd</span>):</span><br><span class="line">    <span class="comment"># 如果运行命令失败，则退出</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        subprocess.run(cmd, check=<span class="literal">True</span>, shell=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">except</span> subprocess.CalledProcessError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Error: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;升级所有依赖包到最新版&quot;&quot;&quot;</span></span><br><span class="line">    exit_if_run_failed(UpgradeDependencies.gen_cmd())</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lint</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;格式化加静态检查&quot;&quot;&quot;</span></span><br><span class="line">    remove_imports = <span class="string">&quot;autoflake --in-place --remove-all-unused-imports&quot;</span></span><br><span class="line">    cmd = <span class="string">&quot;&quot;</span></span><br><span class="line">    paths = <span class="string">&quot;.&quot;</span></span><br><span class="line">    <span class="keyword">if</span> args := sys.argv[<span class="number">1</span>:]:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;-r&quot;</span> <span class="keyword">in</span> args:</span><br><span class="line">            args.remove(<span class="string">&quot;-r&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">all</span>(Path(i).is_file() <span class="keyword">for</span> i <span class="keyword">in</span> args):</span><br><span class="line">                cmd = <span class="string">f&quot;<span class="subst">&#123;remove_imports&#125;</span> <span class="subst">&#123;paths&#125;</span> &amp;&amp; &quot;</span> + cmd</span><br><span class="line">        paths = <span class="string">&quot; &quot;</span>.join(args)</span><br><span class="line">    tools = (<span class="string">&quot;isort&quot;</span>, <span class="string">&quot;black&quot;</span>, <span class="string">&quot;ruff&quot;</span>, <span class="string">&quot;mypy&quot;</span>)</span><br><span class="line">    cmd += <span class="string">f&quot;poetry run <span class="subst">&#123;tools[<span class="number">0</span>]&#125;</span> <span class="subst">&#123;paths&#125;</span> &amp;&amp; poetry run <span class="subst">&#123;tools[<span class="number">1</span>]&#125;</span> <span class="subst">&#123;paths&#125;</span> &amp;&amp; poetry run <span class="subst">&#123;tools[<span class="number">2</span>]&#125;</span> <span class="subst">&#123;paths&#125;</span> &amp;&amp; poetry run <span class="subst">&#123;tools[<span class="number">3</span>]&#125;</span> <span class="subst">&#123;paths&#125;</span>&quot;</span></span><br><span class="line">    exit_if_run_failed(cmd)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dev</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;启动服务：相当于django的runserver&quot;&quot;&quot;</span></span><br><span class="line">    cmd = <span class="string">&quot;poetry run python main.py&quot;</span></span><br><span class="line">    <span class="keyword">if</span> args := sys.argv[<span class="number">1</span>:]:</span><br><span class="line">        cmd += <span class="string">&quot; &quot;</span> + <span class="string">&quot; &quot;</span>.join(args)</span><br><span class="line">    exit_if_run_failed(cmd)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">makemigrations</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成数据库迁移文件，类似Django的./manage.py makemigrations&quot;&quot;&quot;</span></span><br><span class="line">    exit_if_run_failed(<span class="string">&quot;aerich migrate&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">migrate</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;更新数据库表结构：相当于django的./manage.py migrate&quot;&quot;&quot;</span></span><br><span class="line">    exit_if_run_failed(<span class="string">&quot;aerich upgrade&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    cli()  <span class="comment"># Assuming you have defined `cli` somewhere</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-03-04</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/python%E5%BA%93/'>
+                            python库
+                        </a>
+                    
+                        <a href='/tags/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/'>
+                            进程管理
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/Python/'>
+                            Python
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/03/04/11-pathlib/'>文件路径管理工具之pathlib</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/03/04/09-supervisor/">进程管理工具之Supervisor</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2018～2025 China 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
