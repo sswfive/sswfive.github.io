@@ -3,14 +3,14 @@ title: about
 date: 2024-11-11 22:46:07
 ---
 
-# 📄 PyShen's Blog  👨🏻‍💻  
+# 📄 WSShen's Blog  👨🏻‍💻  
 
 
 
 > 我认清时间的时候，只剩下一寸光阴，这是我的个人主页，到处是岁月痕迹...
 
 
-## 你好👋，我是PyShen（ShuShen·Wang）
+## 你好👋，我是WSShen（WangShuShen）
 
 - 👨‍💻 一个热爱编程的🐂🐴，目前主要从事Backend + ModelOps方向的工作，坐标南京...
 
@@ -34,7 +34,7 @@ date: 2024-11-11 22:46:07
 
 
 ### 联系方式
-- 邮箱: sswss5@aliyun.com
+- 邮箱: sswss5005@163.com
 
 
 
