@@ -1,0 +1,30 @@
+<%- partial('_partial/header', { post: null }) %>
+
+<main class="main-content">
+  <br>
+  <span><span class="darkmode-ignore">🔍</span><i>搜索</i></span>
+  
+  <div class="search-box">
+    <div class="search-input-container">
+      <input type="text" id="search-input" placeholder="输入关键词搜索..." autocomplete="off">
+      <i class="fas fa-search search-icon"></i>
+      <button type="button" class="clear-button" aria-label="清除搜索">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div id="local-search-result"></div>
+</main>
+
+<%- js('js/local-search.js') %>
+
+<script>
+// 显示页面加载统计和参数处理
+document.addEventListener('DOMContentLoaded', function() {
+  // 更新文档标题
+  document.title = "搜索 - <%= config.title %>";
+});
+</script>
+
+<%- partial('_partial/footer') %> 

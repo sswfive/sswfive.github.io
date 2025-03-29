@@ -1,0 +1,40 @@
+<!-- 在页面头部插入自定义CSS和JS -->
+<script src="/js/custom-search.js"></script>
+<style>
+  /* Quick Search Box */
+  .quick-search-container {
+    position: relative;
+    display: inline-block;
+    margin-left: 20px;
+  }
+
+  .quick-search-input {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    font-size: 14px;
+    width: 180px;
+    transition: width 0.3s;
+  }
+
+  .quick-search-input:focus {
+    width: 220px;
+  }
+
+  .quick-search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .quick-search-container {
+      display: none;
+    }
+  }
+</style> 

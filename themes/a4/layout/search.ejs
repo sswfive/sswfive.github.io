@@ -1,0 +1,33 @@
+<div class="search-page">
+  <h1 class="search-page-title">搜索</h1>
+  
+  <div class="search-container">
+    <input type="text" id="search-input" class="search-input" placeholder="请输入关键词搜索..." autocomplete="off">
+    <button class="search-btn">🔍</button>
+  </div>
+  
+  <div id="local-search-result"></div>
+</div>
+
+<!-- 处理URL查询参数 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 从URL获取查询参数
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('q');
+    
+    // 如果有查询参数，自动填充到搜索框并触发搜索
+    if (query) {
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.value = query;
+        // 创建并触发input事件
+        const event = new Event('input', { bubbles: true });
+        searchInput.dispatchEvent(event);
+      }
+    }
+  });
+</script>
+
+<!-- 引入搜索脚本 -->
+<script src="/js/local-search.js"></script> 

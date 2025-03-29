@@ -1,6 +1,6 @@
 # 当你第一次玩A4，想直接看效果的话：
-# 1. 请直接去掉 menu 配置中的  ‘首页’ 和 ‘文章’ 前的 ‘#’ 注释符号
-# 2. 请直接去掉 showInMenu 配置中的 ‘- 文章’ 前的 ‘#’ 注释符号
+# 1. 请直接去掉 menu 配置中的  '首页' 和 '文章' 前的 '#' 注释符号
+# 2. 请直接去掉 showInMenu 配置中的 '- 文章' 前的 '#' 注释符号
 # 3. 执行命令：hexo new page index 生成首页；执行命令：hexo new page list 生成列表页面；
 # 4. 执行命令：hexo clean && hexo g && hexo s 直接查看页面效果
 menu:
@@ -10,14 +10,16 @@ menu:
   关于: /about/ # 需要hexo new page about
   标签: /tags/ #需要hexo new page tags
   分类: /categories/ # 需要hexo new page categories
+  搜索: /search/ # 添加搜索页面
   # ...
 
 # 首页你想要展示的menu链接，注意当你修改了menu中的别名，这里要随着更改，不然你会疑惑怎么首页没有修改后的别名
-showInMenu:  # menu 中的哪些页面显示在首页中（“首页”必定显示）
+showInMenu:  # menu 中的哪些页面显示在首页中（"首页"必定显示）
   - 文章  # 将在首页显示 文章 链接
   - 关于
   - 标签
   - 分类
+  - 搜索  # 添加搜索到首页显示
 
 index:  # 首页相关配置
   header:  # 首页的页眉 以及 404页面，当你没开启一言，将会每次刷新页面随机展示下面的语句
@@ -56,8 +58,8 @@ tool:
   returnToLast: true # 回退页面按钮
   topToc: true # 文章顶部目录
   leftToc: true # 文章左侧目录 目前仅支持大屏幕浮现
-  recentUpdatePost: false # list页面将会新增一个“最近更新”模块，展示最近3篇文章，最近更新可点击跳转至 "最近更新列表页面"
-  # A4启动将会自动创建“最近更新页面”：url为 /recent-updates 请自行使用
+  recentUpdatePost: false # list页面将会新增一个"最近更新"模块，展示最近3篇文章，最近更新可点击跳转至 "最近更新列表页面"
+  # A4启动将会自动创建"最近更新页面"：url为 /recent-updates 请自行使用
   # 如果你发现你的最近更新时间总是当天部署的时间，请看 https://ninojay.top/2023/writeByGithub-2/#2024.09.26更新说明
 
 
@@ -101,7 +103,7 @@ cdn:
 
 # 实验性功能：A4色调调整：颜色搭配是很主观的行为
 # 设置为 false 为 A4 默认灰白色调，可设置为 true 直接启动 体验下 另一种护眼预置色调
-# 注：颜色代码需加“#”，颜色单词不需要加“#”
+# 注：颜色代码需加"#"，颜色单词不需要加"#"
 # 更多A4色调搭配推荐：https://ninojay.top/hexoplugin/A4-color-change/
 color: 
   enable: false # true | false 

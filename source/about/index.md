@@ -1,6 +1,7 @@
 ---
 title: about
 date: 2024-11-11 22:46:07
+layout: post
 ---
 
 # 📄 WSShen's Blog  👨🏻‍💻  

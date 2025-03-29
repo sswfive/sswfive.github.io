@@ -2,12 +2,12 @@
 <html lang="en">
     
     <head>
-    <meta charset="utf-8">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
     <meta name="description" content="包管理工具Helm的使用" />
     <meta name="hexo-theme-A4" content="v1.9.7" />
-    <link rel="alternate icon" type="image/webp" href="/img/head.png">
-    <title>PyShen</title>
+    <link rel="alternate icon" type="image/webp" href="/images/head.png">
+    <title>WSShen</title>
 
     
         
@@ -59,7 +59,7 @@
 <link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
 
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
     
     
 
@@ -75,9 +75,13 @@
 
     
     
+    
+    <!-- 添加全局搜索相关的样式和脚本 -->
+    <link rel="stylesheet" href="/css/custom.css">
+    <script src="/js/custom-search.js"></script>
     
     <body>
-        <script src="/js/darkmode-js.min.js"></script>
+        <!-- hexo-inject:begin --><!-- hexo-inject:end --><script src="/js/darkmode-js.min.js"></script>
         
         <script>
             const options = {
@@ -127,10 +131,10 @@
             alt="^-^" 
             cache-control="max-age=86400" 
             class="header-img" 
-            src="/img/head.png" 
+            src="/images/head.png" 
         />
         <div class="header-content">
-            <a class="logo" href="/">PyShen</a> 
+            <a class="logo" href="/">WSShen</a> 
             <span class="description"></span> 
         </div>
     </div>
@@ -156,6 +160,10 @@
         
             
                 <li><a href="/categories/">分类</a></li>
+            
+        
+            
+                <li><a href="/search/">搜索</a></li>
             
         
     </ul>
@@ -189,7 +197,7 @@
             <div class="post-head-meta-center">
         
                 
-                    <span>最近更新：2025-03-06</span> 
+                    <span>最近更新：2025-03-17</span> 
                 
                 
                     
@@ -236,9 +244,9 @@
 <ul>
 <li>对于使用者来说，使用Helm后不需要写复杂的应用部署文件，可以非常方便的在K8S上查找、安装、升级、回滚以及卸载应用程序。</li>
 </ul>
-<h3 id="Helm架构"><a href="#Helm架构" class="headerlink" title="Helm架构"></a>Helm架构</h3><p><a href="/images/pics/13-helm_arch.png" title="helm_arch" class="gallery-item" style="box-shadow: none;"> <img src="/images/pics/13-helm_arch.png" alt="helm_arch"></a></p>
+<h3 id="Helm架构"><a href="#Helm架构" class="headerlink" title="Helm架构"></a>Helm架构</h3><p><a href="/images/13-helm_arch.png" title="helm_arch" class="gallery-item" style="box-shadow: none;"> <img src="/images/13-helm_arch.png" alt="helm_arch"></a></p>
 <p>Helm Client（helm命令）和Helm Chart包时核心，helm命令可以从Chart Repository中下载Helm Chart包，读取kubeconfig文件，并构建kube-apiserver REST API 接口的HTTP请求，通过调用K8S提供的REST API 接口，将Chart包中包含的YAML格式定义的K8S资源，在K8S集群中创建， 这些资源以Release的形式存在与K8S集群中，每个Release 又包含多个K8S资源，如Deployment、Pod、Service等。</p>
-<h3 id="Helm组成"><a href="#Helm组成" class="headerlink" title="Helm组成"></a>Helm组成</h3><p><a href="/images/pics/13-helm_struct.png" title="struct" class="gallery-item" style="box-shadow: none;"> <img src="/images/pics/13-helm_struct.png" alt="struct"></a></p>
+<h3 id="Helm组成"><a href="#Helm组成" class="headerlink" title="Helm组成"></a>Helm组成</h3><p><a href="/images/13-helm_struct.png" title="struct" class="gallery-item" style="box-shadow: none;"> <img src="/images/13-helm_struct.png" alt="struct"></a></p>
 <ul>
 <li><p>模板文件</p>
 <ul>
@@ -256,7 +264,7 @@
 <li>在Helm中，<strong>部署一个应用可以简化为Chart模板（多个服务）+ Chart配置 —&gt; 应用</strong>。</li>
 <li>Chart模板一个应用只用编写一次，可以重复使用，再部署时，可以指定不同的配置，从而将应用部署到不同环境或同一环境部署不同配置的应用。</li>
 </ul>
-<p><a href="/images/pics/13-helm_deploy_app.png" title="deploy" class="gallery-item" style="box-shadow: none;"> <img src="/images/pics/13-helm_deploy_app.png" alt="deploy"></a></p>
+<p><a href="/images/13-helm_deploy_app.png" title="deploy" class="gallery-item" style="box-shadow: none;"> <img src="/images/13-helm_deploy_app.png" alt="deploy"></a></p>
 <h2 id="Helm安装"><a href="#Helm安装" class="headerlink" title="Helm安装"></a>Helm安装</h2><h3 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h3><ul>
 <li>一个可用的K8S集群</li>
 <li>确定安装版本和安全配置</li>
@@ -453,7 +461,7 @@
                     <div class="footer">
     
         <span> 
-            © 2018～2025 China 
+            © 2019～2025 China 
 
             
                 
@@ -575,7 +583,7 @@
                     <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
                         <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
                     </svg>
-                </div>
+                </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
             
     </body>
 </html>
