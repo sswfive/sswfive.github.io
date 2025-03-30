@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="Docker镜像无法拉取问题的解决方案" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/images/head.png">
+    <title>WSShen</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <!-- 添加全局搜索相关的样式和脚本 -->
+    <link rel="stylesheet" href="/css/custom.css">
+    <script src="/js/custom-search.js"></script>
+    
+    <body>
+        <!-- hexo-inject:begin --><!-- hexo-inject:end --><script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/images/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">WSShen</a> 
+            <span class="description"></span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/tags/">标签</a></li>
+            
+        
+            
+                <li><a href="/categories/">分类</a></li>
+            
+        
+            
+                <li><a href="/search/">搜索</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    Docker镜像无法拉取问题的解决方案
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-03-30</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：970</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：4分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9A%E5%9C%A8%E7%BA%BF%E4%B8%8B%E8%BD%BD"><span class="post-toc-text">方案一：在线下载</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9A%E5%9C%A8%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F%E5%8A%A0%E4%B8%8A%E4%B8%8B%E5%88%97%E5%89%8D%E7%BC%80"><span class="post-toc-text">方案二：在拉取镜像加上下列前缀</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%B9%E6%A1%88%E4%B8%89%EF%BC%9A%E9%80%9A%E8%BF%87%E9%85%8D%E7%BD%AEDocker%E5%8A%A0%E9%80%9F%E6%BA%90"><span class="post-toc-text">方案三：通过配置Docker加速源</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%B9%E6%A1%88%E5%9B%9B%EF%BC%9A-%E9%80%9A%E8%BF%87%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E7%9A%84-issue"><span class="post-toc-text">方案四： 通过开源项目的 issue</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%8B%93%E5%B1%95%EF%BC%9A%E6%9C%80%E6%96%B0%E7%A8%B3%E5%AE%9A%E5%8A%A0%E9%80%9F%E6%BA%90%E5%88%97%E8%A1%A8"><span class="post-toc-text">拓展：最新稳定加速源列表</span></a></li></ol>
+            
+        
+        <div class=".article-gallery"><p>自2024年5月底6月初，由于某些原因，突然间在国内就无法正常访问和拉取Docker镜像源，鉴于笔者目前从事云原生ModelOps工作，几乎每天都要和K8S、Docker打交道，镜像无法拉取一直让人很苦恼和无奈，所以在日常工作和探索中，总结汇总了如下可以拉去的官方镜像源的解决方案，由于之前都是零零散散的记录在不同的笔记中，一直想找个时间系统的整理汇总一下，拖了很久，终于在这个周末挤出了一些时间进行了整理汇总，详见下文四个方案，在此，这些方案可能会随着时间的推移无法使用，若是如此请见谅!</p>
+<h2 id="方案一：在线下载"><a href="#方案一：在线下载" class="headerlink" title="方案一：在线下载"></a>方案一：在线下载</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docker.aityp.com/">渡渡鸟的容器镜像小站</a>：本站作者宣传100%同步官方镜像，目前支持同步镜像源：gcr.io ghcr.io quay.io k8s.gcr.io docker.io registry.k8s.io docker.elastic.co skywalking.docker.scarf.sh 单个镜像大小限制2G，截止目前，全站目前镜像索引数量7516，同步5213GB;</li>
+</ul>
+<h2 id="方案二：在拉取镜像加上下列前缀"><a href="#方案二：在拉取镜像加上下列前缀" class="headerlink" title="方案二：在拉取镜像加上下列前缀"></a>方案二：在拉取镜像加上下列前缀</h2><ul>
+<li>推荐项目1：<a target="_blank" rel="noopener" href="https://github.com/DaoCloud/public-image-mirror">https://github.com/DaoCloud/public-image-mirror</a></li>
+<li>推荐项目2：<a target="_blank" rel="noopener" href="https://github.com/kubesre/docker-registry-mirrors">https://github.com/kubesre/docker-registry-mirrors</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>源站</strong></th>
+<th><strong>替换为</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cr.l5d.io</td>
+<td>l5d.kubesre.xyz</td>
+</tr>
+<tr>
+<td>docker.elastic.co</td>
+<td>elastic.kubesre.xyz</td>
+</tr>
+<tr>
+<td>docker.io</td>
+<td>dhub.kubesre.xyz</td>
+</tr>
+<tr>
+<td>gcr.io</td>
+<td>gcr.kubesre.xyz</td>
+</tr>
+<tr>
+<td>ghcr.io</td>
+<td>ghcr.kubesre.xyz</td>
+</tr>
+<tr>
+<td>k8s.gcr.io</td>
+<td>k8s-gcr.kubesre.xyz</td>
+</tr>
+<tr>
+<td>registry.k8s.io</td>
+<td>k8s.kubesre.xyz</td>
+</tr>
+<tr>
+<td>mcr.microsoft.com</td>
+<td>mcr.kubesre.xyz</td>
+</tr>
+<tr>
+<td>nvcr.io</td>
+<td>nvcr.kubesre.xyz</td>
+</tr>
+<tr>
+<td>quay.io</td>
+<td>quay.kubesre.xyz</td>
+</tr>
+<tr>
+<td>registry.jujucharms.com</td>
+<td>jujucharms.kubesre.xy</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line">docker pull k8s.kubesre.xyz/ingress-nginx/opentelemetry-1.25.3-v20240813-b93310d</span><br></pre></td></tr></table></figure>
+<p><a href="/images/12-image_pull_error.jpg" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/images/12-image_pull_error.jpg" alt="img"></a></p>
+<h2 id="方案三：通过配置Docker加速源"><a href="#方案三：通过配置Docker加速源" class="headerlink" title="方案三：通过配置Docker加速源"></a>方案三：通过配置Docker加速源</h2><p>在完成安装Docker后，创建或修改<code>/etc/docker/daemon.json</code> </p>
+<ul>
+<li>添加加速源<ul>
+<li>关于加速源可参见文末 【拓展：最新稳定加速元列表】</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/docker/daemon.json &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    &quot;registry-mirrors&quot;: [</span></span><br><span class="line"><span class="string">        &quot;https://docker.1ms.run&quot;,</span></span><br><span class="line"><span class="string">        &quot;https://hub.rat.dev&quot;,</span></span><br><span class="line"><span class="string">        &quot;https://docker.1panel.live&quot;</span></span><br><span class="line"><span class="string">    ]</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重启Docker服务</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload &amp;&amp; <span class="built_in">sudo</span> systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用<code>docker info</code> 检查是否配置生效，如何输出下列内容则说明配置成功</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Registry Mirrors:</span><br><span class="line"> [...]</span><br><span class="line"> https://docker.1panel.live</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果当前的docker服务不方便重启，可以使用如下方式进行镜像拉取</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker pull &lt;加速源&gt;/library/mysql:5.7</span></span><br><span class="line">docker pull docker.1panel.live/library/mysql:5.7</span><br></pre></td></tr></table></figure>
+
+<h2 id="方案四：-通过开源项目的-issue"><a href="#方案四：-通过开源项目的-issue" class="headerlink" title="方案四： 通过开源项目的 issue"></a>方案四： 通过开源项目的 issue</h2><blockquote>
+<p>此方案适用于可以访问Docker镜像仓库，但无法访问其他镜像仓库（registry.k8s.io、gcr.io 等）。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/myysophia/hub-mirror">https://github.com/myysophia/hub-mirror</a></li>
+</ul>
+<p>使用说明：</p>
+<ol>
+<li>在该项目中创建一个新issue，会出现一个模板，将模板内容修改为需要拉去的镜像，提交issue，就会触发github的CI，就会进行拉去拉取镜像，并推送到公开Docker仓库。</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;hub-mirror&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;你需要转换的镜像&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;你需要转换的镜像&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;每次最多 11 个&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;改这个 json 就可以了&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;别乱改内容&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;标题随意，保持阵型是最好的&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;hub-mirror 标签是必选的&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;......&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">####################PS改成下面这个################</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;hub-mirror&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">  <span class="string">&quot;registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.4.3&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">####################PS改成下面这个################</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>然后从docker镜像仓库拉去所需要的镜像<br><a href="/images/12-image_issue_pull.png" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/images/12-image_issue_pull.png" alt="img"></a></li>
+</ol>
+<h2 id="拓展：最新稳定加速源列表"><a href="#拓展：最新稳定加速源列表" class="headerlink" title="拓展：最新稳定加速源列表"></a>拓展：最新稳定加速源列表</h2><table>
+<thead>
+<tr>
+<th>提供者</th>
+<th>镜像加速地址</th>
+<th>说明</th>
+<th>加速类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://hub.rat.dev/">耗子面板</a></td>
+<td><code>https://hub.rat.dev</code></td>
+<td>无限制</td>
+<td>Docker Hub</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docker.rainbond.cc/">rainbond</a></td>
+<td><code>https://docker.rainbond.cc</code></td>
+<td>无限制</td>
+<td>Docker Hub</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://1panel.cn/docs/user_manual/containers/setting/">1panel</a></td>
+<td><code>https://docker.1panel.live</code></td>
+<td>无限制</td>
+<td>Docker Hub</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docker.1ms.run/">毫秒镜像</a></td>
+<td><code>https://docker.1ms.run</code></td>
+<td>大部分镜像都能拉</td>
+<td>Docker Hub</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/DaoCloud/public-image-mirror">DaoCloud</a></td>
+<td><code>https://docker.m.daocloud.io</code></td>
+<td>白名单和限流</td>
+<td>Docker Hub</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/">阿里云</a></td>
+<td><code>https://xxx.mirror.aliyuncs.com</code></td>
+<td>需登录分配</td>
+<td>镜像太旧</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://doc.nju.edu.cn/">南京大学</a></td>
+<td><code>https://ghcr.nju.edu.cn</code></td>
+<td>暂无限制</td>
+<td>ghcr.io</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://cloudlayer.icu/">Docker Layer ICU</a></td>
+<td><code>https://docker.cloudlayer.icu</code></td>
+<td>暂无限制</td>
+<td>Docker Hub</td>
+</tr>
+</tbody></table>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-03-10</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/Docker/'>
+                            Docker
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/'>
+                            云原生
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/03/11/tech/k8s/01-helm/'>包管理工具Helm的使用</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/03/08/tech/python/09-pylib-pathlib/">文件路径管理工具之pathlib</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2025~ China 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊一念净心 花开遍世界...🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+            
+    </body>
+</html>
