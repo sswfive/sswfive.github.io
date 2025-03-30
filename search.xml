@@ -488,83 +488,6 @@
       </tags>
   </entry>
   <entry>
-    <title>关于ModelOps的相关技术</title>
-    <url>/2025/03/04/06-modelops-tech/</url>
-    <content><![CDATA[<div class=".article-gallery"><h2 id="框架级"><a href="#框架级" class="headerlink" title="框架级"></a>框架级</h2><h3 id="模型开发"><a href="#模型开发" class="headerlink" title="模型开发"></a>模型开发</h3><h4 id="Scikit-learn（SKlearn）"><a href="#Scikit-learn（SKlearn）" class="headerlink" title="Scikit-learn（SKlearn）"></a>Scikit-learn（SKlearn）</h4><ul>
-<li><a href="https://scikit-learn.org/stable/">官网</a></li>
-<li>简介：一个基于 SciPy 构建的用于机器学习的 Python 模块，并根据 3-Clause BSD 许可证分发</li>
-</ul>
-<h4 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a><a href="https://pytorch.org/">PyTorch</a></h4><ul>
-<li><a href="https://pytorch.org/">官网</a></li>
-<li>简介：Python 中的张量和动态神经网络，具有强大的 GPU 加速功能</li>
-</ul>
-<h3 id="模型解释"><a href="#模型解释" class="headerlink" title="模型解释"></a>模型解释</h3><h4 id="Alibi-Explain"><a href="#Alibi-Explain" class="headerlink" title="Alibi Explain"></a>Alibi Explain</h4><ul>
-<li><a href="https://docs.seldon.io/projects/alibi/en/stable/">官网</a></li>
-<li><a href="https://github.com/SeldonIO/alibi">Github</a></li>
-<li>简介：</li>
-</ul>
-<h3 id="模型检测"><a href="#模型检测" class="headerlink" title="模型检测"></a>模型检测</h3><h4 id="Alibi-Detect"><a href="#Alibi-Detect" class="headerlink" title="Alibi Detect"></a>Alibi Detect</h4><ul>
-<li><a href="https://docs.seldon.io/projects/alibi-detect/en/stable/">官网</a></li>
-<li><a href="https://github.com/SeldonIO/alibi-detect">Github</a> </li>
-<li>简介：是一个 Python 开源库，专注于异常值、对抗性、和漂移检测。该库涵盖表格数据、文本、图像和时间序列的在线和离线检测器，TensorFlow 和 PyTorch 后端都支持漂移检测。</li>
-</ul>
-<h3 id="模型管理"><a href="#模型管理" class="headerlink" title="模型管理"></a>模型管理</h3><h4 id="MLflow"><a href="#MLflow" class="headerlink" title="MLflow"></a>MLflow</h4><ul>
-<li><a href="https://mlflow.org/">官网</a></li>
-<li><a href="https://github.com/mlflow/mlflow">Github</a></li>
-<li>简介：MLflow 是一个开源平台，专门用于帮助机器学习从业者和团队处理机器学习过程的复杂性，专注于机器学习项目的整个生命周期，确保每个阶段都是可管理、可追溯和可再现的。</li>
-</ul>
-<h3 id="模型部署"><a href="#模型部署" class="headerlink" title="模型部署"></a>模型部署</h3><h4 id="Seldon-core"><a href="#Seldon-core" class="headerlink" title="Seldon-core"></a>Seldon-core</h4><ul>
-<li><a href="https://www.seldon.io/solutions/core-plus">官网</a></li>
-<li><a href="https://github.com/SeldonIO/seldon-core">Github</a></li>
-<li>简介：一款用于打包、部署、监控和管理数千个生产机器学习模型的 MLOps 框架</li>
-</ul>
-<h4 id="Kserve"><a href="#Kserve" class="headerlink" title="Kserve"></a>Kserve</h4><ul>
-<li><a href="https://kserve.github.io/website/latest/">官网</a></li>
-<li><a href="https://github.com/kserve/kserve">Github</a></li>
-<li>简介：一款基于 Kubernetes 高度可扩展且基于标准的模型部署与推理平台</li>
-</ul>
-<h4 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h4><ul>
-<li><a href="https://www.ray.io/">官网</a></li>
-<li><a href="https://github.com/ray-project/ray">Github</a></li>
-<li>简介：一款 AI 计算引擎，管理、执行和优化 AI 工作负载的计算需求。它通过单一、灵活的框架统一基础设施，支持从数据处理到模型训练再到模型服务等任何人工智能工作负载。</li>
-</ul>
-<h4 id="Polyaxon"><a href="#Polyaxon" class="headerlink" title="Polyaxon"></a><a href="https://github.com/polyaxon/polyaxon">Polyaxon</a></h4><ul>
-<li><a href="https://polyaxon.com/">官网</a></li>
-<li><a href="https://github.com/polyaxon/polyaxon">Github</a></li>
-<li>简介：一个用于构建、训练和监控大规模深度学习应用程序的平台,用于管理和编排机器学习生命周期的 MLOps 工具</li>
-</ul>
-<h3 id="模型服务"><a href="#模型服务" class="headerlink" title="模型服务"></a>模型服务</h3><p>MLServer</p>
-<ul>
-<li><a href="https://mlserver.readthedocs.io/en/latest/getting-started/index.html">官网</a></li>
-<li><a href="https://github.com/SeldonIO/MLServer/">Github</a></li>
-<li>简介：一款 Python 开发的、适用于机器学习模型的推理服务器，旨在提供一种简单的方法来通过 REST 和 gRPC 接口开始为您的机器学习模型提供服务，完全符合KFServing 的 V2 Dataplane规范。</li>
-</ul>
-<h2 id="平台级"><a href="#平台级" class="headerlink" title="平台级"></a>平台级</h2><h3 id="SkyPilot"><a href="#SkyPilot" class="headerlink" title="SkyPilot"></a><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">SkyPilot</a></h3><ul>
-<li>简介：是一个用于在任何基础设施上运行 AI 和批处理工作负载的框架，提供统一执行、高成本节省和高 GPU 可用性。</li>
-<li><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">文档链接</a>, <a href="https://github.com/skypilot-org/skypilot">Github地址</a></li>
-<li><a href="https://www.cloudpods.org/blog/introduction-to-the-skypilot-open-source-project">相关博客介绍</a></li>
-</ul>
-<h3 id="Cloudpods"><a href="#Cloudpods" class="headerlink" title="Cloudpods"></a><a href="https://github.com/yunionio/cloudpods">Cloudpods</a></h3><ul>
-<li>简介：一个使用Golang开发的云原生开源统一多云&#x2F;混合云平台，即Cloudpods是<em>云上的云</em>。 Cloudpods 不仅能够管理本地 KVM&#x2F;裸机，还能够管理来自许多云提供商的许多云帐户的资源。它隐藏了底层云提供商的差异，并公开了一组 API，允许以编程方式与众多云进行交互。</li>
-<li><a href="https://www.cloudpods.org/">文档链接</a></li>
-</ul>
-<h3 id="BentoML"><a href="#BentoML" class="headerlink" title="BentoML"></a>BentoML</h3><ul>
-<li>简介:是一个 Python 库，用于构建针对 AI 应用程序和模型推理进行优化的在线服务系统, 服务 AI 应用程序和模型的最简单方法 - 构建模型推理 API、作业队列、 LLM应用程序、多模型管道等</li>
-<li><a href="https://bentoml.com/">文档地址</a>、<a href="https://github.com/bentoml/BentoML">Github地址</a></li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="Cog"><a href="#Cog" class="headerlink" title="Cog"></a><a href="https://github.com/replicate/cog">Cog</a></h3><ul>
-<li>简介：Cog 是将机器学习模型打包到容器的工具。可通过配置将机器学习模型所需的环境和依赖，自动打包到容器里方便部署，让你不再为编写 Docker 文件和 CUDA 而痛苦，还能自动启动 HTTP 接口服务方便调用</li>
-<li><a href="https://cog.run/">文档地址</a>、<a href="https://github.com/replicate/cog">Github地址</a></li>
-</ul>
-</div>]]></content>
-      <categories>
-        <category>AI</category>
-      </categories>
-      <tags>
-        <tag>ModelOps</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python常用库汇总[awesome]</title>
     <url>/2025/03/03/05-py-lib-awesome/</url>
     <content><![CDATA[<div class=".article-gallery"><h2 id="Web开发库"><a href="#Web开发库" class="headerlink" title="Web开发库"></a>Web开发库</h2><ul>
@@ -674,113 +597,80 @@
       </tags>
   </entry>
   <entry>
-    <title>任务管理工具之APScheduler</title>
-    <url>/2025/03/04/08-apscheduler/</url>
-    <content><![CDATA[<div class=".article-gallery"><h1 id="APScheduler之定时任务工具"><a href="#APScheduler之定时任务工具" class="headerlink" title="APScheduler之定时任务工具"></a>APScheduler之定时任务工具</h1><h2 id="APScheduler概述"><a href="#APScheduler概述" class="headerlink" title="APScheduler概述"></a>APScheduler概述</h2><ul>
-<li><p>APScheduler （advanceded python scheduler）是一款Python开发的定时任务工具。</p>
-</li>
-<li><p>文档地址 <a href="https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler">https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler</a></p>
-</li>
-<li><p>特点：</p>
+    <title>关于ModelOps的相关技术</title>
+    <url>/2025/03/04/06-modelops-tech/</url>
+    <content><![CDATA[<div class=".article-gallery"><h2 id="框架级"><a href="#框架级" class="headerlink" title="框架级"></a>框架级</h2><h3 id="模型开发"><a href="#模型开发" class="headerlink" title="模型开发"></a>模型开发</h3><h4 id="Scikit-learn（SKlearn）"><a href="#Scikit-learn（SKlearn）" class="headerlink" title="Scikit-learn（SKlearn）"></a>Scikit-learn（SKlearn）</h4><ul>
+<li><a href="https://scikit-learn.org/stable/">官网</a></li>
+<li>简介：一个基于 SciPy 构建的用于机器学习的 Python 模块，并根据 3-Clause BSD 许可证分发</li>
+</ul>
+<h4 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a><a href="https://pytorch.org/">PyTorch</a></h4><ul>
+<li><a href="https://pytorch.org/">官网</a></li>
+<li>简介：Python 中的张量和动态神经网络，具有强大的 GPU 加速功能</li>
+</ul>
+<h3 id="模型解释"><a href="#模型解释" class="headerlink" title="模型解释"></a>模型解释</h3><h4 id="Alibi-Explain"><a href="#Alibi-Explain" class="headerlink" title="Alibi Explain"></a>Alibi Explain</h4><ul>
+<li><a href="https://docs.seldon.io/projects/alibi/en/stable/">官网</a></li>
+<li><a href="https://github.com/SeldonIO/alibi">Github</a></li>
+<li>简介：</li>
+</ul>
+<h3 id="模型检测"><a href="#模型检测" class="headerlink" title="模型检测"></a>模型检测</h3><h4 id="Alibi-Detect"><a href="#Alibi-Detect" class="headerlink" title="Alibi Detect"></a>Alibi Detect</h4><ul>
+<li><a href="https://docs.seldon.io/projects/alibi-detect/en/stable/">官网</a></li>
+<li><a href="https://github.com/SeldonIO/alibi-detect">Github</a> </li>
+<li>简介：是一个 Python 开源库，专注于异常值、对抗性、和漂移检测。该库涵盖表格数据、文本、图像和时间序列的在线和离线检测器，TensorFlow 和 PyTorch 后端都支持漂移检测。</li>
+</ul>
+<h3 id="模型管理"><a href="#模型管理" class="headerlink" title="模型管理"></a>模型管理</h3><h4 id="MLflow"><a href="#MLflow" class="headerlink" title="MLflow"></a>MLflow</h4><ul>
+<li><a href="https://mlflow.org/">官网</a></li>
+<li><a href="https://github.com/mlflow/mlflow">Github</a></li>
+<li>简介：MLflow 是一个开源平台，专门用于帮助机器学习从业者和团队处理机器学习过程的复杂性，专注于机器学习项目的整个生命周期，确保每个阶段都是可管理、可追溯和可再现的。</li>
+</ul>
+<h3 id="模型部署"><a href="#模型部署" class="headerlink" title="模型部署"></a>模型部署</h3><h4 id="Seldon-core"><a href="#Seldon-core" class="headerlink" title="Seldon-core"></a>Seldon-core</h4><ul>
+<li><a href="https://www.seldon.io/solutions/core-plus">官网</a></li>
+<li><a href="https://github.com/SeldonIO/seldon-core">Github</a></li>
+<li>简介：一款用于打包、部署、监控和管理数千个生产机器学习模型的 MLOps 框架</li>
+</ul>
+<h4 id="Kserve"><a href="#Kserve" class="headerlink" title="Kserve"></a>Kserve</h4><ul>
+<li><a href="https://kserve.github.io/website/latest/">官网</a></li>
+<li><a href="https://github.com/kserve/kserve">Github</a></li>
+<li>简介：一款基于 Kubernetes 高度可扩展且基于标准的模型部署与推理平台</li>
+</ul>
+<h4 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h4><ul>
+<li><a href="https://www.ray.io/">官网</a></li>
+<li><a href="https://github.com/ray-project/ray">Github</a></li>
+<li>简介：一款 AI 计算引擎，管理、执行和优化 AI 工作负载的计算需求。它通过单一、灵活的框架统一基础设施，支持从数据处理到模型训练再到模型服务等任何人工智能工作负载。</li>
+</ul>
+<h4 id="Polyaxon"><a href="#Polyaxon" class="headerlink" title="Polyaxon"></a><a href="https://github.com/polyaxon/polyaxon">Polyaxon</a></h4><ul>
+<li><a href="https://polyaxon.com/">官网</a></li>
+<li><a href="https://github.com/polyaxon/polyaxon">Github</a></li>
+<li>简介：一个用于构建、训练和监控大规模深度学习应用程序的平台,用于管理和编排机器学习生命周期的 MLOps 工具</li>
+</ul>
+<h3 id="模型服务"><a href="#模型服务" class="headerlink" title="模型服务"></a>模型服务</h3><p>MLServer</p>
 <ul>
-<li><p>不依赖于Linux系统的crontab系统定时，独立运行</p>
-</li>
-<li><p>可以动态添加新的定时任务，如</p>
-</li>
-<li><p>下单后30分钟内必须支付，否则取消订单，就可以借助此工具（每下一单就要添加此订单的定时任务）</p>
-</li>
-<li><p>对添加的定时任务可以做持久保存</p>
-</li>
+<li><a href="https://mlserver.readthedocs.io/en/latest/getting-started/index.html">官网</a></li>
+<li><a href="https://github.com/SeldonIO/MLServer/">Github</a></li>
+<li>简介：一款 Python 开发的、适用于机器学习模型的推理服务器，旨在提供一种简单的方法来通过 REST 和 gRPC 接口开始为您的机器学习模型提供服务，完全符合KFServing 的 V2 Dataplane规范。</li>
 </ul>
-</li>
+<h2 id="平台级"><a href="#平台级" class="headerlink" title="平台级"></a>平台级</h2><h3 id="SkyPilot"><a href="#SkyPilot" class="headerlink" title="SkyPilot"></a><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">SkyPilot</a></h3><ul>
+<li>简介：是一个用于在任何基础设施上运行 AI 和批处理工作负载的框架，提供统一执行、高成本节省和高 GPU 可用性。</li>
+<li><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">文档链接</a>, <a href="https://github.com/skypilot-org/skypilot">Github地址</a></li>
+<li><a href="https://www.cloudpods.org/blog/introduction-to-the-skypilot-open-source-project">相关博客介绍</a></li>
 </ul>
-<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install apscheduler</span><br></pre></td></tr></table></figure>
-<h2 id="2-使用方式"><a href="#2-使用方式" class="headerlink" title="2.使用方式"></a>2.使用方式</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建定时任务的调度器对象</span></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义定时任务</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">my_job</span>(<span class="params">param1, param2</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 向调度器中添加定时任务</span></span><br><span class="line">scheduler.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, args=[<span class="number">100</span>, <span class="string">&#x27;python&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动定时任务调度器工作</span></span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
-<h2 id="3-调度器Scheduler"><a href="#3-调度器Scheduler" class="headerlink" title="3.调度器Scheduler"></a>3.调度器Scheduler</h2><p><strong>负责管理定时任务</strong></p>
-<ul>
-<li>BlockingScheduler: 作为独立进程时使用</li>
+<h3 id="Cloudpods"><a href="#Cloudpods" class="headerlink" title="Cloudpods"></a><a href="https://github.com/yunionio/cloudpods">Cloudpods</a></h3><ul>
+<li>简介：一个使用Golang开发的云原生开源统一多云&#x2F;混合云平台，即Cloudpods是<em>云上的云</em>。 Cloudpods 不仅能够管理本地 KVM&#x2F;裸机，还能够管理来自许多云提供商的许多云帐户的资源。它隐藏了底层云提供商的差异，并公开了一组 API，允许以编程方式与众多云进行交互。</li>
+<li><a href="https://www.cloudpods.org/">文档链接</a></li>
 </ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序会发生阻塞</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>BackgroundScheduler: 在框架程序（如Django、Flask）中使用</li>
+<h3 id="BentoML"><a href="#BentoML" class="headerlink" title="BentoML"></a>BentoML</h3><ul>
+<li>简介:是一个 Python 库，用于构建针对 AI 应用程序和模型推理进行优化的在线服务系统, 服务 AI 应用程序和模型的最简单方法 - 构建模型推理 API、作业队列、 LLM应用程序、多模型管道等</li>
+<li><a href="https://bentoml.com/">文档地址</a>、<a href="https://github.com/bentoml/BentoML">Github地址</a></li>
 </ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序不会发生阻塞</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="4-执行器-executors"><a href="#4-执行器-executors" class="headerlink" title="4.执行器 executors"></a>4.执行器 executors</h2><p><strong>在定时任务该执行时，以进程或线程方式执行任务</strong></p>
-<ul>
-<li>ThreadPoolExecutor</li>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="Cog"><a href="#Cog" class="headerlink" title="Cog"></a><a href="https://github.com/replicate/cog">Cog</a></h3><ul>
+<li>简介：Cog 是将机器学习模型打包到容器的工具。可通过配置将机器学习模型所需的环境和依赖，自动打包到容器里方便部署，让你不再为编写 Docker 文件和 CUDA 而痛苦，还能自动启动 HTTP 接口服务方便调用</li>
+<li><a href="https://cog.run/">文档地址</a>、<a href="https://github.com/replicate/cog">Github地址</a></li>
 </ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">ThreadPoolExecutor(max_workers)  </span><br><span class="line">ThreadPoolExecutor(<span class="number">20</span>) <span class="comment"># 最多20个线程同时执行</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>使用方法</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>ProcessPoolExecutor</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">ProcessPoolExecutor(max_workers)</span><br><span class="line">ProcessPoolExecutor(<span class="number">5</span>) <span class="comment"># 最多5个进程同时执行</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>使用方法</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ProcessPoolExecutor(<span class="number">3</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
-
-<h2 id="5-触发器-Trigger"><a href="#5-触发器-Trigger" class="headerlink" title="5.触发器 Trigger"></a>5.触发器 Trigger</h2><p><strong>指定定时任务执行的时机</strong></p>
-<p><strong>1） date 在特定的时间日期执行</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日00:00:00执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=date(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日16:30:05</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=datetime(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>, <span class="number">16</span>, <span class="number">30</span>, <span class="number">5</span>))</span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=<span class="string">&#x27;2009-11-06 16:30:05&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 立即执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>)  </span><br><span class="line">sched.start()</span><br></pre></td></tr></table></figure>
-<p><strong>2） interval 经过指定的时间间隔执行</strong></p>
-<ul>
-<li>weeks (int) – number of weeks to wait</li>
-<li>days (int) – number of days to wait</li>
-<li>hours (int) – number of hours to wait</li>
-<li>minutes (int) – number of minutes to wait</li>
-<li>seconds (int) – number of seconds to wait</li>
-<li>start_date (datetime|str) – starting point for the interval calculation</li>
-<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on</li>
-<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2010年10月10日09:30:00 到2014年6月15日的时间内，每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>, start_date=<span class="string">&#x27;2010-10-10 09:30:00&#x27;</span>, end_date=<span class="string">&#x27;2014-06-15 11:00:00&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>3） cron 按指定的周期执行</strong></p>
-<ul>
-<li>year (int|str) – 4-digit year</li>
-<li>month (int|str) – month (1-12)</li>
-<li>day (int|str) – day of the (1-31)</li>
-<li>week (int|str) – ISO week (1-53)</li>
-<li>day_of_week (int|str) – number or name of weekday (0-6 or mon,tue,wed,thu,fri,sat,sun)</li>
-<li>hour (int|str) – hour (0-23)</li>
-<li>minute (int|str) – minute (0-59)</li>
-<li>second (int|str) – second (0-59)</li>
-<li>start_date (datetime|str) – earliest possible date&#x2F;time to trigger on (inclusive)</li>
-<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on (inclusive)</li>
-<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations (defaults to scheduler timezone)</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在6、7、8、11、12月的第三个周五的00:00, 01:00, 02:00和03:00 执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, month=<span class="string">&#x27;6-8,11-12&#x27;</span>, day=<span class="string">&#x27;3rd fri&#x27;</span>, hour=<span class="string">&#x27;0-3&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2014年5月30日前的周一到周五的5:30执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, day_of_week=<span class="string">&#x27;mon-fri&#x27;</span>, hour=<span class="number">5</span>, minute=<span class="number">30</span>, end_date=<span class="string">&#x27;2014-05-30&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="6-配置方法"><a href="#6-配置方法" class="headerlink" title="6. 配置方法"></a>6. 配置方法</h2><h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>),</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
-
-<h3 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pytz <span class="keyword">import</span> utc</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.jobstores.sqlalchemy <span class="keyword">import</span> SQLAlchemyJobStore</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;threadpool&#x27;</span>, <span class="string">&#x27;max_workers&#x27;</span>: <span class="number">20</span>&#125;,</span><br><span class="line">    <span class="string">&#x27;processpool&#x27;</span>: ProcessPoolExecutor(max_workers=<span class="number">5</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># .. 此处可以编写其他代码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用configure方法进行配置</span></span><br><span class="line">scheduler.configure(executors=executors)</span><br></pre></td></tr></table></figure>
-
-<h2 id="7-启动"><a href="#7-启动" class="headerlink" title="7. 启动"></a>7. 启动</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
-<ul>
-<li>对于BlockingScheduler ，程序会阻塞在这，防止退出</li>
-<li>对于BackgroundScheduler，程序会立即返回，后台运行</li>
-</ul>
-<h2 id="8-扩展"><a href="#8-扩展" class="headerlink" title="8.扩展"></a>8.扩展</h2><h3 id="任务管理"><a href="#任务管理" class="headerlink" title="任务管理"></a>任务管理</h3><h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">job = scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>)  <span class="comment"># 添加任务</span></span><br><span class="line">job.remove()  <span class="comment"># 删除任务</span></span><br><span class="line">job.pause() <span class="comment"># 暂定任务</span></span><br><span class="line">job.resume()  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>, <span class="built_in">id</span>=<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 添加任务    </span></span><br><span class="line">scheduler.remove_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 删除任务</span></span><br><span class="line">scheduler.pause_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 暂定任务</span></span><br><span class="line">scheduler.resume_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="调整任务调度周期"><a href="#调整任务调度周期" class="headerlink" title="调整任务调度周期"></a>调整任务调度周期</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">job.modify(max_instances=<span class="number">6</span>, name=<span class="string">&#x27;Alternate name&#x27;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.reschedule_job(<span class="string">&#x27;my_job_id&#x27;</span>, trigger=<span class="string">&#x27;cron&#x27;</span>, minute=<span class="string">&#x27;*/5&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="停止APScheduler运行"><a href="#停止APScheduler运行" class="headerlink" title="停止APScheduler运行"></a>停止APScheduler运行</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.shutdown()</span><br></pre></td></tr></table></figure>
 </div>]]></content>
       <categories>
-        <category>Python</category>
+        <category>AI</category>
       </categories>
       <tags>
-        <tag>python库</tag>
-        <tag>任务管理</tag>
+        <tag>ModelOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1084,6 +974,116 @@
       </categories>
       <tags>
         <tag>python知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>任务管理工具之APScheduler</title>
+    <url>/2025/03/04/08-apscheduler/</url>
+    <content><![CDATA[<div class=".article-gallery"><h1 id="APScheduler之定时任务工具"><a href="#APScheduler之定时任务工具" class="headerlink" title="APScheduler之定时任务工具"></a>APScheduler之定时任务工具</h1><h2 id="APScheduler概述"><a href="#APScheduler概述" class="headerlink" title="APScheduler概述"></a>APScheduler概述</h2><ul>
+<li><p>APScheduler （advanceded python scheduler）是一款Python开发的定时任务工具。</p>
+</li>
+<li><p>文档地址 <a href="https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler">https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler</a></p>
+</li>
+<li><p>特点：</p>
+<ul>
+<li><p>不依赖于Linux系统的crontab系统定时，独立运行</p>
+</li>
+<li><p>可以动态添加新的定时任务，如</p>
+</li>
+<li><p>下单后30分钟内必须支付，否则取消订单，就可以借助此工具（每下一单就要添加此订单的定时任务）</p>
+</li>
+<li><p>对添加的定时任务可以做持久保存</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install apscheduler</span><br></pre></td></tr></table></figure>
+<h2 id="2-使用方式"><a href="#2-使用方式" class="headerlink" title="2.使用方式"></a>2.使用方式</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建定时任务的调度器对象</span></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义定时任务</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">my_job</span>(<span class="params">param1, param2</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 向调度器中添加定时任务</span></span><br><span class="line">scheduler.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, args=[<span class="number">100</span>, <span class="string">&#x27;python&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动定时任务调度器工作</span></span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+<h2 id="3-调度器Scheduler"><a href="#3-调度器Scheduler" class="headerlink" title="3.调度器Scheduler"></a>3.调度器Scheduler</h2><p><strong>负责管理定时任务</strong></p>
+<ul>
+<li>BlockingScheduler: 作为独立进程时使用</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序会发生阻塞</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>BackgroundScheduler: 在框架程序（如Django、Flask）中使用</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序不会发生阻塞</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-执行器-executors"><a href="#4-执行器-executors" class="headerlink" title="4.执行器 executors"></a>4.执行器 executors</h2><p><strong>在定时任务该执行时，以进程或线程方式执行任务</strong></p>
+<ul>
+<li>ThreadPoolExecutor</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">ThreadPoolExecutor(max_workers)  </span><br><span class="line">ThreadPoolExecutor(<span class="number">20</span>) <span class="comment"># 最多20个线程同时执行</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ProcessPoolExecutor</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">ProcessPoolExecutor(max_workers)</span><br><span class="line">ProcessPoolExecutor(<span class="number">5</span>) <span class="comment"># 最多5个进程同时执行</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ProcessPoolExecutor(<span class="number">3</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-触发器-Trigger"><a href="#5-触发器-Trigger" class="headerlink" title="5.触发器 Trigger"></a>5.触发器 Trigger</h2><p><strong>指定定时任务执行的时机</strong></p>
+<p><strong>1） date 在特定的时间日期执行</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日00:00:00执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=date(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日16:30:05</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=datetime(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>, <span class="number">16</span>, <span class="number">30</span>, <span class="number">5</span>))</span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=<span class="string">&#x27;2009-11-06 16:30:05&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 立即执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>)  </span><br><span class="line">sched.start()</span><br></pre></td></tr></table></figure>
+<p><strong>2） interval 经过指定的时间间隔执行</strong></p>
+<ul>
+<li>weeks (int) – number of weeks to wait</li>
+<li>days (int) – number of days to wait</li>
+<li>hours (int) – number of hours to wait</li>
+<li>minutes (int) – number of minutes to wait</li>
+<li>seconds (int) – number of seconds to wait</li>
+<li>start_date (datetime|str) – starting point for the interval calculation</li>
+<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on</li>
+<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2010年10月10日09:30:00 到2014年6月15日的时间内，每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>, start_date=<span class="string">&#x27;2010-10-10 09:30:00&#x27;</span>, end_date=<span class="string">&#x27;2014-06-15 11:00:00&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>3） cron 按指定的周期执行</strong></p>
+<ul>
+<li>year (int|str) – 4-digit year</li>
+<li>month (int|str) – month (1-12)</li>
+<li>day (int|str) – day of the (1-31)</li>
+<li>week (int|str) – ISO week (1-53)</li>
+<li>day_of_week (int|str) – number or name of weekday (0-6 or mon,tue,wed,thu,fri,sat,sun)</li>
+<li>hour (int|str) – hour (0-23)</li>
+<li>minute (int|str) – minute (0-59)</li>
+<li>second (int|str) – second (0-59)</li>
+<li>start_date (datetime|str) – earliest possible date&#x2F;time to trigger on (inclusive)</li>
+<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on (inclusive)</li>
+<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations (defaults to scheduler timezone)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在6、7、8、11、12月的第三个周五的00:00, 01:00, 02:00和03:00 执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, month=<span class="string">&#x27;6-8,11-12&#x27;</span>, day=<span class="string">&#x27;3rd fri&#x27;</span>, hour=<span class="string">&#x27;0-3&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2014年5月30日前的周一到周五的5:30执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, day_of_week=<span class="string">&#x27;mon-fri&#x27;</span>, hour=<span class="number">5</span>, minute=<span class="number">30</span>, end_date=<span class="string">&#x27;2014-05-30&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="6-配置方法"><a href="#6-配置方法" class="headerlink" title="6. 配置方法"></a>6. 配置方法</h2><h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>),</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pytz <span class="keyword">import</span> utc</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.jobstores.sqlalchemy <span class="keyword">import</span> SQLAlchemyJobStore</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;threadpool&#x27;</span>, <span class="string">&#x27;max_workers&#x27;</span>: <span class="number">20</span>&#125;,</span><br><span class="line">    <span class="string">&#x27;processpool&#x27;</span>: ProcessPoolExecutor(max_workers=<span class="number">5</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># .. 此处可以编写其他代码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用configure方法进行配置</span></span><br><span class="line">scheduler.configure(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-启动"><a href="#7-启动" class="headerlink" title="7. 启动"></a>7. 启动</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对于BlockingScheduler ，程序会阻塞在这，防止退出</li>
+<li>对于BackgroundScheduler，程序会立即返回，后台运行</li>
+</ul>
+<h2 id="8-扩展"><a href="#8-扩展" class="headerlink" title="8.扩展"></a>8.扩展</h2><h3 id="任务管理"><a href="#任务管理" class="headerlink" title="任务管理"></a>任务管理</h3><h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">job = scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>)  <span class="comment"># 添加任务</span></span><br><span class="line">job.remove()  <span class="comment"># 删除任务</span></span><br><span class="line">job.pause() <span class="comment"># 暂定任务</span></span><br><span class="line">job.resume()  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>, <span class="built_in">id</span>=<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 添加任务    </span></span><br><span class="line">scheduler.remove_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 删除任务</span></span><br><span class="line">scheduler.pause_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 暂定任务</span></span><br><span class="line">scheduler.resume_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="调整任务调度周期"><a href="#调整任务调度周期" class="headerlink" title="调整任务调度周期"></a>调整任务调度周期</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">job.modify(max_instances=<span class="number">6</span>, name=<span class="string">&#x27;Alternate name&#x27;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.reschedule_job(<span class="string">&#x27;my_job_id&#x27;</span>, trigger=<span class="string">&#x27;cron&#x27;</span>, minute=<span class="string">&#x27;*/5&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="停止APScheduler运行"><a href="#停止APScheduler运行" class="headerlink" title="停止APScheduler运行"></a>停止APScheduler运行</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.shutdown()</span><br></pre></td></tr></table></figure>
+</div>]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python库</tag>
+        <tag>任务管理</tag>
       </tags>
   </entry>
   <entry>
@@ -2091,6 +2091,43 @@
       </tags>
   </entry>
   <entry>
+    <title>开发工具之KtConnect的使用</title>
+    <url>/2025/03/06/15-ktconnect/</url>
+    <content><![CDATA[<div class=".article-gallery"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li><a href="https://alibaba.github.io/kt-connect/">官网链接</a></li>
+</ul>
+<p>KtConnect 是阿里开源的一款云原生协同开发测试解决方案,旨在提升开发者在Kubernetes 场景下的本地开发测试效率,它通过建立本地到K8S集群的双向通道,允许开发者在本地直接访问K8S集群服务,或将K8S集群的流量转发到本地.简言之,KtConnect是面向K8S的本地开发者辅助工具.</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><a href="https://alibaba.github.io/kt-connect/#/zh-cn/guide/downloads">下载链接</a></li>
+</ul>
+<h3 id="1、下载kubectl-client-命令行工具"><a href="#1、下载kubectl-client-命令行工具" class="headerlink" title="1、下载kubectl client 命令行工具"></a>1、下载kubectl client 命令行工具</h3><ul>
+<li><a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.22.md#v1222">链接</a></li>
+</ul>
+<h3 id="2、配置环境变量并验证"><a href="#2、配置环境变量并验证" class="headerlink" title="2、配置环境变量并验证"></a>2、配置环境变量并验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kubectl version --client</span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4]❯ kubectl version --client</span><br><span class="line">Client Version: v1.29.2</span><br><span class="line">Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、配置K8S集群的config"><a href="#3、配置K8S集群的config" class="headerlink" title="3、配置K8S集群的config"></a>3、配置K8S集群的config</h3><ul>
+<li>将k8s集群的config配置文件拷贝到<code>C:\Users\xxxx\.kube</code> 文件夹中</li>
+</ul>
+<h3 id="4、验证是否能连接到k8s集群"><a href="#4、验证是否能连接到k8s集群" class="headerlink" title="4、验证是否能连接到k8s集群"></a>4、验证是否能连接到k8s集群</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kubectl cluster-info</span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4] ❯ kubectl cluster-info</span><br><span class="line">Kubernetes control plane is running at https://172.x.x.x:6443</span><br><span class="line">CoreDNS is running at https://172.16.2.129:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy</span><br><span class="line"></span><br><span class="line">To further debug and diagnose cluster problems, use <span class="string">&#x27;kubectl cluster-info dump&#x27;</span>.</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、下载ktconnect并配置"><a href="#5、下载ktconnect并配置" class="headerlink" title="5、下载ktconnect并配置"></a>5、下载ktconnect并配置</h3><ul>
+<li>下载 kt connect 并将其放到和kubectl client 的同一个 bin目录下</li>
+</ul>
+<h3 id="6、验证是否安装成功"><a href="#6、验证是否安装成功" class="headerlink" title="6、验证是否安装成功"></a>6、验证是否安装成功</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ktctl -v</span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4] ❯ ktctl -v</span><br><span class="line">ktctl version 0.3.7</span><br></pre></td></tr></table></figure>
+
+<h3 id="7、启动"><a href="#7、启动" class="headerlink" title="7、启动"></a>7、启动</h3><ul>
+<li>使用管理员启动Powershell,并启动kt-connect</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ktctl connect -n &lt;namespace name&gt; --excludeIps 172.16.2.0/24   <span class="comment"># &lt;网关地址需要更换成为自己的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4] ❯ ktctl connect -n bluewhale-platform --excludeIps 172.16.2.0/24</span><br><span class="line">4:15PM INF Using cluster context kubernetes-admin@kubernetes (kubernetes)</span><br><span class="line">4:15PM INF KtConnect 0.3.7 start at 22548 (windows amd64)</span><br><span class="line">4:15PM INF Fetching cluster <span class="keyword">time</span> ...</span><br><span class="line">4:15PM INF Using tun2socks mode</span><br><span class="line">4:15PM INF Successful create config map kt-connect-shadow-odtnt</span><br><span class="line">4:15PM INF Deploying shadow pod kt-connect-shadow-odtnt <span class="keyword">in</span> namespace bluewhale-platform</span><br><span class="line">4:15PM INF Waiting <span class="keyword">for</span> pod kt-connect-shadow-odtnt ...</span><br><span class="line">4:15PM INF Pod kt-connect-shadow-odtnt is ready</span><br><span class="line">4:15PM INF Port forward <span class="built_in">local</span>:10441 -&gt; pod kt-connect-shadow-odtnt:22 established</span><br><span class="line">4:15PM INF Socks proxy established</span><br><span class="line">2024/08/23 16:15:17 Using existing driver 0.14</span><br><span class="line">2024/08/23 16:15:17 Creating adapter</span><br><span class="line">4:15PM INF Tun device KtConnectTunnel is ready</span><br><span class="line">2024/08/23 16:15:17 Removed orphaned adapter <span class="string">&quot;KtConnectTunnel 1&quot;</span></span><br><span class="line">4:15PM INF Adding route to 10.96.0.0/16</span><br><span class="line">4:15PM INF Adding route to 100.90.254.0/24</span><br><span class="line">4:15PM INF Adding route to 100.82.112.0/24</span><br><span class="line">4:15PM INF Adding route to 100.85.170.0/24</span><br><span class="line">4:15PM INF Adding route to 100.103.44.0/24</span><br><span class="line">4:15PM INF Route to tun device completed</span><br><span class="line">4:15PM INF Setting up dns <span class="keyword">in</span> <span class="built_in">local</span> mode</span><br><span class="line">4:15PM INF Port forward <span class="built_in">local</span>:45198 -&gt; pod kt-connect-shadow-odtnt:53 established</span><br><span class="line">4:15PM INF Setup <span class="built_in">local</span> DNS with upstream [tcp:127.0.0.1:45198 udp:172.16.1.117:53]</span><br><span class="line">4:15PM INF Creating udp dns on port 53</span><br><span class="line">4:15PM INF ---------------------------------------------------------------</span><br><span class="line">4:15PM INF  All looks good, now you can access to resources <span class="keyword">in</span> the kubernetes cluster</span><br><span class="line">4:15PM INF ---------------------------------------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div>]]></content>
+      <categories>
+        <category>云原生</category>
+      </categories>
+      <tags>
+        <tag>K8S</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>储存组件Longhorn部署使用</title>
     <url>/2025/03/06/14-longhorn/</url>
     <content><![CDATA[<div class=".article-gallery"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Longhorn是基于Kubernetes和Container的构建的分布式块存储系统，轻量、可靠且功能强大， Longhorn为每个块设备卷创建一个专门的存储控制器，并且对多个节点上存储副本中的卷进行实时复制。以下是它的主要特点：</p>
@@ -2407,43 +2444,6 @@
       <tags>
         <tag>K8S</tag>
         <tag>Kserve</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>开发工具之KtConnect的使用</title>
-    <url>/2025/03/06/15-ktconnect/</url>
-    <content><![CDATA[<div class=".article-gallery"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li><a href="https://alibaba.github.io/kt-connect/">官网链接</a></li>
-</ul>
-<p>KtConnect 是阿里开源的一款云原生协同开发测试解决方案,旨在提升开发者在Kubernetes 场景下的本地开发测试效率,它通过建立本地到K8S集群的双向通道,允许开发者在本地直接访问K8S集群服务,或将K8S集群的流量转发到本地.简言之,KtConnect是面向K8S的本地开发者辅助工具.</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
-<li><a href="https://alibaba.github.io/kt-connect/#/zh-cn/guide/downloads">下载链接</a></li>
-</ul>
-<h3 id="1、下载kubectl-client-命令行工具"><a href="#1、下载kubectl-client-命令行工具" class="headerlink" title="1、下载kubectl client 命令行工具"></a>1、下载kubectl client 命令行工具</h3><ul>
-<li><a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.22.md#v1222">链接</a></li>
-</ul>
-<h3 id="2、配置环境变量并验证"><a href="#2、配置环境变量并验证" class="headerlink" title="2、配置环境变量并验证"></a>2、配置环境变量并验证</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kubectl version --client</span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4]❯ kubectl version --client</span><br><span class="line">Client Version: v1.29.2</span><br><span class="line">Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、配置K8S集群的config"><a href="#3、配置K8S集群的config" class="headerlink" title="3、配置K8S集群的config"></a>3、配置K8S集群的config</h3><ul>
-<li>将k8s集群的config配置文件拷贝到<code>C:\Users\xxxx\.kube</code> 文件夹中</li>
-</ul>
-<h3 id="4、验证是否能连接到k8s集群"><a href="#4、验证是否能连接到k8s集群" class="headerlink" title="4、验证是否能连接到k8s集群"></a>4、验证是否能连接到k8s集群</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kubectl cluster-info</span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4] ❯ kubectl cluster-info</span><br><span class="line">Kubernetes control plane is running at https://172.x.x.x:6443</span><br><span class="line">CoreDNS is running at https://172.16.2.129:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy</span><br><span class="line"></span><br><span class="line">To further debug and diagnose cluster problems, use <span class="string">&#x27;kubectl cluster-info dump&#x27;</span>.</span><br></pre></td></tr></table></figure>
-
-<h3 id="5、下载ktconnect并配置"><a href="#5、下载ktconnect并配置" class="headerlink" title="5、下载ktconnect并配置"></a>5、下载ktconnect并配置</h3><ul>
-<li>下载 kt connect 并将其放到和kubectl client 的同一个 bin目录下</li>
-</ul>
-<h3 id="6、验证是否安装成功"><a href="#6、验证是否安装成功" class="headerlink" title="6、验证是否安装成功"></a>6、验证是否安装成功</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ktctl -v</span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4] ❯ ktctl -v</span><br><span class="line">ktctl version 0.3.7</span><br></pre></td></tr></table></figure>
-
-<h3 id="7、启动"><a href="#7、启动" class="headerlink" title="7、启动"></a>7、启动</h3><ul>
-<li>使用管理员启动Powershell,并启动kt-connect</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ktctl connect -n &lt;namespace name&gt; --excludeIps 172.16.2.0/24   <span class="comment"># &lt;网关地址需要更换成为自己的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############PS#####################</span></span><br><span class="line"> JHC142: C:\ [ base 3.12.4] ❯ ktctl connect -n bluewhale-platform --excludeIps 172.16.2.0/24</span><br><span class="line">4:15PM INF Using cluster context kubernetes-admin@kubernetes (kubernetes)</span><br><span class="line">4:15PM INF KtConnect 0.3.7 start at 22548 (windows amd64)</span><br><span class="line">4:15PM INF Fetching cluster <span class="keyword">time</span> ...</span><br><span class="line">4:15PM INF Using tun2socks mode</span><br><span class="line">4:15PM INF Successful create config map kt-connect-shadow-odtnt</span><br><span class="line">4:15PM INF Deploying shadow pod kt-connect-shadow-odtnt <span class="keyword">in</span> namespace bluewhale-platform</span><br><span class="line">4:15PM INF Waiting <span class="keyword">for</span> pod kt-connect-shadow-odtnt ...</span><br><span class="line">4:15PM INF Pod kt-connect-shadow-odtnt is ready</span><br><span class="line">4:15PM INF Port forward <span class="built_in">local</span>:10441 -&gt; pod kt-connect-shadow-odtnt:22 established</span><br><span class="line">4:15PM INF Socks proxy established</span><br><span class="line">2024/08/23 16:15:17 Using existing driver 0.14</span><br><span class="line">2024/08/23 16:15:17 Creating adapter</span><br><span class="line">4:15PM INF Tun device KtConnectTunnel is ready</span><br><span class="line">2024/08/23 16:15:17 Removed orphaned adapter <span class="string">&quot;KtConnectTunnel 1&quot;</span></span><br><span class="line">4:15PM INF Adding route to 10.96.0.0/16</span><br><span class="line">4:15PM INF Adding route to 100.90.254.0/24</span><br><span class="line">4:15PM INF Adding route to 100.82.112.0/24</span><br><span class="line">4:15PM INF Adding route to 100.85.170.0/24</span><br><span class="line">4:15PM INF Adding route to 100.103.44.0/24</span><br><span class="line">4:15PM INF Route to tun device completed</span><br><span class="line">4:15PM INF Setting up dns <span class="keyword">in</span> <span class="built_in">local</span> mode</span><br><span class="line">4:15PM INF Port forward <span class="built_in">local</span>:45198 -&gt; pod kt-connect-shadow-odtnt:53 established</span><br><span class="line">4:15PM INF Setup <span class="built_in">local</span> DNS with upstream [tcp:127.0.0.1:45198 udp:172.16.1.117:53]</span><br><span class="line">4:15PM INF Creating udp dns on port 53</span><br><span class="line">4:15PM INF ---------------------------------------------------------------</span><br><span class="line">4:15PM INF  All looks good, now you can access to resources <span class="keyword">in</span> the kubernetes cluster</span><br><span class="line">4:15PM INF ---------------------------------------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-</div>]]></content>
-      <categories>
-        <category>云原生</category>
-      </categories>
-      <tags>
-        <tag>K8S</tag>
       </tags>
   </entry>
   <entry>
