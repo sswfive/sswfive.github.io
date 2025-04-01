@@ -64,6 +64,12 @@ sudo xattr -d com.apple.quarantine /Applications/[应用名称].app
 
 - 当不知道如何找到应用名称时，打开一个终端和访达中的应用程序，将需要执行的软件拖到终端就可以知道软件的全路径，接着拷贝最后的名称即可。
 
+### 终端Git中文乱码
+
+```bash
+git config --global core.quotepath false
+```
+
 
 
 ## 装机必备软件
