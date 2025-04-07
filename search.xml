@@ -726,6 +726,108 @@
       </tags>
   </entry>
   <entry>
+    <title>Mac常用的下载载站点和软件</title>
+    <url>/2025/04/03/tools/04-mac-software/</url>
+    <content><![CDATA[<div class=".article-gallery"><h2 id="下载站点"><a href="#下载站点" class="headerlink" title="下载站点"></a>下载站点</h2><ul>
+<li><a href="https://www.macappbox.com/">苹果软件盒子</a></li>
+<li><a href="https://macwk.com.cn/">Macwk</a></li>
+<li><a href="https://xclient.info/">xclient</a></li>
+<li><a href="https://machub.cn/">麦禾软件</a></li>
+<li><a href="https://www.macbl.com/">马可波罗</a></li>
+<li><a href="https://appstorrent.ru/">appstorrent</a></li>
+<li><a href="https://xmac.app/">xmac</a>: 类似一个资源搜索引擎，下载简单，国内如无法下载，需自由飞翔后可下载，也可以看 <a href="https://iui.su/2753/">ipfs 公共网关</a>。</li>
+<li><a href="https://iui.su/2319/">Mac os 必备软件</a> 一些不错的 Mac 应用推荐</li>
+</ul>
+<h2 id="个人常用软件"><a href="#个人常用软件" class="headerlink" title="个人常用软件"></a>个人常用软件</h2><h3 id="uTools"><a href="#uTools" class="headerlink" title="uTools"></a><a href="https://www.u-tools.cn/index.html">uTools</a></h3><ul>
+<li>简介：<ul>
+<li>一款效率神器，跨平台，是 <a href="https://www.alfredapp.com/">Alfred</a>的替代品</li>
+</ul>
+</li>
+<li>功能：<ul>
+<li>强大的插件化，多功能输入框，支持文本、截图、图片、文件、文件夹</li>
+<li>自动识别 &#x2F; 粘贴</li>
+<li>全局快捷键</li>
+<li>支持 Windows、Mac、Linux</li>
+</ul>
+</li>
+</ul>
+<h3 id="IINA"><a href="#IINA" class="headerlink" title="IINA"></a><a href="https://iina.io/">IINA</a></h3><ul>
+<li><p>简介：</p>
+<ul>
+<li>一款强大的视频播放器，<a href="https://github.com/iina/iina">IINA | Github</a>, <a href="https://iina.io/">软件官网</a></li>
+</ul>
+</li>
+<li><p>功能</p>
+<ul>
+<li>界面简洁、美观，契合 macOS 设计风格</li>
+<li>功能强大，设置以播放体验为中心</li>
+<li>支持鼠标和触控板手势</li>
+<li>在线字幕、缩略图预览、画中画等</li>
+</ul>
+</li>
+<li><p>安装：<a href="https://formulae.brew.sh/cask/iina">brew 安装</a></p>
+</li>
+</ul>
+<h2 id="个人甄选"><a href="#个人甄选" class="headerlink" title="个人甄选"></a>个人甄选</h2><h3 id="Alfred"><a href="#Alfred" class="headerlink" title="Alfred"></a><a href="https://www.alfredapp.com/">Alfred</a></h3><ul>
+<li>简介：一款效率神器，专注 MacOS, 是 <a href="https://www.u-tools.cn/index.html">uTools</a>的同类工具。</li>
+</ul>
+</div>]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一些科学上网的工具</title>
+    <url>/2025/04/07/tools/10-vpn-selection/</url>
+    <content><![CDATA[<div class=".article-gallery"><h2 id="使用中"><a href="#使用中" class="headerlink" title="使用中"></a>使用中</h2><h3 id="wmsxwd"><a href="#wmsxwd" class="headerlink" title="wmsxwd"></a><a href="https://wmsxwd-3.men/">wmsxwd</a></h3><ul>
+<li>简介：一家提供網絡加速服務的網絡供應商，可以給您在原有基礎上提供更高效、快速、穩定的網絡加速服務，基于Shadowsocks&#x2F;ShadowsocksR&#x2F;V2ray的科学上网方式。</li>
+<li>数字站点</li>
+</ul>
+<h3 id="我们所向往的"><a href="#我们所向往的" class="headerlink" title="我们所向往的"></a><a href="https://wmsxwd-g.men/">我们所向往的</a></h3><ul>
+<li>简介：同上</li>
+<li>字母站点</li>
+</ul>
+<p><a href="https://nnss.ooo/">主站地址</a></p>
+<p>这两个属于同一家的不同站点，一个是数字站点(new)，一个是字母站点（old），账号不互通，目测字母站点目前不给注册新用户了，但老用户依然可以用，这是它的<a href="https://nnss.ooo/">主站地址</a>。</p>
+<p>如果可以欢迎使用我的邀请码进行注册: <a href="https://wmsxwd-1.men/#/register?code=FbDoq18e">邀请链接</a></p>
+<h2 id="使用过"><a href="#使用过" class="headerlink" title="使用过"></a>使用过</h2><h3 id="星辰加速"><a href="#星辰加速" class="headerlink" title="星辰加速"></a><a href="https://www.52xcjs.top/">星辰加速</a></h3><ul>
+<li>简介：从这一刻，连接您与星辰大海</li>
+</ul>
+<h3 id="一元机场"><a href="#一元机场" class="headerlink" title="一元机场"></a><a href="https://一元机场.com/">一元机场</a></h3><ul>
+<li>简介：主打一个便宜，稳定性很一般。</li>
+</ul>
+<h2 id="未使用"><a href="#未使用" class="headerlink" title="未使用"></a>未使用</h2><h3 id="Just-My-Socks"><a href="#Just-My-Socks" class="headerlink" title="Just My Socks"></a><a href="https://justmysocks5.net/">Just My Socks</a></h3><ul>
+<li>简介：一个国外的服务商，费用挺贵</li>
+</ul>
+<h3 id="Clashxpro"><a href="#Clashxpro" class="headerlink" title="Clashxpro"></a><a href="https://clashxpro.org/">Clashxpro</a></h3><ul>
+<li>简介：一款MacOS系统即苹果电脑系统下的代理软件客户端，是代理工具Clash在MacOS系统的图形客户端</li>
+<li><a href="https://github.com/clashdownload/ClashX_Pro">Github链接</a></li>
+</ul>
+<h3 id="WgetCloud"><a href="#WgetCloud" class="headerlink" title="WgetCloud"></a><a href="https://3jkkvi9afjjln2yjwnbc.wgetcloud.org/">WgetCloud</a></h3><ul>
+<li>简介：不仅仅是机场，更是你连接世界的桥梁。现在加入，即刻体验稳定、高速、安全的科学上网新境界！</li>
+<li><a href="https://github.com/winston779/wgetcloud">Github链接</a></li>
+</ul>
+<h3 id="白月光"><a href="#白月光" class="headerlink" title="白月光"></a><a href="https://www.bygcloud.com/">白月光</a></h3><ul>
+<li><a href="www.sibker.com">官网地址</a></li>
+</ul>
+<h3 id="Hiddify"><a href="#Hiddify" class="headerlink" title="Hiddify"></a><a href="https://github.com/hiddify/hiddify-app">Hiddify</a></h3><ul>
+<li>简介：一款基于 <a href="https://github.com/SagerNet/sing-box">Sing-box</a> 通用代理工具的跨平台代理客户端</li>
+</ul>
+<h3 id="鳄鱼"><a href="#鳄鱼" class="headerlink" title="鳄鱼"></a><a href="https://www.eyujichang.com/">鳄鱼</a></h3><ul>
+<li>简介：暂无</li>
+</ul>
+</div>]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>vpn</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker镜像无法拉取问题的解决方案</title>
     <url>/2025/03/10/tech/docker/01-docker-image-pull-failed/</url>
     <content><![CDATA[<div class=".article-gallery"><p>自2024年5月底6月初，由于某些原因，突然间在国内就无法正常访问和拉取Docker镜像源，鉴于笔者目前从事云原生ModelOps工作，几乎每天都要和K8S、Docker打交道，镜像无法拉取一直让人很苦恼和无奈，所以在日常工作和探索中，总结汇总了如下可以拉去的官方镜像源的解决方案，由于之前都是零零散散的记录在不同的笔记中，一直想找个时间系统的整理汇总一下，拖了很久，终于在这个周末挤出了一些时间进行了整理汇总，详见下文四个方案，在此，这些方案可能会随着时间的推移无法使用，若是如此请见谅!</p>
@@ -1107,83 +1209,6 @@
       </tags>
   </entry>
   <entry>
-    <title>关于ModelOps的相关技术</title>
-    <url>/2025/03/15/tech/modelops/01-modelops-tech/</url>
-    <content><![CDATA[<div class=".article-gallery"><h2 id="框架级"><a href="#框架级" class="headerlink" title="框架级"></a>框架级</h2><h3 id="模型开发"><a href="#模型开发" class="headerlink" title="模型开发"></a>模型开发</h3><h4 id="Scikit-learn（SKlearn）"><a href="#Scikit-learn（SKlearn）" class="headerlink" title="Scikit-learn（SKlearn）"></a>Scikit-learn（SKlearn）</h4><ul>
-<li><a href="https://scikit-learn.org/stable/">官网</a></li>
-<li>简介：一个基于 SciPy 构建的用于机器学习的 Python 模块，并根据 3-Clause BSD 许可证分发</li>
-</ul>
-<h4 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a><a href="https://pytorch.org/">PyTorch</a></h4><ul>
-<li><a href="https://pytorch.org/">官网</a></li>
-<li>简介：Python 中的张量和动态神经网络，具有强大的 GPU 加速功能</li>
-</ul>
-<h3 id="模型解释"><a href="#模型解释" class="headerlink" title="模型解释"></a>模型解释</h3><h4 id="Alibi-Explain"><a href="#Alibi-Explain" class="headerlink" title="Alibi Explain"></a>Alibi Explain</h4><ul>
-<li><a href="https://docs.seldon.io/projects/alibi/en/stable/">官网</a></li>
-<li><a href="https://github.com/SeldonIO/alibi">Github</a></li>
-<li>简介：</li>
-</ul>
-<h3 id="模型检测"><a href="#模型检测" class="headerlink" title="模型检测"></a>模型检测</h3><h4 id="Alibi-Detect"><a href="#Alibi-Detect" class="headerlink" title="Alibi Detect"></a>Alibi Detect</h4><ul>
-<li><a href="https://docs.seldon.io/projects/alibi-detect/en/stable/">官网</a></li>
-<li><a href="https://github.com/SeldonIO/alibi-detect">Github</a> </li>
-<li>简介：是一个 Python 开源库，专注于异常值、对抗性、和漂移检测。该库涵盖表格数据、文本、图像和时间序列的在线和离线检测器，TensorFlow 和 PyTorch 后端都支持漂移检测。</li>
-</ul>
-<h3 id="模型管理"><a href="#模型管理" class="headerlink" title="模型管理"></a>模型管理</h3><h4 id="MLflow"><a href="#MLflow" class="headerlink" title="MLflow"></a>MLflow</h4><ul>
-<li><a href="https://mlflow.org/">官网</a></li>
-<li><a href="https://github.com/mlflow/mlflow">Github</a></li>
-<li>简介：MLflow 是一个开源平台，专门用于帮助机器学习从业者和团队处理机器学习过程的复杂性，专注于机器学习项目的整个生命周期，确保每个阶段都是可管理、可追溯和可再现的。</li>
-</ul>
-<h3 id="模型部署"><a href="#模型部署" class="headerlink" title="模型部署"></a>模型部署</h3><h4 id="Seldon-core"><a href="#Seldon-core" class="headerlink" title="Seldon-core"></a>Seldon-core</h4><ul>
-<li><a href="https://www.seldon.io/solutions/core-plus">官网</a></li>
-<li><a href="https://github.com/SeldonIO/seldon-core">Github</a></li>
-<li>简介：一款用于打包、部署、监控和管理数千个生产机器学习模型的 MLOps 框架</li>
-</ul>
-<h4 id="Kserve"><a href="#Kserve" class="headerlink" title="Kserve"></a>Kserve</h4><ul>
-<li><a href="https://kserve.github.io/website/latest/">官网</a></li>
-<li><a href="https://github.com/kserve/kserve">Github</a></li>
-<li>简介：一款基于 Kubernetes 高度可扩展且基于标准的模型部署与推理平台</li>
-</ul>
-<h4 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h4><ul>
-<li><a href="https://www.ray.io/">官网</a></li>
-<li><a href="https://github.com/ray-project/ray">Github</a></li>
-<li>简介：一款 AI 计算引擎，管理、执行和优化 AI 工作负载的计算需求。它通过单一、灵活的框架统一基础设施，支持从数据处理到模型训练再到模型服务等任何人工智能工作负载。</li>
-</ul>
-<h4 id="Polyaxon"><a href="#Polyaxon" class="headerlink" title="Polyaxon"></a><a href="https://github.com/polyaxon/polyaxon">Polyaxon</a></h4><ul>
-<li><a href="https://polyaxon.com/">官网</a></li>
-<li><a href="https://github.com/polyaxon/polyaxon">Github</a></li>
-<li>简介：一个用于构建、训练和监控大规模深度学习应用程序的平台,用于管理和编排机器学习生命周期的 MLOps 工具</li>
-</ul>
-<h3 id="模型服务"><a href="#模型服务" class="headerlink" title="模型服务"></a>模型服务</h3><p>MLServer</p>
-<ul>
-<li><a href="https://mlserver.readthedocs.io/en/latest/getting-started/index.html">官网</a></li>
-<li><a href="https://github.com/SeldonIO/MLServer/">Github</a></li>
-<li>简介：一款 Python 开发的、适用于机器学习模型的推理服务器，旨在提供一种简单的方法来通过 REST 和 gRPC 接口开始为您的机器学习模型提供服务，完全符合KFServing 的 V2 Dataplane规范。</li>
-</ul>
-<h2 id="平台级"><a href="#平台级" class="headerlink" title="平台级"></a>平台级</h2><h3 id="SkyPilot"><a href="#SkyPilot" class="headerlink" title="SkyPilot"></a><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">SkyPilot</a></h3><ul>
-<li>简介：是一个用于在任何基础设施上运行 AI 和批处理工作负载的框架，提供统一执行、高成本节省和高 GPU 可用性。</li>
-<li><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">文档链接</a>, <a href="https://github.com/skypilot-org/skypilot">Github地址</a></li>
-<li><a href="https://www.cloudpods.org/blog/introduction-to-the-skypilot-open-source-project">相关博客介绍</a></li>
-</ul>
-<h3 id="Cloudpods"><a href="#Cloudpods" class="headerlink" title="Cloudpods"></a><a href="https://github.com/yunionio/cloudpods">Cloudpods</a></h3><ul>
-<li>简介：一个使用Golang开发的云原生开源统一多云&#x2F;混合云平台，即Cloudpods是<em>云上的云</em>。 Cloudpods 不仅能够管理本地 KVM&#x2F;裸机，还能够管理来自许多云提供商的许多云帐户的资源。它隐藏了底层云提供商的差异，并公开了一组 API，允许以编程方式与众多云进行交互。</li>
-<li><a href="https://www.cloudpods.org/">文档链接</a></li>
-</ul>
-<h3 id="BentoML"><a href="#BentoML" class="headerlink" title="BentoML"></a>BentoML</h3><ul>
-<li>简介:是一个 Python 库，用于构建针对 AI 应用程序和模型推理进行优化的在线服务系统, 服务 AI 应用程序和模型的最简单方法 - 构建模型推理 API、作业队列、 LLM应用程序、多模型管道等</li>
-<li><a href="https://bentoml.com/">文档地址</a>、<a href="https://github.com/bentoml/BentoML">Github地址</a></li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="Cog"><a href="#Cog" class="headerlink" title="Cog"></a><a href="https://github.com/replicate/cog">Cog</a></h3><ul>
-<li>简介：Cog 是将机器学习模型打包到容器的工具。可通过配置将机器学习模型所需的环境和依赖，自动打包到容器里方便部署，让你不再为编写 Docker 文件和 CUDA 而痛苦，还能自动启动 HTTP 接口服务方便调用</li>
-<li><a href="https://cog.run/">文档地址</a>、<a href="https://github.com/replicate/cog">Github地址</a></li>
-</ul>
-</div>]]></content>
-      <categories>
-        <category>ModelOps</category>
-      </categories>
-      <tags>
-        <tag>ModelOps</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>储存组件Longhorn部署使用</title>
     <url>/2025/03/12/tech/k8s/02-longhorn/</url>
     <content><![CDATA[<div class=".article-gallery"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Longhorn是基于Kubernetes和Container的构建的分布式块存储系统，轻量、可靠且功能强大， Longhorn为每个块设备卷创建一个专门的存储控制器，并且对多个节点上存储副本中的卷进行实时复制。以下是它的主要特点：</p>
@@ -1356,6 +1381,83 @@
       <tags>
         <tag>K8S</tag>
         <tag>存储组件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于ModelOps的相关技术</title>
+    <url>/2025/03/15/tech/modelops/01-modelops-tech/</url>
+    <content><![CDATA[<div class=".article-gallery"><h2 id="框架级"><a href="#框架级" class="headerlink" title="框架级"></a>框架级</h2><h3 id="模型开发"><a href="#模型开发" class="headerlink" title="模型开发"></a>模型开发</h3><h4 id="Scikit-learn（SKlearn）"><a href="#Scikit-learn（SKlearn）" class="headerlink" title="Scikit-learn（SKlearn）"></a>Scikit-learn（SKlearn）</h4><ul>
+<li><a href="https://scikit-learn.org/stable/">官网</a></li>
+<li>简介：一个基于 SciPy 构建的用于机器学习的 Python 模块，并根据 3-Clause BSD 许可证分发</li>
+</ul>
+<h4 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a><a href="https://pytorch.org/">PyTorch</a></h4><ul>
+<li><a href="https://pytorch.org/">官网</a></li>
+<li>简介：Python 中的张量和动态神经网络，具有强大的 GPU 加速功能</li>
+</ul>
+<h3 id="模型解释"><a href="#模型解释" class="headerlink" title="模型解释"></a>模型解释</h3><h4 id="Alibi-Explain"><a href="#Alibi-Explain" class="headerlink" title="Alibi Explain"></a>Alibi Explain</h4><ul>
+<li><a href="https://docs.seldon.io/projects/alibi/en/stable/">官网</a></li>
+<li><a href="https://github.com/SeldonIO/alibi">Github</a></li>
+<li>简介：</li>
+</ul>
+<h3 id="模型检测"><a href="#模型检测" class="headerlink" title="模型检测"></a>模型检测</h3><h4 id="Alibi-Detect"><a href="#Alibi-Detect" class="headerlink" title="Alibi Detect"></a>Alibi Detect</h4><ul>
+<li><a href="https://docs.seldon.io/projects/alibi-detect/en/stable/">官网</a></li>
+<li><a href="https://github.com/SeldonIO/alibi-detect">Github</a> </li>
+<li>简介：是一个 Python 开源库，专注于异常值、对抗性、和漂移检测。该库涵盖表格数据、文本、图像和时间序列的在线和离线检测器，TensorFlow 和 PyTorch 后端都支持漂移检测。</li>
+</ul>
+<h3 id="模型管理"><a href="#模型管理" class="headerlink" title="模型管理"></a>模型管理</h3><h4 id="MLflow"><a href="#MLflow" class="headerlink" title="MLflow"></a>MLflow</h4><ul>
+<li><a href="https://mlflow.org/">官网</a></li>
+<li><a href="https://github.com/mlflow/mlflow">Github</a></li>
+<li>简介：MLflow 是一个开源平台，专门用于帮助机器学习从业者和团队处理机器学习过程的复杂性，专注于机器学习项目的整个生命周期，确保每个阶段都是可管理、可追溯和可再现的。</li>
+</ul>
+<h3 id="模型部署"><a href="#模型部署" class="headerlink" title="模型部署"></a>模型部署</h3><h4 id="Seldon-core"><a href="#Seldon-core" class="headerlink" title="Seldon-core"></a>Seldon-core</h4><ul>
+<li><a href="https://www.seldon.io/solutions/core-plus">官网</a></li>
+<li><a href="https://github.com/SeldonIO/seldon-core">Github</a></li>
+<li>简介：一款用于打包、部署、监控和管理数千个生产机器学习模型的 MLOps 框架</li>
+</ul>
+<h4 id="Kserve"><a href="#Kserve" class="headerlink" title="Kserve"></a>Kserve</h4><ul>
+<li><a href="https://kserve.github.io/website/latest/">官网</a></li>
+<li><a href="https://github.com/kserve/kserve">Github</a></li>
+<li>简介：一款基于 Kubernetes 高度可扩展且基于标准的模型部署与推理平台</li>
+</ul>
+<h4 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h4><ul>
+<li><a href="https://www.ray.io/">官网</a></li>
+<li><a href="https://github.com/ray-project/ray">Github</a></li>
+<li>简介：一款 AI 计算引擎，管理、执行和优化 AI 工作负载的计算需求。它通过单一、灵活的框架统一基础设施，支持从数据处理到模型训练再到模型服务等任何人工智能工作负载。</li>
+</ul>
+<h4 id="Polyaxon"><a href="#Polyaxon" class="headerlink" title="Polyaxon"></a><a href="https://github.com/polyaxon/polyaxon">Polyaxon</a></h4><ul>
+<li><a href="https://polyaxon.com/">官网</a></li>
+<li><a href="https://github.com/polyaxon/polyaxon">Github</a></li>
+<li>简介：一个用于构建、训练和监控大规模深度学习应用程序的平台,用于管理和编排机器学习生命周期的 MLOps 工具</li>
+</ul>
+<h3 id="模型服务"><a href="#模型服务" class="headerlink" title="模型服务"></a>模型服务</h3><p>MLServer</p>
+<ul>
+<li><a href="https://mlserver.readthedocs.io/en/latest/getting-started/index.html">官网</a></li>
+<li><a href="https://github.com/SeldonIO/MLServer/">Github</a></li>
+<li>简介：一款 Python 开发的、适用于机器学习模型的推理服务器，旨在提供一种简单的方法来通过 REST 和 gRPC 接口开始为您的机器学习模型提供服务，完全符合KFServing 的 V2 Dataplane规范。</li>
+</ul>
+<h2 id="平台级"><a href="#平台级" class="headerlink" title="平台级"></a>平台级</h2><h3 id="SkyPilot"><a href="#SkyPilot" class="headerlink" title="SkyPilot"></a><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">SkyPilot</a></h3><ul>
+<li>简介：是一个用于在任何基础设施上运行 AI 和批处理工作负载的框架，提供统一执行、高成本节省和高 GPU 可用性。</li>
+<li><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">文档链接</a>, <a href="https://github.com/skypilot-org/skypilot">Github地址</a></li>
+<li><a href="https://www.cloudpods.org/blog/introduction-to-the-skypilot-open-source-project">相关博客介绍</a></li>
+</ul>
+<h3 id="Cloudpods"><a href="#Cloudpods" class="headerlink" title="Cloudpods"></a><a href="https://github.com/yunionio/cloudpods">Cloudpods</a></h3><ul>
+<li>简介：一个使用Golang开发的云原生开源统一多云&#x2F;混合云平台，即Cloudpods是<em>云上的云</em>。 Cloudpods 不仅能够管理本地 KVM&#x2F;裸机，还能够管理来自许多云提供商的许多云帐户的资源。它隐藏了底层云提供商的差异，并公开了一组 API，允许以编程方式与众多云进行交互。</li>
+<li><a href="https://www.cloudpods.org/">文档链接</a></li>
+</ul>
+<h3 id="BentoML"><a href="#BentoML" class="headerlink" title="BentoML"></a>BentoML</h3><ul>
+<li>简介:是一个 Python 库，用于构建针对 AI 应用程序和模型推理进行优化的在线服务系统, 服务 AI 应用程序和模型的最简单方法 - 构建模型推理 API、作业队列、 LLM应用程序、多模型管道等</li>
+<li><a href="https://bentoml.com/">文档地址</a>、<a href="https://github.com/bentoml/BentoML">Github地址</a></li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="Cog"><a href="#Cog" class="headerlink" title="Cog"></a><a href="https://github.com/replicate/cog">Cog</a></h3><ul>
+<li>简介：Cog 是将机器学习模型打包到容器的工具。可通过配置将机器学习模型所需的环境和依赖，自动打包到容器里方便部署，让你不再为编写 Docker 文件和 CUDA 而痛苦，还能自动启动 HTTP 接口服务方便调用</li>
+<li><a href="https://cog.run/">文档地址</a>、<a href="https://github.com/replicate/cog">Github地址</a></li>
+</ul>
+</div>]]></content>
+      <categories>
+        <category>ModelOps</category>
+      </categories>
+      <tags>
+        <tag>ModelOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1976,115 +2078,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python常用库汇总[awesome]</title>
-    <url>/2025/03/06/tech/python/05-pylib-awesome/</url>
-    <content><![CDATA[<div class=".article-gallery"><h2 id="Web开发库"><a href="#Web开发库" class="headerlink" title="Web开发库"></a>Web开发库</h2><ul>
-<li><a href="https://github.com/django/django">Django</a>: 一款全面且重量（大而全）的Web框架，当前star数： 82.6k</li>
-<li><a href="https://github.com/tiangolo/fastapi">FastAPI</a>: 一款高性能、异步的轻量级Web框架，当前star数：81.6k</li>
-<li><a href="https://github.com/pallets/flask">Flask</a>: 一款轻量级用于构建Web应用程序的Python微框架， 当前star数：69k</li>
-<li><a href="https://github.com/streamlit/streamlit">streamlit</a>: 一款快速搭建数据共享与可视化的Web应用框架，当前star数：29.7k</li>
-<li><a href="https://github.com/encode/django-rest-framework">django-rest-framework</a>: 一款基于Django，用于快速开发Web API程序的扩展框架，当前star数：27k</li>
-<li><a href="https://github.com/gradio-app/gradio">gradio</a>:  一款用于快速构建AI算法可视化部署的框架，当前star数：25.7k</li>
-<li><a href="https://github.com/tornadoweb/tornado">Tornado</a>: 一款异步的网络库，可用于快速开发Web应用的框架，当前star数：21.4k</li>
-<li><a href="https://github.com/sanic-org/sanic">sanic</a>: 一款快速构建、快速开发的异步Web框架，当前star数：17.6k</li>
-<li><a href="https://github.com/falconry/falcon">Falcon</a>：面向python开发人员的简单Web数据平面API和微服务框架，当前star数： 9.3k</li>
-<li><a href="https://github.com/zauberzeug/nicegui">nicegui</a>: 一款使用python开发的Web用户界面，当前star数： 6.4k</li>
-<li><a href="https://github.com/nameko/nameko">nameko</a>:一款用于构建微服务的Python框架，当前star数：4.6k</li>
-<li><a href="https://github.com/cherrypy/cherrypy">cherrypy</a>: 一个轻量级、Pythonic、面向对象的HTTP 框架，当前star数：1.8k</li>
-<li><a href="https://github.com/miguelgrinberg/microdot">Microdot</a>: 适用于Python和Microdot的超小型Web框架；当前star数：1.2k</li>
-</ul>
-<h2 id="Python-机器学习库"><a href="#Python-机器学习库" class="headerlink" title="Python 机器学习库"></a>Python 机器学习库</h2><ul>
-<li><a href="https://github.com/sb-ai-lab/LightAutoML">lightautoml</a>：一款全自动机器学习框架， 当前 star 数：720</li>
-</ul>
-<h2 id="Python-数据处理库"><a href="#Python-数据处理库" class="headerlink" title="Python 数据处理库"></a>Python 数据处理库</h2><ul>
-<li><a href="https://github.com/alecthomas/voluptuous">voluptuous</a>: 一个 Python 数据验证库,当前 star 数：1.8k</li>
-</ul>
-<h3 id="ORM-库"><a href="#ORM-库" class="headerlink" title="ORM 库"></a>ORM 库</h3><ul>
-<li><a href="https://github.com/sqlalchemy/sqlalchemy">sqlalchemy</a>: Python 数据库工具包</li>
-<li><a href="https://github.com/encode/databases">databases</a>: Python的异步数据库支持</li>
-<li><a href="https://pypi.org/project/django-orm/">django-orm</a>:</li>
-<li><a href="https://github.com/coleifer/peewee">peewee</a></li>
-<li><a href="https://github.com/tortoise/tortoise-orm">tortoise-orm</a></li>
-<li><a href="https://github.com/sqlalchemy/alembic">alembic</a>: 数据库迁移工具</li>
-</ul>
-<h3 id="环境包管理库"><a href="#环境包管理库" class="headerlink" title="环境包管理库"></a>环境包管理库</h3><ul>
-<li><a href="https://github.com/conda/conda">conda</a>: 包管理工具</li>
-<li><a href="https://github.com/python-poetry/poetry">poetry</a>: 依赖管理工具</li>
-<li><a href="https://github.com/pdm-project/pdm">pdm</a>: 依赖管理工具</li>
-<li><a href="https://github.com/pipxproject/pipx">pipx</a>: 管理Python包的工具,在隔离环境中安装和运行 Python 应用程序</li>
-<li><a href="https://github.com/pypa/pipenv">pipenv</a>: 管理Python包的工具</li>
-<li><a href="https://github.com/pypa/virtualenv">virtualenv</a>: 虚拟环境管理工具</li>
-<li><a href="https://docs.python.org/zh-cn/3/library/venv.html">venv</a>: 虚拟环境管理工具</li>
-<li><a href="https://github.com/virtualenvwrapper/virtualenvwrapper">virtualenvwrapper</a>: 虚拟环境管理工具</li>
-<li><a href="https://github.com/pyenv/pyenv">pyenv</a>: Python版本管理工具</li>
-</ul>
-<h3 id="任务库"><a href="#任务库" class="headerlink" title="任务库"></a>任务库</h3><ul>
-<li><a href="https://github.com/celery/celery">celery</a>: 分布式任务调度框架</li>
-<li><a href="https://github.com/agronholm/apscheduler">apscheduler</a>: 定时任务调度框架</li>
-<li><a href="https://github.com/ydf0509/funboost">funboost</a>: 异步任务调度框架</li>
-<li><a href="https://github.com/rq/rq">rq</a>: 轻量级任务调度框架</li>
-<li><a href="https://docs.python.org/3/library/sched.html">sched</a>: 轻量级任务调度框架</li>
-<li><a href="https://github.com/dbader/schedule">schedule</a>: 轻量级任务调度框架</li>
-</ul>
-<h3 id="性能分析库"><a href="#性能分析库" class="headerlink" title="性能分析库"></a>性能分析库</h3><ul>
-<li><a href="https://docs.python.org/zh-cn/3/library/profile.html">cProfile</a>: 标准库自带的性能分析</li>
-<li><a href="https://github.com/pythonprofilers/memory_profiler">memory_profiler</a>: 内存分析工具，监控Python代码的内存使用情况</li>
-<li><a href="https://github.com/rkern/line_profiler">line_profiler</a>: 行级性能分析工具，</li>
-</ul>
-<h3 id="代码编译加密库"><a href="#代码编译加密库" class="headerlink" title="代码编译加密库"></a>代码编译加密库</h3><ul>
-<li><a href="https://github.com/Nuitka/Nuitka">Nuitka</a>: 代码加密工具,一个用 Python 编写的 Python 编译器</li>
-<li><a href="https://github.com/dashingsoft/pyarmor">pyarmor</a>: 代码加密工具</li>
-<li><a href="https://github.com/cckuailong/py2sec">py2sec</a>: 一个跨平台、快速且灵活的工具，可将 .py 更改为 .so（Linux 和 Mac）或 .pyd（Win）</li>
-<li><a href="https://github.com/pyinstaller/pyinstaller">pyinstaller</a>: 代码打包工具,将 Python 程序冻结（打包）为独立的可执行文件</li>
-</ul>
-<h3 id="测试库"><a href="#测试库" class="headerlink" title="测试库"></a>测试库</h3><ul>
-<li><a href="https://github.com/pytest-dev/pytest">pytest</a>: 测试框架</li>
-<li><a href="https://github.com/python/cpython/tree/3.11/Lib/unittest">unittest</a>: 单元测试框架</li>
-<li><a href="https://github.com/pytest-dev/pytest-html">pytest-html</a>: 测试报告生成工具</li>
-<li><a href="https://github.com/testing-cabal/mock">mock</a>: 模拟对象库</li>
-</ul>
-<h3 id="依赖注入框架"><a href="#依赖注入框架" class="headerlink" title="依赖注入框架"></a>依赖注入框架</h3><ul>
-<li><a href="https://github.com/ets-labs/python-dependency-injector">dependency-injector</a>: 依赖注入框架</li>
-<li><a href="https://github.com/ZechCodes/Bevy">bevy</a>: 依赖注入框架</li>
-</ul>
-<h3 id="重试库："><a href="#重试库：" class="headerlink" title="重试库："></a>重试库：</h3><ul>
-<li><a href="https://github.com/invl/retry">retry</a>: 重试库</li>
-</ul>
-<h3 id="进程管理库"><a href="#进程管理库" class="headerlink" title="进程管理库"></a>进程管理库</h3><ul>
-<li><a href="https://github.com/Supervisor/supervisor">supervisor</a>: 进程管理工具</li>
-<li><a href="https://github.com/benoitc/gunicorn">gunicorn</a>: 进程管理工具</li>
-<li><a href="https://github.com/unbit/uwsgi">uwsgi</a>: 进程管理工具</li>
-</ul>
-<h3 id="操作日期时间库"><a href="#操作日期时间库" class="headerlink" title="操作日期时间库"></a>操作日期时间库</h3><ul>
-<li><a href="https://docs.python.org/zh-cn/3/library/time.html">time</a>: 官方内置库</li>
-<li><a href="https://docs.python.org/zh-cn/3/library/datetime.html">datetime</a>: 官方内置库</li>
-<li><a href="https://github.com/arrow-py/arrow">arrow</a>: 日期时间库</li>
-<li><a href="https://dateutil.readthedocs.io/en/stable/">dateutil</a></li>
-<li><a href="https://github.com/arrow-py/arrow">arrow</a></li>
-<li><a href="https://github.com/myusuf3/delorean">delorean</a></li>
-<li><a href="https://github.com/spulec/freezegun">Freezegun</a></li>
-<li><a href="https://github.com/zachwill/moment">moment</a></li>
-<li><a href="https://github.com/kennethreitz/maya">maya</a></li>
-</ul>
-<h3 id="操作Json文件"><a href="#操作Json文件" class="headerlink" title="操作Json文件"></a>操作Json文件</h3><ul>
-<li><a href="https://docs.python.org/zh-cn/3/library/json.html">Json</a>:官方内置库 </li>
-<li>【☆】<a href="https://github.com/jmespath/jmespath.py">Jmespath</a>: 是一个json查询库，可以使用声明的方式从Json中提取元素</li>
-</ul>
-<h3 id="操作YAML文件"><a href="#操作YAML文件" class="headerlink" title="操作YAML文件"></a>操作YAML文件</h3><ul>
-<li><a href="https://github.com/yaml/pyyaml">PyYAML</a></li>
-</ul>
-<h2 id="未分类"><a href="#未分类" class="headerlink" title="未分类"></a>未分类</h2><ul>
-<li><a href="https://github.com/joke2k/faker">Faker</a>: 一个用于生成虚拟数据的python库</li>
-</ul>
-</div>]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python库</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python中的常用数据类型与用法</title>
     <url>/2025/03/05/tech/python/05-py-datastruct/</url>
     <content><![CDATA[<div class=".article-gallery"><h2 id="概念名词分析"><a href="#概念名词分析" class="headerlink" title="概念名词分析"></a>概念名词分析</h2><h3 id="不同视角下的数据类型"><a href="#不同视角下的数据类型" class="headerlink" title="不同视角下的数据类型"></a>不同视角下的数据类型</h3><h4 id="序列类型（Sequence）"><a href="#序列类型（Sequence）" class="headerlink" title="序列类型（Sequence）"></a>序列类型（Sequence）</h4><blockquote>
@@ -2386,6 +2379,115 @@
       <tags>
         <tag>python工程实践</tag>
         <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python常用库汇总[awesome]</title>
+    <url>/2025/03/06/tech/python/05-pylib-awesome/</url>
+    <content><![CDATA[<div class=".article-gallery"><h2 id="Web开发库"><a href="#Web开发库" class="headerlink" title="Web开发库"></a>Web开发库</h2><ul>
+<li><a href="https://github.com/django/django">Django</a>: 一款全面且重量（大而全）的Web框架，当前star数： 82.6k</li>
+<li><a href="https://github.com/tiangolo/fastapi">FastAPI</a>: 一款高性能、异步的轻量级Web框架，当前star数：81.6k</li>
+<li><a href="https://github.com/pallets/flask">Flask</a>: 一款轻量级用于构建Web应用程序的Python微框架， 当前star数：69k</li>
+<li><a href="https://github.com/streamlit/streamlit">streamlit</a>: 一款快速搭建数据共享与可视化的Web应用框架，当前star数：29.7k</li>
+<li><a href="https://github.com/encode/django-rest-framework">django-rest-framework</a>: 一款基于Django，用于快速开发Web API程序的扩展框架，当前star数：27k</li>
+<li><a href="https://github.com/gradio-app/gradio">gradio</a>:  一款用于快速构建AI算法可视化部署的框架，当前star数：25.7k</li>
+<li><a href="https://github.com/tornadoweb/tornado">Tornado</a>: 一款异步的网络库，可用于快速开发Web应用的框架，当前star数：21.4k</li>
+<li><a href="https://github.com/sanic-org/sanic">sanic</a>: 一款快速构建、快速开发的异步Web框架，当前star数：17.6k</li>
+<li><a href="https://github.com/falconry/falcon">Falcon</a>：面向python开发人员的简单Web数据平面API和微服务框架，当前star数： 9.3k</li>
+<li><a href="https://github.com/zauberzeug/nicegui">nicegui</a>: 一款使用python开发的Web用户界面，当前star数： 6.4k</li>
+<li><a href="https://github.com/nameko/nameko">nameko</a>:一款用于构建微服务的Python框架，当前star数：4.6k</li>
+<li><a href="https://github.com/cherrypy/cherrypy">cherrypy</a>: 一个轻量级、Pythonic、面向对象的HTTP 框架，当前star数：1.8k</li>
+<li><a href="https://github.com/miguelgrinberg/microdot">Microdot</a>: 适用于Python和Microdot的超小型Web框架；当前star数：1.2k</li>
+</ul>
+<h2 id="Python-机器学习库"><a href="#Python-机器学习库" class="headerlink" title="Python 机器学习库"></a>Python 机器学习库</h2><ul>
+<li><a href="https://github.com/sb-ai-lab/LightAutoML">lightautoml</a>：一款全自动机器学习框架， 当前 star 数：720</li>
+</ul>
+<h2 id="Python-数据处理库"><a href="#Python-数据处理库" class="headerlink" title="Python 数据处理库"></a>Python 数据处理库</h2><ul>
+<li><a href="https://github.com/alecthomas/voluptuous">voluptuous</a>: 一个 Python 数据验证库,当前 star 数：1.8k</li>
+</ul>
+<h3 id="ORM-库"><a href="#ORM-库" class="headerlink" title="ORM 库"></a>ORM 库</h3><ul>
+<li><a href="https://github.com/sqlalchemy/sqlalchemy">sqlalchemy</a>: Python 数据库工具包</li>
+<li><a href="https://github.com/encode/databases">databases</a>: Python的异步数据库支持</li>
+<li><a href="https://pypi.org/project/django-orm/">django-orm</a>:</li>
+<li><a href="https://github.com/coleifer/peewee">peewee</a></li>
+<li><a href="https://github.com/tortoise/tortoise-orm">tortoise-orm</a></li>
+<li><a href="https://github.com/sqlalchemy/alembic">alembic</a>: 数据库迁移工具</li>
+</ul>
+<h3 id="环境包管理库"><a href="#环境包管理库" class="headerlink" title="环境包管理库"></a>环境包管理库</h3><ul>
+<li><a href="https://github.com/conda/conda">conda</a>: 包管理工具</li>
+<li><a href="https://github.com/python-poetry/poetry">poetry</a>: 依赖管理工具</li>
+<li><a href="https://github.com/pdm-project/pdm">pdm</a>: 依赖管理工具</li>
+<li><a href="https://github.com/pipxproject/pipx">pipx</a>: 管理Python包的工具,在隔离环境中安装和运行 Python 应用程序</li>
+<li><a href="https://github.com/pypa/pipenv">pipenv</a>: 管理Python包的工具</li>
+<li><a href="https://github.com/pypa/virtualenv">virtualenv</a>: 虚拟环境管理工具</li>
+<li><a href="https://docs.python.org/zh-cn/3/library/venv.html">venv</a>: 虚拟环境管理工具</li>
+<li><a href="https://github.com/virtualenvwrapper/virtualenvwrapper">virtualenvwrapper</a>: 虚拟环境管理工具</li>
+<li><a href="https://github.com/pyenv/pyenv">pyenv</a>: Python版本管理工具</li>
+</ul>
+<h3 id="任务库"><a href="#任务库" class="headerlink" title="任务库"></a>任务库</h3><ul>
+<li><a href="https://github.com/celery/celery">celery</a>: 分布式任务调度框架</li>
+<li><a href="https://github.com/agronholm/apscheduler">apscheduler</a>: 定时任务调度框架</li>
+<li><a href="https://github.com/ydf0509/funboost">funboost</a>: 异步任务调度框架</li>
+<li><a href="https://github.com/rq/rq">rq</a>: 轻量级任务调度框架</li>
+<li><a href="https://docs.python.org/3/library/sched.html">sched</a>: 轻量级任务调度框架</li>
+<li><a href="https://github.com/dbader/schedule">schedule</a>: 轻量级任务调度框架</li>
+</ul>
+<h3 id="性能分析库"><a href="#性能分析库" class="headerlink" title="性能分析库"></a>性能分析库</h3><ul>
+<li><a href="https://docs.python.org/zh-cn/3/library/profile.html">cProfile</a>: 标准库自带的性能分析</li>
+<li><a href="https://github.com/pythonprofilers/memory_profiler">memory_profiler</a>: 内存分析工具，监控Python代码的内存使用情况</li>
+<li><a href="https://github.com/rkern/line_profiler">line_profiler</a>: 行级性能分析工具，</li>
+</ul>
+<h3 id="代码编译加密库"><a href="#代码编译加密库" class="headerlink" title="代码编译加密库"></a>代码编译加密库</h3><ul>
+<li><a href="https://github.com/Nuitka/Nuitka">Nuitka</a>: 代码加密工具,一个用 Python 编写的 Python 编译器</li>
+<li><a href="https://github.com/dashingsoft/pyarmor">pyarmor</a>: 代码加密工具</li>
+<li><a href="https://github.com/cckuailong/py2sec">py2sec</a>: 一个跨平台、快速且灵活的工具，可将 .py 更改为 .so（Linux 和 Mac）或 .pyd（Win）</li>
+<li><a href="https://github.com/pyinstaller/pyinstaller">pyinstaller</a>: 代码打包工具,将 Python 程序冻结（打包）为独立的可执行文件</li>
+</ul>
+<h3 id="测试库"><a href="#测试库" class="headerlink" title="测试库"></a>测试库</h3><ul>
+<li><a href="https://github.com/pytest-dev/pytest">pytest</a>: 测试框架</li>
+<li><a href="https://github.com/python/cpython/tree/3.11/Lib/unittest">unittest</a>: 单元测试框架</li>
+<li><a href="https://github.com/pytest-dev/pytest-html">pytest-html</a>: 测试报告生成工具</li>
+<li><a href="https://github.com/testing-cabal/mock">mock</a>: 模拟对象库</li>
+</ul>
+<h3 id="依赖注入框架"><a href="#依赖注入框架" class="headerlink" title="依赖注入框架"></a>依赖注入框架</h3><ul>
+<li><a href="https://github.com/ets-labs/python-dependency-injector">dependency-injector</a>: 依赖注入框架</li>
+<li><a href="https://github.com/ZechCodes/Bevy">bevy</a>: 依赖注入框架</li>
+</ul>
+<h3 id="重试库："><a href="#重试库：" class="headerlink" title="重试库："></a>重试库：</h3><ul>
+<li><a href="https://github.com/invl/retry">retry</a>: 重试库</li>
+</ul>
+<h3 id="进程管理库"><a href="#进程管理库" class="headerlink" title="进程管理库"></a>进程管理库</h3><ul>
+<li><a href="https://github.com/Supervisor/supervisor">supervisor</a>: 进程管理工具</li>
+<li><a href="https://github.com/benoitc/gunicorn">gunicorn</a>: 进程管理工具</li>
+<li><a href="https://github.com/unbit/uwsgi">uwsgi</a>: 进程管理工具</li>
+</ul>
+<h3 id="操作日期时间库"><a href="#操作日期时间库" class="headerlink" title="操作日期时间库"></a>操作日期时间库</h3><ul>
+<li><a href="https://docs.python.org/zh-cn/3/library/time.html">time</a>: 官方内置库</li>
+<li><a href="https://docs.python.org/zh-cn/3/library/datetime.html">datetime</a>: 官方内置库</li>
+<li><a href="https://github.com/arrow-py/arrow">arrow</a>: 日期时间库</li>
+<li><a href="https://dateutil.readthedocs.io/en/stable/">dateutil</a></li>
+<li><a href="https://github.com/arrow-py/arrow">arrow</a></li>
+<li><a href="https://github.com/myusuf3/delorean">delorean</a></li>
+<li><a href="https://github.com/spulec/freezegun">Freezegun</a></li>
+<li><a href="https://github.com/zachwill/moment">moment</a></li>
+<li><a href="https://github.com/kennethreitz/maya">maya</a></li>
+</ul>
+<h3 id="操作Json文件"><a href="#操作Json文件" class="headerlink" title="操作Json文件"></a>操作Json文件</h3><ul>
+<li><a href="https://docs.python.org/zh-cn/3/library/json.html">Json</a>:官方内置库 </li>
+<li>【☆】<a href="https://github.com/jmespath/jmespath.py">Jmespath</a>: 是一个json查询库，可以使用声明的方式从Json中提取元素</li>
+</ul>
+<h3 id="操作YAML文件"><a href="#操作YAML文件" class="headerlink" title="操作YAML文件"></a>操作YAML文件</h3><ul>
+<li><a href="https://github.com/yaml/pyyaml">PyYAML</a></li>
+</ul>
+<h2 id="未分类"><a href="#未分类" class="headerlink" title="未分类"></a>未分类</h2><ul>
+<li><a href="https://github.com/joke2k/faker">Faker</a>: 一个用于生成虚拟数据的python库</li>
+</ul>
+</div>]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python库</tag>
       </tags>
   </entry>
   <entry>
