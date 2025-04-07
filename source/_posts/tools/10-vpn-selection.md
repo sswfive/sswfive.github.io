@@ -2,7 +2,7 @@
 title: 一些科学上网的工具
 date: 2025-04-07 22:05:17
 tags:
-  - vpn
+  - VPN
 categories:
   - 工具
 ---
