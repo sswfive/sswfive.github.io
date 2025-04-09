@@ -15,7 +15,9 @@ KtConnect 是阿里开源的一款云原生协同开发测试解决方案,旨在
 
 
 
-## 安装
+## Win环境
+
+
 
 - [下载链接](https://alibaba.github.io/kt-connect/#/zh-cn/guide/downloads)
 
@@ -103,3 +105,35 @@ ktctl connect -n <namespace name> --excludeIps 172.16.2.0/24   # <网关地址�
 4:15PM INF ---------------------------------------------------------------
 
 ```
+
+
+
+## Mac环境
+
+1. 下载 ktctl
+
+- [MacOS x86 64位](https://github.com/alibaba/kt-connect/releases/download/v0.3.7/ktctl_0.3.7_MacOS_x86_64.tar.gz)
+- [MacOS ARM 64位](https://github.com/alibaba/kt-connect/releases/download/v0.3.7/ktctl_0.3.7_MacOS_arm_64.tar.gz)
+
+2. 安装 ktctl
+
+```bash
+tar zxf ktctl_0.3.7_MacOS_x86_64.tar.gz
+mv ktctl /usr/local/bin/ktctl
+ktctl --version
+```
+
+3. 安装 kubectl
+   - [安装说明](https://kubernetes.io/zh-cn/docs/tasks/tools/install-kubectl-macos/)
+
+```bash
+brew install kubectl
+```
+
+4. 将 K8S 集群的 config 拷贝到`~/.kube` 目录下
+5. 启动
+
+```bash
+sudo ktctl connect -n <namespace>  --excludeIps 172.16.2.0/24
+```
+
