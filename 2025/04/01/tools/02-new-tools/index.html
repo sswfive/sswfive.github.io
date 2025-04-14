@@ -197,7 +197,7 @@
             <div class="post-head-meta-center">
         
                 
-                    <span>最近更新：2025-04-13</span> 
+                    <span>最近更新：2025-04-14</span> 
                 
                 
                     
@@ -229,60 +229,56 @@
             
         
         <div class=".article-gallery"><p>自进入2025年后，用了五年多的16寸MacBookPo（2019款 32G+512）就 很突然的开始出现各种自动重启、频繁死机状态，很影响心态。期间打Apple售后线上排查过、也拿去市里最大的 Apple 店线下排查过，售后人员给出的结论是硬件有问题需要更换，考虑是 Inter老芯片加上已有些年限，再花几千维修费，着实有些不值，权衡利弊之后， 最终在3月12日线上买一台新的14寸的MacBookPro（M4 Pro + 48G+512, 14+20）,在国补-2000，教育补贴-1650的加持下，性价比自认为还是相当 OK 的。 一直想写下来记录一下，奈何三月工作太忙，一直拖到今天才有时间，接下来介绍一下新设备到手后的一些常用设置和常用软件的安装。</p>
-<h2 id="装机设置"><a href="#装机设置" class="headerlink" title="装机设置"></a>装机设置</h2><h3 id="默认配置修改"><a href="#默认配置修改" class="headerlink" title="默认配置修改"></a>默认配置修改</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 禁止 “Are you sure you want to open this application?” 提示</span></span><br><span class="line">defaults write com.apple.LaunchServices LSQuarantine -bool <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁止磁盘映像验证</span></span><br><span class="line">defaults write com.apple.frameworks.diskimages skip-verify -bool <span class="literal">true</span></span><br><span class="line">defaults write com.apple.frameworks.diskimages skip-verify-locked -bool <span class="literal">true</span></span><br><span class="line">defaults write com.apple.frameworks.diskimages skip-verify-remote -bool <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 桌面隐藏外部磁盘和可移动介质</span></span><br><span class="line">defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool <span class="literal">false</span></span><br><span class="line">defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示所有扩展名和隐藏文件</span></span><br><span class="line">defaults write -g AppleShowAllExtensions -bool <span class="literal">true</span></span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁用修改扩展名时的警告</span></span><br><span class="line">defaults write com.apple.finder FXEnableExtensionChangeWarning -bool <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示底部地址栏</span></span><br><span class="line">defaults write com.apple.finder ShowPathbar -bool <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁止创建 .DS_Store 文件</span></span><br><span class="line">defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="允许打开任何来源的应用"><a href="#允许打开任何来源的应用" class="headerlink" title="允许打开任何来源的应用"></a>允许打开任何来源的应用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> spctl --master-disable</span><br></pre></td></tr></table></figure>
-
+<h2 id="装机设置">装机设置</h2>
+<h3 id="默认配置修改">默认配置修改</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 禁止 “Are you sure you want to open this application?” 提示</span></span><br><span class="line">defaults write com.apple.LaunchServices LSQuarantine -bool <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁止磁盘映像验证</span></span><br><span class="line">defaults write com.apple.frameworks.diskimages skip-verify -bool <span class="literal">true</span></span><br><span class="line">defaults write com.apple.frameworks.diskimages skip-verify-locked -bool <span class="literal">true</span></span><br><span class="line">defaults write com.apple.frameworks.diskimages skip-verify-remote -bool <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 桌面隐藏外部磁盘和可移动介质</span></span><br><span class="line">defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool <span class="literal">false</span></span><br><span class="line">defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示所有扩展名和隐藏文件</span></span><br><span class="line">defaults write -g AppleShowAllExtensions -bool <span class="literal">true</span></span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁用修改扩展名时的警告</span></span><br><span class="line">defaults write com.apple.finder FXEnableExtensionChangeWarning -bool <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示底部地址栏</span></span><br><span class="line">defaults write com.apple.finder ShowPathbar -bool <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁止创建 .DS_Store 文件</span></span><br><span class="line">defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h3 id="允许打开任何来源的应用">允许打开任何来源的应用</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> spctl --master-disable</span><br></pre></td></tr></table></figure>
 <ul>
 <li>然后去『<code>系统设置 &gt; 安全性与隐私 &gt; 安全性 &gt; 任何来源</code>』打开</li>
 </ul>
-<h3 id="提示-已损坏-无法确认开发者身份"><a href="#提示-已损坏-无法确认开发者身份" class="headerlink" title="提示 已损坏&#x2F;无法确认开发者身份"></a>提示 已损坏&#x2F;无法确认开发者身份</h3><p>开启【任何来源】后，还有部分软件在安装后会提示【已损坏】或【无法确认开发者身份】，需要使用<code>xattr</code>命令</p>
+<h3 id="提示-已损坏-无法确认开发者身份">提示 已损坏/无法确认开发者身份</h3>
+<p>开启【任何来源】后，还有部分软件在安装后会提示【已损坏】或【无法确认开发者身份】，需要使用<code>xattr</code>命令</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> xattr -d com.apple.quarantine /Applications/[应用名称].app</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>当不知道如何找到应用名称时，打开一个终端和访达中的应用程序，将需要执行的软件拖到终端就可以知道软件的全路径，接着拷贝最后的名称即可。</li>
 </ul>
-<h3 id="终端Git中文乱码"><a href="#终端Git中文乱码" class="headerlink" title="终端Git中文乱码"></a>终端Git中文乱码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="装机必备软件"><a href="#装机必备软件" class="headerlink" title="装机必备软件"></a>装机必备软件</h2><blockquote>
+<h3 id="终端Git中文乱码">终端Git中文乱码</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<h2 id="装机必备软件">装机必备软件</h2>
+<blockquote>
 <p>做为一个开发者必备的装机软件</p>
 </blockquote>
-<h3 id="Xcode-Command-Line-Tools"><a href="#Xcode-Command-Line-Tools" class="headerlink" title="Xcode Command Line Tools"></a>Xcode Command Line Tools</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 Xcode Command Line Tools</span></span><br><span class="line">xcode-select --install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除 Xcode Command Line Tools</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">rm</span> -rf /Library/Developer/CommandLineTools</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a><a target="_blank" rel="noopener" href="https://brew.sh/">Homebrew</a></h3><ul>
-<li>Mac的软件包管理工具，用于安装&#x2F;卸载&#x2F;管理各种软件，包括命令行工具、库和应用程序等</li>
+<h3 id="Xcode-Command-Line-Tools">Xcode Command Line Tools</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 Xcode Command Line Tools</span></span><br><span class="line">xcode-select --install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除 Xcode Command Line Tools</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">rm</span> -rf /Library/Developer/CommandLineTools</span><br></pre></td></tr></table></figure>
+<h3 id="Homebrew"><a target="_blank" rel="noopener" href="https://brew.sh/">Homebrew</a></h3>
+<ul>
+<li>Mac的软件包管理工具，用于安装/卸载/管理各种软件，包括命令行工具、库和应用程序等</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/Homebrew/brew">Gitihub地址</a></li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 官方源安装</span></span><br><span class="line">/bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 国内源完整版安装</span></span><br><span class="line">/bin/zsh -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)</span>&quot;</span></span><br><span class="line"><span class="comment"># 极速安装（update 功能需要命令修复）</span></span><br><span class="line">/bin/zsh -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)</span>&quot;</span> speed</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li><p>安装参考链接：</p>
+<li>
+<p>安装参考链接：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://gitee.com/cunkai/HomebrewCN">Homebrew 国内安装脚本</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/ineo6/homebrew-install">Homebrew 安装教程</a></li>
 </ul>
 </li>
-<li><p>brew 常用命令</p>
+<li>
+<p>brew 常用命令</p>
 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更新 Homebrew</span></span><br><span class="line">brew update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装指定的软件包</span></span><br><span class="line">brew install &lt;package&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 卸载指定的软件包</span></span><br><span class="line">brew uninstall &lt;package&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索可用的软件包，并显示匹配的结果</span></span><br><span class="line">brew search &lt;query&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出已安装的软件包</span></span><br><span class="line">brew list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看可以升级的软件包</span></span><br><span class="line">brew outdated</span><br><span class="line"></span><br><span class="line"><span class="comment"># 升级所有软件包到最新版本</span></span><br><span class="line">brew upgrade</span><br><span class="line"><span class="comment"># 升级指定的软件包到最新版本</span></span><br><span class="line">brew upgrade &lt;package&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看指定软件包的信息，包括版本号、安装路径、依赖关系等</span></span><br><span class="line">brew info &lt;package&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理 Homebrew 临时文件和旧版本的软件包</span></span><br><span class="line">brew cleanup</span><br><span class="line"><span class="comment"># 查看可以清理的 Homebrew 临时文件和旧版本的软件包</span></span><br><span class="line">brew cleanup -n</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a><a target="_blank" rel="noopener" href="https://iterm2.com/">iTerm2</a></h3><ul>
+<h3 id="iTerm2"><a target="_blank" rel="noopener" href="https://iterm2.com/">iTerm2</a></h3>
+<ul>
 <li>系统内置终端替代品</li>
 <li><a target="_blank" rel="noopener" href="https://formulae.brew.sh/cask/iterm2">安装说明</a></li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask iterm2</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li>配色方案参考链接<ul>
+<li>配色方案参考链接
+<ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/mbadolato/iTerm2-Color-Schemes">iTerm2-Color-Schemes</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/MartinSeeler/iterm2-material-design">iTerm2-Material-Design</a></li>
 </ul>
@@ -290,7 +286,6 @@
 <li>修改默认shell为zsh</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有的 shell</span></span><br><span class="line"><span class="built_in">cat</span> /etc/shells</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看当前窗口使用的 shell</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看系统用户默认的 shell</span></span><br><span class="line"><span class="built_in">cat</span> /etc/passwd | grep sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换系统默认 shell</span></span><br><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>常用快捷键</li>
 </ul>
@@ -301,7 +296,8 @@
 <th><strong>含义</strong></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>⌘ + N</td>
 <td>新建窗口</td>
 </tr>
@@ -311,7 +307,7 @@
 </tr>
 <tr>
 <td>⌘ + W</td>
-<td>关闭 Tab &#x2F; 窗口</td>
+<td>关闭 Tab / 窗口</td>
 </tr>
 <tr>
 <td>⌘ + ←</td>
@@ -342,7 +338,7 @@
 <td>查找</td>
 </tr>
 <tr>
-<td>⌘ + &#x2F;</td>
+<td>⌘ + /</td>
 <td>查看光标的位置</td>
 </tr>
 <tr>
@@ -377,35 +373,33 @@
 <td>Ctrl + E</td>
 <td>移动光标到行尾</td>
 </tr>
-</tbody></table>
-<h3 id="mas-cli"><a href="#mas-cli" class="headerlink" title="mas-cli"></a><a target="_blank" rel="noopener" href="https://github.com/mas-cli/mas">mas-cli</a></h3><ul>
+</tbody>
+</table>
+<h3 id="mas-cli"><a target="_blank" rel="noopener" href="https://github.com/mas-cli/mas">mas-cli</a></h3>
+<ul>
 <li>Mac App Store命令行工具</li>
 <li><a target="_blank" rel="noopener" href="https://formulae.brew.sh/formula/mas">brew 安装</a></li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install mas</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>常用命令</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 搜索应用程序</span></span><br><span class="line">mas search [query]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出已经安装的应用程序</span></span><br><span class="line">mas list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过应用程序的 ID 进行安装，可以从 search 命令或者应用程序网页中获取</span></span><br><span class="line">mas install [app-id]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 升级已经安装的应用程序</span></span><br><span class="line">mas upgrade</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出有更新可用的应用程序</span></span><br><span class="line">mas outdated</span><br></pre></td></tr></table></figure>
-
-<h3 id="duti"><a href="#duti" class="headerlink" title="duti"></a><a target="_blank" rel="noopener" href="https://github.com/moretension/duti">duti</a></h3><ul>
+<h3 id="duti"><a target="_blank" rel="noopener" href="https://github.com/moretension/duti">duti</a></h3>
+<ul>
 <li>设置默认应用程序的命令行工具</li>
 <li><a target="_blank" rel="noopener" href="https://formulae.brew.sh/formula/duti">brew 安装</a></li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install duti</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>常用命令</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查看指定文件类型的默认应用程序</span><br><span class="line">duti -x txt</span><br><span class="line"></span><br><span class="line"># 更改文件类型的默认应用程序</span><br><span class="line">duti -s com.apple.TextEdit .txt all</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="科学上网"><a href="#科学上网" class="headerlink" title="科学上网"></a>科学上网</h2><ul>
+<h2 id="科学上网">科学上网</h2>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://wmsxwd-1.men/#/register?code=FbDoq18e">wmsxwd</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.52xcjs.xyz/">星辰大海</a></li>
-<li><a target="_blank" rel="noopener" href="https://一元机场.ink/#/register?code=DjMX1sMm">一元机场</a></li>
+<li><a target="_blank" rel="noopener" href="https://xn--4gq62f52gdss.ink/#/register?code=DjMX1sMm">一元机场</a></li>
 </ul>
 </div>
     </div>

@@ -197,19 +197,19 @@
             <div class="post-head-meta-center">
         
                 
-                    <span>最近更新：2025-04-13</span> 
+                    <span>最近更新：2025-04-14</span> 
                 
                 
                     
                         &nbsp; | &nbsp;
                     
-                     <span>字数总计：674</span>
+                     <span>字数总计：1.1k</span>
                 
                 
                     
                         &nbsp; | &nbsp;
                     
-                    <span>阅读估时：2分钟</span>
+                    <span>阅读估时：3分钟</span>
                 
                 
                     
@@ -225,65 +225,116 @@
     <div class="post-md">
         
             
-                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#20250414%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF-LLM%E8%92%B8%E9%A6%8F%E6%8A%80%E6%9C%AF"><span class="post-toc-text">20250414：什么是 LLM蒸馏技术</span></a></li></ol>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#20250415-%E4%BB%80%E4%B9%88%E6%98%AF%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96"><span class="post-toc-text">20250415: 什么是大模型量化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#20250414-%E4%BB%80%E4%B9%88%E6%98%AF-LLM%E8%92%B8%E9%A6%8F%E6%8A%80%E6%9C%AF"><span class="post-toc-text">20250414: 什么是 LLM蒸馏技术</span></a></li></ol>
             
         
-        <div class=".article-gallery"><hr>
-<h2 id="20250414：什么是-LLM蒸馏技术"><a href="#20250414：什么是-LLM蒸馏技术" class="headerlink" title="20250414：什么是 LLM蒸馏技术"></a>20250414：什么是 LLM蒸馏技术</h2><div class="circle-blue">
-
-
+        <div class=".article-gallery"><h2 id="20250415-什么是大模型量化">20250415: 什么是大模型量化</h2>
+<blockquote>
+<p>2025-04-15 01:43:53</p>
+</blockquote>
+<div class="circle-blue">
+<p>量化（Quantization）是一种通过降低模型参数的数值精度来压缩模型大小的技术。在深度学习中，模型的参数通过以32位浮点数（FP32）来存储，通过量化可以将其转换成更低精度的表示形式，从而减少模型的内存占用和计算开销。</p>
+<p>FP32的大小是4字节（每个字节8bit, 4字节* 8bit =32 bit）而 FP16的大小是2字节，则为16bit.</p>
+<p>这也是为什么大家喜欢用 Q4量化模型的原因，跟 FP16（16bit）的模型相比，Q4（4bit）的模型只有1/4的大小，运行起来需要的内存也是1/4.</p>
+<p>现在大多数模型训练都采用 FP16的精度，而当下流行的Deepseek-V3采用了 FP8精度训练，能显著提升训练速度和降低硬件成本。</p>
+<ul>
+<li>
+<p>Q4_K_M 是什么意思</p>
+<ul>
+<li>
+<p>这种命名方式一般是 GGUF&amp;GGML 格式的模型，它们通常采用 K量化模型，格式类似 Q4_K_M，这里的 Q 的后面数字代表量化精度，K代表 K量化方法，M代表名在尺寸和 PPL(Perplexity,困惑度)之间的平衡度，有0, 1，XS, S, M, L 等</p>
+</li>
+<li>
+<p>PPL 是评估语言模型性能的重要指标，它用来衡量模型对下一个词的预测准确程度。常见 Kl量化版本的 PPL 对比（这是一个7B 模型）</p>
+</li>
+<li>
+<p><a href="/images/00-llm-quant.png" title="image-20250414233708436" class="gallery-item" style="box-shadow: none;"> <img src="/images/00-llm-quant.png" alt="image-20250414233708436"></a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>bf16、4bit、int4、fp8是什么意思</p>
+<ul>
+<li>bf16是16bit 的精度，4bit 是4bit 精度，同样也建议至少使用4bit 量化的模型，除非模型特别大200B+</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h2 id="20250414-什么是-LLM蒸馏技术">20250414: 什么是 LLM蒸馏技术</h2>
+<blockquote>
+<p>2025-04-14 00:25:15</p>
+</blockquote>
+<div class="circle-blue">
 <p>LLM 蒸馏（Distillation）是一种技术，用于将大语言模型(LLM)的知识转移到较小的模型中。其主要目的是在保持模型性能的同时，减少模型的大小和计算资源需求。通过蒸馏技术，较小的模型可以在推理时更高效地运行，适用于资源受限的环境。</p>
 <p><a href="/images/00-llm-distillation.png" title="LLM-distill" class="gallery-item" style="box-shadow: none;"> <img src="/images/00-llm-distillation.png" alt="LLM-distill"></a></p>
 <ul>
-<li><p>蒸馏过程（步骤）</p>
+<li>
+<p>蒸馏过程（步骤）</p>
 <ul>
-<li><p>训练教师模型：首先训练一个大型且性能优越的教师模型。</p>
+<li>
+<p>训练教师模型：首先训练一个大型且性能优越的教师模型。</p>
 </li>
-<li><p>生成软标签：使用教师模型对训练数据进行预测，生成软目标（soft targets），这些目标包含了教师模型的概率分布信息。</p>
+<li>
+<p>生成软标签：使用教师模型对训练数据进行预测，生成软目标（soft targets），这些目标包含了教师模型的概率分布信息。</p>
 </li>
-<li><p>训练学生模型：使用软目标和原始训练数据（hard targets）来训练较小的学生模型，使其能够模仿教师模型的行为。这种方法不仅可以提高模型的效率，还可以在某些情况下提高模型的泛化能力。</p>
+<li>
+<p>训练学生模型：使用软目标和原始训练数据（hard targets）来训练较小的学生模型，使其能够模仿教师模型的行为。这种方法不仅可以提高模型的效率，还可以在某些情况下提高模型的泛化能力。</p>
 </li>
 </ul>
 </li>
-<li><p>蒸馏的优点</p>
+<li>
+<p>蒸馏的优点</p>
 <ul>
-<li><p>减少模型大小和计算资源需求</p>
+<li>
+<p>减少模型大小和计算资源需求</p>
 </li>
-<li><p>增加推理速度、易于访问和部署</p>
+<li>
+<p>增加推理速度、易于访问和部署</p>
 </li>
 </ul>
 </li>
-<li><p>蒸馏可能存在的问题</p>
+<li>
+<p>蒸馏可能存在的问题</p>
 <ul>
-<li><p>信息丢失：由于学生模型比教师模型小，可能无法完全捕捉教师模型的所有知识和细节，导致信息丢失。</p>
+<li>
+<p>信息丢失：由于学生模型比教师模型小，可能无法完全捕捉教师模型的所有知识和细节，导致信息丢失。</p>
 </li>
-<li><p>依赖教师模型：学生模型的性能高度依赖于教师模型的质量，如果教师模型本身存在偏差或错误，学生模型可能会继承这些问题。</p>
+<li>
+<p>依赖教师模型：学生模型的性能高度依赖于教师模型的质量，如果教师模型本身存在偏差或错误，学生模型可能会继承这些问题。</p>
 </li>
-<li><p>适用性限制：蒸馏技术可能不适用于所有类型的模型或任务，尤其是那些需要高精度和复杂推理的任务。</p>
+<li>
+<p>适用性限制：蒸馏技术可能不适用于所有类型的模型或任务，尤其是那些需要高精度和复杂推理的任务。</p>
 </li>
 </ul>
 </li>
-<li><p>典型例子</p>
+<li>
+<p>典型例子</p>
 <ul>
-<li><p>GPT-4o(教师模型)中提炼出 GPT-4o-minio(学生模型)</p>
+<li>
+<p>GPT-4o(教师模型)中提炼出 GPT-4o-minio(学生模型)</p>
 </li>
-<li><p>Deepseek-R1(教师模型)中提炼出 Deepseek-R1-Distill-Qwen-32B(学生模型)：这个不是传统意义上的蒸馏，是蒸馏+数据增强+微调</p>
+<li>
+<p>Deepseek-R1(教师模型)中提炼出 Deepseek-R1-Distill-Qwen-32B(学生模型)：这个不是传统意义上的蒸馏，是蒸馏+数据增强+微调</p>
 </li>
 </ul>
 </li>
-<li><p>其他蒸馏技术</p>
+<li>
+<p>其他蒸馏技术</p>
 <ul>
-<li><p>数据增强：使用教师模型生成额外的训练数据。通过创建更大、更具包容性的数据集，学生模型可以接触到更广泛的场景和示例，从而提高其泛化性能。</p>
+<li>
+<p>数据增强：使用教师模型生成额外的训练数据。通过创建更大、更具包容性的数据集，学生模型可以接触到更广泛的场景和示例，从而提高其泛化性能。</p>
 </li>
-<li><p>中间层蒸馏：将知识从教师模型的中间层转移到学生模型。通过学习这些中间表示，学生模型可以捕获更详细和结构化的信息，从而获得更好的整体表现。</p>
+<li>
+<p>中间层蒸馏：将知识从教师模型的中间层转移到学生模型。通过学习这些中间表示，学生模型可以捕获更详细和结构化的信息，从而获得更好的整体表现。</p>
 </li>
-<li><p>多教师蒸馏：通过汇总不同教师模型的知识，学生模型可以实现更全面的理解并提高稳健性，因为它整合了不同的观点和见解。</p>
+<li>
+<p>多教师蒸馏：通过汇总不同教师模型的知识，学生模型可以实现更全面的理解并提高稳健性，因为它整合了不同的观点和见解。</p>
 </li>
 </ul>
 </li>
 </ul>
 </div>
-
 </div>
     </div>
 
