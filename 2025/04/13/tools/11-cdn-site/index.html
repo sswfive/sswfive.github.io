@@ -4,7 +4,7 @@
     <head>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-    <meta name="description" content="常用的加速代理站" />
+    <meta name="description" content="日常开发加油加速站" />
     <meta name="hexo-theme-A4" content="v1.9.7" />
     <link rel="alternate icon" type="image/webp" href="/images/head.png">
     <title>wsshen | 空谷幽兰</title>
@@ -23,6 +23,10 @@
 <link rel="stylesheet" href="/css/fonts.css">
  
          <!--注意：首页既不是post也不是page-->
+        
+            
+<link rel="stylesheet" href="/css/waline.css">
+
         
         
         
@@ -184,7 +188,7 @@
         
             
                 <div class="post-main-title" style="text-align: center;">
-                    常用的加速代理站
+                    日常开发加油加速站
                 </div>
             
         
@@ -197,13 +201,13 @@
             <div class="post-head-meta-center">
         
                 
-                    <span>最近更新：2025-04-14</span> 
+                    <span>最近更新：2025-04-16</span> 
                 
                 
                     
                         &nbsp; | &nbsp;
                     
-                     <span>字数总计：189</span>
+                     <span>字数总计：342</span>
                 
                 
                     
@@ -225,31 +229,38 @@
     <div class="post-md">
         
             
-                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Docker%E5%8A%A0%E9%80%9F"><span class="post-toc-text">Docker加速</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%B8%A1%E6%B8%A1%E9%B8%9F%E7%9A%84%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E5%B0%8F%E7%AB%99"><span class="post-toc-text">渡渡鸟的容器镜像小站</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Docker-Layer-ICU"><span class="post-toc-text">Docker Layer ICU</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Go-%E5%8A%A0%E9%80%9F"><span class="post-toc-text">Go 加速</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Goproxy-cn"><span class="post-toc-text">Goproxy.cn</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#goproxy-io"><span class="post-toc-text">goproxy.io</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#HuggingFace-%E5%8A%A0%E9%80%9F"><span class="post-toc-text">HuggingFace 加速</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#HF-Mirror"><span class="post-toc-text">HF-Mirror</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%AD%94%E6%90%AD%E7%A4%BE%E5%8C%BA"><span class="post-toc-text">魔搭社区</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Web%E9%9D%99%E6%80%81%E5%8A%A0%E9%80%9F"><span class="post-toc-text">Web静态加速</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Web%E7%BC%93%E5%AD%98%E7%BD%91"><span class="post-toc-text">Web缓存网</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B2%B9%E7%8C%B4%E5%8A%A0%E9%80%9F"><span class="post-toc-text">油猴加速</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BB%BC%E5%90%88%E7%AB%99%E7%82%B9"><span class="post-toc-text">综合站点</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%BF%AB%E7%82%B9%E8%BD%AF%E4%BB%B6%E9%95%9C%E5%83%8F%E7%AB%99"><span class="post-toc-text">快点软件镜像站</span></a></li></ol></li></ol>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Docker%E5%8A%A0%E9%80%9F"><span class="post-toc-text">Docker加速</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Github%E5%8A%A0%E9%80%9F"><span class="post-toc-text">Github加速</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Go-%E5%8A%A0%E9%80%9F"><span class="post-toc-text">Go 加速</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#HuggingFace-%E5%8A%A0%E9%80%9F"><span class="post-toc-text">HuggingFace 加速</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Web%E9%9D%99%E6%80%81%E5%8A%A0%E9%80%9F"><span class="post-toc-text">Web静态加速</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B2%B9%E7%8C%B4%E5%8A%A0%E9%80%9F"><span class="post-toc-text">油猴加速</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BB%BC%E5%90%88%E7%AB%99%E7%82%B9"><span class="post-toc-text">综合站点</span></a></li></ol>
             
         
-        <div class=".article-gallery"><h2 id="Docker加速">Docker加速</h2>
-<h3 id="渡渡鸟的容器镜像小站"><a target="_blank" rel="noopener" href="https://docker.aityp.com/">渡渡鸟的容器镜像小站</a></h3>
+        <div class=".article-gallery"><h2 id="Docker加速"><a href="#Docker加速" class="headerlink" title="Docker加速"></a>Docker加速</h2><p><a target="_blank" rel="noopener" href="https://docker.aityp.com/">渡渡鸟的容器镜像小站</a></p>
 <ul>
-<li>简介：本站镜像100%同步自官方镜像！目前支持同步镜像源: <a target="_blank" rel="noopener" href="http://gcr.io">gcr.io</a> <a target="_blank" rel="noopener" href="http://ghcr.io">ghcr.io</a> <a target="_blank" rel="noopener" href="http://quay.io">quay.io</a> <a target="_blank" rel="noopener" href="http://k8s.gcr.io">k8s.gcr.io</a> <a target="_blank" rel="noopener" href="http://docker.io">docker.io</a> <a target="_blank" rel="noopener" href="http://registry.k8s.io">registry.k8s.io</a> <a target="_blank" rel="noopener" href="http://docker.elastic.co">docker.elastic.co</a> <a target="_blank" rel="noopener" href="http://skywalking.docker.scarf.sh">skywalking.docker.scarf.sh</a> <a target="_blank" rel="noopener" href="http://mcr.microsoft.com">mcr.microsoft.com</a> 单个镜像大小限制2G;</li>
+<li>简介：本站镜像100%同步自官方镜像！目前支持同步镜像源: gcr.io ghcr.io quay.io k8s.gcr.io docker.io registry.k8s.io docker.elastic.co skywalking.docker.scarf.sh mcr.microsoft.com 单个镜像大小限制2G;</li>
 <li>说明：站点稳定，资源丰富，力荐！！！</li>
 </ul>
-<h3 id="Docker-Layer-ICU"><a target="_blank" rel="noopener" href="https://cloudlayer.icu/">Docker Layer ICU</a></h3>
-<h2 id="Go-加速">Go 加速</h2>
-<h3 id="Goproxy-cn"><a target="_blank" rel="noopener" href="https://goproxy.cn/">Goproxy.cn</a></h3>
-<h3 id="goproxy-io"><a target="_blank" rel="noopener" href="https://goproxy.io/">goproxy.io</a></h3>
-<h2 id="HuggingFace-加速">HuggingFace 加速</h2>
-<h3 id="HF-Mirror"><a target="_blank" rel="noopener" href="https://hf-mirror.com/">HF-Mirror</a></h3>
-<h3 id="魔搭社区"><a target="_blank" rel="noopener" href="https://www.modelscope.cn/models">魔搭社区</a></h3>
-<h2 id="Web静态加速">Web静态加速</h2>
-<h3 id="Web缓存网"><a target="_blank" rel="noopener" href="https://www.webcache.cn/">Web缓存网</a></h3>
-<h2 id="油猴加速">油猴加速</h2>
+<p><a target="_blank" rel="noopener" href="https://cloudlayer.icu/">Docker Layer ICU</a></p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://scriptcat.org/zh-CN/">https://scriptcat.org/zh-CN/</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.userscript.zone/">https://www.userscript.zone</a></li>
+<li>简介：Docker Layer ICU 是一个免费的 Docker 镜像加速服务，它提供了全球范围内的 Docker 镜像加速服务，包括中国地区的镜像加速服务。</li>
 </ul>
-<h2 id="综合站点">综合站点</h2>
-<h3 id="快点软件镜像站"><a target="_blank" rel="noopener" href="https://mirrors.quickso.cn/">快点软件镜像站</a></h3>
+<h2 id="Github加速"><a href="#Github加速" class="headerlink" title="Github加速"></a>Github加速</h2><p><a target="_blank" rel="noopener" href="https://github.com/521xueweihan/GitHub520">Github520</a></p>
+<ul>
+<li>简介：解决访问时图裂、加载慢的问题</li>
+</ul>
+<h2 id="Go-加速"><a href="#Go-加速" class="headerlink" title="Go 加速"></a>Go 加速</h2><p><a target="_blank" rel="noopener" href="https://goproxy.cn/">Goproxy.cn</a></p>
+<p><a target="_blank" rel="noopener" href="https://goproxy.io/">goproxy.io</a></p>
+<h2 id="HuggingFace-加速"><a href="#HuggingFace-加速" class="headerlink" title="HuggingFace 加速"></a>HuggingFace 加速</h2><p><a target="_blank" rel="noopener" href="https://hf-mirror.com/">HF-Mirror</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.modelscope.cn/models">魔搭社区</a></p>
+<h2 id="Web静态加速"><a href="#Web静态加速" class="headerlink" title="Web静态加速"></a>Web静态加速</h2><p><a target="_blank" rel="noopener" href="https://www.webcache.cn/">Web缓存网</a></p>
+<p><a target="_blank" rel="noopener" href="https://css.bqrdh.com/cdn/hub">CND Hub</a></p>
+<ul>
+<li>简介：快速获取 cdnjs、npm 和 github 上资源 cdn 链接的网站，并支持耗时比较，便于选取最优 cdn</li>
+</ul>
+<h2 id="油猴加速"><a href="#油猴加速" class="headerlink" title="油猴加速"></a>油猴加速</h2><p><a target="_blank" rel="noopener" href="https://scriptcat.org/zh-CN/">https://scriptcat.org/zh-CN/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.userscript.zone/">https://www.userscript.zone</a></p>
+<h2 id="综合站点"><a href="#综合站点" class="headerlink" title="综合站点"></a>综合站点</h2><p><a target="_blank" rel="noopener" href="https://github.com/RubyMetric/chsrc">chsrc</a></p>
+<ul>
+<li>简介：全平台通用的一个命令行换源工具，目标支持 Linux, Windows (MSYS2, Cygwin), macOS, BSD 等尽可能多的操作系统环境，龙芯、飞腾、RISC-V 等尽可能多的 CPU。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://mirrors.quickso.cn/">快点软件镜像站</a></p>
 <ul>
 <li>简介：提供开源软件国内镜像信息服务，内容包括：常用操作系统镜像、国内大学镜像站列表、前端开源项目CDN、PIP、Docker 等</li>
 <li>类别：综合性加速站点</li>
@@ -313,6 +324,19 @@
 
     
         
+    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+         
+    </div>
+    
+        
+
+    
+    
+    
+    </div>
+
 
      
 </div>
