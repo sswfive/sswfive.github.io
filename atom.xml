@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>wsshen</title>
+  <icon>http://sswfive.github.io/icon.png</icon>
+  <subtitle>空谷幽兰</subtitle>
+  <link href="http://sswfive.github.io/atom.xml" rel="self"/>
+  
+  <link href="http://sswfive.github.io/"/>
+  <updated>2025-04-17T17:37:43.043Z</updated>
+  <id>http://sswfive.github.io/</id>
+  
+  <author>
+    <name>sswfive</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>每天学点AI</title>
+    <link href="http://sswfive.github.io/2025/04/14/tech/modelops/00-daily-study-ai/"/>
+    <id>http://sswfive.github.io/2025/04/14/tech/modelops/00-daily-study-ai/</id>
+    <published>2025-04-14T00:06:11.000Z</published>
+    <updated>2025-04-17T17:37:43.043Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;20250417-什么是向量数据库&quot;&gt;&lt;a href=&quot;#20250417-什么是向量数据库&quot; class=&quot;headerlink&quot; title=&quot;20250417:</summary>
+        
+      
+    
+    
+    
+    <category term="ModelOps" scheme="http://sswfive.github.io/categories/ModelOps/"/>
+    
+    
+    <category term="LLM" scheme="http://sswfive.github.io/tags/LLM/"/>
+    
+    <category term="AI" scheme="http://sswfive.github.io/tags/AI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>日常开发加油加速站</title>
+    <link href="http://sswfive.github.io/2025/04/13/tools/11-cdn-site/"/>
+    <id>http://sswfive.github.io/2025/04/13/tools/11-cdn-site/</id>
+    <published>2025-04-13T23:13:49.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;Docker加速&quot;&gt;&lt;a href=&quot;#Docker加速&quot; class=&quot;headerlink&quot; title=&quot;Docker加速&quot;&gt;&lt;/a&gt;Docker加速&lt;/h2&gt;&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="http://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="CDN" scheme="http://sswfive.github.io/tags/CDN/"/>
+    
+    <category term="Proxy" scheme="http://sswfive.github.io/tags/Proxy/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于MlFlow的实践总结</title>
+    <link href="http://sswfive.github.io/2025/04/09/tech/modelops/03-mlflow-deploy/"/>
+    <id>http://sswfive.github.io/2025/04/09/tech/modelops/03-mlflow-deploy/</id>
+    <published>2025-04-09T14:03:56.000Z</published>
+    <updated>2025-04-17T17:37:43.043Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;blockquote&gt;
+&lt;p&gt;基于 Mlflow 进行业务开发已有几个月了，一直忙于开发，没有时间去总结，近期找了个时间好好梳理总结了，故记录下来了。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    <category term="ModelOps" scheme="http://sswfive.github.io/categories/ModelOps/"/>
+    
+    
+    <category term="Mlflow" scheme="http://sswfive.github.io/tags/Mlflow/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一些科学上网的工具</title>
+    <link href="http://sswfive.github.io/2025/04/07/tools/10-vpn-selection/"/>
+    <id>http://sswfive.github.io/2025/04/07/tools/10-vpn-selection/</id>
+    <published>2025-04-07T22:05:17.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;使用中&quot;&gt;&lt;a href=&quot;#使用中&quot; class=&quot;headerlink&quot; title=&quot;使用中&quot;&gt;&lt;/a&gt;使用中&lt;/h2&gt;&lt;h3 id=&quot;wmsxwd&quot;&gt;&lt;a href=&quot;#wmsxwd&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="http://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="VPN" scheme="http://sswfive.github.io/tags/VPN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac常用的下载载站点和软件</title>
+    <link href="http://sswfive.github.io/2025/04/03/tools/04-mac-software/"/>
+    <id>http://sswfive.github.io/2025/04/03/tools/04-mac-software/</id>
+    <published>2025-04-03T22:51:08.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;下载站点&quot;&gt;&lt;a href=&quot;#下载站点&quot; class=&quot;headerlink&quot; title=&quot;下载站点&quot;&gt;&lt;/a&gt;下载站点&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="http://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="Mac" scheme="http://sswfive.github.io/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac常用快捷键</title>
+    <link href="http://sswfive.github.io/2025/04/02/tools/03-mac-quickkey/"/>
+    <id>http://sswfive.github.io/2025/04/02/tools/03-mac-quickkey/</id>
+    <published>2025-04-02T07:39:27.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;p&gt;macOS 上有几个常用的修饰键： &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Command（或 Cmd）⌘&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Option（或</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="http://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="Mac" scheme="http://sswfive.github.io/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>新的生产力</title>
+    <link href="http://sswfive.github.io/2025/04/01/tools/02-new-tools/"/>
+    <id>http://sswfive.github.io/2025/04/01/tools/02-new-tools/</id>
+    <published>2025-04-01T22:19:37.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;p&gt;自进入2025年后，用了五年多的16寸MacBookPo（2019款 32G+512）就 很突然的开始出现各种自动重启、频繁死机状态，很影响心态。期间打Apple售后线上排查过、也拿去市里最大的 Apple</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="http://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="Mac" scheme="http://sswfive.github.io/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git的约定式提交规范</title>
+    <link href="http://sswfive.github.io/2025/03/20/tech/devops/01-git-commit-lint/"/>
+    <id>http://sswfive.github.io/2025/03/20/tech/devops/01-git-commit-lint/</id>
+    <published>2025-03-20T23:05:17.000Z</published>
+    <updated>2025-04-17T17:37:43.043Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="DevOps" scheme="http://sswfive.github.io/categories/DevOps/"/>
+    
+    
+    <category term="Git" scheme="http://sswfive.github.io/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用的Chrome和VSCode插件</title>
+    <link href="http://sswfive.github.io/2025/03/18/tools/01-plugins-usage/"/>
+    <id>http://sswfive.github.io/2025/03/18/tools/01-plugins-usage/</id>
+    <published>2025-03-18T23:12:28.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;Chrome常用插件&quot;&gt;&lt;a href=&quot;#Chrome常用插件&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="http://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="Chrome" scheme="http://sswfive.github.io/tags/Chrome/"/>
+    
+    <category term="VSCode" scheme="http://sswfive.github.io/tags/VSCode/"/>
+    
+    <category term="Plugins" scheme="http://sswfive.github.io/tags/Plugins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kserve之RawDeployment模式部署</title>
+    <link href="http://sswfive.github.io/2025/03/15/tech/modelops/02-kserve-deploy/"/>
+    <id>http://sswfive.github.io/2025/03/15/tech/modelops/02-kserve-deploy/</id>
+    <published>2025-03-15T21:07:28.000Z</published>
+    <updated>2025-04-17T17:37:43.043Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;前置说明&quot;&gt;&lt;a href=&quot;#前置说明&quot; class=&quot;headerlink&quot; title=&quot;前置说明&quot;&gt;&lt;/a&gt;前置说明&lt;/h2&gt;&lt;p&gt;Kserve 有多种安装部署模式，包括</summary>
+        
+      
+    
+    
+    
+    <category term="ModelOps" scheme="http://sswfive.github.io/categories/ModelOps/"/>
+    
+    
+    <category term="K8S" scheme="http://sswfive.github.io/tags/K8S/"/>
+    
+    <category term="Kserve" scheme="http://sswfive.github.io/tags/Kserve/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于ModelOps的相关技术</title>
+    <link href="http://sswfive.github.io/2025/03/15/tech/modelops/01-modelops-tech/"/>
+    <id>http://sswfive.github.io/2025/03/15/tech/modelops/01-modelops-tech/</id>
+    <published>2025-03-15T07:37:40.000Z</published>
+    <updated>2025-04-17T17:37:43.043Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;框架级&quot;&gt;&lt;a href=&quot;#框架级&quot; class=&quot;headerlink&quot; title=&quot;框架级&quot;&gt;&lt;/a&gt;框架级&lt;/h2&gt;&lt;h3 id=&quot;模型开发&quot;&gt;&lt;a href=&quot;#模型开发&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="ModelOps" scheme="http://sswfive.github.io/categories/ModelOps/"/>
+    
+    
+    <category term="ModelOps" scheme="http://sswfive.github.io/tags/ModelOps/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>开发工具之KtConnect的使用</title>
+    <link href="http://sswfive.github.io/2025/03/12/tech/k8s/03-ktconnect/"/>
+    <id>http://sswfive.github.io/2025/03/12/tech/k8s/03-ktconnect/</id>
+    <published>2025-03-12T21:07:28.000Z</published>
+    <updated>2025-04-17T17:37:43.043Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="云原生" scheme="http://sswfive.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
+    
+    
+    <category term="K8S" scheme="http://sswfive.github.io/tags/K8S/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>储存组件Longhorn部署使用</title>
+    <link href="http://sswfive.github.io/2025/03/12/tech/k8s/02-longhorn/"/>
+    <id>http://sswfive.github.io/2025/03/12/tech/k8s/02-longhorn/</id>
+    <published>2025-03-12T19:03:05.000Z</published>
+    <updated>2025-04-17T17:37:43.043Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="云原生" scheme="http://sswfive.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
+    
+    
+    <category term="K8S" scheme="http://sswfive.github.io/tags/K8S/"/>
+    
+    <category term="存储组件" scheme="http://sswfive.github.io/tags/%E5%AD%98%E5%82%A8%E7%BB%84%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>包管理工具Helm的使用</title>
+    <link href="http://sswfive.github.io/2025/03/11/tech/k8s/01-helm/"/>
+    <id>http://sswfive.github.io/2025/03/11/tech/k8s/01-helm/</id>
+    <published>2025-03-11T17:55:30.000Z</published>
+    <updated>2025-04-17T17:37:43.043Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;Helm概述&quot;&gt;&lt;a href=&quot;#Helm概述&quot; class=&quot;headerlink&quot; title=&quot;Helm概述&quot;&gt;&lt;/a&gt;Helm概述&lt;/h2&gt;&lt;h3 id=&quot;基本信息&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="云原生" scheme="http://sswfive.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
+    
+    
+    <category term="K8S" scheme="http://sswfive.github.io/tags/K8S/"/>
+    
+    <category term="包管理工具" scheme="http://sswfive.github.io/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker镜像无法拉取问题的解决方案</title>
+    <link href="http://sswfive.github.io/2025/03/10/tech/docker/01-docker-image-pull-failed/"/>
+    <id>http://sswfive.github.io/2025/03/10/tech/docker/01-docker-image-pull-failed/</id>
+    <published>2025-03-10T20:36:21.000Z</published>
+    <updated>2025-04-17T17:37:43.043Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div</summary>
+        
+      
+    
+    
+    
+    <category term="云原生" scheme="http://sswfive.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
+    
+    
+    <category term="Docker" scheme="http://sswfive.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>文件路径管理工具之pathlib</title>
+    <link href="http://sswfive.github.io/2025/03/08/tech/python/09-pylib-pathlib/"/>
+    <id>http://sswfive.github.io/2025/03/08/tech/python/09-pylib-pathlib/</id>
+    <published>2025-03-08T22:59:16.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;blockquote&gt;
+&lt;p&gt;Reference：  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="Python" scheme="http://sswfive.github.io/categories/Python/"/>
+    
+    
+    <category term="python库" scheme="http://sswfive.github.io/tags/python%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>子进程管理工具之subprocess</title>
+    <link href="http://sswfive.github.io/2025/03/08/tech/python/08-pylib-subprocess/"/>
+    <id>http://sswfive.github.io/2025/03/08/tech/python/08-pylib-subprocess/</id>
+    <published>2025-03-08T00:48:23.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;blockquote&gt;
+&lt;p&gt;Reference：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="Python" scheme="http://sswfive.github.io/categories/Python/"/>
+    
+    
+    <category term="python库" scheme="http://sswfive.github.io/tags/python%E5%BA%93/"/>
+    
+    <category term="进程管理" scheme="http://sswfive.github.io/tags/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>进程管理工具之Supervisor</title>
+    <link href="http://sswfive.github.io/2025/03/07/tech/python/07-pylib-supervisor/"/>
+    <id>http://sswfive.github.io/2025/03/07/tech/python/07-pylib-supervisor/</id>
+    <published>2025-03-07T23:32:23.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;概述：&quot;&gt;&lt;a href=&quot;#概述：&quot; class=&quot;headerlink&quot; title=&quot;概述：&quot;&gt;&lt;/a&gt;概述：&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;官方文档：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="Python" scheme="http://sswfive.github.io/categories/Python/"/>
+    
+    
+    <category term="python库" scheme="http://sswfive.github.io/tags/python%E5%BA%93/"/>
+    
+    <category term="进程管理" scheme="http://sswfive.github.io/tags/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>任务管理工具之APScheduler</title>
+    <link href="http://sswfive.github.io/2025/03/06/tech/python/06-pylib-apscheduler/"/>
+    <id>http://sswfive.github.io/2025/03/06/tech/python/06-pylib-apscheduler/</id>
+    <published>2025-03-06T23:49:02.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h1 id=&quot;APScheduler之定时任务工具&quot;&gt;&lt;a href=&quot;#APScheduler之定时任务工具&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Python" scheme="http://sswfive.github.io/categories/Python/"/>
+    
+    
+    <category term="python库" scheme="http://sswfive.github.io/tags/python%E5%BA%93/"/>
+    
+    <category term="任务管理" scheme="http://sswfive.github.io/tags/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python常用库汇总[awesome]</title>
+    <link href="http://sswfive.github.io/2025/03/06/tech/python/05-pylib-awesome/"/>
+    <id>http://sswfive.github.io/2025/03/06/tech/python/05-pylib-awesome/</id>
+    <published>2025-03-06T22:39:41.000Z</published>
+    <updated>2025-04-17T17:37:43.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;Web开发库&quot;&gt;&lt;a href=&quot;#Web开发库&quot; class=&quot;headerlink&quot; title=&quot;Web开发库&quot;&gt;&lt;/a&gt;Web开发库&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="Python" scheme="http://sswfive.github.io/categories/Python/"/>
+    
+    
+    <category term="python库" scheme="http://sswfive.github.io/tags/python%E5%BA%93/"/>
+    
+  </entry>
+  
+</feed>
