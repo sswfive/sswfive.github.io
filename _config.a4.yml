@@ -38,7 +38,7 @@ footerLink: # 底部的链接自定义
   # 友链: /friends/ # 需要hexo new page friends
   # 联系: /contact/ # 需要hexo new page contact
   # 支持: /support/ # 需要hexo new page support
-  # ...
+  RSS: /atom.xml
 
 post:
   footer: 🌊一念净心 花开遍世界...🌊
