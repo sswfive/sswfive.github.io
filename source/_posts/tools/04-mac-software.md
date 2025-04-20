@@ -1,5 +1,5 @@
 ---
-title: Mac常用的下载载站点和软件
+title: 个人常用及甄选的Mac软件
 date: 2025-04-03 22:51:08
 tags:
   - Mac
@@ -9,7 +9,7 @@ categories:
 
 
 
-## 下载站点
+## 软件下载站点
 
 - [苹果软件盒子](https://www.macappbox.com/)
 - [Macwk](https://macwk.com.cn/)
@@ -22,35 +22,37 @@ categories:
 
 
 
-## 个人常用软件
+## 常用甄选软件
 
-### [uTools](https://www.u-tools.cn/index.html)
+### [uTools](https://www.u-tools.cn/index.html): (效率工具）
 
-- 简介：
-  - 一款效率神器，跨平台，是 [Alfred](https://www.alfredapp.com/)的替代品
-- 功能：
-  - 强大的插件化，多功能输入框，支持文本、截图、图片、文件、文件夹
-  - 自动识别 / 粘贴
-  - 全局快捷键
-  - 支持 Windows、Mac、Linux
+- 一款一个多功能、现代化的工具平台, 俗称：效率神器，跨平台，支持 Win/MacOS/Linux，是 [Alfred](https://www.alfredapp.com/)的替代品，拥有丰富的插件库。
 
-###  [IINA](https://iina.io/)
+- [下载链接](https://www.u-tools.cn/download/)
+- 状态：使用中
 
-- 简介：
-  - 一款强大的视频播放器，[IINA | Github](https://github.com/iina/iina), [软件官网](https://iina.io/)
-- 功能
-  - 界面简洁、美观，契合 macOS 设计风格
-  - 功能强大，设置以播放体验为中心
-  - 支持鼠标和触控板手势
-  - 在线字幕、缩略图预览、画中画等
+### [Alfred](https://www.alfredapp.com/)：(效率工具)
+
+- 一款效率神器，专注 MacOS, 是 [uTools](https://www.u-tools.cn/index.html)的同类工具。之前一直使用，后来被 utools 取代。
+- 安装：[brew安装](https://formulae.brew.sh/cask/alfred)
+- 状态：已弃用
+
+###  [IINA](https://iina.io/)：(视频播放器)
+
+- 一款强大的视频播放器，[IINA | Github](https://github.com/iina/iina), [软件官网](https://iina.io/)，界面简洁、美观，契合 macOS 设计风格，功能强大，设置以播放体验为中心，在线字幕、缩略图预览、画中画等
 
 - 安装：[brew 安装](https://formulae.brew.sh/cask/iina)
+- 状态：使用中
 
+### [Tidy Up](https://www.hyperbolicsoftware.com/TidyUp.html)：(重复文件清理工具)
 
+- 简介：Tidy Up 是Mac上最优秀的一款重复文件搜索和清理工具，这款软件可以让你指定搜索的目标目录，然后搜索指定类型的重复文件，如音乐、图片、应用等
+- [下载链接](https://xclient.info/s/tidy-up.html#versions)
+- 状态：使用中
 
-## 个人甄选
+### [Tuxera](https://ntfsformac.tuxera.com/)：(NTFS 工具)
 
-### [Alfred](https://www.alfredapp.com/)
-
-- 简介：一款效率神器，专注 MacOS, 是 [uTools](https://www.u-tools.cn/index.html)的同类工具。
+- 在 Windows 和 Mac 之间无缝共享数据！Tuxera 推出的 Microsoft NTFS for Mac 让您能够读写使用 NTFS 格式的存储设备，例如 USB 记忆棒或外部硬盘——相比其他方案，其可靠性更佳！
+- [下载链接](https://xclient.info/s/tuxera-ntfs.html)
+- 状态：使用中
 

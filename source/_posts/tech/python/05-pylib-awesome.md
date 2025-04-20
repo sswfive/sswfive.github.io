@@ -107,6 +107,10 @@ categories:
 - [moment](https://github.com/zachwill/moment)
 - [maya](https://github.com/kennethreitz/maya)
 
+
+
+## 文件处理相关库
+
 ### 操作Json文件
 
 -  [Json](https://docs.python.org/zh-cn/3/library/json.html):官方内置库 
@@ -115,6 +119,10 @@ categories:
 ### 操作YAML文件
 
 - [PyYAML](https://github.com/yaml/pyyaml)
+
+### 操作 PDF 文件
+
+- [pdf-craft](https://github.com/oomol-lab/pdf-craft): 可以将 PDF 文件转化为各种其他格式(Markdown、EPUB等)。该项目将专注于扫描书籍的 PDF 文件的处理
 
 ## 未分类
 
