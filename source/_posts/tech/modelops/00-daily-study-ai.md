@@ -13,8 +13,11 @@ categories:
 
 >⌛️：2025-04-21 01:37:45
 
+
 <div class="circle-blue">
-![image-20250421011928630](../../../images/00-llm-embedding.png)
+
+![image-20250421011928630](/images/00-llm-embedding.png)
+
 
 向量嵌入（Vector Embeddings）是讲复杂数据（如文本、图像、音频等）转换为密集数据向量的过程和结果。这些向量通常是高维度的数字数组，使机器能够“理解”数据间的语义关系。
 
@@ -124,7 +127,7 @@ categories:
 **多模态模型（Mutlimodel LLM）是能够同时处理和关联多种数据模态（如：文本、图像、视频等）的大语言模型。这类模型通过统一表示空间，实现跨模态的语义理解和内容生成。**
 
 
-![mutlimodel-llm](../../../images/image-20250416230150271.png)
+![mutlimodel-llm](/images/00-llm-mutli-model.png)
 
 - 核心工作原理（多模态模型的工作机制包含三个关键阶段）：
 
