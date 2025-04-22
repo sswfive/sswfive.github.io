@@ -6,7 +6,7 @@
   <link href="http://sswfive.github.io/atom.xml" rel="self"/>
   
   <link href="http://sswfive.github.io/"/>
-  <updated>2025-04-22T14:52:09.738Z</updated>
+  <updated>2025-04-22T17:23:16.181Z</updated>
   <id>http://sswfive.github.io/</id>
   
   <author>
@@ -17,11 +17,42 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>通过SMTP实现邮件推送服务</title>
+    <link href="http://sswfive.github.io/2025/04/23/tech/others/01-email-push/"/>
+    <id>http://sswfive.github.io/2025/04/23/tech/others/01-email-push/</id>
+    <published>2025-04-23T01:17:06.000Z</published>
+    <updated>2025-04-22T17:23:16.181Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;p&gt;最近有一个需要在 W平台开发一个邮件群发推送的功能需求，经过调研，大概有如下几种选型方案:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;开源项目&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="技术实践" scheme="http://sswfive.github.io/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E8%B7%B5/"/>
+    
+    
+    <category term="邮件推送" scheme="http://sswfive.github.io/tags/%E9%82%AE%E4%BB%B6%E6%8E%A8%E9%80%81/"/>
+    
+    <category term="python工程实践" scheme="http://sswfive.github.io/tags/python%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+  </entry>
+  
+  <entry>
     <title>每天学点AI</title>
     <link href="http://sswfive.github.io/2025/04/14/tech/modelops/00-daily-study-ai/"/>
     <id>http://sswfive.github.io/2025/04/14/tech/modelops/00-daily-study-ai/</id>
     <published>2025-04-14T00:06:11.000Z</published>
-    <updated>2025-04-22T14:52:09.738Z</updated>
+    <updated>2025-04-22T17:23:16.180Z</updated>
     
     
       
@@ -48,7 +79,7 @@
     <link href="http://sswfive.github.io/2025/04/13/tools/11-cdn-site/"/>
     <id>http://sswfive.github.io/2025/04/13/tools/11-cdn-site/</id>
     <published>2025-04-13T23:13:49.000Z</published>
-    <updated>2025-04-22T14:52:09.740Z</updated>
+    <updated>2025-04-22T17:23:16.182Z</updated>
     
     
       
@@ -75,7 +106,7 @@
     <link href="http://sswfive.github.io/2025/04/09/tech/modelops/03-mlflow-deploy/"/>
     <id>http://sswfive.github.io/2025/04/09/tech/modelops/03-mlflow-deploy/</id>
     <published>2025-04-09T14:03:56.000Z</published>
-    <updated>2025-04-22T14:52:09.739Z</updated>
+    <updated>2025-04-22T17:23:16.180Z</updated>
     
     
       
@@ -103,7 +134,7 @@
     <link href="http://sswfive.github.io/2025/04/07/tools/10-vpn-selection/"/>
     <id>http://sswfive.github.io/2025/04/07/tools/10-vpn-selection/</id>
     <published>2025-04-07T22:05:17.000Z</published>
-    <updated>2025-04-22T14:52:09.740Z</updated>
+    <updated>2025-04-22T17:23:16.182Z</updated>
     
     
       
@@ -128,7 +159,7 @@
     <link href="http://sswfive.github.io/2025/04/03/tools/04-mac-software/"/>
     <id>http://sswfive.github.io/2025/04/03/tools/04-mac-software/</id>
     <published>2025-04-03T22:51:08.000Z</published>
-    <updated>2025-04-22T14:52:09.740Z</updated>
+    <updated>2025-04-22T17:23:16.182Z</updated>
     
     
       
@@ -154,7 +185,7 @@
     <link href="http://sswfive.github.io/2025/04/02/tools/03-mac-quickkey/"/>
     <id>http://sswfive.github.io/2025/04/02/tools/03-mac-quickkey/</id>
     <published>2025-04-02T07:39:27.000Z</published>
-    <updated>2025-04-22T14:52:09.740Z</updated>
+    <updated>2025-04-22T17:23:16.182Z</updated>
     
     
       
@@ -182,7 +213,7 @@
     <link href="http://sswfive.github.io/2025/04/01/tools/02-new-tools/"/>
     <id>http://sswfive.github.io/2025/04/01/tools/02-new-tools/</id>
     <published>2025-04-01T22:19:37.000Z</published>
-    <updated>2025-04-22T14:52:09.740Z</updated>
+    <updated>2025-04-22T17:23:16.182Z</updated>
     
     
       
@@ -207,7 +238,7 @@
     <link href="http://sswfive.github.io/2025/03/20/tech/devops/01-git-commit-lint/"/>
     <id>http://sswfive.github.io/2025/03/20/tech/devops/01-git-commit-lint/</id>
     <published>2025-03-20T23:05:17.000Z</published>
-    <updated>2025-04-22T14:52:09.738Z</updated>
+    <updated>2025-04-22T17:23:16.180Z</updated>
     
     
       
@@ -232,7 +263,7 @@
     <link href="http://sswfive.github.io/2025/03/18/tools/01-plugins-usage/"/>
     <id>http://sswfive.github.io/2025/03/18/tools/01-plugins-usage/</id>
     <published>2025-03-18T23:12:28.000Z</published>
-    <updated>2025-04-22T14:52:09.740Z</updated>
+    <updated>2025-04-22T17:23:16.182Z</updated>
     
     
       
@@ -261,7 +292,7 @@
     <link href="http://sswfive.github.io/2025/03/15/tech/modelops/02-kserve-deploy/"/>
     <id>http://sswfive.github.io/2025/03/15/tech/modelops/02-kserve-deploy/</id>
     <published>2025-03-15T21:07:28.000Z</published>
-    <updated>2025-04-22T14:52:09.739Z</updated>
+    <updated>2025-04-22T17:23:16.180Z</updated>
     
     
       
@@ -288,7 +319,7 @@
     <link href="http://sswfive.github.io/2025/03/15/tech/modelops/01-modelops-tech/"/>
     <id>http://sswfive.github.io/2025/03/15/tech/modelops/01-modelops-tech/</id>
     <published>2025-03-15T07:37:40.000Z</published>
-    <updated>2025-04-22T14:52:09.738Z</updated>
+    <updated>2025-04-22T17:23:16.180Z</updated>
     
     
       
@@ -313,7 +344,7 @@
     <link href="http://sswfive.github.io/2025/03/12/tech/k8s/03-ktconnect/"/>
     <id>http://sswfive.github.io/2025/03/12/tech/k8s/03-ktconnect/</id>
     <published>2025-03-12T21:07:28.000Z</published>
-    <updated>2025-04-22T14:52:09.738Z</updated>
+    <updated>2025-04-22T17:23:16.180Z</updated>
     
     
       
@@ -339,7 +370,7 @@
     <link href="http://sswfive.github.io/2025/03/12/tech/k8s/02-longhorn/"/>
     <id>http://sswfive.github.io/2025/03/12/tech/k8s/02-longhorn/</id>
     <published>2025-03-12T19:03:05.000Z</published>
-    <updated>2025-04-22T14:52:09.738Z</updated>
+    <updated>2025-04-22T17:23:16.180Z</updated>
     
     
       
@@ -366,7 +397,7 @@
     <link href="http://sswfive.github.io/2025/03/11/tech/k8s/01-helm/"/>
     <id>http://sswfive.github.io/2025/03/11/tech/k8s/01-helm/</id>
     <published>2025-03-11T17:55:30.000Z</published>
-    <updated>2025-04-22T14:52:09.738Z</updated>
+    <updated>2025-04-22T17:23:16.180Z</updated>
     
     
       
@@ -393,7 +424,7 @@
     <link href="http://sswfive.github.io/2025/03/10/tech/docker/01-docker-image-pull-failed/"/>
     <id>http://sswfive.github.io/2025/03/10/tech/docker/01-docker-image-pull-failed/</id>
     <published>2025-03-10T20:36:21.000Z</published>
-    <updated>2025-04-22T14:52:09.738Z</updated>
+    <updated>2025-04-22T17:23:16.180Z</updated>
     
     
       
@@ -418,7 +449,7 @@
     <link href="http://sswfive.github.io/2025/03/08/tech/python/09-pylib-pathlib/"/>
     <id>http://sswfive.github.io/2025/03/08/tech/python/09-pylib-pathlib/</id>
     <published>2025-03-08T22:59:16.000Z</published>
-    <updated>2025-04-22T14:52:09.739Z</updated>
+    <updated>2025-04-22T17:23:16.181Z</updated>
     
     
       
@@ -448,7 +479,7 @@
     <link href="http://sswfive.github.io/2025/03/08/tech/python/08-pylib-subprocess/"/>
     <id>http://sswfive.github.io/2025/03/08/tech/python/08-pylib-subprocess/</id>
     <published>2025-03-08T00:48:23.000Z</published>
-    <updated>2025-04-22T14:52:09.739Z</updated>
+    <updated>2025-04-22T17:23:16.181Z</updated>
     
     
       
@@ -476,7 +507,7 @@
     <link href="http://sswfive.github.io/2025/03/07/tech/python/07-pylib-supervisor/"/>
     <id>http://sswfive.github.io/2025/03/07/tech/python/07-pylib-supervisor/</id>
     <published>2025-03-07T23:32:23.000Z</published>
-    <updated>2025-04-22T14:52:09.739Z</updated>
+    <updated>2025-04-22T17:23:16.181Z</updated>
     
     
       
@@ -504,7 +535,7 @@
     <link href="http://sswfive.github.io/2025/03/06/tech/python/06-pylib-apscheduler/"/>
     <id>http://sswfive.github.io/2025/03/06/tech/python/06-pylib-apscheduler/</id>
     <published>2025-03-06T23:49:02.000Z</published>
-    <updated>2025-04-22T14:52:09.739Z</updated>
+    <updated>2025-04-22T17:23:16.181Z</updated>
     
     
       
@@ -523,32 +554,6 @@
     <category term="python库" scheme="http://sswfive.github.io/tags/python%E5%BA%93/"/>
     
     <category term="任务管理" scheme="http://sswfive.github.io/tags/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python常用库汇总[awesome]</title>
-    <link href="http://sswfive.github.io/2025/03/06/tech/python/05-pylib-awesome/"/>
-    <id>http://sswfive.github.io/2025/03/06/tech/python/05-pylib-awesome/</id>
-    <published>2025-03-06T22:39:41.000Z</published>
-    <updated>2025-04-22T14:52:09.739Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;Web开发库&quot;&gt;&lt;a href=&quot;#Web开发库&quot; class=&quot;headerlink&quot; title=&quot;Web开发库&quot;&gt;&lt;/a&gt;Web开发库&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    <category term="Python" scheme="http://sswfive.github.io/categories/Python/"/>
-    
-    
-    <category term="python库" scheme="http://sswfive.github.io/tags/python%E5%BA%93/"/>
     
   </entry>
   
