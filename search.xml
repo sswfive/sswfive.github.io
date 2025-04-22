@@ -1085,6 +1085,180 @@
       </tags>
   </entry>
   <entry>
+    <title>包管理工具Helm的使用</title>
+    <url>/2025/03/11/tech/k8s/01-helm/</url>
+    <content><![CDATA[<div class=".article-gallery"><h2 id="Helm概述"><a href="#Helm概述" class="headerlink" title="Helm概述"></a>Helm概述</h2><h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><ul>
+<li>Github地址：<a href="https://github.com/helm/helm">Helm</a></li>
+<li><a href="https://helm.sh/">文档地址</a></li>
+<li>当前最新版本v3.15.4，当前Star数26.6k.</li>
+<li>Chart包托管平台：<a href="https://artifacthub.io/">ArtifactHub</a></li>
+</ul>
+<h3 id="Helm是什么？"><a href="#Helm是什么？" class="headerlink" title="Helm是什么？"></a>Helm是什么？</h3><p>Helm是Kubernetes（K8S）的包管理工具，Helm主要是用来管理Chart包，类似于Python的pip、CentOS的yum、MacOS的brew等。Helm主要有三大基本概念，分别为：</p>
+<ul>
+<li><strong>Chart</strong>: 代表一个Helm包，它包含了在K8S集群中运行的应用程序、工具或服务所需要的所有YAML格式的资源定义文件以及这些资源的配置，可以通过Helm Chart包来整体维护这些资源。</li>
+<li><strong>Repository</strong>：它是用来存放和共享Helm Chart的地方，类似于存放源码的Github的Repository，以及存放镜像的Docker的Repository。</li>
+<li><strong>Release</strong>: 它是运行在K8S集群中的Chart的实例。一个Chart通常可以在同一个集群中安装多次。每一次安装都会创建一个新的Release。</li>
+</ul>
+<p>Helm也提供了一个helm命令行工具，该工具可以基于Chartb包一键创建应用，在创建应用时，可以自定义Chart配置。应用发布者可以通过Helm打包应用、管理应用依赖管理，管理应用版本、并发布应用到软件仓库。</p>
+<ul>
+<li>对于使用者来说，使用Helm后不需要写复杂的应用部署文件，可以非常方便的在K8S上查找、安装、升级、回滚以及卸载应用程序。</li>
+</ul>
+<h3 id="Helm架构"><a href="#Helm架构" class="headerlink" title="Helm架构"></a>Helm架构</h3><p><a href="/images/13-helm_arch.png" title="helm_arch" class="gallery-item" style="box-shadow: none;"> <img src="/images/13-helm_arch.png" alt="helm_arch"></a></p>
+<p>Helm Client（helm命令）和Helm Chart包时核心，helm命令可以从Chart Repository中下载Helm Chart包，读取kubeconfig文件，并构建kube-apiserver REST API 接口的HTTP请求，通过调用K8S提供的REST API 接口，将Chart包中包含的YAML格式定义的K8S资源，在K8S集群中创建， 这些资源以Release的形式存在与K8S集群中，每个Release 又包含多个K8S资源，如Deployment、Pod、Service等。</p>
+<h3 id="Helm组成"><a href="#Helm组成" class="headerlink" title="Helm组成"></a>Helm组成</h3><p><a href="/images/13-helm_struct.png" title="struct" class="gallery-item" style="box-shadow: none;"> <img src="/images/13-helm_struct.png" alt="struct"></a></p>
+<ul>
+<li><p>模板文件</p>
+<ul>
+<li>【通常有多个】，基于<code>text/template</code> 模板文件，提供了强大的模板渲染能力。Helm可以将配置文件中的值渲染进模板文件中，最终生成一个可以部署的K8S YAML格式的资源定义文件。</li>
+</ul>
+</li>
+<li><p>配置文件</p>
+<ul>
+<li>【通常有一个】</li>
+</ul>
+</li>
+</ul>
+<p>总结：</p>
+<ul>
+<li>在Helm中，<strong>部署一个应用可以简化为Chart模板（多个服务）+ Chart配置 —&gt; 应用</strong>。</li>
+<li>Chart模板一个应用只用编写一次，可以重复使用，再部署时，可以指定不同的配置，从而将应用部署到不同环境或同一环境部署不同配置的应用。</li>
+</ul>
+<p><a href="/images/13-helm_deploy_app.png" title="deploy" class="gallery-item" style="box-shadow: none;"> <img src="/images/13-helm_deploy_app.png" alt="deploy"></a></p>
+<h2 id="Helm安装"><a href="#Helm安装" class="headerlink" title="Helm安装"></a>Helm安装</h2><h3 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h3><ul>
+<li>一个可用的K8S集群</li>
+<li>确定安装版本和安全配置</li>
+<li>安装和配置Helm</li>
+</ul>
+<p>安装</p>
+<ul>
+<li><a href="https://helm.sh/zh/docs/intro/install/">官方安装指南</a></li>
+<li>Helm 各个版本安装包：<a href="https://github.com/helm/helm/releases">Helm Releases</a></li>
+</ul>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget https://get.helm.sh/helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ tar -xvzf helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ <span class="built_in">mv</span> linux-amd64/helm /usr/local/bin/helm</span><br><span class="line">$ <span class="built_in">chmod</span> +x /usr/local/bin/helm</span><br><span class="line">$ helm version  <span class="comment"># 输出版本号即表示安装成功</span></span><br><span class="line"><span class="comment">######log info ########</span></span><br><span class="line">version.BuildInfo&#123;Version:<span class="string">&quot;v3.15.4&quot;</span>, GitCommit:<span class="string">&quot;fa9efb07d9d8debbb4306d72af76a383895aa8c4&quot;</span>, GitTreeState:<span class="string">&quot;clean&quot;</span>, GoVersion:<span class="string">&quot;go1.22.6&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>安装helm命令自动补全脚本（非必须）</p>
+<ul>
+<li><a href="https://helm.sh/docs/helm/helm_completion/">文档参考</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">helm completion bash &gt; /etc/bash_completion.d/helm</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行 helm comp，就会自动补全为helm completion。</li>
+</ul>
+<h2 id="Helm使用"><a href="#Helm使用" class="headerlink" title="Helm使用"></a>Helm使用</h2><h2 id="Helm常用命令汇总"><a href="#Helm常用命令汇总" class="headerlink" title="Helm常用命令汇总"></a>Helm常用命令汇总</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>completion</td>
+<td>生成指定Shell的自动补全脚本，比如bash、zsh等</td>
+</tr>
+<tr>
+<td>create</td>
+<td>创建一个 Chart 并指定名字</td>
+</tr>
+<tr>
+<td>dependency</td>
+<td>管理 Chart 依赖</td>
+</tr>
+<tr>
+<td>env</td>
+<td>打印Helm客户端的环境变量信息，例如HELM_CACHE_HOME、HELM_NAMESPACE、HELM_REPOSITORY_CONFIG等</td>
+</tr>
+<tr>
+<td>get</td>
+<td>下载一个 Release。可用子命令：all、hooks、manifest、notes、values</td>
+</tr>
+<tr>
+<td>help</td>
+<td>打印helm命令的帮助信息</td>
+</tr>
+<tr>
+<td>history</td>
+<td>获取 Release历史</td>
+</tr>
+<tr>
+<td>install</td>
+<td>安装一个 Chart</td>
+</tr>
+<tr>
+<td>lint</td>
+<td>检查一个Chart包，并打印潜在的问题</td>
+</tr>
+<tr>
+<td>list</td>
+<td>列出 Release</td>
+</tr>
+<tr>
+<td>package</td>
+<td>将 Chart 目录打包到 Chart 存储文件中</td>
+</tr>
+<tr>
+<td>plugin</td>
+<td>Helm插件</td>
+</tr>
+<tr>
+<td>pull</td>
+<td>从远程仓库中下载 Chart 并解压到本地，例如helm pull stable&#x2F;redis –untar</td>
+</tr>
+<tr>
+<td>repo</td>
+<td>添加（add）、列出（list）、移除（remove）、更新（update）和索引（index）Chart 仓库</td>
+</tr>
+<tr>
+<td>rollback</td>
+<td>从之前版本回滚</td>
+</tr>
+<tr>
+<td>search</td>
+<td>根据关键字搜索 Charts，可用子命令：hub、repo</td>
+</tr>
+<tr>
+<td>show</td>
+<td>查看 Chart 详细信息。可用子命令：all、chart、readme、values</td>
+</tr>
+<tr>
+<td>status</td>
+<td>显示已命名版本的状态</td>
+</tr>
+<tr>
+<td>template</td>
+<td>本地呈现模板</td>
+</tr>
+<tr>
+<td>test</td>
+<td>在 Release 中运行 Helm 中的预定义测试</td>
+</tr>
+<tr>
+<td>uninstall</td>
+<td>卸载一个 Release</td>
+</tr>
+<tr>
+<td>upgrade</td>
+<td>更新一个 Release</td>
+</tr>
+<tr>
+<td>verify</td>
+<td>验证给定路径的Chart是否已被签名且有效</td>
+</tr>
+<tr>
+<td>version</td>
+<td>查看 Helm 客户端版本</td>
+</tr>
+</tbody></table>
+</div>]]></content>
+      <categories>
+        <category>云原生</category>
+      </categories>
+      <tags>
+        <tag>K8S</tag>
+        <tag>包管理工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>储存组件Longhorn部署使用</title>
     <url>/2025/03/12/tech/k8s/02-longhorn/</url>
     <content><![CDATA[<div class=".article-gallery"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Longhorn是基于Kubernetes和Container的构建的分布式块存储系统，轻量、可靠且功能强大， Longhorn为每个块设备卷创建一个专门的存储控制器，并且对多个节点上存储副本中的卷进行实时复制。以下是它的主要特点：</p>
@@ -1260,180 +1434,6 @@
       </tags>
   </entry>
   <entry>
-    <title>包管理工具Helm的使用</title>
-    <url>/2025/03/11/tech/k8s/01-helm/</url>
-    <content><![CDATA[<div class=".article-gallery"><h2 id="Helm概述"><a href="#Helm概述" class="headerlink" title="Helm概述"></a>Helm概述</h2><h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><ul>
-<li>Github地址：<a href="https://github.com/helm/helm">Helm</a></li>
-<li><a href="https://helm.sh/">文档地址</a></li>
-<li>当前最新版本v3.15.4，当前Star数26.6k.</li>
-<li>Chart包托管平台：<a href="https://artifacthub.io/">ArtifactHub</a></li>
-</ul>
-<h3 id="Helm是什么？"><a href="#Helm是什么？" class="headerlink" title="Helm是什么？"></a>Helm是什么？</h3><p>Helm是Kubernetes（K8S）的包管理工具，Helm主要是用来管理Chart包，类似于Python的pip、CentOS的yum、MacOS的brew等。Helm主要有三大基本概念，分别为：</p>
-<ul>
-<li><strong>Chart</strong>: 代表一个Helm包，它包含了在K8S集群中运行的应用程序、工具或服务所需要的所有YAML格式的资源定义文件以及这些资源的配置，可以通过Helm Chart包来整体维护这些资源。</li>
-<li><strong>Repository</strong>：它是用来存放和共享Helm Chart的地方，类似于存放源码的Github的Repository，以及存放镜像的Docker的Repository。</li>
-<li><strong>Release</strong>: 它是运行在K8S集群中的Chart的实例。一个Chart通常可以在同一个集群中安装多次。每一次安装都会创建一个新的Release。</li>
-</ul>
-<p>Helm也提供了一个helm命令行工具，该工具可以基于Chartb包一键创建应用，在创建应用时，可以自定义Chart配置。应用发布者可以通过Helm打包应用、管理应用依赖管理，管理应用版本、并发布应用到软件仓库。</p>
-<ul>
-<li>对于使用者来说，使用Helm后不需要写复杂的应用部署文件，可以非常方便的在K8S上查找、安装、升级、回滚以及卸载应用程序。</li>
-</ul>
-<h3 id="Helm架构"><a href="#Helm架构" class="headerlink" title="Helm架构"></a>Helm架构</h3><p><a href="/images/13-helm_arch.png" title="helm_arch" class="gallery-item" style="box-shadow: none;"> <img src="/images/13-helm_arch.png" alt="helm_arch"></a></p>
-<p>Helm Client（helm命令）和Helm Chart包时核心，helm命令可以从Chart Repository中下载Helm Chart包，读取kubeconfig文件，并构建kube-apiserver REST API 接口的HTTP请求，通过调用K8S提供的REST API 接口，将Chart包中包含的YAML格式定义的K8S资源，在K8S集群中创建， 这些资源以Release的形式存在与K8S集群中，每个Release 又包含多个K8S资源，如Deployment、Pod、Service等。</p>
-<h3 id="Helm组成"><a href="#Helm组成" class="headerlink" title="Helm组成"></a>Helm组成</h3><p><a href="/images/13-helm_struct.png" title="struct" class="gallery-item" style="box-shadow: none;"> <img src="/images/13-helm_struct.png" alt="struct"></a></p>
-<ul>
-<li><p>模板文件</p>
-<ul>
-<li>【通常有多个】，基于<code>text/template</code> 模板文件，提供了强大的模板渲染能力。Helm可以将配置文件中的值渲染进模板文件中，最终生成一个可以部署的K8S YAML格式的资源定义文件。</li>
-</ul>
-</li>
-<li><p>配置文件</p>
-<ul>
-<li>【通常有一个】</li>
-</ul>
-</li>
-</ul>
-<p>总结：</p>
-<ul>
-<li>在Helm中，<strong>部署一个应用可以简化为Chart模板（多个服务）+ Chart配置 —&gt; 应用</strong>。</li>
-<li>Chart模板一个应用只用编写一次，可以重复使用，再部署时，可以指定不同的配置，从而将应用部署到不同环境或同一环境部署不同配置的应用。</li>
-</ul>
-<p><a href="/images/13-helm_deploy_app.png" title="deploy" class="gallery-item" style="box-shadow: none;"> <img src="/images/13-helm_deploy_app.png" alt="deploy"></a></p>
-<h2 id="Helm安装"><a href="#Helm安装" class="headerlink" title="Helm安装"></a>Helm安装</h2><h3 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h3><ul>
-<li>一个可用的K8S集群</li>
-<li>确定安装版本和安全配置</li>
-<li>安装和配置Helm</li>
-</ul>
-<p>安装</p>
-<ul>
-<li><a href="https://helm.sh/zh/docs/intro/install/">官方安装指南</a></li>
-<li>Helm 各个版本安装包：<a href="https://github.com/helm/helm/releases">Helm Releases</a></li>
-</ul>
-<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget https://get.helm.sh/helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ tar -xvzf helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ <span class="built_in">mv</span> linux-amd64/helm /usr/local/bin/helm</span><br><span class="line">$ <span class="built_in">chmod</span> +x /usr/local/bin/helm</span><br><span class="line">$ helm version  <span class="comment"># 输出版本号即表示安装成功</span></span><br><span class="line"><span class="comment">######log info ########</span></span><br><span class="line">version.BuildInfo&#123;Version:<span class="string">&quot;v3.15.4&quot;</span>, GitCommit:<span class="string">&quot;fa9efb07d9d8debbb4306d72af76a383895aa8c4&quot;</span>, GitTreeState:<span class="string">&quot;clean&quot;</span>, GoVersion:<span class="string">&quot;go1.22.6&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>安装helm命令自动补全脚本（非必须）</p>
-<ul>
-<li><a href="https://helm.sh/docs/helm/helm_completion/">文档参考</a></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">helm completion bash &gt; /etc/bash_completion.d/helm</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>执行 helm comp，就会自动补全为helm completion。</li>
-</ul>
-<h2 id="Helm使用"><a href="#Helm使用" class="headerlink" title="Helm使用"></a>Helm使用</h2><h2 id="Helm常用命令汇总"><a href="#Helm常用命令汇总" class="headerlink" title="Helm常用命令汇总"></a>Helm常用命令汇总</h2><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>completion</td>
-<td>生成指定Shell的自动补全脚本，比如bash、zsh等</td>
-</tr>
-<tr>
-<td>create</td>
-<td>创建一个 Chart 并指定名字</td>
-</tr>
-<tr>
-<td>dependency</td>
-<td>管理 Chart 依赖</td>
-</tr>
-<tr>
-<td>env</td>
-<td>打印Helm客户端的环境变量信息，例如HELM_CACHE_HOME、HELM_NAMESPACE、HELM_REPOSITORY_CONFIG等</td>
-</tr>
-<tr>
-<td>get</td>
-<td>下载一个 Release。可用子命令：all、hooks、manifest、notes、values</td>
-</tr>
-<tr>
-<td>help</td>
-<td>打印helm命令的帮助信息</td>
-</tr>
-<tr>
-<td>history</td>
-<td>获取 Release历史</td>
-</tr>
-<tr>
-<td>install</td>
-<td>安装一个 Chart</td>
-</tr>
-<tr>
-<td>lint</td>
-<td>检查一个Chart包，并打印潜在的问题</td>
-</tr>
-<tr>
-<td>list</td>
-<td>列出 Release</td>
-</tr>
-<tr>
-<td>package</td>
-<td>将 Chart 目录打包到 Chart 存储文件中</td>
-</tr>
-<tr>
-<td>plugin</td>
-<td>Helm插件</td>
-</tr>
-<tr>
-<td>pull</td>
-<td>从远程仓库中下载 Chart 并解压到本地，例如helm pull stable&#x2F;redis –untar</td>
-</tr>
-<tr>
-<td>repo</td>
-<td>添加（add）、列出（list）、移除（remove）、更新（update）和索引（index）Chart 仓库</td>
-</tr>
-<tr>
-<td>rollback</td>
-<td>从之前版本回滚</td>
-</tr>
-<tr>
-<td>search</td>
-<td>根据关键字搜索 Charts，可用子命令：hub、repo</td>
-</tr>
-<tr>
-<td>show</td>
-<td>查看 Chart 详细信息。可用子命令：all、chart、readme、values</td>
-</tr>
-<tr>
-<td>status</td>
-<td>显示已命名版本的状态</td>
-</tr>
-<tr>
-<td>template</td>
-<td>本地呈现模板</td>
-</tr>
-<tr>
-<td>test</td>
-<td>在 Release 中运行 Helm 中的预定义测试</td>
-</tr>
-<tr>
-<td>uninstall</td>
-<td>卸载一个 Release</td>
-</tr>
-<tr>
-<td>upgrade</td>
-<td>更新一个 Release</td>
-</tr>
-<tr>
-<td>verify</td>
-<td>验证给定路径的Chart是否已被签名且有效</td>
-</tr>
-<tr>
-<td>version</td>
-<td>查看 Helm 客户端版本</td>
-</tr>
-</tbody></table>
-</div>]]></content>
-      <categories>
-        <category>云原生</category>
-      </categories>
-      <tags>
-        <tag>K8S</tag>
-        <tag>包管理工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>开发工具之KtConnect的使用</title>
     <url>/2025/03/12/tech/k8s/03-ktconnect/</url>
     <content><![CDATA[<div class=".article-gallery"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
@@ -1500,91 +1500,14 @@
       </tags>
   </entry>
   <entry>
-    <title>关于ModelOps的相关技术</title>
-    <url>/2025/03/15/tech/modelops/01-modelops-tech/</url>
-    <content><![CDATA[<div class=".article-gallery"><h2 id="框架级"><a href="#框架级" class="headerlink" title="框架级"></a>框架级</h2><h3 id="模型开发"><a href="#模型开发" class="headerlink" title="模型开发"></a>模型开发</h3><h4 id="Scikit-learn（SKlearn）"><a href="#Scikit-learn（SKlearn）" class="headerlink" title="Scikit-learn（SKlearn）"></a>Scikit-learn（SKlearn）</h4><ul>
-<li><a href="https://scikit-learn.org/stable/">官网</a></li>
-<li>简介：一个基于 SciPy 构建的用于机器学习的 Python 模块，并根据 3-Clause BSD 许可证分发</li>
-</ul>
-<h4 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a><a href="https://pytorch.org/">PyTorch</a></h4><ul>
-<li><a href="https://pytorch.org/">官网</a></li>
-<li>简介：Python 中的张量和动态神经网络，具有强大的 GPU 加速功能</li>
-</ul>
-<h3 id="模型解释"><a href="#模型解释" class="headerlink" title="模型解释"></a>模型解释</h3><h4 id="Alibi-Explain"><a href="#Alibi-Explain" class="headerlink" title="Alibi Explain"></a>Alibi Explain</h4><ul>
-<li><a href="https://docs.seldon.io/projects/alibi/en/stable/">官网</a></li>
-<li><a href="https://github.com/SeldonIO/alibi">Github</a></li>
-<li>简介：</li>
-</ul>
-<h3 id="模型检测"><a href="#模型检测" class="headerlink" title="模型检测"></a>模型检测</h3><h4 id="Alibi-Detect"><a href="#Alibi-Detect" class="headerlink" title="Alibi Detect"></a>Alibi Detect</h4><ul>
-<li><a href="https://docs.seldon.io/projects/alibi-detect/en/stable/">官网</a></li>
-<li><a href="https://github.com/SeldonIO/alibi-detect">Github</a> </li>
-<li>简介：是一个 Python 开源库，专注于异常值、对抗性、和漂移检测。该库涵盖表格数据、文本、图像和时间序列的在线和离线检测器，TensorFlow 和 PyTorch 后端都支持漂移检测。</li>
-</ul>
-<h3 id="模型管理"><a href="#模型管理" class="headerlink" title="模型管理"></a>模型管理</h3><h4 id="MLflow"><a href="#MLflow" class="headerlink" title="MLflow"></a>MLflow</h4><ul>
-<li><a href="https://mlflow.org/">官网</a></li>
-<li><a href="https://github.com/mlflow/mlflow">Github</a></li>
-<li>简介：MLflow 是一个开源平台，专门用于帮助机器学习从业者和团队处理机器学习过程的复杂性，专注于机器学习项目的整个生命周期，确保每个阶段都是可管理、可追溯和可再现的。</li>
-</ul>
-<h3 id="模型部署"><a href="#模型部署" class="headerlink" title="模型部署"></a>模型部署</h3><h4 id="Seldon-core"><a href="#Seldon-core" class="headerlink" title="Seldon-core"></a>Seldon-core</h4><ul>
-<li><a href="https://www.seldon.io/solutions/core-plus">官网</a></li>
-<li><a href="https://github.com/SeldonIO/seldon-core">Github</a></li>
-<li>简介：一款用于打包、部署、监控和管理数千个生产机器学习模型的 MLOps 框架</li>
-</ul>
-<h4 id="Kserve"><a href="#Kserve" class="headerlink" title="Kserve"></a>Kserve</h4><ul>
-<li><a href="https://kserve.github.io/website/latest/">官网</a></li>
-<li><a href="https://github.com/kserve/kserve">Github</a></li>
-<li>简介：一款基于 Kubernetes 高度可扩展且基于标准的模型部署与推理平台</li>
-</ul>
-<h4 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h4><ul>
-<li><a href="https://www.ray.io/">官网</a></li>
-<li><a href="https://github.com/ray-project/ray">Github</a></li>
-<li>简介：一款 AI 计算引擎，管理、执行和优化 AI 工作负载的计算需求。它通过单一、灵活的框架统一基础设施，支持从数据处理到模型训练再到模型服务等任何人工智能工作负载。</li>
-</ul>
-<h4 id="Polyaxon"><a href="#Polyaxon" class="headerlink" title="Polyaxon"></a><a href="https://github.com/polyaxon/polyaxon">Polyaxon</a></h4><ul>
-<li><a href="https://polyaxon.com/">官网</a></li>
-<li><a href="https://github.com/polyaxon/polyaxon">Github</a></li>
-<li>简介：一个用于构建、训练和监控大规模深度学习应用程序的平台,用于管理和编排机器学习生命周期的 MLOps 工具</li>
-</ul>
-<h3 id="模型服务"><a href="#模型服务" class="headerlink" title="模型服务"></a>模型服务</h3><p>MLServer</p>
-<ul>
-<li><a href="https://mlserver.readthedocs.io/en/latest/getting-started/index.html">官网</a></li>
-<li><a href="https://github.com/SeldonIO/MLServer/">Github</a></li>
-<li>简介：一款 Python 开发的、适用于机器学习模型的推理服务器，旨在提供一种简单的方法来通过 REST 和 gRPC 接口开始为您的机器学习模型提供服务，完全符合KFServing 的 V2 Dataplane规范。</li>
-</ul>
-<h2 id="平台级"><a href="#平台级" class="headerlink" title="平台级"></a>平台级</h2><h3 id="SkyPilot"><a href="#SkyPilot" class="headerlink" title="SkyPilot"></a><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">SkyPilot</a></h3><ul>
-<li>简介：是一个用于在任何基础设施上运行 AI 和批处理工作负载的框架，提供统一执行、高成本节省和高 GPU 可用性。</li>
-<li><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">文档链接</a>, <a href="https://github.com/skypilot-org/skypilot">Github地址</a></li>
-<li><a href="https://www.cloudpods.org/blog/introduction-to-the-skypilot-open-source-project">相关博客介绍</a></li>
-</ul>
-<h3 id="Cloudpods"><a href="#Cloudpods" class="headerlink" title="Cloudpods"></a><a href="https://github.com/yunionio/cloudpods">Cloudpods</a></h3><ul>
-<li>简介：一个使用Golang开发的云原生开源统一多云&#x2F;混合云平台，即Cloudpods是<em>云上的云</em>。 Cloudpods 不仅能够管理本地 KVM&#x2F;裸机，还能够管理来自许多云提供商的许多云帐户的资源。它隐藏了底层云提供商的差异，并公开了一组 API，允许以编程方式与众多云进行交互。</li>
-<li><a href="https://www.cloudpods.org/">文档链接</a></li>
-</ul>
-<h3 id="BentoML"><a href="#BentoML" class="headerlink" title="BentoML"></a>BentoML</h3><ul>
-<li>简介:是一个 Python 库，用于构建针对 AI 应用程序和模型推理进行优化的在线服务系统, 服务 AI 应用程序和模型的最简单方法 - 构建模型推理 API、作业队列、 LLM应用程序、多模型管道等</li>
-<li><a href="https://bentoml.com/">文档地址</a>、<a href="https://github.com/bentoml/BentoML">Github地址</a></li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="Cog"><a href="#Cog" class="headerlink" title="Cog"></a><a href="https://github.com/replicate/cog">Cog</a></h3><ul>
-<li>简介：Cog 是将机器学习模型打包到容器的工具。可通过配置将机器学习模型所需的环境和依赖，自动打包到容器里方便部署，让你不再为编写 Docker 文件和 CUDA 而痛苦，还能自动启动 HTTP 接口服务方便调用</li>
-<li><a href="https://cog.run/">文档地址</a>、<a href="https://github.com/replicate/cog">Github地址</a></li>
-</ul>
-</div>]]></content>
-      <categories>
-        <category>ModelOps</category>
-      </categories>
-      <tags>
-        <tag>ModelOps</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>每天学点AI</title>
     <url>/2025/04/14/tech/modelops/00-daily-study-ai/</url>
     <content><![CDATA[<div class=".article-gallery"><h2 id="20250421-什么是向量嵌入"><a href="#20250421-什么是向量嵌入" class="headerlink" title="20250421: 什么是向量嵌入"></a>20250421: 什么是向量嵌入</h2><blockquote>
 <p>⌛️：2025-04-21 01:37:45</p>
 </blockquote>
 <div class="circle-blue">
-![image-20250421011928630](../../../images/00-llm-embedding.png)
 
+<p><a href="/images/00-llm-embedding.png" title="image-20250421011928630" class="gallery-item" style="box-shadow: none;"> <img src="/images/00-llm-embedding.png" alt="image-20250421011928630"></a></p>
 <p>向量嵌入（Vector Embeddings）是讲复杂数据（如文本、图像、音频等）转换为密集数据向量的过程和结果。这些向量通常是高维度的数字数组，使机器能够“理解”数据间的语义关系。</p>
 <p>其核心思想是通过数据表示捕捉原始数据的语义信息，讲抽象概念映射到多维空间，这样语义空间的相似性，就可以转化为向量空间中的接近性（数学问题）</p>
 <ul>
@@ -1735,7 +1658,7 @@
 **多模态模型（Mutlimodel LLM）是能够同时处理和关联多种数据模态（如：文本、图像、视频等）的大语言模型。这类模型通过统一表示空间，实现跨模态的语义理解和内容生成。**
 
 
-<p><a href="/../../../images/image-20250416230150271.png" title="mutlimodel-llm" class="gallery-item" style="box-shadow: none;"> <img src="/../../../images/image-20250416230150271.png" alt="mutlimodel-llm"></a></p>
+<p><a href="/images/00-llm-mutli-model.png" title="mutlimodel-llm" class="gallery-item" style="box-shadow: none;"> <img src="/images/00-llm-mutli-model.png" alt="mutlimodel-llm"></a></p>
 <ul>
 <li><p>核心工作原理（多模态模型的工作机制包含三个关键阶段）：</p>
 <ul>
@@ -2263,6 +2186,83 @@
       </categories>
       <tags>
         <tag>python工程实践</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于ModelOps的相关技术</title>
+    <url>/2025/03/15/tech/modelops/01-modelops-tech/</url>
+    <content><![CDATA[<div class=".article-gallery"><h2 id="框架级"><a href="#框架级" class="headerlink" title="框架级"></a>框架级</h2><h3 id="模型开发"><a href="#模型开发" class="headerlink" title="模型开发"></a>模型开发</h3><h4 id="Scikit-learn（SKlearn）"><a href="#Scikit-learn（SKlearn）" class="headerlink" title="Scikit-learn（SKlearn）"></a>Scikit-learn（SKlearn）</h4><ul>
+<li><a href="https://scikit-learn.org/stable/">官网</a></li>
+<li>简介：一个基于 SciPy 构建的用于机器学习的 Python 模块，并根据 3-Clause BSD 许可证分发</li>
+</ul>
+<h4 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a><a href="https://pytorch.org/">PyTorch</a></h4><ul>
+<li><a href="https://pytorch.org/">官网</a></li>
+<li>简介：Python 中的张量和动态神经网络，具有强大的 GPU 加速功能</li>
+</ul>
+<h3 id="模型解释"><a href="#模型解释" class="headerlink" title="模型解释"></a>模型解释</h3><h4 id="Alibi-Explain"><a href="#Alibi-Explain" class="headerlink" title="Alibi Explain"></a>Alibi Explain</h4><ul>
+<li><a href="https://docs.seldon.io/projects/alibi/en/stable/">官网</a></li>
+<li><a href="https://github.com/SeldonIO/alibi">Github</a></li>
+<li>简介：</li>
+</ul>
+<h3 id="模型检测"><a href="#模型检测" class="headerlink" title="模型检测"></a>模型检测</h3><h4 id="Alibi-Detect"><a href="#Alibi-Detect" class="headerlink" title="Alibi Detect"></a>Alibi Detect</h4><ul>
+<li><a href="https://docs.seldon.io/projects/alibi-detect/en/stable/">官网</a></li>
+<li><a href="https://github.com/SeldonIO/alibi-detect">Github</a> </li>
+<li>简介：是一个 Python 开源库，专注于异常值、对抗性、和漂移检测。该库涵盖表格数据、文本、图像和时间序列的在线和离线检测器，TensorFlow 和 PyTorch 后端都支持漂移检测。</li>
+</ul>
+<h3 id="模型管理"><a href="#模型管理" class="headerlink" title="模型管理"></a>模型管理</h3><h4 id="MLflow"><a href="#MLflow" class="headerlink" title="MLflow"></a>MLflow</h4><ul>
+<li><a href="https://mlflow.org/">官网</a></li>
+<li><a href="https://github.com/mlflow/mlflow">Github</a></li>
+<li>简介：MLflow 是一个开源平台，专门用于帮助机器学习从业者和团队处理机器学习过程的复杂性，专注于机器学习项目的整个生命周期，确保每个阶段都是可管理、可追溯和可再现的。</li>
+</ul>
+<h3 id="模型部署"><a href="#模型部署" class="headerlink" title="模型部署"></a>模型部署</h3><h4 id="Seldon-core"><a href="#Seldon-core" class="headerlink" title="Seldon-core"></a>Seldon-core</h4><ul>
+<li><a href="https://www.seldon.io/solutions/core-plus">官网</a></li>
+<li><a href="https://github.com/SeldonIO/seldon-core">Github</a></li>
+<li>简介：一款用于打包、部署、监控和管理数千个生产机器学习模型的 MLOps 框架</li>
+</ul>
+<h4 id="Kserve"><a href="#Kserve" class="headerlink" title="Kserve"></a>Kserve</h4><ul>
+<li><a href="https://kserve.github.io/website/latest/">官网</a></li>
+<li><a href="https://github.com/kserve/kserve">Github</a></li>
+<li>简介：一款基于 Kubernetes 高度可扩展且基于标准的模型部署与推理平台</li>
+</ul>
+<h4 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h4><ul>
+<li><a href="https://www.ray.io/">官网</a></li>
+<li><a href="https://github.com/ray-project/ray">Github</a></li>
+<li>简介：一款 AI 计算引擎，管理、执行和优化 AI 工作负载的计算需求。它通过单一、灵活的框架统一基础设施，支持从数据处理到模型训练再到模型服务等任何人工智能工作负载。</li>
+</ul>
+<h4 id="Polyaxon"><a href="#Polyaxon" class="headerlink" title="Polyaxon"></a><a href="https://github.com/polyaxon/polyaxon">Polyaxon</a></h4><ul>
+<li><a href="https://polyaxon.com/">官网</a></li>
+<li><a href="https://github.com/polyaxon/polyaxon">Github</a></li>
+<li>简介：一个用于构建、训练和监控大规模深度学习应用程序的平台,用于管理和编排机器学习生命周期的 MLOps 工具</li>
+</ul>
+<h3 id="模型服务"><a href="#模型服务" class="headerlink" title="模型服务"></a>模型服务</h3><p>MLServer</p>
+<ul>
+<li><a href="https://mlserver.readthedocs.io/en/latest/getting-started/index.html">官网</a></li>
+<li><a href="https://github.com/SeldonIO/MLServer/">Github</a></li>
+<li>简介：一款 Python 开发的、适用于机器学习模型的推理服务器，旨在提供一种简单的方法来通过 REST 和 gRPC 接口开始为您的机器学习模型提供服务，完全符合KFServing 的 V2 Dataplane规范。</li>
+</ul>
+<h2 id="平台级"><a href="#平台级" class="headerlink" title="平台级"></a>平台级</h2><h3 id="SkyPilot"><a href="#SkyPilot" class="headerlink" title="SkyPilot"></a><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">SkyPilot</a></h3><ul>
+<li>简介：是一个用于在任何基础设施上运行 AI 和批处理工作负载的框架，提供统一执行、高成本节省和高 GPU 可用性。</li>
+<li><a href="https://skypilot.readthedocs.io/en/latest/docs/index.html">文档链接</a>, <a href="https://github.com/skypilot-org/skypilot">Github地址</a></li>
+<li><a href="https://www.cloudpods.org/blog/introduction-to-the-skypilot-open-source-project">相关博客介绍</a></li>
+</ul>
+<h3 id="Cloudpods"><a href="#Cloudpods" class="headerlink" title="Cloudpods"></a><a href="https://github.com/yunionio/cloudpods">Cloudpods</a></h3><ul>
+<li>简介：一个使用Golang开发的云原生开源统一多云&#x2F;混合云平台，即Cloudpods是<em>云上的云</em>。 Cloudpods 不仅能够管理本地 KVM&#x2F;裸机，还能够管理来自许多云提供商的许多云帐户的资源。它隐藏了底层云提供商的差异，并公开了一组 API，允许以编程方式与众多云进行交互。</li>
+<li><a href="https://www.cloudpods.org/">文档链接</a></li>
+</ul>
+<h3 id="BentoML"><a href="#BentoML" class="headerlink" title="BentoML"></a>BentoML</h3><ul>
+<li>简介:是一个 Python 库，用于构建针对 AI 应用程序和模型推理进行优化的在线服务系统, 服务 AI 应用程序和模型的最简单方法 - 构建模型推理 API、作业队列、 LLM应用程序、多模型管道等</li>
+<li><a href="https://bentoml.com/">文档地址</a>、<a href="https://github.com/bentoml/BentoML">Github地址</a></li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="Cog"><a href="#Cog" class="headerlink" title="Cog"></a><a href="https://github.com/replicate/cog">Cog</a></h3><ul>
+<li>简介：Cog 是将机器学习模型打包到容器的工具。可通过配置将机器学习模型所需的环境和依赖，自动打包到容器里方便部署，让你不再为编写 Docker 文件和 CUDA 而痛苦，还能自动启动 HTTP 接口服务方便调用</li>
+<li><a href="https://cog.run/">文档地址</a>、<a href="https://github.com/replicate/cog">Github地址</a></li>
+</ul>
+</div>]]></content>
+      <categories>
+        <category>ModelOps</category>
+      </categories>
+      <tags>
+        <tag>ModelOps</tag>
       </tags>
   </entry>
   <entry>
@@ -2990,6 +2990,116 @@
       </tags>
   </entry>
   <entry>
+    <title>任务管理工具之APScheduler</title>
+    <url>/2025/03/06/tech/python/06-pylib-apscheduler/</url>
+    <content><![CDATA[<div class=".article-gallery"><h1 id="APScheduler之定时任务工具"><a href="#APScheduler之定时任务工具" class="headerlink" title="APScheduler之定时任务工具"></a>APScheduler之定时任务工具</h1><h2 id="APScheduler概述"><a href="#APScheduler概述" class="headerlink" title="APScheduler概述"></a>APScheduler概述</h2><ul>
+<li><p>APScheduler （advanceded python scheduler）是一款Python开发的定时任务工具。</p>
+</li>
+<li><p>文档地址 <a href="https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler">https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler</a></p>
+</li>
+<li><p>特点：</p>
+<ul>
+<li><p>不依赖于Linux系统的crontab系统定时，独立运行</p>
+</li>
+<li><p>可以动态添加新的定时任务，如</p>
+</li>
+<li><p>下单后30分钟内必须支付，否则取消订单，就可以借助此工具（每下一单就要添加此订单的定时任务）</p>
+</li>
+<li><p>对添加的定时任务可以做持久保存</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install apscheduler</span><br></pre></td></tr></table></figure>
+<h2 id="2-使用方式"><a href="#2-使用方式" class="headerlink" title="2.使用方式"></a>2.使用方式</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建定时任务的调度器对象</span></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义定时任务</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">my_job</span>(<span class="params">param1, param2</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 向调度器中添加定时任务</span></span><br><span class="line">scheduler.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, args=[<span class="number">100</span>, <span class="string">&#x27;python&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动定时任务调度器工作</span></span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+<h2 id="3-调度器Scheduler"><a href="#3-调度器Scheduler" class="headerlink" title="3.调度器Scheduler"></a>3.调度器Scheduler</h2><p><strong>负责管理定时任务</strong></p>
+<ul>
+<li>BlockingScheduler: 作为独立进程时使用</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序会发生阻塞</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>BackgroundScheduler: 在框架程序（如Django、Flask）中使用</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序不会发生阻塞</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-执行器-executors"><a href="#4-执行器-executors" class="headerlink" title="4.执行器 executors"></a>4.执行器 executors</h2><p><strong>在定时任务该执行时，以进程或线程方式执行任务</strong></p>
+<ul>
+<li>ThreadPoolExecutor</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">ThreadPoolExecutor(max_workers)  </span><br><span class="line">ThreadPoolExecutor(<span class="number">20</span>) <span class="comment"># 最多20个线程同时执行</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ProcessPoolExecutor</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">ProcessPoolExecutor(max_workers)</span><br><span class="line">ProcessPoolExecutor(<span class="number">5</span>) <span class="comment"># 最多5个进程同时执行</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用方法</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ProcessPoolExecutor(<span class="number">3</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-触发器-Trigger"><a href="#5-触发器-Trigger" class="headerlink" title="5.触发器 Trigger"></a>5.触发器 Trigger</h2><p><strong>指定定时任务执行的时机</strong></p>
+<p><strong>1） date 在特定的时间日期执行</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日00:00:00执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=date(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日16:30:05</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=datetime(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>, <span class="number">16</span>, <span class="number">30</span>, <span class="number">5</span>))</span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=<span class="string">&#x27;2009-11-06 16:30:05&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 立即执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>)  </span><br><span class="line">sched.start()</span><br></pre></td></tr></table></figure>
+<p><strong>2） interval 经过指定的时间间隔执行</strong></p>
+<ul>
+<li>weeks (int) – number of weeks to wait</li>
+<li>days (int) – number of days to wait</li>
+<li>hours (int) – number of hours to wait</li>
+<li>minutes (int) – number of minutes to wait</li>
+<li>seconds (int) – number of seconds to wait</li>
+<li>start_date (datetime|str) – starting point for the interval calculation</li>
+<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on</li>
+<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2010年10月10日09:30:00 到2014年6月15日的时间内，每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>, start_date=<span class="string">&#x27;2010-10-10 09:30:00&#x27;</span>, end_date=<span class="string">&#x27;2014-06-15 11:00:00&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>3） cron 按指定的周期执行</strong></p>
+<ul>
+<li>year (int|str) – 4-digit year</li>
+<li>month (int|str) – month (1-12)</li>
+<li>day (int|str) – day of the (1-31)</li>
+<li>week (int|str) – ISO week (1-53)</li>
+<li>day_of_week (int|str) – number or name of weekday (0-6 or mon,tue,wed,thu,fri,sat,sun)</li>
+<li>hour (int|str) – hour (0-23)</li>
+<li>minute (int|str) – minute (0-59)</li>
+<li>second (int|str) – second (0-59)</li>
+<li>start_date (datetime|str) – earliest possible date&#x2F;time to trigger on (inclusive)</li>
+<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on (inclusive)</li>
+<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations (defaults to scheduler timezone)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在6、7、8、11、12月的第三个周五的00:00, 01:00, 02:00和03:00 执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, month=<span class="string">&#x27;6-8,11-12&#x27;</span>, day=<span class="string">&#x27;3rd fri&#x27;</span>, hour=<span class="string">&#x27;0-3&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2014年5月30日前的周一到周五的5:30执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, day_of_week=<span class="string">&#x27;mon-fri&#x27;</span>, hour=<span class="number">5</span>, minute=<span class="number">30</span>, end_date=<span class="string">&#x27;2014-05-30&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="6-配置方法"><a href="#6-配置方法" class="headerlink" title="6. 配置方法"></a>6. 配置方法</h2><h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>),</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pytz <span class="keyword">import</span> utc</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.jobstores.sqlalchemy <span class="keyword">import</span> SQLAlchemyJobStore</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;threadpool&#x27;</span>, <span class="string">&#x27;max_workers&#x27;</span>: <span class="number">20</span>&#125;,</span><br><span class="line">    <span class="string">&#x27;processpool&#x27;</span>: ProcessPoolExecutor(max_workers=<span class="number">5</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># .. 此处可以编写其他代码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用configure方法进行配置</span></span><br><span class="line">scheduler.configure(executors=executors)</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-启动"><a href="#7-启动" class="headerlink" title="7. 启动"></a>7. 启动</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对于BlockingScheduler ，程序会阻塞在这，防止退出</li>
+<li>对于BackgroundScheduler，程序会立即返回，后台运行</li>
+</ul>
+<h2 id="8-扩展"><a href="#8-扩展" class="headerlink" title="8.扩展"></a>8.扩展</h2><h3 id="任务管理"><a href="#任务管理" class="headerlink" title="任务管理"></a>任务管理</h3><h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">job = scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>)  <span class="comment"># 添加任务</span></span><br><span class="line">job.remove()  <span class="comment"># 删除任务</span></span><br><span class="line">job.pause() <span class="comment"># 暂定任务</span></span><br><span class="line">job.resume()  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>, <span class="built_in">id</span>=<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 添加任务    </span></span><br><span class="line">scheduler.remove_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 删除任务</span></span><br><span class="line">scheduler.pause_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 暂定任务</span></span><br><span class="line">scheduler.resume_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="调整任务调度周期"><a href="#调整任务调度周期" class="headerlink" title="调整任务调度周期"></a>调整任务调度周期</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">job.modify(max_instances=<span class="number">6</span>, name=<span class="string">&#x27;Alternate name&#x27;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.reschedule_job(<span class="string">&#x27;my_job_id&#x27;</span>, trigger=<span class="string">&#x27;cron&#x27;</span>, minute=<span class="string">&#x27;*/5&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="停止APScheduler运行"><a href="#停止APScheduler运行" class="headerlink" title="停止APScheduler运行"></a>停止APScheduler运行</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.shutdown()</span><br></pre></td></tr></table></figure>
+</div>]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python库</tag>
+        <tag>任务管理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>进程管理工具之Supervisor</title>
     <url>/2025/03/07/tech/python/07-pylib-supervisor/</url>
     <content><![CDATA[<div class=".article-gallery"><h2 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h2><blockquote>
@@ -3132,116 +3242,6 @@
       <tags>
         <tag>python库</tag>
         <tag>进程管理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>任务管理工具之APScheduler</title>
-    <url>/2025/03/06/tech/python/06-pylib-apscheduler/</url>
-    <content><![CDATA[<div class=".article-gallery"><h1 id="APScheduler之定时任务工具"><a href="#APScheduler之定时任务工具" class="headerlink" title="APScheduler之定时任务工具"></a>APScheduler之定时任务工具</h1><h2 id="APScheduler概述"><a href="#APScheduler概述" class="headerlink" title="APScheduler概述"></a>APScheduler概述</h2><ul>
-<li><p>APScheduler （advanceded python scheduler）是一款Python开发的定时任务工具。</p>
-</li>
-<li><p>文档地址 <a href="https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler">https://apscheduler.readthedocs.io/en/latest/userguide.html#starting-the-scheduler</a></p>
-</li>
-<li><p>特点：</p>
-<ul>
-<li><p>不依赖于Linux系统的crontab系统定时，独立运行</p>
-</li>
-<li><p>可以动态添加新的定时任务，如</p>
-</li>
-<li><p>下单后30分钟内必须支付，否则取消订单，就可以借助此工具（每下一单就要添加此订单的定时任务）</p>
-</li>
-<li><p>对添加的定时任务可以做持久保存</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install apscheduler</span><br></pre></td></tr></table></figure>
-<h2 id="2-使用方式"><a href="#2-使用方式" class="headerlink" title="2.使用方式"></a>2.使用方式</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建定时任务的调度器对象</span></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义定时任务</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">my_job</span>(<span class="params">param1, param2</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 向调度器中添加定时任务</span></span><br><span class="line">scheduler.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, args=[<span class="number">100</span>, <span class="string">&#x27;python&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动定时任务调度器工作</span></span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
-<h2 id="3-调度器Scheduler"><a href="#3-调度器Scheduler" class="headerlink" title="3.调度器Scheduler"></a>3.调度器Scheduler</h2><p><strong>负责管理定时任务</strong></p>
-<ul>
-<li>BlockingScheduler: 作为独立进程时使用</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序会发生阻塞</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>BackgroundScheduler: 在框架程序（如Django、Flask）中使用</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line">scheduler.start()  <span class="comment"># 此处程序不会发生阻塞</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="4-执行器-executors"><a href="#4-执行器-executors" class="headerlink" title="4.执行器 executors"></a>4.执行器 executors</h2><p><strong>在定时任务该执行时，以进程或线程方式执行任务</strong></p>
-<ul>
-<li>ThreadPoolExecutor</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">ThreadPoolExecutor(max_workers)  </span><br><span class="line">ThreadPoolExecutor(<span class="number">20</span>) <span class="comment"># 最多20个线程同时执行</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>使用方法</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>ProcessPoolExecutor</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">ProcessPoolExecutor(max_workers)</span><br><span class="line">ProcessPoolExecutor(<span class="number">5</span>) <span class="comment"># 最多5个进程同时执行</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>使用方法</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ProcessPoolExecutor(<span class="number">3</span>)</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
-
-<h2 id="5-触发器-Trigger"><a href="#5-触发器-Trigger" class="headerlink" title="5.触发器 Trigger"></a>5.触发器 Trigger</h2><p><strong>指定定时任务执行的时机</strong></p>
-<p><strong>1） date 在特定的时间日期执行</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> date</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日00:00:00执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=date(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2019年11月6日16:30:05</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=datetime(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">6</span>, <span class="number">16</span>, <span class="number">30</span>, <span class="number">5</span>))</span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=<span class="string">&#x27;2009-11-06 16:30:05&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 立即执行</span></span><br><span class="line">sched.add_job(my_job, <span class="string">&#x27;date&#x27;</span>)  </span><br><span class="line">sched.start()</span><br></pre></td></tr></table></figure>
-<p><strong>2） interval 经过指定的时间间隔执行</strong></p>
-<ul>
-<li>weeks (int) – number of weeks to wait</li>
-<li>days (int) – number of days to wait</li>
-<li>hours (int) – number of hours to wait</li>
-<li>minutes (int) – number of minutes to wait</li>
-<li>seconds (int) – number of seconds to wait</li>
-<li>start_date (datetime|str) – starting point for the interval calculation</li>
-<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on</li>
-<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2010年10月10日09:30:00 到2014年6月15日的时间内，每两小时执行一次</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>, start_date=<span class="string">&#x27;2010-10-10 09:30:00&#x27;</span>, end_date=<span class="string">&#x27;2014-06-15 11:00:00&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>3） cron 按指定的周期执行</strong></p>
-<ul>
-<li>year (int|str) – 4-digit year</li>
-<li>month (int|str) – month (1-12)</li>
-<li>day (int|str) – day of the (1-31)</li>
-<li>week (int|str) – ISO week (1-53)</li>
-<li>day_of_week (int|str) – number or name of weekday (0-6 or mon,tue,wed,thu,fri,sat,sun)</li>
-<li>hour (int|str) – hour (0-23)</li>
-<li>minute (int|str) – minute (0-59)</li>
-<li>second (int|str) – second (0-59)</li>
-<li>start_date (datetime|str) – earliest possible date&#x2F;time to trigger on (inclusive)</li>
-<li>end_date (datetime|str) – latest possible date&#x2F;time to trigger on (inclusive)</li>
-<li>timezone (datetime.tzinfo|str) – time zone to use for the date&#x2F;time calculations (defaults to scheduler timezone)</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在6、7、8、11、12月的第三个周五的00:00, 01:00, 02:00和03:00 执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, month=<span class="string">&#x27;6-8,11-12&#x27;</span>, day=<span class="string">&#x27;3rd fri&#x27;</span>, hour=<span class="string">&#x27;0-3&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在2014年5月30日前的周一到周五的5:30执行</span></span><br><span class="line">sched.add_job(job_function, <span class="string">&#x27;cron&#x27;</span>, day_of_week=<span class="string">&#x27;mon-fri&#x27;</span>, hour=<span class="number">5</span>, minute=<span class="number">30</span>, end_date=<span class="string">&#x27;2014-05-30&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="6-配置方法"><a href="#6-配置方法" class="headerlink" title="6. 配置方法"></a>6. 配置方法</h2><h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>),</span><br><span class="line">&#125;</span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br></pre></td></tr></table></figure>
-
-<h3 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pytz <span class="keyword">import</span> utc</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.jobstores.sqlalchemy <span class="keyword">import</span> SQLAlchemyJobStore</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;threadpool&#x27;</span>, <span class="string">&#x27;max_workers&#x27;</span>: <span class="number">20</span>&#125;,</span><br><span class="line">    <span class="string">&#x27;processpool&#x27;</span>: ProcessPoolExecutor(max_workers=<span class="number">5</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># .. 此处可以编写其他代码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用configure方法进行配置</span></span><br><span class="line">scheduler.configure(executors=executors)</span><br></pre></td></tr></table></figure>
-
-<h2 id="7-启动"><a href="#7-启动" class="headerlink" title="7. 启动"></a>7. 启动</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
-<ul>
-<li>对于BlockingScheduler ，程序会阻塞在这，防止退出</li>
-<li>对于BackgroundScheduler，程序会立即返回，后台运行</li>
-</ul>
-<h2 id="8-扩展"><a href="#8-扩展" class="headerlink" title="8.扩展"></a>8.扩展</h2><h3 id="任务管理"><a href="#任务管理" class="headerlink" title="任务管理"></a>任务管理</h3><h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">job = scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>)  <span class="comment"># 添加任务</span></span><br><span class="line">job.remove()  <span class="comment"># 删除任务</span></span><br><span class="line">job.pause() <span class="comment"># 暂定任务</span></span><br><span class="line">job.resume()  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.add_job(myfunc, <span class="string">&#x27;interval&#x27;</span>, minutes=<span class="number">2</span>, <span class="built_in">id</span>=<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 添加任务    </span></span><br><span class="line">scheduler.remove_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 删除任务</span></span><br><span class="line">scheduler.pause_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 暂定任务</span></span><br><span class="line">scheduler.resume_job(<span class="string">&#x27;my_job_id&#x27;</span>)  <span class="comment"># 恢复任务</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="调整任务调度周期"><a href="#调整任务调度周期" class="headerlink" title="调整任务调度周期"></a>调整任务调度周期</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">job.modify(max_instances=<span class="number">6</span>, name=<span class="string">&#x27;Alternate name&#x27;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.reschedule_job(<span class="string">&#x27;my_job_id&#x27;</span>, trigger=<span class="string">&#x27;cron&#x27;</span>, minute=<span class="string">&#x27;*/5&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="停止APScheduler运行"><a href="#停止APScheduler运行" class="headerlink" title="停止APScheduler运行"></a>停止APScheduler运行</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">scheduler.shutdown()</span><br></pre></td></tr></table></figure>
-</div>]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python库</tag>
-        <tag>任务管理</tag>
       </tags>
   </entry>
   <entry>
