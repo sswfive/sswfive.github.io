@@ -59,7 +59,7 @@ sudo spctl --master-disable
 开启【任何来源】后，还有部分软件在安装后会提示【已损坏】或【无法确认开发者身份】，需要使用`xattr`命令
 
 ```bash
-sudo xattr -d com.apple.quarantine /Applications/[应用名称].app
+sudo xattr -dr com.apple.quarantine /Applications/[应用名称].app
 ```
 
 - 当不知道如何找到应用名称时，打开一个终端和访达中的应用程序，将需要执行的软件拖到终端就可以知道软件的全路径，接着拷贝最后的名称即可。
