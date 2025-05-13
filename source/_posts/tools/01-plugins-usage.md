@@ -51,6 +51,13 @@ categories:
 
 ### 甄选收藏
 
+#### [**MarkSnip**](https://chromewebstore.google.com/detail/marksnip-markdown-web-cli/kcbaglhfgbkjdnpeokaamjjkddempipmn)
+- 简介：一个 Chrome 插件，用于将网页内容（特别是文章）抓取并保存为 纯净的Markdown格式文件。
+- 类别：下载工具
+- 说明：Markdown处理工具，平时关闭，用时开启，低频。
+- 时间：2025-05-12
+
+
 #### [**Cloud Document Converter**](https://www.appawesome.me/cloud-document-converter)
 
 - 简介：一款支持将飞书文档下载或复制为Markdown的Chrome扩展， [Github链接](https://github.com/whale4113/cloud-document-converter)。
@@ -103,3 +110,13 @@ categories:
 
 
 
+### 编程助手
+
+#### [**Kilo Code**](https://kilocode.ai/)
+- 简介：一个开源的AI Agent的VSCode插件，它通过生成代码，自动执行任务和提供建议来帮助你更高效的编写代码。（官方自称：Kilo 是 Cline、Roo 和我们自己添加的功能的合并）
+- 说明：它定位为Cursor的开源替代品，并在此基础上进行了功能扩展和优化
+- 时间：2025-05-12
+
+#### [**Cline**](https://github.com/cline/cline)
+- 简介：一个可以使用你的终端和编辑器的AI助手，同时还支持使用MCP来创建新工具，并扩展自身的能力。
+- 说明：使用体验还是挺不错的。VSCode: [安装链接](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev)
