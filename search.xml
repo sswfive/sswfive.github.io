@@ -17,10 +17,18 @@
   <entry>
     <title>软件工程中的13条“潜规则”定律</title>
     <url>/2025/05/12/thinking/02.software-lows/</url>
-    <content><![CDATA[<div class=".article-gallery"><h2 id="帕金森定律-Parkinson’s-law"><a href="#帕金森定律-Parkinson’s-law" class="headerlink" title="帕金森定律(Parkinson’s law)"></a>帕金森定律(Parkinson’s law)</h2><p><strong>定律：工作会不断扩展，填满所有可用的时间（任务总能拖到最后期限前完成？）</strong></p>
+    <content><![CDATA[<div class=".article-gallery"><h2 id="一、帕金森定律-Parkinson’s-law"><a href="#一、帕金森定律-Parkinson’s-law" class="headerlink" title="一、帕金森定律(Parkinson’s law)"></a>一、帕金森定律(Parkinson’s law)</h2><p><strong>定律：工作会不断扩展，填满所有可用的时间（任务总能拖到最后期限前完成？）</strong></p>
 <p>如果你给一个任务设定了1周的期限，它很可能就会花掉1周；如果设定了2周，它就可能花掉2周。这常常被用来解释为什么设定“伪造”的（有时甚至不合理的）截止日期似乎能提高效率—它迫使人们在有限的时间内集中精力。但这一定律也容易被滥用，导致不切实际的期望和压力。所以合理的设定Deadlines是必要的，但要警惕其副作用，并结合对工作量的实际评估。它提醒我们时间管理的重要性，以及在没有明确时间约束时，任务可能无限膨胀的风险。</p>
-<h2 id="霍夫施塔特定律-Hofstadter’s-law"><a href="#霍夫施塔特定律-Hofstadter’s-law" class="headerlink" title="霍夫施塔特定律(Hofstadter’s law)"></a>霍夫施塔特定律(Hofstadter’s law)</h2><p><strong>定律：事情总是比你预期的要花费更长的时间，即使你已经考虑了霍夫施塔特定律（估时永远不准？）</strong></p>
+<h2 id="二、霍夫施塔特定律-Hofstadter’s-law"><a href="#二、霍夫施塔特定律-Hofstadter’s-law" class="headerlink" title="二、霍夫施塔特定律(Hofstadter’s law)"></a>二、霍夫施塔特定律(Hofstadter’s law)</h2><p><strong>定律：事情总是比你预期的要花费更长的时间，即使你已经考虑了霍夫施塔特定律（估时永远不准？）</strong></p>
 <p>这是对软件项目估时最困难最精准的自嘲。几乎所有的软件项目都会延期，即使你已经预留了缓冲时间。这一定律完美地平衡了帕金森定律：如果你因为帕金森定律而设置过短的Deadline，结果很可能是团队Burnout 或者和项目持续延期。软件工时评估及其困难，充满了不确定性。简单的缓冲时间往往不够。有效的项目管理需要在时间、资源和可协商的范围之间找到平衡，并依赖持续沟通和实践经验。</p>
+<h2 id="三、布鲁克斯定律-Brooks’-law"><a href="#三、布鲁克斯定律-Brooks’-law" class="headerlink" title="三、布鲁克斯定律(Brooks’ law)"></a>三、布鲁克斯定律(Brooks’ law)</h2><p><strong>定律：向一个已延期的软件项目中增加人力，将使其更加延迟（人月神话？）</strong></p>
+<p>这就是著名的“9个孕妇不能在一个月内生出一个婴儿”的道理。当项目延期，高层管理者常常会说：“这个项目很紧急，你可以充其他团队调配任何你需要的人！”但项目经理的内心可能是：“请别再打扰我们，让我们专心工作就好”。增加新人手需要时间成本：新人需要学习项目背景、熟悉代码库、建立沟通渠道。这些都会消耗现有团队成员的时间和精力，增加沟通开销，短期内甚至可能降低整体生产力。在项目后期，尤其是面临延期时，要极其谨慎地考虑增加人手。更好的策略可能是缩减范围，优化流程或给于现在团队更多不受干扰的时间。</p>
+<h2 id="四、康威定律-Conway’s-law"><a href="#四、康威定律-Conway’s-law" class="headerlink" title="四、康威定律(Conway’s law)"></a>四、康威定律(Conway’s law)</h2><p><strong>定律：组织输出的设计是这些组织沟通结构的副本。（你的架构是不是反映了你的团队结构？）</strong></p>
+<p>简单的说，你的系统架构往往是你团队组织结构的镜像。如果你的公司有独立的“前端团队”和“后端团队”，他们之间的沟通壁垒和协作模式，会直接反映在前后端接口的设计、数据格式的匹配度以及可能出下你的额外“胶水代码”上。这一定律告诉我们组织结构对技术决策的深远影响。反过来，我们可可以利用逆康威定律(Inverse Conway Maneuver)：为了达成期望的系统架构，主动调整团队的组织结构和沟通方式。例如，想要微服务化？那就组建更小、更自治、拥有端到端职责的团队。</p>
+<h2 id="五、坎宁安定律-Cunningham’s-law"><a href="#五、坎宁安定律-Cunningham’s-law" class="headerlink" title="五、坎宁安定律(Cunningham’s law)"></a>五、坎宁安定律(Cunningham’s law)</h2><p><strong>定律：在互联网上获得正确答案的最佳方式不是提问，而是发布一个错误的答案。（想得到反馈？先大胆“错”一个？）</strong></p>
+<p>这条定律巧妙地利用了人性—人们往往更乐于纠正错误，而不是回答问题。在工作中遇到阻碍时，可以巧妙运用这一定律。例如：与其提交一个请求单等待DevOps团队处理，不如自己尝试写一个（哪怕不完美的）解决方案，提交一个Pull Request.即使写的不对，通常也能更快地获得相关人员的注意和具体的修改建议。同时也促进了知识的传递和流程的改进。主动迈出第一步，哪怕是“错误”的一步，也比原地等待更有效。</p>
+<h2 id="六、斯特金定律-Sturgeon’s-law"><a href="#六、斯特金定律-Sturgeon’s-law" class="headerlink" title="六、斯特金定律(Sturgeon’s law)"></a>六、斯特金定律(Sturgeon’s law)</h2><p><strong>定律：任何事情（特别是人类创造出来的）90%都是垃圾。（你做的功能多少是真正有价值的？）</strong></p>
+<p>这条定律是对现实的残酷揭示，有点像加强版的“二八定律”。无论是代码、想法、功能特性，大部分都可能是平庸甚至无用的。你发布的大部分功能可能对用户价值寥寥，只有那一小部分核心功能支撑着你的产品。这要求我们具有批判性思维，用于质疑。作为开发者，不能仅仅被动接受产品经理给出的需求列表，而要思考功能的真正价值，避免将精力浪费在那“90%的垃圾”上。这也解释了为什么“10倍工程师”并非写10倍代码的人，而是能创造10倍价值的人——他们更懂得识别和聚焦那些重要的10%。</p>
 </div>]]></content>
       <categories>
         <category>时笺</category>
@@ -67,7 +75,13 @@
 <li>类别：效率工具、JS 脚本工具</li>
 <li>说明：装机必备，一般在此站点寻找并安装自己需要的脚本工具，用以提高使用浏览器的效率，低频。</li>
 </ul>
-<h3 id="甄选收藏"><a href="#甄选收藏" class="headerlink" title="甄选收藏"></a>甄选收藏</h3><h4 id="Cloud-Document-Converter"><a href="#Cloud-Document-Converter" class="headerlink" title="Cloud Document Converter"></a><a href="https://www.appawesome.me/cloud-document-converter"><strong>Cloud Document Converter</strong></a></h4><ul>
+<h3 id="甄选收藏"><a href="#甄选收藏" class="headerlink" title="甄选收藏"></a>甄选收藏</h3><h4 id="MarkSnip"><a href="#MarkSnip" class="headerlink" title="MarkSnip"></a><a href="https://chromewebstore.google.com/detail/marksnip-markdown-web-cli/kcbaglhfgbkjdnpeokaamjjkddempipmn"><strong>MarkSnip</strong></a></h4><ul>
+<li>简介：一个 Chrome 插件，用于将网页内容（特别是文章）抓取并保存为 纯净的Markdown格式文件。</li>
+<li>类别：下载工具</li>
+<li>说明：Markdown处理工具，平时关闭，用时开启，低频。</li>
+<li>时间：2025-05-12</li>
+</ul>
+<h4 id="Cloud-Document-Converter"><a href="#Cloud-Document-Converter" class="headerlink" title="Cloud Document Converter"></a><a href="https://www.appawesome.me/cloud-document-converter"><strong>Cloud Document Converter</strong></a></h4><ul>
 <li>简介：一款支持将飞书文档下载或复制为Markdown的Chrome扩展， <a href="https://github.com/whale4113/cloud-document-converter">Github链接</a>。</li>
 <li>类别：下载工具，</li>
 <li>说明：飞书文档下载，平时关闭，用时开启，低频；</li>
@@ -104,6 +118,15 @@
 <li>简介：一个 VS Code 远程服务的封装，可以安装在任意机器上面，然后就能在浏览器使用 VS Code</li>
 <li>类别：远程工具</li>
 <li>说明：在任意浏览器上运行 VSCode。</li>
+</ul>
+<h3 id="编程助手"><a href="#编程助手" class="headerlink" title="编程助手"></a>编程助手</h3><h4 id="Kilo-Code"><a href="#Kilo-Code" class="headerlink" title="Kilo Code"></a><a href="https://kilocode.ai/"><strong>Kilo Code</strong></a></h4><ul>
+<li>简介：一个开源的AI Agent的VSCode插件，它通过生成代码，自动执行任务和提供建议来帮助你更高效的编写代码。（官方自称：Kilo 是 Cline、Roo 和我们自己添加的功能的合并）</li>
+<li>说明：它定位为Cursor的开源替代品，并在此基础上进行了功能扩展和优化</li>
+<li>时间：2025-05-12</li>
+</ul>
+<h4 id="Cline"><a href="#Cline" class="headerlink" title="Cline"></a><a href="https://github.com/cline/cline"><strong>Cline</strong></a></h4><ul>
+<li>简介：一个可以使用你的终端和编辑器的AI助手，同时还支持使用MCP来创建新工具，并扩展自身的能力。</li>
+<li>说明：使用体验还是挺不错的。VSCode: <a href="https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev">安装链接</a></li>
 </ul>
 </div>]]></content>
       <categories>
