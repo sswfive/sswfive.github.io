@@ -778,4 +778,20 @@
 /* New search styles to match tags/categories */
 .search-box {
   margin: 1.5rem 0;
+}
+
+/* 菜单图标样式 */
+.menu-icon {
+  margin-right: 5px;
+  font-size: 1.2em;
+  display: inline-block;
+  vertical-align: middle;
+  transform: translateY(-1px);
+  transition: all 0.3s ease;
+}
+
+/* 菜单项悬停效果 */
+a:hover .menu-icon {
+  transform: scale(1.2) translateY(-1px);
+  transition: all 0.2s ease;
 } 
