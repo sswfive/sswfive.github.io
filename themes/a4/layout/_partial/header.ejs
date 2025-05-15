@@ -26,9 +26,24 @@
         <div style="margin-bottom: 12px;"> 
             <% for (name in theme.menu) { %>
                 <% if(theme.menu[name] == '/') { %>
-                    <%= name %>
+                    <span class="menu-icon">☕</span><%= name %>
                 <% } else if(theme.showInMenu.includes(name)) { %>
-                    &nbsp / &nbsp<a href="<%- url_for(theme.menu[name]) %>"><%= name %></a>
+                    &nbsp / &nbsp<a href="<%- url_for(theme.menu[name]) %>">
+                        <% if(name === '文章') { %>
+                            <span class="menu-icon">📚</span>
+                        <% } else if(name === '关于') { %>
+                            <span class="menu-icon">👨‍💻</span>
+                        <% } else if(name === '标签') { %>
+                            <span class="menu-icon">🏷️</span>
+                        <% } else if(name === '分类') { %>
+                            <span class="menu-icon">📂</span>
+                        <% } else if(name === '搜索') { %>
+                            <span class="menu-icon">🔍</span>
+                        <% } else { %>
+                            <span class="menu-icon">🔗</span>
+                        <% } %>
+                        <%= name %>
+                    </a>
                 <% } %>
             <% } %>
         </div>
