@@ -795,3 +795,142 @@ a:hover .menu-icon {
   transform: scale(1.2) translateY(-1px);
   transition: all 0.2s ease;
 } 
+
+/* 时间进度组件样式 */
+.time-progress-container {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+  padding: 0 20px;
+}
+
+.time-progress-card {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333333;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.time-progress-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.time-progress-item {
+  margin: 12px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.progress-label {
+  color: #666666;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.progress-value {
+  color: #333333;
+  font-weight: 600;
+  font-size: 18px;
+  background: linear-gradient(135deg, #4f7dde 0%, #667eea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 2px;
+  min-width: fit-content;
+}
+
+.time-progress-motto {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: #888888;
+  font-size: 14px;
+  font-style: italic;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+/* 深色模式适配 - 保持浅色卡片样式 */
+@media (prefers-color-scheme: dark) {
+  .time-progress-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #333333 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .progress-label {
+    color: #666666 !important;
+  }
+  
+  .progress-value {
+    color: #333333 !important;
+  }
+  
+  .time-progress-motto {
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #888888 !important;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .time-progress-container {
+    margin: 20px 0;
+    padding: 0 15px;
+  }
+  
+  .time-progress-card {
+    padding: 20px 25px;
+    max-width: 350px;
+  }
+  
+  .time-progress-item {
+    font-size: 15px;
+    margin: 10px 0;
+  }
+  
+  .progress-value {
+    font-size: 16px;
+  }
+  
+  .time-progress-motto {
+    font-size: 13px;
+    margin-top: 15px;
+    padding-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .time-progress-card {
+    padding: 18px 20px;
+    margin: 0 10px;
+  }
+  
+  .time-progress-item {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+  
+  .progress-value {
+    font-size: 15px;
+  }
+  
+  .time-progress-motto {
+    font-size: 12px;
+  }
+} 
