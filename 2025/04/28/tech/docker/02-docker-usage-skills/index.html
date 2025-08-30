@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="常用的一些Docker使用技巧" />
+    <meta name="hexo-theme-A4" content="v2.0.0" />
+    <link rel="alternate icon" type="image/webp" href="/images/head.png">
+    <title>BluesSen | 空谷幽兰</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+            
+<link rel="stylesheet" href="/css/waline.css">
+
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+   
+        
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+    <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css' /> 
+<meta name="generator" content="Hexo 7.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="BluesSen" type="application/atom+xml">
+</head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+
+
+
+    
+    
+
+
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            
+                <div class="left-toc-container">
+                    <nav id="toc" class="bs-docs-sidebar"></nav>
+                </div>
+            
+        
+        <div class="paper">
+
+            
+
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/images/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">BluesSen</a> 
+            <span class="description"> Coding ｜ Coffee</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">
+                    
+                        <span class="menu-icon">☕</span>
+                    
+                    首页
+                </a></li>
+            
+        
+            
+                <li><a href="/list/">
+                    
+                        <span class="menu-icon">📚</span>
+                    
+                    文章
+                </a></li>
+            
+        
+            
+                <li><a href="/tags/">
+                    
+                        <span class="menu-icon">🏷️</span>
+                    
+                    标签
+                </a></li>
+            
+        
+            
+                <li><a href="/categories/">
+                    
+                        <span class="menu-icon">📂</span>
+                    
+                    分类
+                </a></li>
+            
+        
+            
+                <li><a href="/now/">
+                    
+                        <span class="menu-icon">🔗</span>
+                    
+                    当下
+                </a></li>
+            
+        
+            
+                <li><a href="/about/">
+                    
+                        <span class="menu-icon">👨‍💻</span>
+                    
+                    关于
+                </a></li>
+            
+        
+            
+                <li><a href="/search/">
+                    
+                        <span class="menu-icon">🔍</span>
+                    
+                    搜索
+                </a></li>
+            
+        
+    </ul>
+</div>
+
+                    
+                    
+
+                    
+                    
+
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    常用的一些Docker使用技巧
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-08-25</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：633</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：3分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv" style="display: none;">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+        <div class=".article-gallery"><h2 id="一、Docker镜像直接推送到远程服务器"><a href="#一、Docker镜像直接推送到远程服务器" class="headerlink" title="一、Docker镜像直接推送到远程服务器"></a>一、Docker镜像直接推送到远程服务器</h2><p><a target="_blank" rel="noopener" href="https://github.com/psviderski/unregistry">unregistry</a></p>
+<ul>
+<li>是一个轻量级容器镜像注册表，可直接从Docker守护进程的存储中存储或提取镜像。</li>
+<li>支持Linux/MacOS使用，目前在Windows中使用需要借助wsl2</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 核心命令</span></span><br><span class="line"> docker pussh myapp:latest user@server</span><br><span class="line"> docker pussh myapp:latest user@server:2222</span><br><span class="line"> docker pussh myapp:latest user@server.example.com</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="二、一键load文件夹里的所有镜像"><a href="#二、一键load文件夹里的所有镜像" class="headerlink" title="二、一键load文件夹里的所有镜像"></a>二、一键load文件夹里的所有镜像</h2><ul>
+<li>方式一</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -F /data/package_3th/*.tar | awk <span class="string">'{cmd="docker load -i "$0;print(cmd);system(cmd)}'</span></span><br><span class="line"> <span class="comment"># /data/package_3th 为镜像的文件夹</span></span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>方式二：</li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    workdir = <span class="string">'/data/package_3th'</span></span><br><span class="line">    os.chdir(workdir)</span><br><span class="line">    files = os.listdir(workdir)</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> files:</span><br><span class="line">        <span class="built_in">print</span>(filename)</span><br><span class="line">        os.system(<span class="string">'docker load -i %s'</span>%filename)</span><br></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h2 id="三、如何找出容器启动命令及参数"><a href="#三、如何找出容器启动命令及参数" class="headerlink" title="三、如何找出容器启动命令及参数"></a>三、如何找出容器启动命令及参数</h2><h3 id="方式一：runlike"><a href="#方式一：runlike" class="headerlink" title="方式一：runlike"></a>方式一：<a target="_blank" rel="noopener" href="https://github.com/lavie/runlike">runlike</a></h3><ul>
+<li><font style="color:#000000;">在runlike传递一个容器名称，就会直接打印出该容器的运行命令。</font><code>runlike</code><font style="color:#000000;">使用起来非常方便，可以直接通过</font><code>pip</code>安装，也可以通过容器方式免安装使用:</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pip</span></span><br><span class="line">$ pip install runlike</span><br><span class="line"></span><br><span class="line"><span class="comment"># by docker</span></span><br><span class="line">$ <span class="built_in">alias</span> runlike=<span class="string">"docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="方式二：get-command-4-run-container"><a href="#方式二：get-command-4-run-container" class="headerlink" title="方式二：get_command_4_run_container"></a>方式二：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/cucker/get_command_4_run_container">get_command_4_run_container</a></h3><ul>
+<li>通过容器获取容器的docker run命令/get the docker run by a container</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull cucker/get_command_4_run_container</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对于启动命令封装成一个bash命令，后续可以直接使用 get_docker_command [容器名称]/[容器ID]</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"alias get_docker_command='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock cucker/get_command_4_run_container'"</span> &gt;&gt; ~/.bashrc \</span><br><span class="line">&amp;&amp; \</span><br><span class="line">. ~/.bashrc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">docker run --<span class="built_in">rm</span> -v /var/run/docker.sock:/var/run/docker.sock cucker/get_command_4_run_container [容器名称]/[容器ID]</span><br><span class="line"></span><br><span class="line"><span class="comment"># demo示例</span></span><br><span class="line">[root@automlgpu4 bluewhale_dev]# docker pull cucker/get_command_4_run_container</span><br><span class="line">Using default tag: latest</span><br><span class="line">latest: Pulling from cucker/get_command_4_run_container</span><br><span class="line">8a49fdb3b6a5: Pull complete </span><br><span class="line">0357922e53aa: Pull complete </span><br><span class="line">9676b6d4b964: Pull complete </span><br><span class="line">ddbd03ee1059: Pull complete </span><br><span class="line">877a053836a3: Pull complete </span><br><span class="line">a68de691a1fb: Pull complete </span><br><span class="line">ac3fd788d9e3: Pull complete </span><br><span class="line">51fb85f07a5a: Pull complete </span><br><span class="line">Digest: sha256:d3fba2642b3bd30dc8bd7379b18e889c6ad9d76c138ffe870b47b7fb6b9c9e94</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> cucker/get_command_4_run_container:latest</span><br><span class="line">docker.io/cucker/get_command_4_run_container:latest</span><br><span class="line">[root@automlgpu4 bluewhale_dev]# docker run --<span class="built_in">rm</span> -v /var/run/docker.sock:/var/run/docker.sock cucker/get_command_4_run_container bluewhale_dev-pg-1</span><br><span class="line">docker run -d \</span><br><span class="line"> --name bluewhale_dev-pg-1 \</span><br><span class="line"> --cgroupns host \</span><br><span class="line"> --<span class="built_in">env</span> POSTGRES_PASSWORD=<span class="string">"xxx"</span> \</span><br><span class="line"> --<span class="built_in">env</span> TZ=Asia/Shanghai \</span><br><span class="line"> --<span class="built_in">env</span> POSTGRES_USER=<span class="string">"xxx"</span> \</span><br><span class="line"> --hostname pg \</span><br><span class="line"> --label com.docker.compose.config-hash=5a31f16dd78cccc6759eba8ae3183d729013898d96a7b364124fec1efcabf280 \</span><br><span class="line"> --label com.docker.compose.container-number=1 \</span><br><span class="line"> --label com.docker.compose.depends_on=<span class="string">""</span> \</span><br><span class="line"> --label com.docker.compose.image=sha256:1149d285a5f5c4340cefa2211869c3a6b1128ac78974545e0b4fe62d3d0e66a8 \</span><br><span class="line"> --label com.docker.compose.oneoff=False \</span><br><span class="line"> --label com.docker.compose.project=bluewhale_dev \</span><br><span class="line"> --label com.docker.compose.project.config_files=/data/bluewhale/bluewhale_dev/docker-compose.yml \</span><br><span class="line"> --label com.docker.compose.project.working_dir=/data/bluewhale/bluewhale_dev \</span><br><span class="line"> --label com.docker.compose.service=pg \</span><br><span class="line"> --label com.docker.compose.version=2.13.0 \</span><br><span class="line"> --log-opt max-size=100m \</span><br><span class="line"> --network=bluewhale_dev_looklook_net \</span><br><span class="line"> -p 5532:5432/tcp \</span><br><span class="line"> --stop-signal SIGINT \</span><br><span class="line"> -v /data/bluewhale/bluewhale_dev/data/pg:/var/lib/postgresql/data:rw \</span><br><span class="line"> postgres:14-alpine</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="方式三：docker-inspect命令"><a href="#方式三：docker-inspect命令" class="headerlink" title="方式三：docker inspect命令"></a>方式三：docker inspect命令</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect &lt;container name&gt; 查看</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="四、whaler-通过镜像导出dockerfile"><a href="#四、whaler-通过镜像导出dockerfile" class="headerlink" title="四、whaler-通过镜像导出dockerfile"></a>四、whaler-通过镜像导出dockerfile</h2><p><a target="_blank" rel="noopener" href="https://github.com/P3GLEG/Whaler">Whaler</a></p>
+<ul>
+<li>Whaler 是一个 Go 程序，旨在将 Docker 镜像逆向到创建它的 Dockerfile 中</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># alias export docker image to dockerfile</span></span><br><span class="line">$ <span class="built_in">alias</span> whaler=<span class="string">"docker run -t --rm -v /var/run/docker.sock:/var/run/docker.sock:ro pegleg/whaler"</span></span><br></pre></td></tr></tbody></table></figure>
+
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-04-28</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/Docker/'>
+                            Docker
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/'>
+                            云原生
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/05/12/thinking/02.software-lows/'>软件工程中的13条“潜规则”定律</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/04/23/tech/others/01-email-push/">通过SMTP实现邮件推送服务</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        
+    </div>
+    
+        
+
+    <div id="waline"></div>
+    <script type="module"  >
+        import { init } from 'https://npm.elemecdn.com/hexo-theme-a4@latest/source/js/waline.mjs';
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://blog-comment-seven-psi.vercel.app/',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+                search: false, // 禁止表情包搜索
+                reaction: false, // 对文章打分
+                pageview: false, // 浏览量统计
+                comment: false, // 评论数统计
+
+                locale: {
+                    placeholder: '留下你的评论吧。',
+                    sofa: ''
+                },
+            });
+
+        }
+        window.addEventListener('DOMContentLoaded', loadWaline);
+    </script>
+
+
+
+    
+    
+    
+    
+    </div>
+
+
+     
+</div>
+
+
+
+
+                    
+
+                    <div class="footer">
+    
+        <span> 
+            © 2025~ China 
+
+            
+                
+
+            
+                
+                    / <a href="/atom.xml"> RSS </a>
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊一念净心 花开遍世界...🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script>
+        // 页面访问量统计（兼容不蒜子格式）
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面URL
+            var currentPage = window.location.pathname;
+            var storageKey = 'page_views_' + currentPage.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            // 从localStorage获取当前页面访问次数
+            var currentViews = localStorage.getItem(storageKey) || 0;
+            currentViews = parseInt(currentViews) + 1;
+            localStorage.setItem(storageKey, currentViews);
+            
+            // 获取全站总访问量
+            var totalViews = localStorage.getItem('site_total_views') || 0;
+            totalViews = parseInt(totalViews) + 1;
+            localStorage.setItem('site_total_views', totalViews);
+            
+            // 更新页面显示
+            setTimeout(function() {
+                var pageValueEl = document.getElementById('busuanzi_value_page_pv');
+                var pageContainerEl = document.getElementById('busuanzi_container_page_pv');
+                var siteValueEl = document.getElementById('busuanzi_value_site_pv');
+                var siteContainerEl = document.getElementById('busuanzi_container_site_pv');
+                
+                if (pageValueEl) {
+                    pageValueEl.textContent = currentViews;
+                }
+                if (pageContainerEl) {
+                    pageContainerEl.style.display = 'inline';
+                }
+                
+                if (siteValueEl) {
+                    siteValueEl.textContent = totalViews;
+                }
+                if (siteContainerEl) {
+                    siteContainerEl.style.display = 'inline';
+                }
+                
+                console.log('页面访问量:', currentViews, '全站访问量:', totalViews);
+            }, 500);
+        });
+    </script>
+    
+    <!-- 备用：尝试加载不蒜子，但不依赖它 -->
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <script>
+        // 如果不蒜子加载成功，优先使用不蒜子的数据
+        setTimeout(function() {
+            if (window.bszCaller) {
+                console.log('不蒜子加载成功，将使用不蒜子数据');
+                // 不蒜子已加载，让它接管统计
+            }
+        }, 3000);
+    </script>
+
+
+<!-- 首页时间进度脚本，仅在首页加载 -->
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
+<script src="/js/emojiHandler.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        wrapEmojis('.paper');
+    });
+</script>
