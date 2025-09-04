@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>BluesSen</title>
+  <icon>https://sswfive.github.io/icon.png</icon>
+  <subtitle>空谷幽兰</subtitle>
+  <link href="https://sswfive.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://sswfive.github.io/"/>
+  <updated>2025-09-03T00:14:53.000Z</updated>
+  <id>https://sswfive.github.io/</id>
+  
+  <author>
+    <name>sswfive</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>DS&amp;A重学日志:[三]数据结构的分类</title>
+    <link href="https://sswfive.github.io/2025/09/02/dsa/20250902-data-structure-classification/"/>
+    <id>https://sswfive.github.io/2025/09/02/dsa/20250902-data-structure-classification/</id>
+    <published>2025-09-02T08:36:01.000Z</published>
+    <updated>2025-09-03T00:14:53.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div</summary>
+        
+      
+    
+    
+    
+    <category term="数据结构与算法" scheme="https://sswfive.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="DS&amp;A" scheme="https://sswfive.github.io/tags/DS-A/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DS&amp;A重学日志:[二]复杂度分析与大O表示法</title>
+    <link href="https://sswfive.github.io/2025/09/01/dsa/20250901-complexity-analysis/"/>
+    <id>https://sswfive.github.io/2025/09/01/dsa/20250901-complexity-analysis/</id>
+    <published>2025-09-01T14:40:49.000Z</published>
+    <updated>2025-09-04T18:41:31.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div</summary>
+        
+      
+    
+    
+    
+    <category term="数据结构与算法" scheme="https://sswfive.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="DS&amp;A" scheme="https://sswfive.github.io/tags/DS-A/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DS&amp;A重学日志:[一]浅析数据结构与算法的核心概念</title>
+    <link href="https://sswfive.github.io/2025/09/01/dsa/250831-dsa-basic/"/>
+    <id>https://sswfive.github.io/2025/09/01/dsa/250831-dsa-basic/</id>
+    <published>2025-08-31T17:00:34.000Z</published>
+    <updated>2025-09-04T18:41:31.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="数据结构与算法" scheme="https://sswfive.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="DS&amp;A" scheme="https://sswfive.github.io/tags/DS-A/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DS&amp;A重学日志:[零]重回原点再出发</title>
+    <link href="https://sswfive.github.io/2025/08/31/dsa/250831-dsa-intro/"/>
+    <id>https://sswfive.github.io/2025/08/31/dsa/250831-dsa-intro/</id>
+    <published>2025-08-31T14:30:30.000Z</published>
+    <updated>2025-09-03T00:14:53.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div</summary>
+        
+      
+    
+    
+    
+    <category term="数据结构与算法" scheme="https://sswfive.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="DS&amp;A" scheme="https://sswfive.github.io/tags/DS-A/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Supervisor：三年后的更新，把我三年前的笔记唤醒</title>
+    <link href="https://sswfive.github.io/2025/08/30/tech/python/250830-supervisor/"/>
+    <id>https://sswfive.github.io/2025/08/30/tech/python/250830-supervisor/</id>
+    <published>2025-08-30T13:11:31.000Z</published>
+    <updated>2025-08-30T13:13:21.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;失踪人口回归：Supervisor时隔三年再更新&quot;&gt;&lt;a href=&quot;#失踪人口回归：Supervisor时隔三年再更新&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Python" scheme="https://sswfive.github.io/categories/Python/"/>
+    
+    
+    <category term="进程管理" scheme="https://sswfive.github.io/tags/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我用过的Python工具链：从virtualenv到uv的演进之路</title>
+    <link href="https://sswfive.github.io/2025/08/28/tech/python/250827-py-env-package/"/>
+    <id>https://sswfive.github.io/2025/08/28/tech/python/250827-py-env-package/</id>
+    <published>2025-08-28T08:54:46.000Z</published>
+    <updated>2025-08-28T09:21:17.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div</summary>
+        
+      
+    
+    
+    
+    <category term="Python" scheme="https://sswfive.github.io/categories/Python/"/>
+    
+    
+    <category term="依赖包管理" scheme="https://sswfive.github.io/tags/%E4%BE%9D%E8%B5%96%E5%8C%85%E7%AE%A1%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>从计数到分代一步步窥探Python的垃圾回收机制</title>
+    <link href="https://sswfive.github.io/2025/08/26/tech/python/250826-pygc/"/>
+    <id>https://sswfive.github.io/2025/08/26/tech/python/250826-pygc/</id>
+    <published>2025-08-26T08:16:18.000Z</published>
+    <updated>2025-08-26T08:25:16.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;p&gt;在编程世界中，高效的内存管理是保证程序稳定运行的关键之一。然而Python作为一门高级编程语言，其自动垃圾回收（Garbage Collection,</summary>
+        
+      
+    
+    
+    
+    <category term="Python" scheme="https://sswfive.github.io/categories/Python/"/>
+    
+    
+    <category term="gc" scheme="https://sswfive.github.io/tags/gc/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>异步消息处理的利器之FastStream</title>
+    <link href="https://sswfive.github.io/2025/08/24/tech/python/250824-pylib-faststream/"/>
+    <id>https://sswfive.github.io/2025/08/24/tech/python/250824-pylib-faststream/</id>
+    <published>2025-08-24T14:09:09.000Z</published>
+    <updated>2025-08-24T16:45:59.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;为什么有FastStream&quot;&gt;&lt;a href=&quot;#为什么有FastStream&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Python" scheme="https://sswfive.github.io/categories/Python/"/>
+    
+    
+    <category term="python库" scheme="https://sswfive.github.io/tags/python%E5%BA%93/"/>
+    
+    <category term="消息处理" scheme="https://sswfive.github.io/tags/%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2025所有碎片</title>
+    <link href="https://sswfive.github.io/2025/08/16/fragments/index/"/>
+    <id>https://sswfive.github.io/2025/08/16/fragments/index/</id>
+    <published>2025-08-15T16:13:49.000Z</published>
+    <updated>2025-08-16T07:00:02.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h4 id=&quot;2025-08-15-23-41-17-晴&quot;&gt;&lt;a href=&quot;#2025-08-15-23-41-17-晴&quot; class=&quot;headerlink&quot; title=&quot;2025-08-15 23:41:17</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>软件工程中的13条“潜规则”定律</title>
+    <link href="https://sswfive.github.io/2025/05/12/thinking/02.software-lows/"/>
+    <id>https://sswfive.github.io/2025/05/12/thinking/02.software-lows/</id>
+    <published>2025-05-12T00:10:49.000Z</published>
+    <updated>2025-08-10T18:20:47.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;一、帕金森定律-Parkinson’s-law&quot;&gt;&lt;a href=&quot;#一、帕金森定律-Parkinson’s-law&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="时笺" scheme="https://sswfive.github.io/categories/%E6%97%B6%E7%AC%BA/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>常用的一些Docker使用技巧</title>
+    <link href="https://sswfive.github.io/2025/04/28/tech/docker/02-docker-usage-skills/"/>
+    <id>https://sswfive.github.io/2025/04/28/tech/docker/02-docker-usage-skills/</id>
+    <published>2025-04-28T12:36:21.000Z</published>
+    <updated>2025-08-24T16:45:59.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;一、Docker镜像直接推送到远程服务器&quot;&gt;&lt;a href=&quot;#一、Docker镜像直接推送到远程服务器&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="云原生" scheme="https://sswfive.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
+    
+    
+    <category term="Docker" scheme="https://sswfive.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>通过SMTP实现邮件推送服务</title>
+    <link href="https://sswfive.github.io/2025/04/23/tech/others/01-email-push/"/>
+    <id>https://sswfive.github.io/2025/04/23/tech/others/01-email-push/</id>
+    <published>2025-04-22T17:17:06.000Z</published>
+    <updated>2025-08-10T18:20:47.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;p&gt;最近有一个需要在 W平台开发一个邮件群发推送的功能需求，经过调研，大概有如下几种选型方案:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;开源项目&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="技术实践" scheme="https://sswfive.github.io/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E8%B7%B5/"/>
+    
+    
+    <category term="邮件推送" scheme="https://sswfive.github.io/tags/%E9%82%AE%E4%BB%B6%E6%8E%A8%E9%80%81/"/>
+    
+    <category term="python工程实践" scheme="https://sswfive.github.io/tags/python%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>每天学点AI</title>
+    <link href="https://sswfive.github.io/2025/04/14/tech/modelops/00-daily-study-ai/"/>
+    <id>https://sswfive.github.io/2025/04/14/tech/modelops/00-daily-study-ai/</id>
+    <published>2025-04-13T16:06:11.000Z</published>
+    <updated>2025-08-20T16:44:14.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;20250421-什么是向量嵌入&quot;&gt;&lt;a href=&quot;#20250421-什么是向量嵌入&quot; class=&quot;headerlink&quot; title=&quot;20250421:</summary>
+        
+      
+    
+    
+    
+    <category term="ModelOps" scheme="https://sswfive.github.io/categories/ModelOps/"/>
+    
+    
+    <category term="LLM" scheme="https://sswfive.github.io/tags/LLM/"/>
+    
+    <category term="AI" scheme="https://sswfive.github.io/tags/AI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>日常开发加油加速站</title>
+    <link href="https://sswfive.github.io/2025/04/13/tools/11-cdn-site/"/>
+    <id>https://sswfive.github.io/2025/04/13/tools/11-cdn-site/</id>
+    <published>2025-04-13T15:13:49.000Z</published>
+    <updated>2025-08-10T18:20:47.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;Docker加速&quot;&gt;&lt;a href=&quot;#Docker加速&quot; class=&quot;headerlink&quot; title=&quot;Docker加速&quot;&gt;&lt;/a&gt;Docker加速&lt;/h2&gt;&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="https://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="CDN" scheme="https://sswfive.github.io/tags/CDN/"/>
+    
+    <category term="Proxy" scheme="https://sswfive.github.io/tags/Proxy/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于MlFlow的实践总结</title>
+    <link href="https://sswfive.github.io/2025/04/09/tech/modelops/03-mlflow-deploy/"/>
+    <id>https://sswfive.github.io/2025/04/09/tech/modelops/03-mlflow-deploy/</id>
+    <published>2025-04-09T06:03:56.000Z</published>
+    <updated>2025-08-10T18:20:47.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;blockquote&gt;
+&lt;p&gt;基于 Mlflow 进行业务开发已有几个月了，一直忙于开发，没有时间去总结，近期找了个时间好好梳理总结了，故记录下来了。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    <category term="ModelOps" scheme="https://sswfive.github.io/categories/ModelOps/"/>
+    
+    
+    <category term="Mlflow" scheme="https://sswfive.github.io/tags/Mlflow/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一份连接世界的机场指南</title>
+    <link href="https://sswfive.github.io/2025/04/07/tools/10-vpn-selection/"/>
+    <id>https://sswfive.github.io/2025/04/07/tools/10-vpn-selection/</id>
+    <published>2025-04-07T14:05:17.000Z</published>
+    <updated>2025-09-04T10:08:19.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;使用中&quot;&gt;&lt;a href=&quot;#使用中&quot; class=&quot;headerlink&quot; title=&quot;使用中&quot;&gt;&lt;/a&gt;使用中&lt;/h2&gt;&lt;h3 id=&quot;wmsxwd&quot;&gt;&lt;a href=&quot;#wmsxwd&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="https://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="VPN" scheme="https://sswfive.github.io/tags/VPN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>个人常用及甄选的Mac软件</title>
+    <link href="https://sswfive.github.io/2025/04/03/tools/04-mac-software/"/>
+    <id>https://sswfive.github.io/2025/04/03/tools/04-mac-software/</id>
+    <published>2025-04-03T14:51:08.000Z</published>
+    <updated>2025-08-10T18:20:47.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h2 id=&quot;软件下载站点&quot;&gt;&lt;a href=&quot;#软件下载站点&quot; class=&quot;headerlink&quot; title=&quot;软件下载站点&quot;&gt;&lt;/a&gt;软件下载站点&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="https://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="Mac" scheme="https://sswfive.github.io/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac常用快捷键</title>
+    <link href="https://sswfive.github.io/2025/04/02/tools/03-mac-quickkey/"/>
+    <id>https://sswfive.github.io/2025/04/02/tools/03-mac-quickkey/</id>
+    <published>2025-04-01T23:39:27.000Z</published>
+    <updated>2025-08-10T18:20:47.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;p&gt;macOS 上有几个常用的修饰键： &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Command（或 Cmd）⌘&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Option（或</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="https://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="Mac" scheme="https://sswfive.github.io/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>新的生产力</title>
+    <link href="https://sswfive.github.io/2025/04/01/tools/02-new-tools/"/>
+    <id>https://sswfive.github.io/2025/04/01/tools/02-new-tools/</id>
+    <published>2025-04-01T14:19:37.000Z</published>
+    <updated>2025-08-10T18:20:47.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;p&gt;自进入2025年后，用了五年多的16寸MacBookPo（2019款 32G+512）就 很突然的开始出现各种自动重启、频繁死机状态，很影响心态。期间打Apple售后线上排查过、也拿去市里最大的 Apple</summary>
+        
+      
+    
+    
+    
+    <category term="工具" scheme="https://sswfive.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="Mac" scheme="https://sswfive.github.io/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git的约定式提交规范</title>
+    <link href="https://sswfive.github.io/2025/03/20/tech/devops/01-git-commit-lint/"/>
+    <id>https://sswfive.github.io/2025/03/20/tech/devops/01-git-commit-lint/</id>
+    <published>2025-03-20T15:05:17.000Z</published>
+    <updated>2025-08-10T18:20:47.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div class=&quot;.article-gallery&quot;&gt;&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="DevOps" scheme="https://sswfive.github.io/categories/DevOps/"/>
+    
+    
+    <category term="Git" scheme="https://sswfive.github.io/tags/Git/"/>
+    
+  </entry>
+  
+</feed>

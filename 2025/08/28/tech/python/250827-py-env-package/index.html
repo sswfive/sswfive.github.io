@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="我用过的Python工具链：从virtualenv到uv的演进之路" />
+    <meta name="hexo-theme-A4" content="v2.0.0" />
+    <link rel="alternate icon" type="image/webp" href="/images/head.png">
+    <title>BluesSen | 空谷幽兰</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+            
+<link rel="stylesheet" href="/css/waline.css">
+
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+   
+        
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+    <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css' /> 
+<meta name="generator" content="Hexo 7.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="BluesSen" type="application/atom+xml">
+</head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+
+
+
+    
+    
+
+
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            
+                <div class="left-toc-container">
+                    <nav id="toc" class="bs-docs-sidebar"></nav>
+                </div>
+            
+        
+        <div class="paper">
+
+            
+
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/images/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">BluesSen</a> 
+            <span class="description"> Coding ｜ Coffee</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">
+                    
+                        <span class="menu-icon">☕</span>
+                    
+                    首页
+                </a></li>
+            
+        
+            
+                <li><a href="/list/">
+                    
+                        <span class="menu-icon">📚</span>
+                    
+                    文章
+                </a></li>
+            
+        
+            
+                <li><a href="/tags/">
+                    
+                        <span class="menu-icon">🏷️</span>
+                    
+                    标签
+                </a></li>
+            
+        
+            
+                <li><a href="/categories/">
+                    
+                        <span class="menu-icon">📂</span>
+                    
+                    分类
+                </a></li>
+            
+        
+            
+                <li><a href="/now/">
+                    
+                        <span class="menu-icon">🔗</span>
+                    
+                    当下
+                </a></li>
+            
+        
+            
+                <li><a href="/about/">
+                    
+                        <span class="menu-icon">👨‍💻</span>
+                    
+                    关于
+                </a></li>
+            
+        
+            
+                <li><a href="/search/">
+                    
+                        <span class="menu-icon">🔍</span>
+                    
+                    搜索
+                </a></li>
+            
+        
+    </ul>
+</div>
+
+                    
+                    
+
+                    
+                    
+
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    我用过的Python工具链：从virtualenv到uv的演进之路
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-08-28</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：2.3k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：8分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv" style="display: none;">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+        <div class=".article-gallery"><blockquote>
+<p>高效开发，从选择合适的工具开始</p>
+</blockquote>
+<p>在Python开发的生涯中，我相信很多人也许都曾经历过这样的困境：昨天还能正常运行的项目，今天突然报错；在不同项目间切换时，依赖冲突让人头痛不已；团队协作时，环境配置差异导致各种问题……，这其实就是典型的“依赖地狱”。</p>
+<p>好在Python社区提供了丰富的工具帮我们来解决这些问题，近年来，Python开源社区涌现了大量优秀的版本管理和包管理工具，可谓是“长江后浪推前浪”，形成了老中青三代并存的态势，从老牌的virtualenv、conda，到现代的poetry、pdm，再到新兴的hatch、uv，每个工具都有其独特的哲学和适用场景。</p>
+<p>下面结合我个人的实践经历，带你深入探索Python开发工具生态，希望能够帮助你在日常开发中做出更明智的选择。</p>
+<h2 id="工具生态总览-🔧"><a href="#工具生态总览-🔧" class="headerlink" title="工具生态总览 🔧"></a>工具生态总览 🔧</h2><p>可以将Python工具分为三个时代：</p>
+<ul>
+<li>经典时代：virtualenv +  pip + requirements.txt、venv、conda</li>
+<li>过渡时代：pythonz、pyenv、pipenv、Rye</li>
+<li>现代时代：poetry、uv、pdm、hatch</li>
+</ul>
+<p>每个工具都在尝试解决相同的问题：如何高效的管理Python版本、隔离环境、管理依赖以及保证可重现性。</p>
+<h2 id="新生代明星：uv-🚀"><a href="#新生代明星：uv-🚀" class="headerlink" title="新生代明星：uv 🚀"></a>新生代明星：<a target="_blank" rel="noopener" href="https://docs.astral.sh/uv/">uv</a> 🚀</h2><p>uv是一个用Rust开发的极速Python包和项目管理器，主打高性能和一体化设计（既能管理Python的多版本，又能高效的管理依赖包）。它旨在替代<code>pip</code>, <code>pip-tools</code>, <code>pipx</code>, <code>poetry</code>, <code>pyenv</code>, <code>twine</code>和 <code>virtualenv</code>等多种工具，目前Github Star数已超过66k。详细的介绍与使用：<a target="_blank" rel="noopener" href="https://docs.astral.sh/uv/">官方文档</a>， <a target="_blank" rel="noopener" href="https://github.com/astral-sh/uv">Github地址</a>；</p>
+<p>其主要的特点：</p>
+<ul>
+<li>极致的性能：比pip快8-10倍（无缓存）至80-115倍（有缓存）；</li>
+<li>一体化设计：替代多个包管理工具(<code>pip</code>, <code>pip-tools</code>, <code>pipx</code>, <code>poetry</code>, <code>pyenv</code>, <code>twine</code>, <code>virtualenv</code>等)；</li>
+<li>现代标准：支持最新的PEP标准；</li>
+<li>开发者友好：<ul>
+<li>智能缓存、跨平台（支持macOS, Linux, and Windows）</li>
+<li>随时随地的安装需要的Python解释器版本（<code>uv python install</code>）</li>
+<li>自动化的虚拟环境管理，无需手动激活环境；</li>
+<li>支持扩展工具管理（<code>uv tool install</code>、<code>uv tool run</code>）</li>
+<li>支持基于PEP723标准的单文件脚本执行。</li>
+</ul>
+</li>
+</ul>
+<h2 id="科学计算首选：conda"><a href="#科学计算首选：conda" class="headerlink" title="科学计算首选：conda"></a>科学计算首选：<a target="_blank" rel="noopener" href="https://conda.io/projects/conda/en/latest/user-guide/install/index.html">conda</a></h2><p>conda是一款功能强大的跨平台包和环境管理器，通过创建不同Python版本的虚拟环境进行多版本管理。分析了完整版（<a target="_blank" rel="noopener" href="https://www.anaconda.com/">Anaconda</a>）和精简版（<a target="_blank" rel="noopener" href="https://docs.conda.io/projects/miniconda/en/latest/">Miniconda</a>）。详细的介绍与使用：<a target="_blank" rel="noopener" href="https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html">官方文档</a>， <a target="_blank" rel="noopener" href="https://github.com/conda/conda">Github地址</a></p>
+<p>其主要的特点：</p>
+<ul>
+<li>Anaconda（大而全）：除了安装 Conda 内核，还安装了完整的 Anaconda 的发行包，即内置集成了很多工具包，包括python的多个版本，常用机器学习等科学工具包；<a target="_blank" rel="noopener" href="https://www.anaconda.com/download">官方下载</a>，<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/">清华源下载</a>；</li>
+<li>Miniconda（小而美）：只安装了 Conda 内核和一些必要的工具包；<a target="_blank" rel="noopener" href="https://docs.conda.io/projects/miniconda/en/latest/miniconda-other-installer-links.html">官方下载</a>、<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/">清华源下载</a>；</li>
+<li>二进制兼容：提供丰富的科学计算、数据分析的预编译包；</li>
+<li>跨语言支持：能够管理C、C++、R等其他语言的包；</li>
+<li>生态丰富：特别是数据科学和机器学习领域；</li>
+<li>环境隔离：强大的环境管理功能；</li>
+</ul>
+<p>其适用的场景：</p>
+<ul>
+<li>数据科学和机器学习项目；</li>
+<li>需要复杂的二进制依赖的项目；</li>
+<li>跨语言场景、集成开发场景。</li>
+</ul>
+<h2 id="国产之光：PDM"><a href="#国产之光：PDM" class="headerlink" title="国产之光：PDM"></a>国产之光：<a target="_blank" rel="noopener" href="https://pdm-project.org/en/latest/">PDM</a></h2><p>PDM是一个现代Python包和依赖项管理器，支持最新的PEP标准，他不仅是一个包管理器，还能通过灵活的插件系统提升开发工作流程。详细介绍与使用：<a target="_blank" rel="noopener" href="https://pdm-project.org/en/latest/">官方文档</a>、<a target="_blank" rel="noopener" href="https://github.com/pdm-project/pdm">Github地址</a>。</p>
+<p>其主要的特点：</p>
+<ul>
+<li>革命性支持PEP标准-<a target="_blank" rel="noopener" href="https://peps.python.org/pep-0582/">PEP582</a>（本地包目录（<code>__pypackages__</code>）替代虚拟环境）</li>
+<li>支持PEP标准-<a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0517">PEP517</a>（build backend）</li>
+<li>支持PEP标准-<a target="_blank" rel="noopener" href="https://peps.python.org/pep-0621/">PEP621</a>（project metadata）;</li>
+<li>采用去中心化安装缓存（类似pnpm)，节省磁盘空间；</li>
+<li>灵活而强大的插件系统、多功能用户脚本管理；</li>
+<li>便捷的Python解释器版本的安装方式。</li>
+</ul>
+<p>其适用的场景：</p>
+<ul>
+<li>开源库和框架开发；</li>
+<li>微服务于云原生应用开发；</li>
+<li>开发工具链和CLI应用开发；</li>
+</ul>
+<h2 id="项目管理专家：Poetry"><a href="#项目管理专家：Poetry" class="headerlink" title="项目管理专家：Poetry"></a>项目管理专家：<a target="_blank" rel="noopener" href="https://github.com/python-poetry/poetry">Poetry</a></h2><p>Poetry是一个跨平台开源依赖管理和打包工具，需要Python3.8+。它简化了Python的依赖管理以及包发布流程。目前Github star 数接近34k ,被许多知名项目采用。</p>
+<p>其主要的特点：</p>
+<ul>
+<li><p>全生命周期管理：从依赖管理到打包发布的一体化解决方案，简化Pypi发布流程，且支持私有仓库；</p>
+</li>
+<li><p>统一的配置管理：取代了 setup.py、requirements.txt、setup.cfg等，仅通过pyproject.toml文件就能轻松机进行包的版本版本和迁移工作，且支持<a target="_blank" rel="noopener" href="https://peps.python.org/pep-0621/">PEP621</a>标准；</p>
+</li>
+<li><p>分组依赖管理：可以对包的安装场景进行分类管理如开发（静态检查相关包）、测试（pytest）、生产环境包的分组；</p>
+</li>
+<li><p>强大的依赖解析：使用先进的依赖解析算法，能够有效的处理复杂的依赖关系；</p>
+</li>
+<li><p>环境隔离于管理：自动创建和管理虚拟环境，支持特定项目的环境配置；</p>
+</li>
+<li><p>在配置文件中支持自定义Scripts,如：<code>poetry run python xxx</code>;</p>
+</li>
+</ul>
+<p>其适用的场景：</p>
+<ul>
+<li>Web应用开发（Django、FastAPI等项目）</li>
+<li>库和框架开发（需要严格版本管理的开源项目）</li>
+<li>企业级应用（需要稳定的依赖管理和发布流程的项目）</li>
+</ul>
+<h2 id="现代化的管理工具：Hatch"><a href="#现代化的管理工具：Hatch" class="headerlink" title="现代化的管理工具：Hatch"></a>现代化的管理工具：<a target="_blank" rel="noopener" href="https://hatch.pypa.io/">Hatch</a></h2><p>Hatch 是一个现代化的Python项目管理和打包工具，专注于提供一致且可重复的开发体验。可以管理环境（它允许每个项目有多个环境，但不允许把它们放在项目目录中），可以管理包（但不支持 lockfile）。Hatch 也可以用来打包一个项目（用符合 PEP 621 标准的 pyproject.toml 文件）并上传到 PyPI。</p>
+<p>其主要的特点：</p>
+<ul>
+<li>统一的项目管理：通过<code>pyproject.toml</code>统一配置</li>
+<li>多环境管理：支持为每个项目创建多个独立环境</li>
+<li>强大的模板系统：快速生成项目结构和配置文件</li>
+<li>完整的打包支持：从开发到发布的完整工作流</li>
+<li>插件架构：可通过插件扩展功能</li>
+</ul>
+<h2 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/pyenv/pyenv">pyenv</a></p>
+<ul>
+<li>pyenv 可让您轻松地在多个 Python 版本之间切换。它简单、不引人注目，并且遵循 UNIX 单一用途工具只做好一件事的传统。该项目是从<a target="_blank" rel="noopener" href="https://github.com/rbenv/rbenv">rbenv</a>和<a target="_blank" rel="noopener" href="https://github.com/rbenv/ruby-build">ruby-build</a>分叉出来的，并针对 Python 进行了修改。详细安装与使用： <a target="_blank" rel="noopener" href="https://github.com/pyenv/pyenv">Github地址</a></li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/saghul/pythonz">pythonz</a></p>
+<ul>
+<li>支持 CPython、Stackless、PyPy 和 Jython 的 Python 安装管理器。详细介绍与使用：<a target="_blank" rel="noopener" href="https://bettercallsaghul.com/pythonz/">官方文档</a>、<a target="_blank" rel="noopener" href="https://github.com/saghul/pythonz">Github地址</a></li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/pypa/pipenv">Pipenv</a></p>
+<ul>
+<li>是一个跨平台开源的Python虚拟环境管理工具，依赖于原生Python安装（支持Python3.7+），其主要特点是使用pipfile和pipfile.lock文件来维护环境中的包版本；以及支持pipenv CLI操作</li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/venv.html#module-venv">venv</a>（Python内置虚拟环境）</p>
+<ul>
+<li>Python原生安装包中内置的虚拟环境模块，每个虚拟环境拥有自己独立的site目录。</li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://virtualenv.pypa.io/en/latest/">Virtualenv</a>（经典虚拟环境工具）</p>
+<ul>
+<li>依赖原生Python，创建相同Python版本的不同虚拟环境，其场景主要应用于同一个Python版本的不同项目中，做到依赖包的隔离，避免依赖冲突。详细使用请阅读<a target="_blank" rel="noopener" href="https://virtualenv.pypa.io/en/latest/">官方文档</a>。</li>
+<li>另外，该工具还有个脚本工具叫<a target="_blank" rel="noopener" href="https://pypi.org/project/virtualenvwrapper">virtualenvwrapper</a>，可以方便开发者方便管理虚拟环境。在个人工作早期，基本是使用virtualenv+virtualenvwrapper工具来进行相关开发工作。</li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/mitsuhiko/rye">Rye</a>（已被uv替代）</p>
+<ul>
+<li>Rye是一款全面的Python项目和包管理解决方案，提供统一的安装体验，无缝安装和管理Python组件，基于pyproject.toml项目、依赖项以及虚拟环境。</li>
+<li>目前官方声称已停止维护，并且建议使用uv,同时也提供了<a target="_blank" rel="noopener" href="https://rye.astral.sh/guide/uv/">uv迁移指南</a>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结与建议"><a href="#总结与建议" class="headerlink" title="总结与建议"></a>总结与建议</h2><table>
+<thead>
+<tr>
+<th align="left">工具</th>
+<th align="left">适用场景</th>
+<th align="left">特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>uv</strong></td>
+<td align="left">高性能、一体化开发</td>
+<td align="left">极速、现代、All-in-One</td>
+</tr>
+<tr>
+<td align="left"><strong>conda</strong></td>
+<td align="left">科学计算、数据分析</td>
+<td align="left">跨语言、预编译包丰富</td>
+</tr>
+<tr>
+<td align="left"><strong>PDM</strong></td>
+<td align="left">现代 PEP 标准项目</td>
+<td align="left">插件化、去中心化缓存</td>
+</tr>
+<tr>
+<td align="left"><strong>Poetry</strong></td>
+<td align="left">依赖管理 + 打包发布</td>
+<td align="left">统一配置、分组管理</td>
+</tr>
+<tr>
+<td align="left"><strong>pyenv</strong></td>
+<td align="left">纯版本管理</td>
+<td align="left">轻量、专注</td>
+</tr>
+<tr>
+<td align="left"><strong>venv</strong></td>
+<td align="left">轻量虚拟环境（Python 3.3+）</td>
+<td align="left">内置、无需安装</td>
+</tr>
+<tr>
+<td align="left"><strong>Pipenv</strong></td>
+<td align="left">传统虚拟环境 + 依赖管理</td>
+<td align="left">兼容旧项目</td>
+</tr>
+</tbody></table>
+<ul>
+<li>如果你追求性能和现代化体验，<strong>uv</strong> 是不二之选；</li>
+<li>如果你是数据科学家或机器学习工程师，<strong>conda</strong> 仍是首选；</li>
+<li>如果你希望遵循最新 PEP 标准且喜欢插件生态，可以尝试 <strong>PDM</strong>；</li>
+<li>如果你只需要简单的版本切换，<strong>pyenv</strong> 足够好用；</li>
+<li>如果你需要依赖管理 + 打包一体化，<strong>Poetry</strong> 成熟且强大。</li>
+</ul>
+<p>工具没有绝对的好坏，关键在于是否适合你的项目和工作流。希望本文能帮助你在众多工具中找到最适合的那一个。</p>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-08-28</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/%E4%BE%9D%E8%B5%96%E5%8C%85%E7%AE%A1%E7%90%86/'>
+                            依赖包管理
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/Python/'>
+                            Python
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/08/30/tech/python/250830-supervisor/'>Supervisor：三年后的更新，把我三年前的笔记唤醒</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/08/26/tech/python/250826-pygc/">从计数到分代一步步窥探Python的垃圾回收机制</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        
+    </div>
+    
+        
+
+    <div id="waline"></div>
+    <script type="module"  >
+        import { init } from 'https://npm.elemecdn.com/hexo-theme-a4@latest/source/js/waline.mjs';
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://blog-comment-seven-psi.vercel.app/',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+                search: false, // 禁止表情包搜索
+                reaction: false, // 对文章打分
+                pageview: false, // 浏览量统计
+                comment: false, // 评论数统计
+
+                locale: {
+                    placeholder: '留下你的评论吧。',
+                    sofa: ''
+                },
+            });
+
+        }
+        window.addEventListener('DOMContentLoaded', loadWaline);
+    </script>
+
+
+
+    
+    
+    
+    
+    </div>
+
+
+     
+</div>
+
+
+
+
+                    
+
+                    <div class="footer">
+    
+        <span> 
+            © 2025~ China 
+
+            
+                
+
+            
+                
+                    / <a href="/atom.xml"> RSS </a>
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊一念净心 花开遍世界...🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script>
+        // 页面访问量统计（兼容不蒜子格式）
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面URL
+            var currentPage = window.location.pathname;
+            var storageKey = 'page_views_' + currentPage.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            // 从localStorage获取当前页面访问次数
+            var currentViews = localStorage.getItem(storageKey) || 0;
+            currentViews = parseInt(currentViews) + 1;
+            localStorage.setItem(storageKey, currentViews);
+            
+            // 获取全站总访问量
+            var totalViews = localStorage.getItem('site_total_views') || 0;
+            totalViews = parseInt(totalViews) + 1;
+            localStorage.setItem('site_total_views', totalViews);
+            
+            // 更新页面显示
+            setTimeout(function() {
+                var pageValueEl = document.getElementById('busuanzi_value_page_pv');
+                var pageContainerEl = document.getElementById('busuanzi_container_page_pv');
+                var siteValueEl = document.getElementById('busuanzi_value_site_pv');
+                var siteContainerEl = document.getElementById('busuanzi_container_site_pv');
+                
+                if (pageValueEl) {
+                    pageValueEl.textContent = currentViews;
+                }
+                if (pageContainerEl) {
+                    pageContainerEl.style.display = 'inline';
+                }
+                
+                if (siteValueEl) {
+                    siteValueEl.textContent = totalViews;
+                }
+                if (siteContainerEl) {
+                    siteContainerEl.style.display = 'inline';
+                }
+                
+                console.log('页面访问量:', currentViews, '全站访问量:', totalViews);
+            }, 500);
+        });
+    </script>
+    
+    <!-- 备用：尝试加载不蒜子，但不依赖它 -->
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <script>
+        // 如果不蒜子加载成功，优先使用不蒜子的数据
+        setTimeout(function() {
+            if (window.bszCaller) {
+                console.log('不蒜子加载成功，将使用不蒜子数据');
+                // 不蒜子已加载，让它接管统计
+            }
+        }, 3000);
+    </script>
+
+
+<!-- 首页时间进度脚本，仅在首页加载 -->
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
+<script src="/js/emojiHandler.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        wrapEmojis('.paper');
+    });
+</script>

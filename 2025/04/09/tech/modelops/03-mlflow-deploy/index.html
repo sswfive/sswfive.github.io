@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="关于MlFlow的实践总结" />
+    <meta name="hexo-theme-A4" content="v2.0.0" />
+    <link rel="alternate icon" type="image/webp" href="/images/head.png">
+    <title>BluesSen | 空谷幽兰</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+            
+<link rel="stylesheet" href="/css/waline.css">
+
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+   
+        
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+    <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css' /> 
+<meta name="generator" content="Hexo 7.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="BluesSen" type="application/atom+xml">
+</head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+
+
+
+    
+    
+
+
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            
+                <div class="left-toc-container">
+                    <nav id="toc" class="bs-docs-sidebar"></nav>
+                </div>
+            
+        
+        <div class="paper">
+
+            
+
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/images/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">BluesSen</a> 
+            <span class="description"> Coding ｜ Coffee</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">
+                    
+                        <span class="menu-icon">☕</span>
+                    
+                    首页
+                </a></li>
+            
+        
+            
+                <li><a href="/list/">
+                    
+                        <span class="menu-icon">📚</span>
+                    
+                    文章
+                </a></li>
+            
+        
+            
+                <li><a href="/tags/">
+                    
+                        <span class="menu-icon">🏷️</span>
+                    
+                    标签
+                </a></li>
+            
+        
+            
+                <li><a href="/categories/">
+                    
+                        <span class="menu-icon">📂</span>
+                    
+                    分类
+                </a></li>
+            
+        
+            
+                <li><a href="/now/">
+                    
+                        <span class="menu-icon">🔗</span>
+                    
+                    当下
+                </a></li>
+            
+        
+            
+                <li><a href="/about/">
+                    
+                        <span class="menu-icon">👨‍💻</span>
+                    
+                    关于
+                </a></li>
+            
+        
+            
+                <li><a href="/search/">
+                    
+                        <span class="menu-icon">🔍</span>
+                    
+                    搜索
+                </a></li>
+            
+        
+    </ul>
+</div>
+
+                    
+                    
+
+                    
+                    
+
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    关于MlFlow的实践总结
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-08-11</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：1.7k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：7分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv" style="display: none;">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+        <div class=".article-gallery"><blockquote>
+<p>基于 Mlflow 进行业务开发已有几个月了，一直忙于开发，没有时间去总结，近期找了个时间好好梳理总结了，故记录下来了。</p>
+</blockquote>
+<h2 id="MLflow中的一些概念"><a href="#MLflow中的一些概念" class="headerlink" title="MLflow中的一些概念"></a>MLflow中的一些概念</h2><h3 id="功能特性"><a href="#功能特性" class="headerlink" title="功能特性"></a>功能特性</h3><p>MlFlow（<a target="_blank" rel="noopener" href="https://github.com/mlflow/mlflow">项目地址</a>、<a target="_blank" rel="noopener" href="https://mlflow.org/">官方文档</a>）是一个开源的机器学习模型管理平台，由 Databricks团队开发，可用于解决机器学习领域中的实验管理、模型管理、模型部署以及协作中的关键问题，当前项目 star数已超过20k，社区还是比较活跃的。</p>
+<p>目前有六大核心组件，可按需应用到不同的场景中：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mlflow.org/docs/latest/tracking.html">Experiment Tracking</a>：一组 API，用于记录 ML 实验中的模型、参数和结果，并使用交互式 UI 进行比较。</li>
+<li><a target="_blank" rel="noopener" href="https://mlflow.org/docs/latest/models.html">Model Packaging</a> ：打包模型及其元数据（如依赖项版本）的标准格式，确保可靠的部署和强大的可重复性。</li>
+<li><a target="_blank" rel="noopener" href="https://mlflow.org/docs/latest/model-registry.html">Model Registry</a> ：一个集中的模型存储、一组 API 和 UI，用于协作管理 MLflow 模型的整个生命周期。</li>
+<li><a target="_blank" rel="noopener" href="https://mlflow.org/docs/latest/deployment/index.html">Serving</a> ：用于在 Docker、Kubernetes、Azure ML 和 AWS SageMaker 等平台上进行无缝模型部署以进行批量和实时评分的工具。</li>
+<li><a target="_blank" rel="noopener" href="https://mlflow.org/docs/latest/model-evaluation/index.html">Evaluation</a> ：一套自动化模型评估工具，与实验跟踪无缝集成，以记录模型性能并直观地比较多个模型的结果。</li>
+<li><a target="_blank" rel="noopener" href="https://mlflow.org/docs/latest/llms/tracing/index.html">Observability</a>：跟踪与各种 GenAI 库和 Python SDK 的集成以进行手动检测，提供更流畅的调试体验并支持在线监控。</li>
+</ul>
+<h3 id="模型格式规范"><a href="#模型格式规范" class="headerlink" title="模型格式规范"></a>模型格式规范</h3><p><a href="/../../../images/03-mlflow.png" title="image-20250409155156761" class="gallery-item" style="box-shadow: none;"> <img src="/../../../images/03-mlflow.png" alt="image-20250409155156761"></a></p>
+<h2 id="基于生产可用的部署方式"><a href="#基于生产可用的部署方式" class="headerlink" title="基于生产可用的部署方式"></a>基于生产可用的部署方式</h2><p>本部署采用 Mlflow+PostgreSQL+MinIO 的部署架构, 说明： PostgreSQL和 MinIO的部署不在此文章赘述，默认这两服务是正常可用状态。</p>
+<h3 id="虚拟环境方式"><a href="#虚拟环境方式" class="headerlink" title="虚拟环境方式"></a>虚拟环境方式</h3><blockquote>
+<p>默认 conda 命令是可用的</p>
+</blockquote>
+<h4 id="创建工作目录"><a href="#创建工作目录" class="headerlink" title="创建工作目录"></a>创建工作目录</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建MLflow部署目录</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /opt/mlflow-deploy</span><br><span class="line"><span class="built_in">cd</span> /opt/mlflow-deploy</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建日志目录</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /var/log/mlflow</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="创建并配置Conda环境"><a href="#创建并配置Conda环境" class="headerlink" title="创建并配置Conda环境"></a>创建并配置Conda环境</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建Python 3.11的Conda环境</span></span><br><span class="line">conda create -n mlflowpy311envpro python=3.11 -y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活环境</span></span><br><span class="line">conda activate mlflowpy311envpro</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装MLflow 2.18和相关依赖</span></span><br><span class="line">pip install mlflow psycopg2-binary boto3 -i https://pypi.tuna.tsinghua.edu.cn/simple/ </span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt; /opt/mlflow-production/mlflow.env &lt;&lt; <span class="string">'EOL'</span></span><br><span class="line"><span class="comment"># MinIO配置</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_S3_ENDPOINT_URL=http://192.168.10.117:9966</span><br><span class="line"><span class="built_in">export</span> AWS_ACCESS_KEY_ID=minio@2025</span><br><span class="line"><span class="built_in">export</span> AWS_SECRET_ACCESS_KEY=minio@admin</span><br><span class="line"><span class="built_in">export</span> MLFLOW_S3_IGNORE_TLS=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分片上传优化配置</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_ENABLE_MULTIPART_UPLOAD=<span class="literal">true</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_MULTIPART_UPLOAD_CHUNK_SIZE=26214400  <span class="comment"># 25MB</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_MAX_PARALLELISM=16                   <span class="comment"># 并行上传线程数</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_S3_MAX_THREADS=16                     <span class="comment"># S3客户端线程池大小</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_S3_MAX_CONNECTION_POOL_SIZE=100       <span class="comment"># 连接池大小</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_S3_CONNECT_TIMEOUT=60                 <span class="comment"># 连接超时(秒)</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_S3_READ_TIMEOUT=300                   <span class="comment"># 读取超时(秒)</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_ARTIFACT_UPLOAD_TIMEOUT=7200         <span class="comment"># 制品上传超时时间(秒)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据库配置</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_BACKEND_STORE_URI=postgresql://root:postgre2025@192.168.10.117:30438/mlflow   <span class="comment"># 此数据库需要手动先创建好，待启动 mlflow 时会自动初始化数据库表。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Artifact存储配置</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_ARTIFACT_ROOT=s3://mlflowhub   <span class="comment">#此 Bucket需要手动在MinIO的 Dashboard中创建</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 服务器配置</span></span><br><span class="line"><span class="built_in">export</span> MLFLOW_HOST=0.0.0.0</span><br><span class="line"><span class="built_in">export</span> MLFLOW_PORT=8968</span><br><span class="line">EOL</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置权限</span></span><br><span class="line"><span class="built_in">chmod</span> 600 /opt/mlflow-deploy/mlflow.env</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="创建启动脚本"><a href="#创建启动脚本" class="headerlink" title="创建启动脚本"></a>创建启动脚本</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt; /opt/mlflow-deploy/start_mlflow.sh &lt;&lt; <span class="string">'EOL'</span></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 加载环境变量</span></span><br><span class="line"><span class="built_in">source</span> /opt/mlflow-deploy/mlflow.env</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活Conda环境</span></span><br><span class="line"><span class="built_in">source</span> /root/miniconda3/bin/activate mlflowpy311envpro</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置Python缓冲区</span></span><br><span class="line"><span class="built_in">export</span> PYTHONUNBUFFERED=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为boto3设置配置</span></span><br><span class="line"><span class="built_in">export</span> S3_USE_SIGV4=True</span><br><span class="line"><span class="built_in">export</span> AWS_S3_ADDRESSING_STYLE=virtual</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动MLflow服务</span></span><br><span class="line">mlflow server \</span><br><span class="line">  --backend-store-uri <span class="variable">${MLFLOW_BACKEND_STORE_URI}</span> \</span><br><span class="line">  --default-artifact-root <span class="variable">${MLFLOW_ARTIFACT_ROOT}</span> \</span><br><span class="line">  --host <span class="variable">${MLFLOW_HOST}</span> \</span><br><span class="line">  --port <span class="variable">${MLFLOW_PORT}</span> \</span><br><span class="line">  --artifacts-destination <span class="variable">${MLFLOW_ARTIFACT_ROOT}</span> \</span><br><span class="line">  --serve-artifacts \</span><br><span class="line">  --workers 8 \</span><br><span class="line">  &gt; /var/log/mlflow/mlflow.log 2&gt;&amp;1</span><br><span class="line">EOL</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置权限</span></span><br><span class="line"><span class="built_in">chmod</span> +x /opt/mlflow-deploy/start_mlflow.sh</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h4><ul>
+<li>下列两种启动方式，选择一种即可，生产部署建议采用systemd的方式启动</li>
+</ul>
+<h5 id="使用Systemd服务"><a href="#使用Systemd服务" class="headerlink" title="使用Systemd服务"></a>使用Systemd服务</h5><ul>
+<li>创建systemd服务</li>
+</ul>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; <span class="regexp">/etc/</span>systemd/system/mlflow.<span class="property">service</span> &lt;&lt; <span class="string">'EOL'</span></span><br><span class="line">[<span class="title class_">Unit</span>]</span><br><span class="line"><span class="title class_">Description</span>=<span class="title class_">MLflow</span> <span class="title class_">Tracking</span> <span class="title class_">Server</span></span><br><span class="line"><span class="title class_">After</span>=network.<span class="property">target</span></span><br><span class="line"></span><br><span class="line">[<span class="title class_">Service</span>]</span><br><span class="line"><span class="title class_">Type</span>=simple</span><br><span class="line"><span class="title class_">User</span>=root</span><br><span class="line"><span class="title class_">WorkingDirectory</span>=<span class="regexp">/opt/m</span>lflow-production</span><br><span class="line"><span class="title class_">ExecStart</span>=<span class="regexp">/bin/</span>bash -c <span class="string">'source /root/miniconda3/bin/activate mlflowpy311envpro &amp;&amp; mlflow server --backend-store-uri postgresql://root:postgre2025@192.168.10.117:30438/mlflow --default-artifact-root s3://mlflowhub --host 0.0.0.0 --port 8968 --artifacts-destination s3://mlflowhub --serve-artifacts'</span></span><br><span class="line"><span class="title class_">Environment</span>=<span class="string">"MLFLOW_S3_ENDPOINT_URL=http://192.168.10.117:9966"</span></span><br><span class="line"><span class="title class_">Environment</span>=<span class="string">"AWS_ACCESS_KEY_ID=minio@2025"</span></span><br><span class="line"><span class="title class_">Environment</span>=<span class="string">"AWS_SECRET_ACCESS_KEY=minio@admin"</span></span><br><span class="line"><span class="title class_">Environment</span>=<span class="string">"MLFLOW_S3_IGNORE_TLS=true"</span></span><br><span class="line"><span class="title class_">Environment</span>=<span class="string">"MLFLOW_ENABLE_MULTIPART_UPLOAD=true"</span></span><br><span class="line"><span class="title class_">Environment</span>=<span class="string">"MLFLOW_MULTIPART_UPLOAD_CHUNK_SIZE=26214400"</span></span><br><span class="line"><span class="title class_">Restart</span>=on-failure</span><br><span class="line"><span class="title class_">RestartSec</span>=<span class="number">5</span></span><br><span class="line"></span><br><span class="line">[<span class="title class_">Install</span>]</span><br><span class="line"><span class="title class_">WantedBy</span>=multi-user.<span class="property">target</span></span><br><span class="line"><span class="variable constant_">EOL</span></span><br><span class="line"></span><br><span class="line"># 重新加载systemd配置</span><br><span class="line">systemctl daemon-reload</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>启动MLflow服务</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">systemctl start mlflow</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置开机自启</span></span><br><span class="line">systemctl <span class="built_in">enable</span> mlflow</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查服务状态</span></span><br><span class="line">systemctl status mlflow</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>mlflow日志查看</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看最新日志</span></span><br><span class="line"><span class="built_in">tail</span> -f /var/log/mlflow/mlflow.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看错误信息</span></span><br><span class="line">grep <span class="string">"ERROR"</span> /var/log/mlflow/mlflow.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启服务</span></span><br><span class="line">systemctl restart mlflow</span><br></pre></td></tr></tbody></table></figure>
+
+<h5 id="使用nohup服务"><a href="#使用nohup服务" class="headerlink" title="使用nohup服务"></a>使用nohup服务</h5><p>改写启动脚本，在启动命令前后加上<code>nohup &amp;</code>即可</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt; /opt/mlflow-deploy/start_mlflow.sh &lt;&lt; <span class="string">'EOL'</span></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 加载环境变量</span></span><br><span class="line"><span class="built_in">source</span> /opt/mlflow-deploy/mlflow.env</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活Conda环境</span></span><br><span class="line"><span class="built_in">source</span> /root/miniconda3/bin/activate mlflowpy311envpro</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置Python缓冲区</span></span><br><span class="line"><span class="built_in">export</span> PYTHONUNBUFFERED=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为boto3设置配置</span></span><br><span class="line"><span class="built_in">export</span> S3_USE_SIGV4=True</span><br><span class="line"><span class="built_in">export</span> AWS_S3_ADDRESSING_STYLE=virtual</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动MLflow服务 </span></span><br><span class="line"><span class="comment"># ###############修改此处###########################</span></span><br><span class="line"><span class="built_in">nohup</span> mlflow server \</span><br><span class="line">  --backend-store-uri <span class="variable">${MLFLOW_BACKEND_STORE_URI}</span> \</span><br><span class="line">  --default-artifact-root <span class="variable">${MLFLOW_ARTIFACT_ROOT}</span> \</span><br><span class="line">  --host <span class="variable">${MLFLOW_HOST}</span> \</span><br><span class="line">  --port <span class="variable">${MLFLOW_PORT}</span> \</span><br><span class="line">  --artifacts-destination <span class="variable">${MLFLOW_ARTIFACT_ROOT}</span> \</span><br><span class="line">  --serve-artifacts \</span><br><span class="line">  --workers 8 \</span><br><span class="line">  &gt; /var/log/mlflow/mlflow.log 2&gt;&amp;1 &amp;</span><br><span class="line">EOL</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置权限</span></span><br><span class="line"><span class="built_in">chmod</span> +x /opt/mlflow-deploy/start_mlflow.sh</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h3 id="Docker-compose方式"><a href="#Docker-compose方式" class="headerlink" title="Docker-compose方式"></a>Docker-compose方式</h3><h4 id="环境要求"><a href="#环境要求" class="headerlink" title="环境要求"></a>环境要求</h4><ul>
+<li>Docker 和 Docker Compose</li>
+<li>确保 8968 端口未被占用</li>
+<li>确保 MinIO 服务已启动并可访问</li>
+<li>确保 PostgreSQL 数据库已创建</li>
+</ul>
+<h4 id="创建docker-compose-yml"><a href="#创建docker-compose-yml" class="headerlink" title="创建docker-compose.yml"></a>创建docker-compose.yml</h4><figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3.3'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">mlflow:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mlflow-server</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"${MLFLOW_HOST_PORT:-8968}:${MLFLOW_PORT:-5000}"</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">${MLFLOW_DATA_DIR:-./mlruns}:/mlflow/mlruns</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">TZ=${TZ:-Asia/Shanghai}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">PYTHONUNBUFFERED=${PYTHONUNBUFFERED:-1}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">GUNICORN_CMD_ARGS=${GUNICORN_CMD_ARGS}</span></span><br><span class="line">      <span class="comment"># MLflow 基础配置</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}</span></span><br><span class="line">      <span class="comment"># PostgreSQL 配置</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MLFLOW_BACKEND_STORE_URI=${MLFLOW_BACKEND_STORE_URI}</span></span><br><span class="line">      <span class="comment"># MinIO 配置</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MLFLOW_S3_ENDPOINT_URL=${MLFLOW_S3_ENDPOINT_URL}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MLFLOW_DEFAULT_ARTIFACT_ROOT=${MLFLOW_DEFAULT_ARTIFACT_ROOT}</span></span><br><span class="line">      <span class="comment"># SSL 配置</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MLFLOW_S3_IGNORE_TLS=${MLFLOW_S3_IGNORE_TLS}</span></span><br><span class="line">      <span class="comment"># 大文件上传配置</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MLFLOW_ENABLE_PROXY_MULTIPART_UPLOAD=${MLFLOW_ENABLE_PROXY_MULTIPART_UPLOAD}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MLFLOW_MULTIPART_UPLOAD_MINIMUM_FILE_SIZE=${MLFLOW_MULTIPART_UPLOAD_MINIMUM_FILE_SIZE}</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MLFLOW_MULTIPART_UPLOAD_CHUNK_SIZE=${MLFLOW_MULTIPART_UPLOAD_CHUNK_SIZE}</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">mlflow</span> <span class="string">server</span> <span class="string">--host</span> <span class="string">${MLFLOW_HOST:-0.0.0.0}</span> <span class="string">--port</span> <span class="string">${MLFLOW_PORT:-5000}</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mlflow-network</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">mlflow-network:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="创建Dockerfile"><a href="#创建Dockerfile" class="headerlink" title="创建Dockerfile"></a>创建Dockerfile</h4><figure class="highlight dockerfile"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ghcr.io/mlflow/mlflow:v2.<span class="number">20.3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /mlflow</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制依赖文件</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> requirements.txt /mlflow/requirements.txt</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置阿里云镜像源并安装依赖</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r requirements.txt</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制配置文件</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> .<span class="built_in">env</span> /mlflow/.env</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置环境变量</span></span><br><span class="line"><span class="keyword">ENV</span> PYTHONUNBUFFERED=<span class="number">1</span></span><br><span class="line"><span class="keyword">ENV</span> GUNICORN_CMD_ARGS=<span class="string">"--timeout 120 --workers 4 --threads 2"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 暴露端口</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">5000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动命令</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">"mlflow"</span>, <span class="string">"server"</span>, <span class="string">"--host"</span>, <span class="string">"0.0.0.0"</span>, <span class="string">"--port"</span>, <span class="string">"5000"</span>]</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="创建requirements-txt"><a href="#创建requirements-txt" class="headerlink" title="创建requirements.txt"></a>创建requirements.txt</h4><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">psycopg2-binary==2.9.9</span><br><span class="line">boto3==1.34.34</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="创建-env"><a href="#创建-env" class="headerlink" title="创建.env"></a>创建.env</h4><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"># 容器配置</span><br><span class="line">MLFLOW_HOST_PORT=8968</span><br><span class="line">MLFLOW_DATA_DIR=./mlruns</span><br><span class="line">TZ=Asia/Shanghai</span><br><span class="line"></span><br><span class="line"># MLflow 基础配置</span><br><span class="line">PYTHONUNBUFFERED=1</span><br><span class="line">GUNICORN_CMD_ARGS="--timeout 120 --workers 4 --threads 2"</span><br><span class="line">MLFLOW_TRACKING_URI=http://192.168.3.117:8968</span><br><span class="line"></span><br><span class="line"># PostgreSQL 配置</span><br><span class="line">MLFLOW_BACKEND_STORE_URI=postgresql://root:postgre2025@192.168.3.117:30438/mlflow</span><br><span class="line"></span><br><span class="line"># MinIO 配置 - 使用 MLflow 需要的环境变量名</span><br><span class="line">AWS_ACCESS_KEY_ID=H0B1O3rSjic9uvEt  </span><br><span class="line">AWS_SECRET_ACCESS_KEY=sKY9teJFLByLDjs3Ux4jw65koq3b7ihl</span><br><span class="line">MLFLOW_S3_ENDPOINT_URL=http://192.168.2.117:9966</span><br><span class="line">MLFLOW_DEFAULT_ARTIFACT_ROOT=s3://mlflowhub/</span><br><span class="line"></span><br><span class="line"># 禁用 SSL 验证</span><br><span class="line">MLFLOW_S3_IGNORE_TLS=true</span><br><span class="line"></span><br><span class="line"># 大文件上传配置</span><br><span class="line">MLFLOW_ENABLE_PROXY_MULTIPART_UPLOAD=true</span><br><span class="line">MLFLOW_MULTIPART_UPLOAD_MINIMUM_FILE_SIZE=104857600</span><br><span class="line">MLFLOW_MULTIPART_UPLOAD_CHUNK_SIZE=26214400</span><br><span class="line"></span><br><span class="line"># 服务器配置</span><br><span class="line">MLFLOW_HOST=0.0.0.0</span><br><span class="line">MLFLOW_PORT=5000</span><br><span class="line">MLFLOW_WORKERS=4</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="启动服务-1"><a href="#启动服务-1" class="headerlink" title="启动服务"></a>启动服务</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="验证服务"><a href="#验证服务" class="headerlink" title="验证服务"></a>验证服务</h4><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查容器状态</span></span><br><span class="line">docker-compose ps</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查日志</span></span><br><span class="line">docker-compose logs -f</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="7">
+<li>访问 MLflow UI:<ul>
+<li>打开浏览器访问: <a target="_blank" rel="noopener" href="http://192.16.3.117:9868/">http://192.16.3.117:9868</a></li>
+</ul>
+</li>
+</ol>
+<h4 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h4><ol start="2">
+<li><p>初始化数据库:</p>
+<blockquote>
+<p>正常情况下，只要在PostgreSQL中创建好mlflow数据库后，在启动服务时会自动初始化数据库表，但在实践中确实也遇到了 没有自动初始化的情况，所以提供下列方法</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用环境变量连接数据库</span></span><br><span class="line">docker-compose run --<span class="built_in">rm</span> mlflow mlflow db upgrade -U <span class="variable">${MLFLOW_BACKEND_STORE_URI}</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者在本地安装 mlflow 后执行</span></span><br><span class="line">pip install mlflow</span><br><span class="line">mlflow db upgrade -U postgresql://root:postgre2025@192.168.3.117:30438/mlflow</span><br></pre></td></tr></tbody></table></figure>
+
+<p>5. </p>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-04-09</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/Mlflow/'>
+                            Mlflow
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/ModelOps/'>
+                            ModelOps
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/04/13/tools/11-cdn-site/'>日常开发加油加速站</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/04/07/tools/10-vpn-selection/">一份连接世界的机场指南</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        
+    </div>
+    
+        
+
+    <div id="waline"></div>
+    <script type="module"  >
+        import { init } from 'https://npm.elemecdn.com/hexo-theme-a4@latest/source/js/waline.mjs';
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://blog-comment-seven-psi.vercel.app/',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+                search: false, // 禁止表情包搜索
+                reaction: false, // 对文章打分
+                pageview: false, // 浏览量统计
+                comment: false, // 评论数统计
+
+                locale: {
+                    placeholder: '留下你的评论吧。',
+                    sofa: ''
+                },
+            });
+
+        }
+        window.addEventListener('DOMContentLoaded', loadWaline);
+    </script>
+
+
+
+    
+    
+    
+    
+    </div>
+
+
+     
+</div>
+
+
+
+
+                    
+
+                    <div class="footer">
+    
+        <span> 
+            © 2025~ China 
+
+            
+                
+
+            
+                
+                    / <a href="/atom.xml"> RSS </a>
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊一念净心 花开遍世界...🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script>
+        // 页面访问量统计（兼容不蒜子格式）
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面URL
+            var currentPage = window.location.pathname;
+            var storageKey = 'page_views_' + currentPage.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            // 从localStorage获取当前页面访问次数
+            var currentViews = localStorage.getItem(storageKey) || 0;
+            currentViews = parseInt(currentViews) + 1;
+            localStorage.setItem(storageKey, currentViews);
+            
+            // 获取全站总访问量
+            var totalViews = localStorage.getItem('site_total_views') || 0;
+            totalViews = parseInt(totalViews) + 1;
+            localStorage.setItem('site_total_views', totalViews);
+            
+            // 更新页面显示
+            setTimeout(function() {
+                var pageValueEl = document.getElementById('busuanzi_value_page_pv');
+                var pageContainerEl = document.getElementById('busuanzi_container_page_pv');
+                var siteValueEl = document.getElementById('busuanzi_value_site_pv');
+                var siteContainerEl = document.getElementById('busuanzi_container_site_pv');
+                
+                if (pageValueEl) {
+                    pageValueEl.textContent = currentViews;
+                }
+                if (pageContainerEl) {
+                    pageContainerEl.style.display = 'inline';
+                }
+                
+                if (siteValueEl) {
+                    siteValueEl.textContent = totalViews;
+                }
+                if (siteContainerEl) {
+                    siteContainerEl.style.display = 'inline';
+                }
+                
+                console.log('页面访问量:', currentViews, '全站访问量:', totalViews);
+            }, 500);
+        });
+    </script>
+    
+    <!-- 备用：尝试加载不蒜子，但不依赖它 -->
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <script>
+        // 如果不蒜子加载成功，优先使用不蒜子的数据
+        setTimeout(function() {
+            if (window.bszCaller) {
+                console.log('不蒜子加载成功，将使用不蒜子数据');
+                // 不蒜子已加载，让它接管统计
+            }
+        }, 3000);
+    </script>
+
+
+<!-- 首页时间进度脚本，仅在首页加载 -->
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
+<script src="/js/emojiHandler.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        wrapEmojis('.paper');
+    });
+</script>
