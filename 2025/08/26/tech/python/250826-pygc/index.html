@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="从计数到分代一步步窥探Python的垃圾回收机制" />
+    <meta name="hexo-theme-A4" content="v2.0.0" />
+    <link rel="alternate icon" type="image/webp" href="/images/head.png">
+    <title>BluesSen | 空谷幽兰</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+            
+<link rel="stylesheet" href="/css/waline.css">
+
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+   
+        
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+    <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css' /> 
+<meta name="generator" content="Hexo 7.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="BluesSen" type="application/atom+xml">
+</head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+
+
+
+    
+    
+
+
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            
+                <div class="left-toc-container">
+                    <nav id="toc" class="bs-docs-sidebar"></nav>
+                </div>
+            
+        
+        <div class="paper">
+
+            
+
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/images/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">BluesSen</a> 
+            <span class="description"> Coding ｜ Coffee</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">
+                    
+                        <span class="menu-icon">☕</span>
+                    
+                    首页
+                </a></li>
+            
+        
+            
+                <li><a href="/list/">
+                    
+                        <span class="menu-icon">📚</span>
+                    
+                    文章
+                </a></li>
+            
+        
+            
+                <li><a href="/tags/">
+                    
+                        <span class="menu-icon">🏷️</span>
+                    
+                    标签
+                </a></li>
+            
+        
+            
+                <li><a href="/categories/">
+                    
+                        <span class="menu-icon">📂</span>
+                    
+                    分类
+                </a></li>
+            
+        
+            
+                <li><a href="/now/">
+                    
+                        <span class="menu-icon">🔗</span>
+                    
+                    当下
+                </a></li>
+            
+        
+            
+                <li><a href="/about/">
+                    
+                        <span class="menu-icon">👨‍💻</span>
+                    
+                    关于
+                </a></li>
+            
+        
+            
+                <li><a href="/search/">
+                    
+                        <span class="menu-icon">🔍</span>
+                    
+                    搜索
+                </a></li>
+            
+        
+    </ul>
+</div>
+
+                    
+                    
+
+                    
+                    
+
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    从计数到分代一步步窥探Python的垃圾回收机制
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-08-26</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：1.5k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：5分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv" style="display: none;">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+        <div class=".article-gallery"><p>在编程世界中，高效的内存管理是保证程序稳定运行的关键之一。然而Python作为一门高级编程语言，其自动垃圾回收（Garbage Collection, GC）常常被Pythoner们当做理所当然的黑盒，可一旦线上出现内存飙升，GC就成了最熟悉的陌生人。今天就来拆开这个黑盒，一窥究竟，看看Python是如何优化的帮我们进行垃圾回收的。</p>
+<p>Python的垃圾回收主要依赖于引用计数，并在此基础上引入标记-清除和分代回收两种机制，以解决循环引用和提升回收效率的问题。</p>
+<h2 id="引用计数：最朴素的记账法"><a href="#引用计数：最朴素的记账法" class="headerlink" title="引用计数：最朴素的记账法"></a>引用计数：最朴素的记账法</h2><p>每个Python对象中都包含一个名为PyObject的基础结构体，其中，ob_refcnt字段即为该对象的引用计数，其基本规则如下：</p>
+<ul>
+<li>当对象被新的引用指向时 -&gt; ob_refcnt++；</li>
+<li>当某个引用被删除或离开作用域时，del -&gt; ob_refcnt–；</li>
+<li>ob_refcnt ==0 -&gt; 一旦引用计数归零，对象会被立即回收。</li>
+</ul>
+<p>这样做的可以让实现变得简单，逻辑很直观，于此同时，实时性很强，内存可立即被释放；当然，这样做也会有一些局限性，比如维护计数需要额外开销、无法处理循环引用（即：两个或多个对象相互引用，却无外部引用指向它们 ）的情况等问题。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]  <span class="comment"># 引用计数为 1</span></span><br><span class="line">b = a          <span class="comment"># 引用计数增加为 2</span></span><br><span class="line"><span class="built_in">print</span>(sys.getrefcount(a))  <span class="comment"># 输出 3（getrefcount本身也会增加一个临时引用）</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> b          <span class="comment"># 引用计数减为 1</span></span><br><span class="line"><span class="comment"># 函数结束时，a 离开作用域，引用计数归零，对象被回收</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="标记-清除：解决循环引用的利器"><a href="#标记-清除：解决循环引用的利器" class="headerlink" title="标记-清除：解决循环引用的利器"></a>标记-清除：解决循环引用的利器</h2><p>针对引用计数无法处理的循环引用问题，Python引入了标记-清除（Mark &amp; Sweep）机制。其基本思路是这样的：</p>
+<ul>
+<li>先按需分配内存，直到空闲内存不足时触发垃圾回收；</li>
+<li>从根对象（如寄存器和程序栈中的引用）出发，遍历所有可达对象，并对其进行标记；</li>
+<li>遍历结束后，清除所有未被标记的对象，释放其占用的内存空间。</li>
+</ul>
+<p>通过这样的处理方式，即使对象之间存在循环引用，只要它们已经不再被实际使用，就会被正确回收。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gc</span><br><span class="line"><span class="keyword">import</span> psutil</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rss_mb</span>():</span><br><span class="line">    <span class="string">"""获取当前进程占用的物理内存 (MB)"""</span></span><br><span class="line">    <span class="keyword">return</span> psutil.Process(os.getpid()).memory_info().rss // <span class="number">1024</span> // <span class="number">1024</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Node</span>:</span><br><span class="line">    <span class="string">"""一个会互相引用的小节点"""</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, value</span>):</span><br><span class="line">        <span class="variable language_">self</span>.value = value</span><br><span class="line">        <span class="variable language_">self</span>.partner = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"Node(<span class="subst">{self.value}</span>)"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -------------------------------------------------</span></span><br><span class="line"><span class="comment"># 1) 制造 100 万个循环引用</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Step 1: 制造循环引用"</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"RSS before:"</span>, rss_mb(), <span class="string">"MB"</span>)</span><br><span class="line">nodes = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1_000_000</span>):</span><br><span class="line">    a, b = Node(i), Node(-i)</span><br><span class="line">    a.partner = b</span><br><span class="line">    b.partner = a</span><br><span class="line">    nodes.extend([a, b])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"RSS after create:"</span>, rss_mb(), <span class="string">"MB"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2) 删除外部引用，观察内存</span></span><br><span class="line"><span class="keyword">del</span> nodes</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"RSS after del nodes:"</span>, rss_mb(), <span class="string">"MB"</span>)  <span class="comment"># 大概率不会降多少</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3) 手动触发一次标记-清除</span></span><br><span class="line">gc.collect()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"RSS after gc.collect():"</span>, rss_mb(), <span class="string">"MB"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="分代回收：-以空间换时间的优化策略"><a href="#分代回收：-以空间换时间的优化策略" class="headerlink" title="分代回收： 以空间换时间的优化策略"></a>分代回收： 以空间换时间的优化策略</h2><p>为了进一步提升回收的效率，Python使用了分代回收的策略。该策略将内存中的对象按其存活时间划分为不同的集合（称为“代”，Generational GC），Python默认定义了三代：</p>
+<ul>
+<li>第0代：新创建的对象；</li>
+<li>第1代：经历过一次垃圾回收后仍然存活的对象；</li>
+<li>第2代：存活时间更长的对象。</li>
+</ul>
+<p>回收频率随代号的增加而降低，即代数越高，GC越“懒得管”。比如说：</p>
+<ul>
+<li>新分配的对象会被放在第0代（GC的常客，回收最勤快）；</li>
+<li>如果它们经历过一次GC后仍然存活，则被移至第1代（偶尔光顾）；</li>
+<li>若再经历一次GC仍未被回收，则进入第二代（几乎佛系，除非内存告急）。</li>
+</ul>
+<p>这样做的好处是：大部分新对象往往很快就不再使用，而对“年轻代”进行频繁回收，可以在更短时间内清理掉大部分垃圾，而检查老一代对象的频率较低，从而减少了整体的开销。通俗的说，这种“年纪越大越免检”的策略，让GC把80%的精力花在最容易产生垃圾的第0代，整体吞吐量大幅提升。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看分代回收的阈值</span></span><br><span class="line"><span class="built_in">print</span>(gc.get_threshold())  <span class="comment"># 输出 (700, 10, 10)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 手动执行垃圾回收</span></span><br><span class="line">gc.collect()  <span class="comment"># 回收所有代</span></span><br><span class="line">gc.collect(<span class="number">0</span>) <span class="comment"># 只回收第0代</span></span><br><span class="line">gc.collect(<span class="number">1</span>) <span class="comment"># 回收第0代和第1代</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>Python的垃圾回收机制是一个结合了引用计数、标记-清除和分代回收的复合系统。它既保证了内存回收的实时性，也有效解决了循环引用问题，并通过分代策略实现了高性能的自动内存管理。</p>
+<p>了解这一机制后，我们在后续的编码中可以考虑：</p>
+<ul>
+<li>尽量使用局部变量，缩短对象生命周期</li>
+<li>手动断开长引用链：a.b = None</li>
+<li>调优GC：<code>get_threshold()</code>, 或在低延迟场景下，<code>gc.disable()</code>后手动触发。</li>
+</ul>
+<p>另外，在日常开发中如果遇到了OOM相关问题，可以尝试分析的思路有：</p>
+<ul>
+<li>实时监控内存使用<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/giampaolo/psutil">psutil</a>工具</li>
+</ul>
+</li>
+<li>定位内存增长点<ul>
+<li>先确定内存中一直保持增长的是什么类型的对象，看看内存分配最频繁的地方是哪里；</li>
+</ul>
+</li>
+<li>分析大对象<ul>
+<li>将重点怀疑的对象通过工具输出引用关系（如：objgraph）,从而进一步分析出内存的问题源自哪里。</li>
+</ul>
+</li>
+</ul>
+<p>有了上述的思路后，可以尝试借助下列工具进行更进一步的问题分析和定位：</p>
+<blockquote>
+<p>下列工具的具体使用方法，可点击链接前往官方文档进行学习使用。</p>
+</blockquote>
+<ul>
+<li>官方工具：<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.13/library/tracemalloc.html">tracemalloc</a>——跟踪内存分配</li>
+<li>第三方库：<a target="_blank" rel="noopener" href="https://github.com/mgedmin/objgraph">objgraph</a>——对象引用关系可视化</li>
+<li>第三方库：<a target="_blank" rel="noopener" href="https://github.com/pympler/pympler">pympler</a>——<font style="color:rgb(31, 35, 40);">详细对象大小分析</font></li>
+<li><font style="color:rgb(31, 35, 40);">第三方库：</font><a target="_blank" rel="noopener" href="https://pypi.org/project/memory-profiler/">memory_profiler</a><font style="color:rgb(31, 35, 40);">——逐行内存分析</font></li>
+</ul>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-08-26</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/gc/'>
+                            gc
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/Python/'>
+                            Python
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/08/28/tech/python/250827-py-env-package/'>我用过的Python工具链：从virtualenv到uv的演进之路</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/08/24/tech/python/250824-pylib-faststream/">异步消息处理的利器之FastStream</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        
+    </div>
+    
+        
+
+    <div id="waline"></div>
+    <script type="module"  >
+        import { init } from 'https://npm.elemecdn.com/hexo-theme-a4@latest/source/js/waline.mjs';
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://blog-comment-seven-psi.vercel.app/',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+                search: false, // 禁止表情包搜索
+                reaction: false, // 对文章打分
+                pageview: false, // 浏览量统计
+                comment: false, // 评论数统计
+
+                locale: {
+                    placeholder: '留下你的评论吧。',
+                    sofa: ''
+                },
+            });
+
+        }
+        window.addEventListener('DOMContentLoaded', loadWaline);
+    </script>
+
+
+
+    
+    
+    
+    
+    </div>
+
+
+     
+</div>
+
+
+
+
+                    
+
+                    <div class="footer">
+    
+        <span> 
+            © 2025~ China 
+
+            
+                
+
+            
+                
+                    / <a href="/atom.xml"> RSS </a>
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊一念净心 花开遍世界...🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <!-- 不蒜子统计服务 -->
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<!-- 首页时间进度脚本，仅在首页加载 -->
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
+<script src="/js/emojiHandler.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        wrapEmojis('.paper');
+    });
+</script>

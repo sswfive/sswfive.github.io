@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="Python异步编程十年沉浮：且看3.14版本重要更新" />
+    <meta name="hexo-theme-A4" content="v2.0.0" />
+    <link rel="alternate icon" type="image/webp" href="/images/head.png">
+    <title>BluesSen | 空谷幽兰</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+            
+<link rel="stylesheet" href="/css/waline.css">
+
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+   
+        
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+    <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css' /> 
+<meta name="generator" content="Hexo 7.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="BluesSen" type="application/atom+xml">
+</head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+
+
+
+    
+    
+
+
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            
+                <div class="left-toc-container">
+                    <nav id="toc" class="bs-docs-sidebar"></nav>
+                </div>
+            
+        
+        <div class="paper">
+
+            
+
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/images/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">BluesSen</a> 
+            <span class="description"> Coding ｜ Coffee</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">
+                    
+                        <span class="menu-icon">☕</span>
+                    
+                    首页
+                </a></li>
+            
+        
+            
+                <li><a href="/list/">
+                    
+                        <span class="menu-icon">📚</span>
+                    
+                    文章
+                </a></li>
+            
+        
+            
+                <li><a href="/tags/">
+                    
+                        <span class="menu-icon">🏷️</span>
+                    
+                    标签
+                </a></li>
+            
+        
+            
+                <li><a href="/categories/">
+                    
+                        <span class="menu-icon">📂</span>
+                    
+                    分类
+                </a></li>
+            
+        
+            
+                <li><a href="/now/">
+                    
+                        <span class="menu-icon">🔗</span>
+                    
+                    当下
+                </a></li>
+            
+        
+            
+                <li><a href="/about/">
+                    
+                        <span class="menu-icon">👨‍💻</span>
+                    
+                    关于
+                </a></li>
+            
+        
+            
+                <li><a href="/search/">
+                    
+                        <span class="menu-icon">🔍</span>
+                    
+                    搜索
+                </a></li>
+            
+        
+    </ul>
+</div>
+
+                    
+                    
+
+                    
+                    
+
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    Python异步编程十年沉浮：且看3.14版本重要更新
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-09-08</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：3.9k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：17分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv" style="display: none;">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+        <div class=".article-gallery"><p>本周读到了一篇文章《<a target="_blank" rel="noopener" href="https://tonybaloney.github.io/posts/why-isnt-python-async-more-popular.html">Python has had async for 10 years – why isn’t it more popular?</a>》，深有感触，文章提出了一个值得深思的问题：Python 早在 2015 年就引入了 <code>async</code> 和 <code>await</code> 关键字，距今已近十年，为什么异步编程在 Python 社区中的普及仍不及预期？</p>
+<p>这篇文章中指出了三大困境，也让我这个从Python2.7时代走过来的开发者深有共鸣。今天就结合我的实践经历，聊聊Python异步编程的过去、现在和未来。</p>
+<h2 id="异步编程的三座大山"><a href="#异步编程的三座大山" class="headerlink" title="异步编程的三座大山"></a>异步编程的三座大山</h2><h3 id="困境一：适用场景受限"><a href="#困境一：适用场景受限" class="headerlink" title="困境一：适用场景受限"></a><strong>困境一：适用场景受限</strong></h3><p>asyncio 在网络 I/O 方面表现出色，但对其他类型的 I/O 支持有限。即使是看似异步的文件操作，底层仍然依赖线程池来模拟异步行为。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 看似异步，实际仍使用线程池</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">with</span> aiofiles.<span class="built_in">open</span>(<span class="string">'large_file.txt'</span>, mode=<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    contents = <span class="keyword">await</span> f.read()  <span class="comment"># 底层依然是线程池实现</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>生产环境中出于安全考虑，往往限制使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Io_uring">io_uring</a> 等系统级异步机制，进一步缩小了 asyncio 的适用范围。</p>
+<h3 id="困境二：GIL-的根本限制"><a href="#困境二：GIL-的根本限制" class="headerlink" title="困境二：GIL 的根本限制"></a><strong>困境二：GIL 的根本限制</strong></h3><p>无论异步代码执行得多么高效，都无法突破 GIL（全局解释器锁）的天花板。async/await 虽能优化 I/O 密集型任务，但对 CPU 密集型操作帮助有限。</p>
+<p>更麻烦的是错误处理——忘记 <code>await</code> 可能导致协程静默失败，这种隐形问题调试起来很棘手。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 单次调用性能相同</span></span><br><span class="line">sync_result = get_data_sync()        <span class="comment"># 耗时 1 秒</span></span><br><span class="line">async_result = <span class="keyword">await</span> get_data_async() <span class="comment"># 同样耗时 1 秒</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有在并发场景下异步才显示优势</span></span><br><span class="line">results = <span class="keyword">await</span> asyncio.gather(*[</span><br><span class="line">    get_data_async() <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)</span><br><span class="line">])  <span class="comment"># 总耗时约 1 秒（而非 10 秒）</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="困境三：双-API-的维护负担"><a href="#困境三：双-API-的维护负担" class="headerlink" title="困境三：双 API 的维护负担"></a><strong>困境三：双 API 的维护负担</strong></h3><p>为了兼容性，开发者往往需要同时维护同步和异步两套 API，大大增加了开发和维护成本。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同步版本</span></span><br><span class="line"><span class="meta">@property</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user_records</span>(<span class="params">self</span>) -&gt; <span class="built_in">list</span>[Record]:</span><br><span class="line">    <span class="keyword">return</span> fetch_from_database(<span class="variable language_">self</span>.user_id)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 异步版本 - API 设计不一致</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">get_user_records</span>(<span class="params">self</span>) -&gt; <span class="built_in">list</span>[Record]:</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">await</span> async_fetch_from_database(<span class="variable language_">self</span>.user_id)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用时的心理负担：需要记住哪些方法需要 await</span></span><br><span class="line">user.name                                <span class="comment"># 普通属性</span></span><br><span class="line">records = <span class="keyword">await</span> user.get_user_records()  <span class="comment"># 异步方法</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>从魔法方法无法异步化，到属性访问方式的不一致，再到代码重复和测试复杂度增加，都让开发者望而却步。</p>
+<h2 id="异步编程的演进之路"><a href="#异步编程的演进之路" class="headerlink" title="异步编程的演进之路"></a>异步编程的演进之路</h2><h3 id="什么是异步编程？"><a href="#什么是异步编程？" class="headerlink" title="什么是异步编程？"></a>什么是异步编程？</h3><p>异步编程是一种非阻塞的编程范式，允许程序在等待某些操作（如I/O）完成时继续执行其他任务，而不是干等着。</p>
+<p>同步 VS 异步的直观对比：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="comment"># 同步版本 - 顺序执行</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sync_demo</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">task</span>(<span class="params">name, delay</span>):</span><br><span class="line">        time.sleep(delay)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"<span class="subst">{name}</span> 完成"</span>)</span><br><span class="line">    </span><br><span class="line">    start = time.time()</span><br><span class="line">    task(<span class="string">"任务1"</span>, <span class="number">1</span>)</span><br><span class="line">    task(<span class="string">"任务2"</span>, <span class="number">1</span>)</span><br><span class="line">    task(<span class="string">"任务3"</span>, <span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"同步总耗时: <span class="subst">{time.time() - start:<span class="number">.2</span>f}</span>秒"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 异步版本 - 并发执行  </span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">async_demo</span>():</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">task</span>(<span class="params">name, delay</span>):</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(delay)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"<span class="subst">{name}</span> 完成"</span>)</span><br><span class="line">    </span><br><span class="line">    start = time.time()</span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(</span><br><span class="line">        task(<span class="string">"任务1"</span>, <span class="number">1</span>),</span><br><span class="line">        task(<span class="string">"任务2"</span>, <span class="number">1</span>),</span><br><span class="line">        task(<span class="string">"任务3"</span>, <span class="number">1</span>)</span><br><span class="line">    )</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"异步总耗时: <span class="subst">{time.time() - start:<span class="number">.2</span>f}</span>秒"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行对比</span></span><br><span class="line">sync_demo()    <span class="comment"># 输出：总耗时约3秒</span></span><br><span class="line">asyncio.run(async_demo())  <span class="comment"># 输出：总耗时约1秒</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="三种实现方式的变迁"><a href="#三种实现方式的变迁" class="headerlink" title="三种实现方式的变迁"></a>三种实现方式的变迁</h3><h4 id="方式一：回调函数（Callback）——原始方案"><a href="#方式一：回调函数（Callback）——原始方案" class="headerlink" title="方式一：回调函数（Callback）——原始方案"></a>方式一：回调函数（Callback）——原始方案</h4><p>兼容性好，但代码难以维护（坊间流传一个词：回调地狱）</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">callback_example</span>():</span><br><span class="line">    <span class="string">"""回调函数示例 - 早期的异步解决方案"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">download_complete</span>(<span class="params">future</span>):</span><br><span class="line">        <span class="string">"""下载完成时的回调函数"""</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            result = future.result()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"下载完成，状态码: <span class="subst">{result.status_code}</span>"</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"获取数据长度: <span class="subst">{<span class="built_in">len</span>(result.text)}</span> 字符"</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"下载失败: <span class="subst">{e}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"开始回调函数示例..."</span>)</span><br><span class="line">    start_time = time.time()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="number">3</span>) <span class="keyword">as</span> executor:</span><br><span class="line">        <span class="comment"># 提交多个任务</span></span><br><span class="line">        futures = []</span><br><span class="line">        urls = [</span><br><span class="line">            <span class="string">'https://httpbin.org/delay/1'</span>,</span><br><span class="line">            <span class="string">'https://httpbin.org/delay/2'</span>, </span><br><span class="line">            <span class="string">'https://httpbin.org/delay/1'</span></span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">            future = executor.submit(requests.get, url)</span><br><span class="line">            future.add_done_callback(download_complete)</span><br><span class="line">            futures.append(future)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 等待所有任务完成</span></span><br><span class="line">        <span class="keyword">for</span> future <span class="keyword">in</span> futures:</span><br><span class="line">            future.result()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"回调函数示例总耗时: <span class="subst">{time.time() - start_time:<span class="number">.2</span>f}</span>秒"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行示例</span></span><br><span class="line">callback_example()</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="方式二：生成器（Generator）—过渡方案"><a href="#方式二：生成器（Generator）—过渡方案" class="headerlink" title="方式二：生成器（Generator）—过渡方案"></a>方式二：生成器（Generator）—过渡方案</h4><p>虽然避免了回调地狱，代码变的更清晰了，但需要手动调度，实现变的更复杂了。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> types <span class="keyword">import</span> coroutine</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generator_example</span>():</span><br><span class="line">    <span class="string">"""生成器实现协程 - Python 3.4时代的解决方案"""</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">    @coroutine</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">async_sleep</span>(<span class="params">delay</span>):</span><br><span class="line">        <span class="string">"""模拟异步sleep"""</span></span><br><span class="line">        start = time.time()</span><br><span class="line">        <span class="keyword">while</span> time.time() - start &lt; delay:</span><br><span class="line">            <span class="keyword">yield</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"休眠了<span class="subst">{delay}</span>秒"</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run_coroutines</span>():</span><br><span class="line">        <span class="string">"""运行多个协程"""</span></span><br><span class="line">        tasks = [async_sleep(<span class="number">1</span>), async_sleep(<span class="number">2</span>), async_sleep(<span class="number">1</span>)]</span><br><span class="line">        results = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> tasks:</span><br><span class="line">            current = tasks.pop(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="built_in">next</span>(current)</span><br><span class="line">                tasks.append(current)  <span class="comment"># 如果还没完成，放回队列</span></span><br><span class="line">            <span class="keyword">except</span> StopIteration <span class="keyword">as</span> e:</span><br><span class="line">                results.append(e.value)  <span class="comment"># 协程完成，获取返回值</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> results</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"开始生成器协程示例..."</span>)</span><br><span class="line">    start_time = time.time()</span><br><span class="line">    results = run_coroutines()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"生成器协程结果: <span class="subst">{results}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"生成器示例总耗时: <span class="subst">{time.time() - start_time:<span class="number">.2</span>f}</span>秒"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行示例</span></span><br><span class="line">generator_example()</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="方式三：Async-Await——现代方案"><a href="#方式三：Async-Await——现代方案" class="headerlink" title="方式三：Async/Await——现代方案"></a>方式三：Async/Await——现代方案</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">modern_async_example</span>():</span><br><span class="line">    <span class="string">"""现代async/await示例"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">fetch_data</span>(<span class="params">url, delay</span>):</span><br><span class="line">        <span class="string">"""模拟异步数据获取"""</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"开始获取 <span class="subst">{url}</span>"</span>)</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(delay)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"完成获取 <span class="subst">{url}</span>"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"<span class="subst">{url}</span> 的数据（延迟<span class="subst">{delay}</span>秒）"</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"开始现代async/await示例..."</span>)</span><br><span class="line">    start_time = time.time()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 并发执行多个异步任务</span></span><br><span class="line">    results = <span class="keyword">await</span> asyncio.gather(</span><br><span class="line">        fetch_data(<span class="string">"https://api1.com"</span>, <span class="number">1</span>),</span><br><span class="line">        fetch_data(<span class="string">"https://api2.com"</span>, <span class="number">2</span>),</span><br><span class="line">        fetch_data(<span class="string">"https://api3.com"</span>, <span class="number">1</span>),</span><br><span class="line">        fetch_data(<span class="string">"https://api4.com"</span>, <span class="number">1</span>)</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"所有任务完成结果:"</span>)</span><br><span class="line">    <span class="keyword">for</span> result <span class="keyword">in</span> results:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"  - <span class="subst">{result}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"现代async/await总耗时: <span class="subst">{time.time() - start_time:<span class="number">.2</span>f}</span>秒"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行示例</span></span><br><span class="line">asyncio.run(modern_async_example())</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h2 id="asyncio：现代异步解决方案"><a href="#asyncio：现代异步解决方案" class="headerlink" title="asyncio：现代异步解决方案"></a>asyncio：现代异步解决方案</h2><p>异步编程的核心优势在于：<strong>当一个协程等待 I/O 操作时，事件循环可以切换执行其他协程，从而提高整体吞吐量</strong>。</p>
+<h3 id="asyncio的核心概念"><a href="#asyncio的核心概念" class="headerlink" title="asyncio的核心概念"></a>asyncio的核心概念</h3><p><strong>协程（Coroutine）</strong>：异步函数</p>
+<ul>
+<li>是异步编程的基础模块，使用<code>async def</code>定义</li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个简单的协程</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">say_hello</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"开始向 <span class="subst">{name}</span> 问好"</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)  <span class="comment"># 模拟耗时操作</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"你好, <span class="subst">{name}</span>!"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f"<span class="subst">{name}</span> 的问候完成"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行协程的三种方式</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="comment"># 方式1: 直接await</span></span><br><span class="line">    result1 = <span class="keyword">await</span> say_hello(<span class="string">"Alice"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 方式2: 使用asyncio.create_task</span></span><br><span class="line">    task = asyncio.create_task(say_hello(<span class="string">"Bob"</span>))</span><br><span class="line">    result2 = <span class="keyword">await</span> task</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 方式3: 使用asyncio.gather并发执行</span></span><br><span class="line">    results = <span class="keyword">await</span> asyncio.gather(</span><br><span class="line">        say_hello(<span class="string">"Charlie"</span>),</span><br><span class="line">        say_hello(<span class="string">"David"</span>),</span><br><span class="line">        say_hello(<span class="string">"Eve"</span>)</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> results</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行主函数</span></span><br><span class="line">results = asyncio.run(main())</span><br><span class="line"><span class="built_in">print</span>(results)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>事件循环（Event Loop）</strong>：</p>
+<ul>
+<li>异步引擎，也是asyncio的核心，负责调度和执行协程</li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">demo_event_loop</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"事件循环demo"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 获取当前事件循环</span></span><br><span class="line">    loop = asyncio.get_running_loop()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"当前时间: <span class="subst">{loop.time()}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 安排回调函数</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">name</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"回调函数被调用: <span class="subst">{name}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 安排定时回调</span></span><br><span class="line">    loop.call_later(<span class="number">2</span>, callback, <span class="string">"2秒后"</span>)</span><br><span class="line">    loop.call_soon(callback, <span class="string">"立即"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">3</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"演示结束"</span>)</span><br><span class="line"></span><br><span class="line">asyncio.run(demo_event_loop())</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>任务（Task）</strong>：</p>
+<ul>
+<li>协程的包装器，用于并发执行</li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">task_management</span>():</span><br><span class="line">    <span class="string">"""任务管理演示"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">worker</span>(<span class="params">name, seconds</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"<span class="subst">{name}</span> 开始工作"</span>)</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(seconds)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"<span class="subst">{name}</span> 工作完成"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"<span class="subst">{name}</span> 工作了<span class="subst">{seconds}</span>秒"</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建多个任务</span></span><br><span class="line">    tasks = [</span><br><span class="line">        asyncio.create_task(worker(<span class="string">"工人1"</span>, <span class="number">2</span>)),</span><br><span class="line">        asyncio.create_task(worker(<span class="string">"工人2"</span>, <span class="number">1</span>)),</span><br><span class="line">        asyncio.create_task(worker(<span class="string">"工人3"</span>, <span class="number">3</span>))</span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"所有任务已创建，开始并发执行..."</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 等待所有任务完成</span></span><br><span class="line">    results = <span class="keyword">await</span> asyncio.gather(*tasks)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"所有任务完成: <span class="subst">{results}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 任务状态检查</span></span><br><span class="line">    <span class="keyword">for</span> task <span class="keyword">in</span> tasks:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"任务 <span class="subst">{task.get_name()}</span>: 完成=<span class="subst">{task.done()}</span>, 结果=<span class="subst">{task.result()}</span>"</span>)</span><br><span class="line"></span><br><span class="line">asyncio.run(task_management())</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>Future对象</strong>：</p>
+<ul>
+<li>代表一个尚未完成的计算结果</li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">future_demo</span>():</span><br><span class="line">    <span class="comment"># 创建Future对象</span></span><br><span class="line">    future = asyncio.Future()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"Future状态: <span class="subst">{future.done()}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 设置结果（通常在别处）</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set_result</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"设置Future结果"</span>)</span><br><span class="line">        future.set_result(<span class="string">"完成!"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2秒后设置结果</span></span><br><span class="line">    asyncio.get_event_loop().call_later(<span class="number">2</span>, set_result)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 等待Future完成</span></span><br><span class="line">    result = <span class="keyword">await</span> future</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"Future状态: <span class="subst">{future.done()}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"结果: <span class="subst">{result}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">asyncio.run(future_demo())</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h3 id="低级API-vs-高级API对比"><a href="#低级API-vs-高级API对比" class="headerlink" title="低级API vs 高级API对比"></a>低级API vs 高级API对比</h3><p>更全面的低级API的用法请：<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.13/library/asyncio-llapi-index.html">点进前往</a></p>
+<p>更全面的高级API的用法请：<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.13/library/asyncio-api-index.html">点进前往</a></p>
+<table>
+<thead>
+<tr>
+<th align="left">类别</th>
+<th align="left">API名称</th>
+<th align="left">说明</th>
+<th align="left">使用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>低级API</strong></td>
+<td align="left"><code>loop.create_future()</code></td>
+<td align="left">创建Future对象</td>
+<td align="left">需要精细控制时</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><code>loop.call_soon()</code></td>
+<td align="left">立即调度回调</td>
+<td align="left">优先级高的任务</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><code>loop.call_later()</code></td>
+<td align="left">延迟调度</td>
+<td align="left">定时任务</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><code>loop.run_in_executor()</code></td>
+<td align="left">在线程池中运行</td>
+<td align="left">CPU密集型任务</td>
+</tr>
+<tr>
+<td align="left"><strong>高级API</strong></td>
+<td align="left"><code>asyncio.run()</code></td>
+<td align="left">运行协程</td>
+<td align="left">程序入口点</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><code>asyncio.create_task()</code></td>
+<td align="left">创建任务</td>
+<td align="left">并发执行协程</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><code>asyncio.gather()</code></td>
+<td align="left">并发运行多个任务</td>
+<td align="left">等待多个任务完成</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><code>asyncio.wait()</code></td>
+<td align="left">更灵活的任务等待</td>
+<td align="left">需要超时或优先完成时</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><code>asyncio.sleep()</code></td>
+<td align="left">异步等待</td>
+<td align="left">模拟I/O操作</td>
+</tr>
+</tbody></table>
+<h3 id="asyncio高级特性"><a href="#asyncio高级特性" class="headerlink" title="asyncio高级特性"></a>asyncio高级特性</h3><ul>
+<li><strong>信号量控制并发数</strong></li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">limited_concurrency</span>():</span><br><span class="line">    semaphore = asyncio.Semaphore(<span class="number">3</span>)  <span class="comment"># 最大并发数3</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">limited_task</span>(<span class="params">i</span>):</span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> semaphore:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"任务 <span class="subst">{i}</span> 开始"</span>)</span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"任务 <span class="subst">{i}</span> 完成"</span>)</span><br><span class="line">            <span class="keyword">return</span> i</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建10个任务，但最多同时执行3个</span></span><br><span class="line">    tasks = [limited_task(i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)]</span><br><span class="line">    results = <span class="keyword">await</span> asyncio.gather(*tasks)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"所有任务完成: <span class="subst">{results}</span>"</span>)</span><br><span class="line"></span><br><span class="line">asyncio.run(limited_concurrency())</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><strong>超时与取消控制</strong></li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">timeout_cancel_demo</span>():</span><br><span class="line">    <span class="string">"""超时和取消demo"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">long_running_task</span>(<span class="params">name, seconds</span>):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"<span class="subst">{name}</span> 开始运行"</span>)</span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(seconds)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"<span class="subst">{name}</span> 正常完成"</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">f"<span class="subst">{name}</span> 成功"</span></span><br><span class="line">        <span class="keyword">except</span> asyncio.CancelledError:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"<span class="subst">{name}</span> 被取消"</span>)</span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 超时控制</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        result = <span class="keyword">await</span> asyncio.wait_for(</span><br><span class="line">            long_running_task(<span class="string">"任务A"</span>, <span class="number">5</span>), </span><br><span class="line">            timeout=<span class="number">2.0</span></span><br><span class="line">        )</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"任务A结果: <span class="subst">{result}</span>"</span>)</span><br><span class="line">    <span class="keyword">except</span> asyncio.TimeoutError:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"任务A超时"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 手动取消</span></span><br><span class="line">    task_b = asyncio.create_task(long_running_task(<span class="string">"任务B"</span>, <span class="number">3</span>))</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    task_b.cancel()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">await</span> task_b</span><br><span class="line">    <span class="keyword">except</span> asyncio.CancelledError:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"任务B已取消"</span>)</span><br><span class="line"></span><br><span class="line">asyncio.run(timeout_cancel_demo())</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><strong>队列处理</strong></li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">queue_example</span>():</span><br><span class="line">    queue = asyncio.Queue(maxsize=<span class="number">3</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">producer</span>():</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(random.random())</span><br><span class="line">            <span class="keyword">await</span> queue.put(<span class="string">f"消息 <span class="subst">{i}</span>"</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"生产: 消息 <span class="subst">{i}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">consumer</span>():</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            item = <span class="keyword">await</span> queue.get()</span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(random.random() * <span class="number">2</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f"消费: <span class="subst">{item}</span>"</span>)</span><br><span class="line">            queue.task_done()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 启动生产者和消费者</span></span><br><span class="line">    producer_task = asyncio.create_task(producer())</span><br><span class="line">    consumer_task = asyncio.create_task(consumer())</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">await</span> producer_task</span><br><span class="line">    <span class="keyword">await</span> queue.join()  <span class="comment"># 等待所有任务完成</span></span><br><span class="line">    consumer_task.cancel()</span><br><span class="line"></span><br><span class="line">asyncio.run(queue_example())</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="常用场景的代码框架"><a href="#常用场景的代码框架" class="headerlink" title="常用场景的代码框架"></a>常用场景的代码框架</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">advanced_patterns</span>():</span><br><span class="line">    <span class="comment"># 1. 限制并发数</span></span><br><span class="line">    semaphore = asyncio.Semaphore(<span class="number">5</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">limited_request</span>(<span class="params">url</span>):</span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> semaphore:</span><br><span class="line">            <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> session:</span><br><span class="line">                <span class="keyword">async</span> <span class="keyword">with</span> session.get(url) <span class="keyword">as</span> response:</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">await</span> response.text()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 超时控制</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        result = <span class="keyword">await</span> asyncio.wait_for(</span><br><span class="line">            limited_request(<span class="string">'https://httpbin.org/delay/5'</span>), </span><br><span class="line">            timeout=<span class="number">3.0</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">except</span> asyncio.TimeoutError:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"请求超时"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 任务取消</span></span><br><span class="line">    task = asyncio.create_task(limited_request(<span class="string">'https://httpbin.org/delay/10'</span>))</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    task.cancel()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">await</span> task</span><br><span class="line">    <span class="keyword">except</span> asyncio.CancelledError:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"任务被取消"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="实践中的挑战与解决方案"><a href="#实践中的挑战与解决方案" class="headerlink" title="实践中的挑战与解决方案"></a>实践中的挑战与解决方案</h2><h3 id="识别适合异步的场景"><a href="#识别适合异步的场景" class="headerlink" title="识别适合异步的场景"></a>识别适合异步的场景</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 适合异步：网络 I/O 密集型</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">good_async_example</span>():</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">fetch_api_data</span>(<span class="params">api_url</span>):</span><br><span class="line">        <span class="comment"># 模拟网络请求</span></span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"数据来自 <span class="subst">{api_url}</span>"</span></span><br><span class="line">    </span><br><span class="line">    start = time.time()</span><br><span class="line">    <span class="comment"># 并发执行多个网络请求</span></span><br><span class="line">    results = <span class="keyword">await</span> asyncio.gather(</span><br><span class="line">        fetch_api_data(<span class="string">"api1"</span>),</span><br><span class="line">        fetch_api_data(<span class="string">"api2"</span>), </span><br><span class="line">        fetch_api_data(<span class="string">"api3"</span>)</span><br><span class="line">    )</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"异步网络请求耗时: <span class="subst">{time.time() - start:<span class="number">.2</span>f}</span>秒"</span>)  <span class="comment"># 约1秒</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不适合异步：CPU 密集型</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bad_async_example</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cpu_intensive_task</span>(<span class="params">n</span>):</span><br><span class="line">        total = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            total += i * i</span><br><span class="line">        <span class="keyword">return</span> total</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 即使用异步包装，由于 GIL 限制，性能提升有限</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">async_cpu_task</span>(<span class="params">n</span>):</span><br><span class="line">        <span class="keyword">return</span> cpu_intensive_task(n)</span><br><span class="line"></span><br><span class="line">asyncio.run(good_async_example())</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="混合使用异步与执行器"><a href="#混合使用异步与执行器" class="headerlink" title="混合使用异步与执行器"></a>混合使用异步与执行器</h3><p>针对 GIL 限制，我们可以结合异步和执行器来解决不同类型的任务：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> concurrent.futures</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">hybrid_solution</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cpu_task</span>(<span class="params">n</span>):</span><br><span class="line">        <span class="string">"""CPU 密集型任务"""</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sum</span>(i * i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">blocking_io_task</span>():</span><br><span class="line">        <span class="string">"""阻塞 I/O 任务"""</span></span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"阻塞任务完成"</span></span><br><span class="line">    </span><br><span class="line">    loop = asyncio.get_running_loop()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># CPU 密集型任务使用进程池</span></span><br><span class="line">    <span class="keyword">with</span> concurrent.futures.ProcessPoolExecutor() <span class="keyword">as</span> process_pool:</span><br><span class="line">        cpu_futures = [</span><br><span class="line">            loop.run_in_executor(process_pool, cpu_task, <span class="number">100000</span>)</span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>)</span><br><span class="line">        ]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 阻塞 I/O 使用线程池  </span></span><br><span class="line">    <span class="keyword">with</span> concurrent.futures.ThreadPoolExecutor() <span class="keyword">as</span> thread_pool:</span><br><span class="line">        io_futures = [</span><br><span class="line">            loop.run_in_executor(thread_pool, blocking_io_task)</span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>)</span><br><span class="line">        ]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 并发执行所有任务</span></span><br><span class="line">    start_time = time.time()</span><br><span class="line">    cpu_results = <span class="keyword">await</span> asyncio.gather(*cpu_futures)</span><br><span class="line">    io_results = <span class="keyword">await</span> asyncio.gather(*io_futures)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"混合方案总耗时: <span class="subst">{time.time() - start_time:<span class="number">.2</span>f}</span>秒"</span>)</span><br><span class="line"></span><br><span class="line">asyncio.run(hybrid_solution())</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="统一API设计模式"><a href="#统一API设计模式" class="headerlink" title="统一API设计模式"></a>统一API设计模式</h3><p>针对双 API 维护问题，这里提供一个实用的解决方案：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Union</span>, Awaitable, overload</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UnifiedDataService</span>:</span><br><span class="line">    <span class="string">"""统一的数据服务，支持同步和异步调用"""</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">    @overload</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_data</span>(<span class="params">self, key: <span class="built_in">str</span>, *, async_mode: <span class="built_in">bool</span> = <span class="literal">False</span></span>) -&gt; <span class="built_in">str</span>: ...</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @overload  </span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_data</span>(<span class="params">self, key: <span class="built_in">str</span>, *, async_mode: <span class="built_in">bool</span> = <span class="literal">True</span></span>) -&gt; Awaitable[<span class="built_in">str</span>]: ...</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_data</span>(<span class="params">self, key: <span class="built_in">str</span>, *, async_mode: <span class="built_in">bool</span> = <span class="literal">False</span></span>) -&gt; <span class="type">Union</span>[<span class="built_in">str</span>, Awaitable[<span class="built_in">str</span>]]:</span><br><span class="line">        <span class="string">"""根据 async_mode 参数决定返回同步还是异步结果"""</span></span><br><span class="line">        <span class="keyword">if</span> async_mode:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._async_get_data(key)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._sync_get_data(key)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_sync_get_data</span>(<span class="params">self, key: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"同步获取: <span class="subst">{key}</span>"</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">_async_get_data</span>(<span class="params">self, key: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">0.1</span>)  <span class="comment"># 模拟异步操作</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"异步获取: <span class="subst">{key}</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">service = UnifiedDataService()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 同步调用</span></span><br><span class="line">sync_result = service.get_data(<span class="string">"key1"</span>, async_mode=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span>(sync_result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 异步调用</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">test_async</span>():</span><br><span class="line">    async_result = <span class="keyword">await</span> service.get_data(<span class="string">"key1"</span>, async_mode=<span class="literal">True</span>)</span><br><span class="line">    <span class="built_in">print</span>(async_result)</span><br><span class="line"></span><br><span class="line">asyncio.run(test_async())</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="持续关注：Python-3-14-的革命性变化"><a href="#持续关注：Python-3-14-的革命性变化" class="headerlink" title="持续关注：Python 3.14 的革命性变化"></a>持续关注：Python 3.14 的革命性变化</h2><p>正如文章中所预言的，Python 3.14 带来了两个具有历史意义的并发编程突破，有望彻底改变当前的格局。</p>
+<h3 id="PEP-779-Free-Threading-的历史性突破"><a href="#PEP-779-Free-Threading-的历史性突破" class="headerlink" title="PEP 779: Free-Threading 的历史性突破"></a>PEP 779: Free-Threading 的历史性突破</h3><p><strong>核心改变</strong>：移除 GIL 限制，实现真正的多线程并行执行。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 Free-Threading 模式下，这些操作可以真正并行</span></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cpu_intensive_task</span>(<span class="params">name, n</span>):</span><br><span class="line">    total = <span class="built_in">sum</span>(i * i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"任务 <span class="subst">{name}</span> 完成: <span class="subst">{total}</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以前受 GIL 限制，现在可以真正并行</span></span><br><span class="line">threads = []</span><br><span class="line">start_time = time.time()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">    thread = threading.Thread(</span><br><span class="line">        target=cpu_intensive_task, </span><br><span class="line">        args=[<span class="string">f"Thread-<span class="subst">{i}</span>"</span>, <span class="number">1000000</span>]</span><br><span class="line">    )</span><br><span class="line">    threads.append(thread)</span><br><span class="line">    thread.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> thread <span class="keyword">in</span> threads:</span><br><span class="line">    thread.join()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f"总耗时: <span class="subst">{time.time() - start_time:<span class="number">.2</span>f}</span> 秒"</span>)</span><br><span class="line"><span class="comment"># Free-Threading 模式下，4个线程可以真正并行</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>重大意义：</p>
+<ul>
+<li>性能革命：CPU 密集型任务可以充分利用多核处理器</li>
+<li>降低复杂性：某些场景下线程可能比协程更简单易用</li>
+<li>向后兼容：现有异步代码仍然有效</li>
+</ul>
+<h3 id="PEP-734-多解释器支持"><a href="#PEP-734-多解释器支持" class="headerlink" title="PEP 734: 多解释器支持"></a>PEP 734: 多解释器支持</h3><p><strong>核心特性</strong>：每个解释器拥有独立的全局状态，提供更安全的并行执行环境。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 伪代码示例（PEP 734 实现）</span></span><br><span class="line"><span class="keyword">import</span> interpreters</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建独立的解释器实例</span></span><br><span class="line">interp1 = interpreters.create()</span><br><span class="line">interp2 = interpreters.create()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在不同解释器中执行代码，完全隔离</span></span><br><span class="line">code1 = <span class="string">"""</span></span><br><span class="line"><span class="string">def cpu_task():</span></span><br><span class="line"><span class="string">    return sum(i*i for i in range(1000000))</span></span><br><span class="line"><span class="string">result = cpu_task()</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">code2 = <span class="string">"""</span></span><br><span class="line"><span class="string">async def io_task():</span></span><br><span class="line"><span class="string">    await asyncio.sleep(1)</span></span><br><span class="line"><span class="string">    return "IO task completed"</span></span><br><span class="line"><span class="string">result = asyncio.run(io_task())</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 并行执行，每个解释器独立运行</span></span><br><span class="line">interp1.<span class="built_in">exec</span>(code1)</span><br><span class="line">interp2.<span class="built_in">exec</span>(code2)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="对异步编程的影响"><a href="#对异步编程的影响" class="headerlink" title="对异步编程的影响"></a>对异步编程的影响</h3><p><strong>竞争与互补的新格局</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 场景分析：不同工作负载的最优选择</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># I/O 密集型 - 异步仍然是最佳选择</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">io_heavy_work</span>():</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> session:</span><br><span class="line">        tasks = [session.get(url) <span class="keyword">for</span> url <span class="keyword">in</span> urls]</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> asyncio.gather(*tasks)</span><br><span class="line"></span><br><span class="line"><span class="comment"># CPU 密集型 - Free-Threading 提供新选择  </span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cpu_heavy_work</span>():</span><br><span class="line">    <span class="keyword">with</span> ThreadPoolExecutor() <span class="keyword">as</span> executor:</span><br><span class="line">        futures = [executor.submit(compute, data) <span class="keyword">for</span> data <span class="keyword">in</span> datasets]</span><br><span class="line">        <span class="keyword">return</span> [f.result() <span class="keyword">for</span> f <span class="keyword">in</span> futures]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 混合工作负载 - 多解释器方案</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hybrid_work</span>():</span><br><span class="line">    io_interp = interpreters.create()</span><br><span class="line">    cpu_interp = interpreters.create()</span><br><span class="line">    <span class="comment"># 不同类型的任务在不同解释器中执行</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="项目选型的一些建议"><a href="#项目选型的一些建议" class="headerlink" title="项目选型的一些建议"></a>项目选型的一些建议</h2><p><strong>立即可行的方案</strong>：</p>
+<ol>
+<li><strong>I/O 密集型项目</strong>：继续使用 FastAPI + aiohttp 异步方案</li>
+<li><strong>CPU 密集型项目</strong>：采用多进程方案或等待 Free-Threading 稳定</li>
+<li><strong>混合负载项目</strong>：考虑 asyncio + 执行器的混合方案</li>
+</ol>
+<p><strong>Web 框架推荐</strong>：</p>
+<ul>
+<li>新项目：FastAPI（异步优先）&gt; Django 4.1+（异步支持）</li>
+<li>现有项目：渐进式引入异步，在 I/O 边界使用</li>
+</ul>
+<p><strong>HTTP 客户端推荐</strong>：</p>
+<ul>
+<li>异步场景：aiohttp &gt; httpx（异步模式）</li>
+<li>同步场景：httpx（同步模式）&gt; requests</li>
+</ul>
+<h2 id="异步编程的未来可期"><a href="#异步编程的未来可期" class="headerlink" title="异步编程的未来可期"></a>异步编程的未来可期</h2><p>异步编程就是一把双刃剑——用对了场景能大幅提升性能，用错了反而增加复杂度，开篇引入的那边文章就是很好的揭示了这一点。</p>
+<ul>
+<li><strong>当下</strong>：在适合的场景（Web API、爬虫、实时应用）继续使用异步编程</li>
+<li><strong>未来</strong>：关注 Python 3.14+ 的发展，准备拥抱多样化的并发解决方案</li>
+</ul>
+<p>技术选型没有银弹，只有最适合的方案。随着 Python 并发能力的不断增强，我相信，未来的异步编程会更加简单、强大和普及。</p>
+<hr>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://tonybaloney.github.io/posts/why-isnt-python-async-more-popular.html">Python has had async for 10 years – why isn’t it more popular?</a> - Anthony Shaw</li>
+<li><a target="_blank" rel="noopener" href="https://peps.python.org/pep-0703/">PEP 703: Making the Global Interpreter Lock Optional</a></li>
+<li><a target="_blank" rel="noopener" href="https://peps.python.org/pep-0734/">PEP 734: Multiple Interpreters in the Stdlib</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/asyncio.html">asyncio 官方文档</a></li>
+</ul>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-09-08</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/python%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/'>
+                            python工程实践
+                        </a>
+                    
+                        <a href='/tags/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/'>
+                            异步编程
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/Python/'>
+                            Python
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/09/09/tools/250909-practical-efficiency-tools/'>我的工具箱：甄选实用&amp;效率工具</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/09/02/dsa/20250902-data-structure-classification/">DS&amp;A重学日志:[三]数据结构的分类</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        
+    </div>
+    
+        
+
+    <div id="waline"></div>
+    <script type="module"  >
+        import { init } from 'https://npm.elemecdn.com/hexo-theme-a4@latest/source/js/waline.mjs';
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://blog-comment-seven-psi.vercel.app/',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+                search: false, // 禁止表情包搜索
+                reaction: false, // 对文章打分
+                pageview: false, // 浏览量统计
+                comment: false, // 评论数统计
+
+                locale: {
+                    placeholder: '留下你的评论吧。',
+                    sofa: ''
+                },
+            });
+
+        }
+        window.addEventListener('DOMContentLoaded', loadWaline);
+    </script>
+
+
+
+    
+    
+    
+    
+    </div>
+
+
+     
+</div>
+
+
+
+
+                    
+
+                    <div class="footer">
+    
+        <span> 
+            © 2025~ China 
+
+            
+                
+
+            
+                
+                    / <a href="/atom.xml"> RSS </a>
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊一念净心 花开遍世界...🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <!-- 不蒜子统计服务 -->
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<!-- 首页时间进度脚本，仅在首页加载 -->
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
+<script src="/js/emojiHandler.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        wrapEmojis('.paper');
+    });
+</script>

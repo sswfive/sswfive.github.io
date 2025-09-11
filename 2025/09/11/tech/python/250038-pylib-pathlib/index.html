@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="用了Pathlib后，我再也不想碰os.path了！" />
+    <meta name="hexo-theme-A4" content="v2.0.0" />
+    <link rel="alternate icon" type="image/webp" href="/images/head.png">
+    <title>BluesSen | 空谷幽兰</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+            
+<link rel="stylesheet" href="/css/waline.css">
+
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+   
+        
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+    <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css' /> 
+<meta name="generator" content="Hexo 7.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="BluesSen" type="application/atom+xml">
+</head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+
+
+
+    
+    
+
+
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            
+                <div class="left-toc-container">
+                    <nav id="toc" class="bs-docs-sidebar"></nav>
+                </div>
+            
+        
+        <div class="paper">
+
+            
+
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/images/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">BluesSen</a> 
+            <span class="description"> Coding ｜ Coffee</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">
+                    
+                        <span class="menu-icon">☕</span>
+                    
+                    首页
+                </a></li>
+            
+        
+            
+                <li><a href="/list/">
+                    
+                        <span class="menu-icon">📚</span>
+                    
+                    文章
+                </a></li>
+            
+        
+            
+                <li><a href="/tags/">
+                    
+                        <span class="menu-icon">🏷️</span>
+                    
+                    标签
+                </a></li>
+            
+        
+            
+                <li><a href="/categories/">
+                    
+                        <span class="menu-icon">📂</span>
+                    
+                    分类
+                </a></li>
+            
+        
+            
+                <li><a href="/now/">
+                    
+                        <span class="menu-icon">🔗</span>
+                    
+                    当下
+                </a></li>
+            
+        
+            
+                <li><a href="/about/">
+                    
+                        <span class="menu-icon">👨‍💻</span>
+                    
+                    关于
+                </a></li>
+            
+        
+            
+                <li><a href="/search/">
+                    
+                        <span class="menu-icon">🔍</span>
+                    
+                    搜索
+                </a></li>
+            
+        
+    </ul>
+</div>
+
+                    
+                    
+
+                    
+                    
+
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    用了Pathlib后，我再也不想碰os.path了！
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-09-11</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：2.9k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：12分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv" style="display: none;">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+        <div class=".article-gallery"><p>在日常Python开发中，文件路径操作是绕不开的话题。你是否还在使用<code>os.path.join()</code>拼接路径？是否还在为Windows和Linux的路径分隔符头疼？是否期待一种更Pythonic的方式来处理路径？</p>
+<p>先来看一个直观的对比，即使你现在还不熟悉pathlib，也能一眼看出来区别：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 传统方式：繁琐且易出错</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">base_path = os.path.dirname(os.path.dirname(os.getcwd()))</span><br><span class="line">file_path = os.path.join(base_path, <span class="string">'data'</span>, <span class="string">'users'</span>, <span class="string">'profile.json'</span>)</span><br><span class="line"><span class="keyword">if</span> os.path.exists(file_path):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        content = f.read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># pathlib方式：简洁优雅</span></span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line">file_path = Path.cwd().parent.parent / <span class="string">'data'</span> / <span class="string">'users'</span> / <span class="string">'profile.json'</span></span><br><span class="line"><span class="keyword">if</span> file_path.exists():</span><br><span class="line">    content = file_path.read_text()</span><br></pre></td></tr></tbody></table></figure>
+
+<p>看出差异了吗？今天要介绍的，正是这个让文件路径操作变得优雅如诗的Python标准库——<strong>pathlib</strong>。</p>
+<h2 id="pathlib是什么？"><a href="#pathlib是什么？" class="headerlink" title="pathlib是什么？"></a>pathlib是什么？</h2><p>pathlib是Python 3.4中新增的标准库模块，提供了面向对象的文件系统路径操作方式。官网地址：<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/pathlib.html">点击前往</a></p>
+<p>它的核心优势包括：</p>
+<ul>
+<li><strong>面向对象API</strong>：路径不再是字符串，而是Path对象，方法可以链式调用 </li>
+<li><strong>跨平台统一</strong>：无缝兼容Windows和Unix系统，自动处理不同操作系统的路径差异</li>
+<li><strong>直观易懂</strong>：代码即文档，一看就懂 </li>
+<li><strong>功能强大</strong>：覆盖了绝大部分文件路径操作需求，包括文件操作、路径查询、模式匹配等功能</li>
+</ul>
+<p>日常开发中，我们最常用的是<strong>Path</strong>类，它可以完全替代os.path的功能。</p>
+<h2 id="为什么需要pathlib？"><a href="#为什么需要pathlib？" class="headerlink" title="为什么需要pathlib？"></a>为什么需要pathlib？</h2><blockquote>
+<p><strong>传统os.path的三大痛点</strong></p>
+</blockquote>
+<p><strong>1. 函数式编程，缺乏连贯性</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># os.path: 需要不断传递路径字符串</span></span><br><span class="line">path = <span class="string">'/Users/astonwang/projects'</span></span><br><span class="line">parent = os.path.dirname(path)</span><br><span class="line">grandparent = os.path.dirname(parent)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>2. 跨平台兼容性问题</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Windows: C:\Users\Name\Documents</span></span><br><span class="line"><span class="comment"># Linux: /home/name/documents</span></span><br><span class="line"><span class="comment"># 需要手动处理路径分隔符差异</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>3. 代码可读性差</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这行代码在做什么？一眼看不出来</span></span><br><span class="line">full_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), <span class="string">'..'</span>, <span class="string">'data'</span>, <span class="string">'config.json'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="pathlib的核心设计"><a href="#pathlib的核心设计" class="headerlink" title="pathlib的核心设计"></a>pathlib的核心设计</h2><p>pathlib提供了丰富的类来处理不同场景下的路径操作：</p>
+<h3 id="两大分支：纯路径-vs-具体路径"><a href="#两大分支：纯路径-vs-具体路径" class="headerlink" title="两大分支：纯路径 vs 具体路径"></a>两大分支：纯路径 vs 具体路径</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 纯路径：只做路径运算，不访问文件系统</span></span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> PurePath, PurePosixPath, PureWindowsPath</span><br><span class="line"></span><br><span class="line"><span class="comment"># 具体路径：可以访问文件系统，进行I/O操作  </span></span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path, PosixPath, WindowsPath</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>纯路径家族</strong>（Pure Path）- 理论派</p>
+<ul>
+<li>只负责路径的逻辑运算</li>
+<li>不会访问真实的文件系统</li>
+<li>适合路径字符串的处理和转换</li>
+</ul>
+<p><strong>具体路径家族</strong>（Concrete Path）- 实践派</p>
+<ul>
+<li>可以创建、读取、写入文件</li>
+<li>能够检查文件是否存在</li>
+<li>支持所有文件系统操作</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 纯路径操作（无I/O）</span></span><br><span class="line">PurePath</span><br><span class="line">├── PurePosixPath  <span class="comment"># Unix风格</span></span><br><span class="line">└── PureWindowsPath <span class="comment"># Windows风格</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 具体路径操作（带I/O）</span></span><br><span class="line">Path</span><br><span class="line">├── PosixPath      <span class="comment"># Unix系统</span></span><br><span class="line">└── WindowsPath    <span class="comment"># Windows系统</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="日常开发首选：Path类"><a href="#日常开发首选：Path类" class="headerlink" title="日常开发首选：Path类"></a>日常开发首选：Path类</h3><p>在99%的场景中，你只需要使用<strong>Path类</strong>：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="comment"># Path会自动选择合适的子类</span></span><br><span class="line"><span class="comment"># 在Linux/Mac上 -&gt; PosixPath  </span></span><br><span class="line"><span class="comment"># 在Windows上 -&gt; WindowsPath</span></span><br><span class="line">current_dir = Path.cwd()</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(current_dir))  <span class="comment"># 自动适配当前系统</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>记住这个原则</strong>：除非有特殊需求，否则直接用<code>Path</code>就够了！</p>
+<h2 id="pathlib-VS-os-path-的API对比"><a href="#pathlib-VS-os-path-的API对比" class="headerlink" title="pathlib VS os.path 的API对比"></a>pathlib VS os.path 的API对比</h2><p>想知道pathlib到底比os.path强在哪里？来看看这个对比表：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>pathlib优雅写法</th>
+<th>os.path传统写法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>获取当前目录</strong></td>
+<td><code>Path.cwd()</code></td>
+<td><code>os.getcwd()</code></td>
+</tr>
+<tr>
+<td><strong>获取主目录</strong></td>
+<td><code>Path.home()</code></td>
+<td><code>os.path.expanduser('~')</code></td>
+</tr>
+<tr>
+<td><strong>路径拼接</strong></td>
+<td><code>Path('a') / 'b' / 'c'</code></td>
+<td><code>os.path.join('a', 'b', 'c')</code></td>
+</tr>
+<tr>
+<td><strong>获取绝对路径</strong></td>
+<td><code>path.absolute()</code></td>
+<td><code>os.path.abspath(path)</code></td>
+</tr>
+<tr>
+<td><strong>获取父目录</strong></td>
+<td><code>path.parent</code></td>
+<td><code>os.path.dirname(path)</code></td>
+</tr>
+<tr>
+<td><strong>获取文件名</strong></td>
+<td><code>path.name</code></td>
+<td><code>os.path.basename(path)</code></td>
+</tr>
+<tr>
+<td><strong>判断是否存在</strong></td>
+<td><code>path.exists()</code></td>
+<td><code>os.path.exists(path)</code></td>
+</tr>
+<tr>
+<td><strong>判断是否文件</strong></td>
+<td><code>path.is_file()</code></td>
+<td><code>os.path.isfile(path)</code></td>
+</tr>
+<tr>
+<td><strong>创建目录</strong></td>
+<td><code>path.mkdir(parents=True)</code></td>
+<td><code>os.makedirs(path)</code></td>
+</tr>
+<tr>
+<td><strong>读取文件</strong></td>
+<td><code>path.read_text()</code></td>
+<td><code>open(path).read()</code></td>
+</tr>
+<tr>
+<td><strong>写入文件</strong></td>
+<td><code>path.write_text(data)</code></td>
+<td><code>open(path, 'w').write(data)</code></td>
+</tr>
+</tbody></table>
+<p><strong>一句话总结</strong>：pathlib让你的代码从”写给计算机看”变成”写给人类看”！</p>
+<h2 id="Pathlib基础实践指南—Path类"><a href="#Pathlib基础实践指南—Path类" class="headerlink" title="Pathlib基础实践指南—Path类"></a>Pathlib基础实践指南—Path类</h2><p>pathlib的强大之处在于它丰富的方法库，让我们按使用场景来分类介绍：</p>
+<h3 id="路径探索操作"><a href="#路径探索操作" class="headerlink" title="路径探索操作"></a>路径探索操作</h3><h4 id="获取特殊目录"><a href="#获取特殊目录" class="headerlink" title="获取特殊目录"></a>获取特殊目录</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前工作目录 - 相当于 os.getcwd()</span></span><br><span class="line">current_dir = Path.cwd()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f"当前目录: <span class="subst">{current_dir}</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户主目录 - 相当于 os.path.expanduser('~')  </span></span><br><span class="line">home_dir = Path.home()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f"主目录: <span class="subst">{home_dir}</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查路径是否存在 - 相当于 os.path.exists()</span></span><br><span class="line">config_file = Path(<span class="string">"config.json"</span>)</span><br><span class="line"><span class="keyword">if</span> config_file.exists():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"配置文件存在"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="文件搜索"><a href="#文件搜索" class="headerlink" title="文件搜索"></a>文件搜索</h4><p>pathlib的<code>glob</code>功能堪比终端的find命令，让文件搜索变得简单：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查找当前目录所有Python文件</span></span><br><span class="line">python_files = <span class="built_in">list</span>(Path(<span class="string">"."</span>).glob(<span class="string">"*.py"</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f"找到 <span class="subst">{<span class="built_in">len</span>(python_files)}</span> 个Python文件"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归搜索所有Python文件 - 相当于 find . -name "*.py"</span></span><br><span class="line">all_python_files = <span class="built_in">list</span>(Path(<span class="string">"."</span>).rglob(<span class="string">"*.py"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找特定模式的文件</span></span><br><span class="line">test_files = <span class="built_in">list</span>(Path(<span class="string">"."</span>).rglob(<span class="string">"test_*.py"</span>))</span><br><span class="line">config_files = <span class="built_in">list</span>(Path(<span class="string">"."</span>).rglob(<span class="string">"**/config/*.json"</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="目录遍历"><a href="#目录遍历" class="headerlink" title="目录遍历"></a>目录遍历</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出目录内容 - 相当于 os.listdir()</span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> Path(<span class="string">"."</span>).iterdir():</span><br><span class="line">    <span class="keyword">if</span> item.is_file():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"文件: <span class="subst">{item.name}</span>"</span>)</span><br><span class="line">    <span class="keyword">elif</span> item.is_dir():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"目录: <span class="subst">{item.name}</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归遍历目录树 - 相当于 os.walk()</span></span><br><span class="line"><span class="keyword">for</span> dirpath, dirnames, filenames <span class="keyword">in</span> Path(<span class="string">"."</span>).walk():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"当前目录: <span class="subst">{dirpath}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"子目录: <span class="subst">{dirnames}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"文件: <span class="subst">{filenames[:<span class="number">3</span>]}</span>..."</span>)  <span class="comment"># 只显示前3个文件</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="路径转换"><a href="#路径转换" class="headerlink" title="路径转换"></a>路径转换</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取绝对路径 - 相当于 os.path.abspath()</span></span><br><span class="line">relative_path = Path(<span class="string">"../data/file.txt"</span>)</span><br><span class="line">absolute_path = relative_path.absolute()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析软链接 - 相当于 os.path.realpath()</span></span><br><span class="line">resolved_path = relative_path.resolve()</span><br></pre></td></tr></tbody></table></figure>
+
+
+<h3 id="路径类型判断"><a href="#路径类型判断" class="headerlink" title="路径类型判断"></a>路径类型判断</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断路径类型 - 比 os.path.isfile/isdir 更直观</span></span><br><span class="line">data_path = Path(<span class="string">"data.txt"</span>)</span><br><span class="line">config_dir = Path(<span class="string">"config/"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基础判断</span></span><br><span class="line"><span class="keyword">if</span> data_path.is_file():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"这是一个文件"</span>)</span><br><span class="line"><span class="keyword">if</span> config_dir.is_dir():  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"这是一个目录"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 比较两个路径是否指向同一个文件 - 相当于 os.path.samefile()</span></span><br><span class="line"><span class="keyword">if</span> Path(<span class="string">"file1.txt"</span>).samefile(Path(<span class="string">"file2.txt"</span>)):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"两个路径指向同一个文件"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="文件与目录操作"><a href="#文件与目录操作" class="headerlink" title="文件与目录操作"></a>文件与目录操作</h3><h4 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建目录 - 比 os.makedirs 更简洁</span></span><br><span class="line">new_dir = Path(<span class="string">"project/src/utils"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归创建目录（相当于 mkdir -p）</span></span><br><span class="line">new_dir.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除空目录 - 相当于 os.rmdir()</span></span><br><span class="line">empty_dir = Path(<span class="string">"temp"</span>)</span><br><span class="line"><span class="keyword">if</span> empty_dir.exists() <span class="keyword">and</span> empty_dir.is_dir():</span><br><span class="line">    empty_dir.rmdir()</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><p>pathlib最让人惊喜的地方就是内置的文件读写方法：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建空文件（相当于 touch 命令）</span></span><br><span class="line">log_file = Path(<span class="string">"app.log"</span>)</span><br><span class="line">log_file.touch(exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一行代码读取文件 - 告别繁琐的open/close</span></span><br><span class="line">config_text = Path(<span class="string">"config.txt"</span>).read_text(encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">binary_data = Path(<span class="string">"image.png"</span>).read_bytes()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一行代码写入文件</span></span><br><span class="line">Path(<span class="string">"output.txt"</span>).write_text(<span class="string">"Hello, pathlib!"</span>, encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">Path(<span class="string">"data.bin"</span>).write_bytes(<span class="string">b"binary data"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件重命名 - 相当于 os.rename()</span></span><br><span class="line">old_file = Path(<span class="string">"old_name.txt"</span>)</span><br><span class="line">new_file = old_file.rename(<span class="string">"new_name.txt"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="文件信息查询"><a href="#文件信息查询" class="headerlink" title="文件信息查询"></a>文件信息查询</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取文件详细信息 - 相当于 os.stat()</span></span><br><span class="line">file_path = Path(<span class="string">"document.pdf"</span>)</span><br><span class="line">stat_info = file_path.stat()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f"文件大小: <span class="subst">{stat_info.st_size}</span> 字节"</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f"修改时间: <span class="subst">{stat_info.st_mtime}</span>"</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f"创建时间: <span class="subst">{stat_info.st_ctime}</span>"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改文件权限 - 相当于 chmod</span></span><br><span class="line">script_file = Path(<span class="string">"deploy.sh"</span>)</span><br><span class="line">script_file.chmod(<span class="number">0o755</span>)  <span class="comment"># 给脚本添加执行权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取文件所有者信息（Unix/Linux系统）</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    owner = script_file.owner()</span><br><span class="line">    group = script_file.group()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"所有者: <span class="subst">{owner}</span>, 组: <span class="subst">{group}</span>"</span>)</span><br><span class="line"><span class="keyword">except</span> KeyError:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"无法获取所有者信息"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h2 id="pathlib工程实践技巧"><a href="#pathlib工程实践技巧" class="headerlink" title="pathlib工程实践技巧"></a>pathlib工程实践技巧</h2><h3 id="实践技巧一：链式调用的艺术"><a href="#实践技巧一：链式调用的艺术" class="headerlink" title="实践技巧一：链式调用的艺术"></a>实践技巧一：链式调用的艺术</h3><p>pathlib最大的魅力在于可以进行优雅的链式调用：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一行代码完成复杂操作</span></span><br><span class="line">result = (Path.cwd()</span><br><span class="line">          .parent                    <span class="comment"># 获取父目录</span></span><br><span class="line">          .parent                    <span class="comment"># 再获取父目录</span></span><br><span class="line">          / <span class="string">"data"</span>                   <span class="comment"># 进入data文件夹</span></span><br><span class="line">          / <span class="string">"config.json"</span>)           <span class="comment"># 指向配置文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 链式判断和操作</span></span><br><span class="line"><span class="keyword">if</span> (Path.home() / <span class="string">".ssh"</span> / <span class="string">"id_rsa"</span>).exists():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"SSH密钥存在"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链式文件处理</span></span><br><span class="line">(Path(<span class="string">"temp"</span>) </span><br><span class="line"> .mkdir(exist_ok=<span class="literal">True</span>)             <span class="comment"># 创建临时目录</span></span><br><span class="line"> .joinpath(<span class="string">"output.txt"</span>)           <span class="comment"># 创建文件路径</span></span><br><span class="line"> .write_text(<span class="string">"Hello, World!"</span>))     <span class="comment"># 写入内容</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="实践技巧二：优雅的错误处理"><a href="#实践技巧二：优雅的错误处理" class="headerlink" title="实践技巧二：优雅的错误处理"></a>实践技巧二：优雅的错误处理</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">safe_read_config</span>(<span class="params">config_path</span>):</span><br><span class="line">    <span class="string">"""安全读取配置文件"""</span></span><br><span class="line">    path = Path(config_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查文件是否存在</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> path.exists():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"配置文件不存在: <span class="subst">{path}</span>"</span>)</span><br><span class="line">        <span class="keyword">return</span> {}</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查是否为文件</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> path.is_file():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"路径不是文件: <span class="subst">{path}</span>"</span>)</span><br><span class="line">        <span class="keyword">return</span> {}</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 安全读取</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        content = path.read_text(encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">        <span class="keyword">return</span> json.loads(content)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"读取配置失败: <span class="subst">{e}</span>"</span>)</span><br><span class="line">        <span class="keyword">return</span> {}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="实践建议一：使用-Path-替代字符串拼接"><a href="#实践建议一：使用-Path-替代字符串拼接" class="headerlink" title="实践建议一：使用 Path 替代字符串拼接"></a>实践建议一：使用 Path 替代字符串拼接</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不推荐：字符串拼接</span></span><br><span class="line">config_path = os.path.join(os.path.expanduser(<span class="string">"~"</span>), <span class="string">".config"</span>, <span class="string">"app"</span>, <span class="string">"settings.json"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐：pathlib方式</span></span><br><span class="line">config_path = Path.home() / <span class="string">".config"</span> / <span class="string">"app"</span> / <span class="string">"settings.json"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="实践建议二：利用-操作符进行路径拼接"><a href="#实践建议二：利用-操作符进行路径拼接" class="headerlink" title="实践建议二：利用 / 操作符进行路径拼接"></a>实践建议二：利用 / 操作符进行路径拼接</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 推荐：使用 / 操作符，简洁直观</span></span><br><span class="line">project_root = Path(__file__).parent.parent</span><br><span class="line">data_dir = project_root / <span class="string">"data"</span></span><br><span class="line">output_file = data_dir / <span class="string">"results"</span> / <span class="string">f"output_<span class="subst">{datetime.now().strftime(<span class="string">'%Y%m%d'</span>)}</span>.csv"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="实践建议三：使用上下文管理器"><a href="#实践建议三：使用上下文管理器" class="headerlink" title="实践建议三：使用上下文管理器"></a>实践建议三：使用上下文管理器</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 推荐：安全的文件操作</span></span><br><span class="line"><span class="keyword">with</span> Path(<span class="string">"data.txt"</span>).<span class="built_in">open</span>(<span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">"重要数据"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者更简洁的方式</span></span><br><span class="line">Path(<span class="string">"data.txt"</span>).write_text(<span class="string">"重要数据"</span>, encoding=<span class="string">'utf-8'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="4-充分利用内置方法"><a href="#4-充分利用内置方法" class="headerlink" title="4. 充分利用内置方法"></a>4. 充分利用内置方法</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 推荐：使用pathlib内置方法</span></span><br><span class="line">files = [f <span class="keyword">for</span> f <span class="keyword">in</span> Path(<span class="string">"."</span>).iterdir() <span class="keyword">if</span> f.suffix == <span class="string">".py"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更推荐：使用glob</span></span><br><span class="line">files = <span class="built_in">list</span>(Path(<span class="string">"."</span>).glob(<span class="string">"*.py"</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="pathlib的实践应用场景"><a href="#pathlib的实践应用场景" class="headerlink" title="pathlib的实践应用场景"></a>pathlib的实践应用场景</h2><p>让我们通过几个真实场景，看看pathlib如何让复杂的文件操作变得简单。</p>
+<h3 id="场景一：项目结构分析器"><a href="#场景一：项目结构分析器" class="headerlink" title="场景一：项目结构分析器"></a>场景一：项目结构分析器</h3><p>假设你要分析一个Python项目的结构，统计代码行数：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">analyze_project</span>(<span class="params">project_path</span>):</span><br><span class="line">    <span class="string">"""分析Python项目结构"""</span></span><br><span class="line">    project = Path(project_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 统计不同类型的文件</span></span><br><span class="line">    py_files = <span class="built_in">list</span>(project.rglob(<span class="string">"*.py"</span>))  <span class="comment"># 所有Python文件</span></span><br><span class="line">    test_files = <span class="built_in">list</span>(project.rglob(<span class="string">"test_*.py"</span>))  <span class="comment"># 测试文件</span></span><br><span class="line">    config_files = <span class="built_in">list</span>(project.rglob(<span class="string">"*.json"</span>)) + <span class="built_in">list</span>(project.rglob(<span class="string">"*.yaml"</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算总代码行数</span></span><br><span class="line">    total_lines = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> py_file <span class="keyword">in</span> py_files:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            lines = <span class="built_in">len</span>(py_file.read_text(encoding=<span class="string">'utf-8'</span>).splitlines())</span><br><span class="line">            total_lines += lines</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"项目分析报告 - <span class="subst">{project.name}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"Python文件: <span class="subst">{<span class="built_in">len</span>(py_files)}</span> 个"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"测试文件: <span class="subst">{<span class="built_in">len</span>(test_files)}</span> 个"</span>) </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"配置文件: <span class="subst">{<span class="built_in">len</span>(config_files)}</span> 个"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"总代码行数: <span class="subst">{total_lines:,}</span> 行"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">analyze_project(<span class="string">"/path/to/your/project"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="场景二：智能文件整理器"><a href="#场景二：智能文件整理器" class="headerlink" title="场景二：智能文件整理器"></a>场景二：智能文件整理器</h3><p>整理下载文件夹，按文件类型自动分类：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">organize_downloads</span>(<span class="params">downloads_dir</span>):</span><br><span class="line">    <span class="string">"""智能整理下载文件夹"""</span></span><br><span class="line">    downloads = Path(downloads_dir)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 定义文件类型映射</span></span><br><span class="line">    type_mapping = {</span><br><span class="line">        <span class="string">'images'</span>: [<span class="string">'.jpg'</span>, <span class="string">'.png'</span>, <span class="string">'.gif'</span>, <span class="string">'.jpeg'</span>, <span class="string">'.svg'</span>],</span><br><span class="line">        <span class="string">'documents'</span>: [<span class="string">'.pdf'</span>, <span class="string">'.doc'</span>, <span class="string">'.docx'</span>, <span class="string">'.txt'</span>, <span class="string">'.md'</span>],</span><br><span class="line">        <span class="string">'videos'</span>: [<span class="string">'.mp4'</span>, <span class="string">'.avi'</span>, <span class="string">'.mkv'</span>, <span class="string">'.mov'</span>],</span><br><span class="line">        <span class="string">'music'</span>: [<span class="string">'.mp3'</span>, <span class="string">'.wav'</span>, <span class="string">'.flac'</span>, <span class="string">'.m4a'</span>],</span><br><span class="line">        <span class="string">'archives'</span>: [<span class="string">'.zip'</span>, <span class="string">'.rar'</span>, <span class="string">'.7z'</span>, <span class="string">'.tar.gz'</span>]</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建分类文件夹</span></span><br><span class="line">    <span class="keyword">for</span> folder_name <span class="keyword">in</span> type_mapping.keys():</span><br><span class="line">        (downloads / folder_name).mkdir(exist_ok=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 开始整理文件</span></span><br><span class="line">    moved_count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> file_path <span class="keyword">in</span> downloads.iterdir():</span><br><span class="line">        <span class="keyword">if</span> file_path.is_file():</span><br><span class="line">            file_ext = file_path.suffix.lower()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 找到对应的分类</span></span><br><span class="line">            <span class="keyword">for</span> folder_name, extensions <span class="keyword">in</span> type_mapping.items():</span><br><span class="line">                <span class="keyword">if</span> file_ext <span class="keyword">in</span> extensions:</span><br><span class="line">                    new_path = downloads / folder_name / file_path.name</span><br><span class="line">                    file_path.rename(new_path)</span><br><span class="line">                    moved_count += <span class="number">1</span></span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f" <span class="subst">{file_path.name}</span> → <span class="subst">{folder_name}</span>/"</span>)</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"整理完成！共移动了 <span class="subst">{moved_count}</span> 个文件"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例  </span></span><br><span class="line">organize_downloads(Path.home() / <span class="string">"Downloads"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="场景三：路径解析"><a href="#场景三：路径解析" class="headerlink" title="场景三：路径解析"></a>场景三：路径解析</h3><p>解析文件路径的各个组成部分：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">analyze_file_path</span>(<span class="params">file_path</span>):</span><br><span class="line">    <span class="string">"""详细分析文件路径组成"""</span></span><br><span class="line">    path = Path(file_path)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"路径分析：<span class="subst">{path}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"所在目录: <span class="subst">{path.parent}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"完整文件名: <span class="subst">{path.name}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"主文件名: <span class="subst">{path.stem}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"文件扩展名: <span class="subst">{path.suffix}</span>"</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"是否绝对路径: <span class="subst">{path.is_absolute()}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 显示目录层级</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"目录层级:"</span>)</span><br><span class="line">    <span class="keyword">for</span> i, parent <span class="keyword">in</span> <span class="built_in">enumerate</span>(path.parents):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"  级别 <span class="subst">{i+<span class="number">1</span>}</span>: <span class="subst">{parent}</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">analyze_file_path(<span class="string">"/xxx/utils/helper.py"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="场景四：配置文件管理器"><a href="#场景四：配置文件管理器" class="headerlink" title="场景四：配置文件管理器"></a>场景四：配置文件管理器</h3><p>优雅地处理应用配置：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ConfigManager</span>:</span><br><span class="line">    <span class="string">"""配置文件管理器"""</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, app_name</span>):</span><br><span class="line">        <span class="variable language_">self</span>.app_name = app_name</span><br><span class="line">        <span class="comment"># 创建配置目录</span></span><br><span class="line">        <span class="variable language_">self</span>.config_dir = Path.home() / <span class="string">f".<span class="subst">{app_name}</span>"</span></span><br><span class="line">        <span class="variable language_">self</span>.config_dir.mkdir(exist_ok=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 定义配置文件路径</span></span><br><span class="line">        <span class="variable language_">self</span>.config_file = <span class="variable language_">self</span>.config_dir / <span class="string">"config.json"</span></span><br><span class="line">        <span class="variable language_">self</span>.log_file = <span class="variable language_">self</span>.config_dir / <span class="string">"app.log"</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">save_config</span>(<span class="params">self, config_data</span>):</span><br><span class="line">        <span class="string">"""保存配置"""</span></span><br><span class="line">        <span class="keyword">import</span> json</span><br><span class="line">        <span class="variable language_">self</span>.config_file.write_text(</span><br><span class="line">            json.dumps(config_data, indent=<span class="number">2</span>, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">        )</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"配置已保存到: <span class="subst">{self.config_file}</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_config</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">"""加载配置"""</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.config_file.exists():</span><br><span class="line">            <span class="keyword">import</span> json</span><br><span class="line">            <span class="keyword">return</span> json.loads(<span class="variable language_">self</span>.config_file.read_text())</span><br><span class="line">        <span class="keyword">return</span> {}</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">log_message</span>(<span class="params">self, message</span>):</span><br><span class="line">        <span class="string">"""写入日志"""</span></span><br><span class="line">        <span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line">        timestamp = datetime.now().strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">        log_entry = <span class="string">f"[<span class="subst">{timestamp}</span>] <span class="subst">{message}</span>\n"</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 追加写入日志</span></span><br><span class="line">        <span class="keyword">with</span> <span class="variable language_">self</span>.log_file.<span class="built_in">open</span>(<span class="string">'a'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(log_entry)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">config_mgr = ConfigManager(<span class="string">"myapp"</span>)</span><br><span class="line">config_mgr.save_config({<span class="string">"theme"</span>: <span class="string">"dark"</span>, <span class="string">"language"</span>: <span class="string">"zh-CN"</span>})</span><br><span class="line">config_mgr.log_message(<span class="string">"应用启动"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>从os.path到pathlib，这不仅仅是一个库的替换，更是Python在”优雅”和”可读性”道路上的又一次进化。</p>
+<p>下次当你需要处理文件路径时，不妨试试pathlib。相信我，一旦习惯了这种优雅的写法，你就再也回不去os.path的繁琐世界了。</p>
+<hr>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/pathlib.html">官方文档</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://peps.python.org/pep-0428/">PEP 428: The pathlib module</a></li>
+</ul>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-09-11</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/python%E5%BA%93/'>
+                            python库
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/Python/'>
+                            Python
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/09/09/tools/250909-os-tools/">我的工具箱：甄选装机必备工具</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        
+    </div>
+    
+        
+
+    <div id="waline"></div>
+    <script type="module"  >
+        import { init } from 'https://npm.elemecdn.com/hexo-theme-a4@latest/source/js/waline.mjs';
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://blog-comment-seven-psi.vercel.app/',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+                search: false, // 禁止表情包搜索
+                reaction: false, // 对文章打分
+                pageview: false, // 浏览量统计
+                comment: false, // 评论数统计
+
+                locale: {
+                    placeholder: '留下你的评论吧。',
+                    sofa: ''
+                },
+            });
+
+        }
+        window.addEventListener('DOMContentLoaded', loadWaline);
+    </script>
+
+
+
+    
+    
+    
+    
+    </div>
+
+
+     
+</div>
+
+
+
+
+                    
+
+                    <div class="footer">
+    
+        <span> 
+            © 2025~ China 
+
+            
+                
+
+            
+                
+                    / <a href="/atom.xml"> RSS </a>
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊一念净心 花开遍世界...🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <!-- 不蒜子统计服务 -->
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<!-- 首页时间进度脚本，仅在首页加载 -->
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
+<script src="/js/emojiHandler.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        wrapEmojis('.paper');
+    });
+</script>

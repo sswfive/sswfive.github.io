@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="Pythoner的优雅编码之道" />
+    <meta name="hexo-theme-A4" content="v2.0.0" />
+    <link rel="alternate icon" type="image/webp" href="/images/head.png">
+    <title>BluesSen | 空谷幽兰</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+            
+<link rel="stylesheet" href="/css/waline.css">
+
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+   
+        
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+    <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css' /> 
+<meta name="generator" content="Hexo 7.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="BluesSen" type="application/atom+xml">
+</head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+
+
+
+    
+    
+
+
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            
+                <div class="left-toc-container">
+                    <nav id="toc" class="bs-docs-sidebar"></nav>
+                </div>
+            
+        
+        <div class="paper">
+
+            
+
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 0; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/images/head.png" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">BluesSen</a> 
+            <span class="description"> Coding ｜ Coffee</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">
+                    
+                        <span class="menu-icon">☕</span>
+                    
+                    首页
+                </a></li>
+            
+        
+            
+                <li><a href="/list/">
+                    
+                        <span class="menu-icon">📚</span>
+                    
+                    文章
+                </a></li>
+            
+        
+            
+                <li><a href="/tags/">
+                    
+                        <span class="menu-icon">🏷️</span>
+                    
+                    标签
+                </a></li>
+            
+        
+            
+                <li><a href="/categories/">
+                    
+                        <span class="menu-icon">📂</span>
+                    
+                    分类
+                </a></li>
+            
+        
+            
+                <li><a href="/now/">
+                    
+                        <span class="menu-icon">🔗</span>
+                    
+                    当下
+                </a></li>
+            
+        
+            
+                <li><a href="/about/">
+                    
+                        <span class="menu-icon">👨‍💻</span>
+                    
+                    关于
+                </a></li>
+            
+        
+            
+                <li><a href="/search/">
+                    
+                        <span class="menu-icon">🔍</span>
+                    
+                    搜索
+                </a></li>
+            
+        
+    </ul>
+</div>
+
+                    
+                    
+
+                    
+                    
+
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    Pythoner的优雅编码之道
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-09-03</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：2.1k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：8分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv" style="display: none;">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+        <div class=".article-gallery"><p>在编程的世界里，优雅的代码，从来都不是为了取悦计算机，而是为了善待未来的自己、同事，甚至那个素未谋面却要维护你代码的陌生人。</p>
+<p>我们写的代码，终将被阅读，所以我认为好的代码自己会说话，而我们要做的就是让它说的更清楚，更有逻辑。</p>
+<h2 id="命名艺术：让代码自解释"><a href="#命名艺术：让代码自解释" class="headerlink" title="命名艺术：让代码自解释"></a>命名艺术：让代码自解释</h2><p>在主流的编程语言中，变量命名风格主要分为驼峰命名派（CameCase）和蛇形命名派（snake_case），其中驼峰又分为大驼峰（CameCase）和小驼峰（cameCase）。在Python中，大驼峰和蛇形命名两种风格在不同场景中应用的都比较频繁，大驼峰命名主要应用在类名的定义上，其他场景绝大部分都是使用蛇形命名。另一方面 Python 社区普遍遵循的是 <strong>PEP 8</strong> 规范，强调一致性与可读性。</p>
+<h3 id="命名规范速查"><a href="#命名规范速查" class="headerlink" title="命名规范速查"></a>命名规范速查</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>推荐命名方式</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>模块</td>
+<td><code>lower_with_under</code></td>
+<td><code>utils.py</code>, <code>_private.py</code></td>
+<td>简短小写，避免下划线开头</td>
+</tr>
+<tr>
+<td>包</td>
+<td><code>lowercase</code></td>
+<td><code>mypackage</code></td>
+<td>不建议使用下划线</td>
+</tr>
+<tr>
+<td>类</td>
+<td><code>CapWords</code>（大驼峰）</td>
+<td><code>DatabaseConnection</code>, <code>User</code></td>
+<td>异常类应以 <code>Error</code> 结尾</td>
+</tr>
+<tr>
+<td>函数/方法</td>
+<td><code>lower_with_under()</code></td>
+<td><code>get_user_by_id()</code></td>
+<td>动词开头，描述行为</td>
+</tr>
+<tr>
+<td>常量</td>
+<td><code>CAPS_WITH_UNDER</code></td>
+<td><code>MAX_RETRIES</code>, <code>API_TIMEOUT</code></td>
+<td>全大写，表示不可变值</td>
+</tr>
+<tr>
+<td>布尔变量</td>
+<td><code>is_xxx</code>, <code>has_xxx</code> 等</td>
+<td><code>is_connected</code>, <code>has_data</code></td>
+<td>明确表达真假状态</td>
+</tr>
+<tr>
+<td>私有成员</td>
+<td><code>__private_attr</code></td>
+<td><code>__password</code>, <code>__init_db()</code></td>
+<td>双下划线触发名称重整</td>
+</tr>
+</tbody></table>
+<h3 id="命名编写原则"><a href="#命名编写原则" class="headerlink" title="命名编写原则"></a>命名编写原则</h3><ol>
+<li>遵循PEP 8原则（Python官方制定的编码风格指南和建议）；</li>
+<li>命名需要做到名如其意，不要吝啬名字的长度，但除了一些特殊场景，变量名一般不建议超过4个单词;</li>
+<li>变量的描述性要强，比如：冬天的梅花比花的描述性更强；</li>
+<li>当命名与关键字冲突时，在变量末尾加下划线，比如：class_;</li>
+</ol>
+<h3 id="优秀命名实践"><a href="#优秀命名实践" class="headerlink" title="优秀命名实践"></a>优秀命名实践</h3><ol>
+<li><strong>增强描述性</strong></li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># (bad) 描述性弱的名字，过于抽象，看不懂在做什么</span></span><br><span class="line">value = process(s.strip())</span><br><span class="line">data = get_info()</span><br><span class="line"></span><br><span class="line"><span class="comment"># (good) 描述性强的名字，尝试从用户输入里解析一个用户名</span></span><br><span class="line">username = extract_username(input_string.strip())</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="2">
+<li><strong>避免歧义</strong></li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 容易混淆</span></span><br><span class="line">l = []  <span class="comment"># 看起来像数字1</span></span><br><span class="line">O = <span class="number">0</span>   <span class="comment"># 看起来像数字0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 清晰明确</span></span><br><span class="line">users_list = []</span><br><span class="line">default_value = <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="4">
+<li><strong>类型暗示</strong></li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 集合类型</span></span><br><span class="line">user_ids_set = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}</span><br><span class="line">configuration_dict = {<span class="string">"timeout"</span>: <span class="number">30</span>}</span><br><span class="line"></span><br><span class="line"><span class="comment"># 布尔类型</span></span><br><span class="line">should_retry = <span class="literal">True</span></span><br><span class="line">is_connected = <span class="literal">False</span></span><br><span class="line">has_permission = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数值类型</span></span><br><span class="line">port、age  <span class="comment"># 表示数字的单词</span></span><br><span class="line">user_id, host_id  <span class="comment"># 使用_id结尾</span></span><br><span class="line">max_length、users_count  <span class="comment"># 使用length/count相关词</span></span><br><span class="line">retry_count = <span class="number">3</span></span><br><span class="line">total_amount = <span class="number">100.50</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="注释之道：解释「为什么」而非「是什么」"><a href="#注释之道：解释「为什么」而非「是什么」" class="headerlink" title="注释之道：解释「为什么」而非「是什么」"></a>注释之道：解释「为什么」而非「是什么」</h2><blockquote>
+<p>好的注释应该解释设计意图，而不是重复代码内容。</p>
+</blockquote>
+<p>Python中的注释主要分为以<code>#</code>开头的单行注释、和以三连字符串（<code>"""..."""</code>）表示的多行注释或文档注释。</p>
+<h3 id="注释编写原则"><a href="#注释编写原则" class="headerlink" title="注释编写原则"></a>注释编写原则</h3><ul>
+<li>代码块注释，在代码块上一行的相同缩进处以 # 开始书写注释；代码块注释最需要写注释的地方是代码中那些技巧性的部分；对于复杂的操作，应该在其操作开始之前写上若干行注释，对于不是一目了然的代码，应该在其行尾添加注释；</li>
+<li>代码行注释，在代码行的尾部跟2个空格，然后以 # 开始书写注释，行注释尽量少写；</li>
+<li>TODO注释应该在所有开头处包含“TODO”字符串，紧跟着用括号括起来你的名字，email地址或其他标识符，然后是一个可选的冒号；</li>
+<li>对于TODO注释的目的是用来表示“将来做某件事”，建议添加指定的日期；</li>
+<li>英文注释开头要大写，结尾要写标点符号，避免语法错误和逻辑错误，中文注释也是相同要求；</li>
+<li>改动代码逻辑时，一定要及时更新相关的注释；</li>
+</ul>
+<h3 id="注释实践"><a href="#注释实践" class="headerlink" title="注释实践"></a>注释实践</h3><p><strong>1. 文档注释（Docstrings）</strong>：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DatabaseConnection</span>:</span><br><span class="line">    <span class="string">"""数据库连接管理类</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    提供连接池管理、自动重连和查询重试功能</span></span><br><span class="line"><span class="string">    支持MySQL和PostgreSQL数据库</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Attributes:</span></span><br><span class="line"><span class="string">        pool_size: 连接池大小</span></span><br><span class="line"><span class="string">        timeout: 查询超时时间（秒）</span></span><br><span class="line"><span class="string">        max_retries: 最大重试次数</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, connection_string: <span class="built_in">str</span>, pool_size: <span class="built_in">int</span> = <span class="number">10</span></span>):</span><br><span class="line">        <span class="string">"""初始化数据库连接</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            connection_string: 数据库连接字符串</span></span><br><span class="line"><span class="string">            pool_size: 连接池大小，默认为10</span></span><br><span class="line"><span class="string">            </span></span><br><span class="line"><span class="string">        Raises:</span></span><br><span class="line"><span class="string">            ConnectionError: 当连接数据库失败时</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="variable language_">self</span>.connection_string = connection_string</span><br><span class="line">        <span class="variable language_">self</span>.pool_size = pool_size</span><br><span class="line">        <span class="variable language_">self</span>._initialize_pool()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">execute_query</span>(<span class="params">self, query: <span class="built_in">str</span>, parameters: <span class="built_in">dict</span> = <span class="literal">None</span></span>) -&gt; <span class="built_in">list</span>:</span><br><span class="line">        <span class="string">"""执行SQL查询</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            query: SQL查询语句</span></span><br><span class="line"><span class="string">            parameters: 查询参数字典</span></span><br><span class="line"><span class="string">            </span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            查询结果列表</span></span><br><span class="line"><span class="string">            </span></span><br><span class="line"><span class="string">        Raises:</span></span><br><span class="line"><span class="string">            QueryTimeoutError: 查询超时时</span></span><br><span class="line"><span class="string">            DatabaseError: 数据库错误时</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 方法实现</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>2. 为什么注释（Why Comments）</strong>：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用快速排序而不是内置sort，因为需要稳定排序</span></span><br><span class="line"><span class="comment"># 并且在处理大量数据时性能更好</span></span><br><span class="line">quicksort(data)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>3. 警示注释</strong>：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意：这个函数修改传入的列表，而不是返回新列表</span></span><br><span class="line"><span class="comment"># 使用前请确保不需要原始数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_in_place</span>(<span class="params">items</span>):</span><br><span class="line">    <span class="comment"># ... 实现细节</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>4. 代码逻辑注释</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">merge_sorted_arrays</span>(<span class="params">arr1: <span class="built_in">list</span>, arr2: <span class="built_in">list</span></span>) -&gt; <span class="built_in">list</span>:</span><br><span class="line">    <span class="string">"""合并两个已排序数组</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    使用双指针法实现O(n)时间复杂度合并</span></span><br><span class="line"><span class="string">    适用于大规模数据合并场景</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    result = []</span><br><span class="line">    i = j = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 双指针遍历，选择较小元素加入结果</span></span><br><span class="line">    <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(arr1) <span class="keyword">and</span> j &lt; <span class="built_in">len</span>(arr2):</span><br><span class="line">        <span class="keyword">if</span> arr1[i] &lt; arr2[j]:</span><br><span class="line">            result.append(arr1[i])</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result.append(arr2[j])</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将剩余元素添加到结果中</span></span><br><span class="line">    result.extend(arr1[i:])</span><br><span class="line">    result.extend(arr2[j:])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="5">
+<li><strong>TODO注释</strong></li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># TODO(ssw@gmail.com): Use a "*" here for string repetition.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># TODO(Luke) Change this to use relations.</span></span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="6">
+<li><strong>改良一些不好的注释习惯</strong></li>
+</ol>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 过度注释</span></span><br><span class="line"><span class="comment"># 不好：注释重复代码内容</span></span><br><span class="line">x = x + <span class="number">1</span>  <span class="comment"># 给x加1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 好：注释解释为什么这样做</span></span><br><span class="line">x = x + <span class="number">1</span>  <span class="comment"># 补偿数组索引从0开始的问题</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.魔法数字</span></span><br><span class="line"><span class="comment"># 不好：直接使用魔法数字</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(users) &gt; <span class="number">100</span>:</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 好：使用有意义的常量</span></span><br><span class="line">MAX_USERS_THRESHOLD = <span class="number">100</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(users) &gt; MAX_USERS_THRESHOLD:</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 3. 过长的函数名</span></span><br><span class="line"><span class="comment"># 不好：过于冗长</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_user_information_from_database_by_user_id</span>():</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 好：简洁明确</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_user_by_id</span>(<span class="params">user_id</span>):</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="导包规范：整洁的代码门面"><a href="#导包规范：整洁的代码门面" class="headerlink" title="导包规范：整洁的代码门面"></a>导包规范：整洁的代码门面</h2><p>导入语句应该按照标准库 → 第三方库 → 本地应用的顺序分组排列：</p>
+<h3 id="导包编写原则"><a href="#导包编写原则" class="headerlink" title="导包编写原则"></a>导包编写原则</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> annotations</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 标准库导入</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Dict</span>, <span class="type">Optional</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 第三方库导入</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 本地应用导入</span></span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> User, Profile</span><br><span class="line"><span class="keyword">from</span> .utils.helpers <span class="keyword">import</span> logger, config</span><br><span class="line"><span class="keyword">from</span> .exceptions <span class="keyword">import</span> CustomError</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模块级常量</span></span><br><span class="line">DEFAULT_TIMEOUT = <span class="number">30</span></span><br><span class="line">MAX_RETRIES = <span class="number">3</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="优雅导包实践"><a href="#优雅导包实践" class="headerlink" title="优雅导包实践"></a>优雅导包实践</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 每行一个导入</span></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用括号的多行导入</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> (</span><br><span class="line">    defaultdict,</span><br><span class="line">    OrderedDict,</span><br><span class="line">    namedtuple</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用别名简化长模块名</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+
+
+<h2 id="格式之美：缩进、空行与空格"><a href="#格式之美：缩进、空行与空格" class="headerlink" title="格式之美：缩进、空行与空格"></a>格式之美：缩进、空行与空格</h2><p>Python的强制缩进本身就是一个约束美，但我们仍需注意细节，让代码看着更舒服。</p>
+<h3 id="缩进与换行"><a href="#缩进与换行" class="headerlink" title="缩进与换行"></a>缩进与换行</h3><ul>
+<li>使用 <strong>4 个空格</strong> 缩进（不混用 Tab）</li>
+<li>单行不超过 <strong>120 字符</strong></li>
+<li>超长语句可用括号隐式续行：</li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">result = (</span><br><span class="line">    process_data(</span><br><span class="line">        input_data,</span><br><span class="line">        transform_fn,</span><br><span class="line">        validate=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="空行规范"><a href="#空行规范" class="headerlink" title="空行规范"></a>空行规范</h3><ul>
+<li>文件级函数/类之间：<strong>两个空行</strong></li>
+<li>类内方法之间：<strong>一个空行</strong></li>
+<li>函数内部逻辑块之间：<strong>一个空行</strong></li>
+<li>文件末尾：<strong>保留一个空行</strong></li>
+</ul>
+<h3 id="空格规范"><a href="#空格规范" class="headerlink" title="空格规范"></a>空格规范</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作符两边</td>
+<td><code>a + b</code>, <code>x == y</code></td>
+</tr>
+<tr>
+<td>逗号后</td>
+<td><code>[1, 2, 3]</code>, <code>func(a, b)</code></td>
+</tr>
+<tr>
+<td>冒号后（字典）</td>
+<td><code>{"name": "Alice"}</code></td>
+</tr>
+<tr>
+<td>注释符号后</td>
+<td><code># 这是一个注释</code></td>
+</tr>
+<tr>
+<td>括号内不加空格</td>
+<td><code>(1, 2)</code>, <code>[x for x in data]</code></td>
+</tr>
+</tbody></table>
+<h2 id="自动化-让工具守护代码规范"><a href="#自动化-让工具守护代码规范" class="headerlink" title="自动化: 让工具守护代码规范"></a>自动化: 让工具守护代码规范</h2><p>手动遵循规范太累？那就让工具替我们守规。 </p>
+<h3 id="常用工具链"><a href="#常用工具链" class="headerlink" title="常用工具链"></a>常用工具链</h3><ul>
+<li><p><strong>Ruff</strong>: 极速的Python linter和格式化工具</p>
+</li>
+<li><p><strong>Black</strong>: 无妥协的代码格式化器</p>
+</li>
+<li><p><strong>isort</strong>: 自动规范import语句顺序</p>
+</li>
+<li><p><strong>mypy</strong>: 静态类型检查</p>
+</li>
+</ul>
+<h3 id="3-自动化工具配置"><a href="#3-自动化工具配置" class="headerlink" title="3. 自动化工具配置"></a>3. 自动化工具配置</h3><h4 id="pyproject-toml-配置示例"><a href="#pyproject-toml-配置示例" class="headerlink" title="pyproject.toml 配置示例"></a><a target="_blank" rel="noopener" href="https://pyproject.to/">pyproject.to</a>ml 配置示例</h4><figure class="highlight toml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tool.ruff]</span></span><br><span class="line"><span class="attr">line-length</span> = <span class="number">120</span></span><br><span class="line"><span class="attr">select</span> = [<span class="string">"E"</span>, <span class="string">"F"</span>, <span class="string">"W"</span>, <span class="string">"I"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>, <span class="string">"N"</span>, <span class="string">"A"</span>, <span class="string">"S"</span>, <span class="string">"T"</span>, <span class="string">"Q"</span>]</span><br><span class="line"><span class="attr">ignore</span> = [<span class="string">"E501"</span>]  <span class="comment"># 忽略行长警告（由 black 处理）</span></span><br><span class="line"><span class="attr">target-version</span> = <span class="string">"py312"</span></span><br><span class="line"></span><br><span class="line"><span class="section">[tool.black]</span></span><br><span class="line"><span class="attr">line-length</span> = <span class="number">120</span></span><br><span class="line"><span class="attr">target-version</span> = [<span class="string">'py312'</span>]</span><br><span class="line"><span class="attr">skip-string-normalization</span> = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="section">[tool.isort]</span></span><br><span class="line"><span class="attr">profile</span> = <span class="string">"black"</span></span><br><span class="line"><span class="attr">line_length</span> = <span class="number">120</span></span><br><span class="line"><span class="attr">known_first_party</span> = [<span class="string">"myapp"</span>]</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="预提交钩子配置"><a href="#预提交钩子配置" class="headerlink" title="预提交钩子配置"></a>预提交钩子配置</h4><blockquote>
+<p> 安装后运行 <code>pre-commit install</code>，每次提交自动格式化 + 检查。</p>
+</blockquote>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .pre-commit-config.yaml</span></span><br><span class="line"><span class="attr">repos:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">repo:</span> <span class="string">https://github.com/astral-sh/ruff-pre-commit</span></span><br><span class="line">    <span class="attr">rev:</span> <span class="string">v0.1.0</span></span><br><span class="line">    <span class="attr">hooks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">ruff</span></span><br><span class="line">        <span class="attr">args:</span> [<span class="string">--fix</span>, <span class="string">--show-fixes</span>]</span><br><span class="line">  <span class="bullet">-</span> <span class="attr">repo:</span> <span class="string">https://github.com/psf/black</span></span><br><span class="line">    <span class="attr">rev:</span> <span class="number">23.10</span><span class="number">.0</span></span><br><span class="line">    <span class="attr">hooks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">black</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">repo:</span> <span class="string">https://github.com/pre-commit/mirrors-mypy</span></span><br><span class="line">    <span class="attr">rev:</span> <span class="string">v1.6.0</span></span><br><span class="line">    <span class="attr">hooks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">mypy</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>优秀的代码风格，不是限制，而是解放，它解放了我们的注意力，让我们不再纠结“这变量是啥”，不再困惑“这段代码想干啥”，让我们能够专注于解决真正重要的事：解决问题，创造价值。</p>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-03-03</span>
+            
+                <span>该篇文章被 sswfive</span>
+            
+            
+                <span>打上标签:
+                    
+                    
+                        <a href='/tags/python%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/'>
+                            python工程实践
+                        </a>
+                    
+                </span>
+             
+             
+                <span>归为分类:
+                    
+                    
+                        <a href='/categories/Python/'>
+                            Python
+                        </a>
+                    
+                </span>
+            
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/03/04/tech/python/03-py-pypi-source/'>常用的Pypi源汇总</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/03/02/thinking/01-letsgo/">一切都是新的开始</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        
+    </div>
+    
+        
+
+    <div id="waline"></div>
+    <script type="module"  >
+        import { init } from 'https://npm.elemecdn.com/hexo-theme-a4@latest/source/js/waline.mjs';
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://blog-comment-seven-psi.vercel.app/',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+                search: false, // 禁止表情包搜索
+                reaction: false, // 对文章打分
+                pageview: false, // 浏览量统计
+                comment: false, // 评论数统计
+
+                locale: {
+                    placeholder: '留下你的评论吧。',
+                    sofa: ''
+                },
+            });
+
+        }
+        window.addEventListener('DOMContentLoaded', loadWaline);
+    </script>
+
+
+
+    
+    
+    
+    
+    </div>
+
+
+     
+</div>
+
+
+
+
+                    
+
+                    <div class="footer">
+    
+        <span> 
+            © 2025~ China 
+
+            
+                
+
+            
+                
+                    / <a href="/atom.xml"> RSS </a>
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊一念净心 花开遍世界...🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <!-- 不蒜子统计服务 -->
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<!-- 首页时间进度脚本，仅在首页加载 -->
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
+<script src="/js/emojiHandler.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        wrapEmojis('.paper');
+    });
+</script>
