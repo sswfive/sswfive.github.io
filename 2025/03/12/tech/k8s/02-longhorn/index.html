@@ -1,0 +1,1052 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>储存组件Longhorn部署使用 - AInLife</title>
+
+  
+    <meta name="description" content="概述Longhorn是基于Kubernetes和Container的构建的分布式块存储系统，轻量、可靠且功能强大， Longhorn为每个块设备卷创建一个专门的存储控制器，并且对多个节点上存储副本中的卷进行实时复制。以下是它的主要特点：  Longhorn的卷可以作为Kubernetes集群中分布式有状态应用的存储。 可以将块存储划分为Longhorn卷，以便在有或没有云提供商的情况下使用Kube">
+<meta property="og:type" content="article">
+<meta property="og:title" content="储存组件Longhorn部署使用">
+<meta property="og:url" content="http://sswfive.xyz/2025/03/12/tech/k8s/02-longhorn/">
+<meta property="og:site_name" content="AInLife">
+<meta property="og:description" content="概述Longhorn是基于Kubernetes和Container的构建的分布式块存储系统，轻量、可靠且功能强大， Longhorn为每个块设备卷创建一个专门的存储控制器，并且对多个节点上存储副本中的卷进行实时复制。以下是它的主要特点：  Longhorn的卷可以作为Kubernetes集群中分布式有状态应用的存储。 可以将块存储划分为Longhorn卷，以便在有或没有云提供商的情况下使用Kube">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://cdn.sswfive.xyz/2025-09/14-longhorn_delete_1758207775056.png">
+<meta property="article:published_time" content="2025-03-12T11:03:05.000Z">
+<meta property="article:modified_time" content="2025-09-18T15:06:23.000Z">
+<meta property="article:author" content="BluesSen">
+<meta property="article:tag" content="K8S">
+<meta property="article:tag" content="存储组件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cdn.sswfive.xyz/2025-09/14-longhorn_delete_1758207775056.png">
+  
+  
+  
+  <meta name="keywords" content="K8S,存储组件">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="AInLife" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"BluesSen","sameAs":[]},"dateCreated":"2025-03-12T19:03:05+08:00","dateModified":"2025-09-18T23:06:23+08:00","datePublished":"2025-03-12T19:03:05+08:00","description":"","headline":"储存组件Longhorn部署使用","mainEntityOfPage":{"@type":"WebPage","@id":"http://sswfive.xyz/2025/03/12/tech/k8s/02-longhorn/"},"publisher":{"@type":"Organization","name":"BluesSen","sameAs":[]},"url":"http://sswfive.xyz/2025/03/12/tech/k8s/02-longhorn/","keywords":"K8S, 存储组件","image":[]}</script>
+  
+</head>
+<body>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">AInLife</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 向阳而深 & BluesSen...</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="收藏夹" href="/notes/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/01/08/260108-test-cicd/"><span class="title">260108-test-cicd</span></a><a class="item title" href="/2026/01/06/tech/python/260106-why-is-uv-so-fast/"><span class="title">不止Rust，uv如此速度的背后真实原因</span></a><a class="item title" href="/2026/01/04/tech/python/260104-py-performace-analysis-and-practice/"><span class="title">Python开发者必知的性能数据与实用技巧</span></a><a class="item title" href="/2024/03/28/tech/python/240328-pyflink-usage/"><span class="title">pyflink之分布式计算</span></a><a class="item title" href="/2025/08/31/dsa/250831-dsa-intro/"><span class="title">重回原点再出发</span></a><a class="item title" href="/2025/09/01/dsa/250831-dsa-basic/"><span class="title">浅析数据结构与算法的核心概念</span></a><a class="item title" href="/2025/09/02/dsa/250902-data-structure-basic/"><span class="title">数据结构的基本知识</span></a><a class="item title" href="/2025/09/01/dsa/250901-complexity-analysis/"><span class="title">复杂度分析与大O表示法</span></a><a class="item title" href="/2025/09/10/dsa/250910-array/"><span class="title">数据结构之【数组】</span></a><a class="item title" href="/2025/09/12/dsa/250912-linkedlist/"><span class="title">数据结构之【链表】</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></a><a class="social" href="https://x.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a><a class="social" href="/atom.xml" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.462v4.003c6.988 0 12.65 5.646 12.65 12.618H18.33c0-9.69-7.93-17.621-17.621-17.621H1.677zM1.677.014v4.005C13.486 4.019 23 13.527 23 25.339h4.005C27.005 11.336 15.677.014 1.677.014z"/></svg></a><a class="social" href="mailto:sswss5005@163.com" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.724l9.615-6.903h.749c.904 0 1.636.732 1.636 1.636z"/></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-03-12T11:03:05.000Z">2025-03-12</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-09-18T15:06:23.000Z">2025-09-18</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>储存组件Longhorn部署使用</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Longhorn是基于Kubernetes和Container的构建的分布式块存储系统，轻量、可靠且功能强大， Longhorn为每个块设备卷创建一个专门的存储控制器，并且对多个节点上存储副本中的卷进行实时复制。以下是它的主要特点：</p>
+<ul>
+<li>Longhorn的卷可以作为Kubernetes集群中分布式有状态应用的存储。</li>
+<li>可以将块存储划分为Longhorn卷，以便在有或没有云提供商的情况下使用Kubernetes卷。</li>
+<li>可以跨节点和数据中心复制块存储，从而提高可用性。</li>
+<li>可以在外部存储上存储备份数据，例如：NFSv4或AWS S3。</li>
+<li>可以创建跨群集灾难恢复卷，以便从备用的Kubernetes集群的备份中快速恢复来自主Kubernetes群集的数据。</li>
+<li>可以为卷设置计划，对卷定期生成快照，并把快照备份到NFS或者兼容S3的备用存储中。</li>
+<li>支持从备份中恢复卷。</li>
+<li>支持不中断卷服务的情况下进行升级。</li>
+</ul>
+<p>项目信息：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://longhorn.io/">官方地址</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/longhorn/longhorn">Github</a>: 当前项目版本V1.7, 比较活跃，Star数：5.9k、Fork数：585</li>
+</ul>
+<h2 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h2><h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><ul>
+<li>一个正常运行的Kubernetes集群</li>
+<li>集群每个节点已经安装下列软件包，并正常启动<ul>
+<li>open-iscsi（iscsid服务）<ul>
+<li>安装： yum install iscsi-initiator-utils</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="环境检测"><a href="#环境检测" class="headerlink" title="环境检测"></a>环境检测</h3><ul>
+<li>各存储节点创建目录及挂载</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将存储盘挂载到/data1所在目录，并创建longhorn目录</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /home/data1/longhorn</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>存储节点使用命令打标签：kubectl label nodes node77  node78  node79 node.longhorn.io&#x2F;create-default-disk&#x3D;true</li>
+<li>安装longhorn所需系统依赖</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nfs-utils</span><br><span class="line">yum --<span class="built_in">setopt</span>=tsflags=noscripts install iscsi-initiator-utils</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;InitiatorName=<span class="subst">$(/sbin/iscsi-iname)</span>&quot;</span> &gt; /etc/iscsi/initiatorname.iscsi</span><br><span class="line">systemctl <span class="built_in">enable</span> iscsid</span><br><span class="line">systemctl start iscsid</span><br><span class="line"></span><br><span class="line">wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -O /usr/local/bin/jq</span><br><span class="line"><span class="built_in">chmod</span> +x /usr/local/bin/jq</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>新建longhorn_check_env.sh文件，将下列内容拷贝进入，保存并执行。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">NVME_CLI_VERSION=<span class="string">&quot;1.12&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################</span></span><br><span class="line"><span class="comment"># Log</span></span><br><span class="line"><span class="comment">######################################################</span></span><br><span class="line"><span class="built_in">export</span> RED=<span class="string">&#x27;\x1b[0;31m&#x27;</span></span><br><span class="line"><span class="built_in">export</span> GREEN=<span class="string">&#x27;\x1b[38;5;22m&#x27;</span></span><br><span class="line"><span class="built_in">export</span> CYAN=<span class="string">&#x27;\x1b[36m&#x27;</span></span><br><span class="line"><span class="built_in">export</span> YELLOW=<span class="string">&#x27;\x1b[33m&#x27;</span></span><br><span class="line"><span class="built_in">export</span> NO_COLOR=<span class="string">&#x27;\x1b[0m&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$&#123;LOG_TITLE&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  LOG_TITLE=<span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  LOG_LEVEL=<span class="string">&quot;INFO&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">debug</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;DEBUG&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">local</span> log_title</span><br><span class="line">    <span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$&#123;LOG_TITLE&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">     log_title=<span class="string">&quot;(<span class="variable">$&#123;LOG_TITLE&#125;</span>)&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">     log_title=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;<span class="variable">$&#123;GREEN&#125;</span>[DEBUG]<span class="variable">$&#123;log_title&#125;</span> <span class="variable">$&#123;NO_COLOR&#125;</span><span class="variable">$1</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">info</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;DEBUG&quot;</span> ]] ||\</span><br><span class="line">     [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;INFO&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">local</span> log_title</span><br><span class="line">    <span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$&#123;LOG_TITLE&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">     log_title=<span class="string">&quot;(<span class="variable">$&#123;LOG_TITLE&#125;</span>)&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">     log_title=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;<span class="variable">$&#123;CYAN&#125;</span>[INFO] <span class="variable">$&#123;log_title&#125;</span> <span class="variable">$&#123;NO_COLOR&#125;</span><span class="variable">$1</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">warn</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;DEBUG&quot;</span> ]] ||\</span><br><span class="line">     [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;INFO&quot;</span> ]] ||\</span><br><span class="line">     [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;WARN&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">local</span> log_title</span><br><span class="line">    <span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$&#123;LOG_TITLE&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">     log_title=<span class="string">&quot;(<span class="variable">$&#123;LOG_TITLE&#125;</span>)&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">     log_title=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;<span class="variable">$&#123;YELLOW&#125;</span>[WARN] <span class="variable">$&#123;log_title&#125;</span> <span class="variable">$&#123;NO_COLOR&#125;</span><span class="variable">$1</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">error</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;DEBUG&quot;</span> ]] ||\</span><br><span class="line">     [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;INFO&quot;</span> ]] ||\</span><br><span class="line">     [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;WARN&quot;</span> ]] ||\</span><br><span class="line">     [[ <span class="string">&quot;<span class="variable">$&#123;LOG_LEVEL&#125;</span>&quot;</span> == <span class="string">&quot;ERROR&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">local</span> log_title</span><br><span class="line">    <span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$&#123;LOG_TITLE&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">     log_title=<span class="string">&quot;(<span class="variable">$&#123;LOG_TITLE&#125;</span>)&quot;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">     log_title=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;<span class="variable">$&#123;RED&#125;</span>[ERROR]<span class="variable">$&#123;log_title&#125;</span> <span class="variable">$&#123;NO_COLOR&#125;</span><span class="variable">$1</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################</span></span><br><span class="line"><span class="comment"># Check logics</span></span><br><span class="line"><span class="comment">######################################################</span></span><br><span class="line"><span class="function"><span class="title">set_packages_and_check_cmd</span></span>() &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="variable">$OS</span> <span class="keyword">in</span></span><br><span class="line">  *<span class="string">&quot;debian&quot;</span>* | *<span class="string">&quot;ubuntu&quot;</span>* )</span><br><span class="line">    CHECK_CMD=<span class="string">&#x27;dpkg -l | grep -w&#x27;</span></span><br><span class="line">    PACKAGES=(nfs-common open-iscsi cryptsetup dmsetup)</span><br><span class="line">    ;;</span><br><span class="line">  *<span class="string">&quot;centos&quot;</span>* | *<span class="string">&quot;fedora&quot;</span>* | *<span class="string">&quot;rocky&quot;</span>* | *<span class="string">&quot;ol&quot;</span>* )</span><br><span class="line">    CHECK_CMD=<span class="string">&#x27;rpm -q&#x27;</span></span><br><span class="line">    PACKAGES=(nfs-utils iscsi-initiator-utils cryptsetup device-mapper)</span><br><span class="line">    ;;</span><br><span class="line">  *<span class="string">&quot;suse&quot;</span>* )</span><br><span class="line">    CHECK_CMD=<span class="string">&#x27;rpm -q&#x27;</span></span><br><span class="line">    PACKAGES=(nfs-client open-iscsi cryptsetup device-mapper)</span><br><span class="line">    ;;</span><br><span class="line">  *<span class="string">&quot;arch&quot;</span>* )</span><br><span class="line">    CHECK_CMD=<span class="string">&#x27;pacman -Q&#x27;</span></span><br><span class="line">    PACKAGES=(nfs-utils open-iscsi cryptsetup device-mapper)</span><br><span class="line">    ;;</span><br><span class="line">  *<span class="string">&quot;gentoo&quot;</span>* )</span><br><span class="line">    CHECK_CMD=<span class="string">&#x27;qlist -I&#x27;</span></span><br><span class="line">    PACKAGES=(net-fs/nfs-utils sys-block/open-iscsi sys-fs/cryptsetup sys-fs/lvm2)</span><br><span class="line">    ;;</span><br><span class="line">  *)</span><br><span class="line">    CHECK_CMD=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    PACKAGES=()</span><br><span class="line">    warn <span class="string">&quot;Stop the environment check because &#x27;<span class="variable">$OS</span>&#x27; is not supported in the environment check script.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">    ;;</span><br><span class="line">   <span class="keyword">esac</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">detect_node_kernel_release</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line"></span><br><span class="line">  KERNEL_RELEASE=$(kubectl <span class="built_in">exec</span> <span class="variable">$pod</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&#x27;uname -r&#x27;</span>)</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$KERNEL_RELEASE</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">detect_node_os</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line"></span><br><span class="line">  OS=$(kubectl <span class="built_in">exec</span> <span class="variable">$pod</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&#x27;grep -E &quot;^ID_LIKE=&quot; /etc/os-release | cut -d= -f2&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> [[ -z <span class="string">&quot;<span class="variable">$&#123;OS&#125;</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    OS=$(kubectl <span class="built_in">exec</span> <span class="variable">$pod</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&#x27;grep -E &quot;^ID=&quot; /etc/os-release | cut -d= -f2&#x27;</span>)</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$OS</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_local_dependencies</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> targets=(<span class="variable">$@</span>)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> all_found=<span class="literal">true</span></span><br><span class="line">  <span class="keyword">for</span> ((i=<span class="number">0</span>; i&lt;<span class="variable">$&#123;#targets[@]&#125;</span>; i++)); <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">local</span> target=<span class="variable">$&#123;targets[$i]&#125;</span></span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="subst">$(which $target)</span>&quot;</span> = <span class="string">&quot;&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">      all_found=<span class="literal">false</span></span><br><span class="line">      error <span class="string">&quot;Not found: <span class="variable">$target</span>&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$all_found</span>&quot;</span> = <span class="string">&quot;false&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    msg=<span class="string">&quot;Please install missing dependencies: <span class="variable">$&#123;targets[@]&#125;</span>.&quot;</span></span><br><span class="line">    info <span class="string">&quot;<span class="variable">$msg</span>&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 2</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  msg=<span class="string">&quot;Required dependencies &#x27;<span class="variable">$&#123;targets[@]&#125;</span>&#x27; are installed.&quot;</span></span><br><span class="line">  info <span class="string">&quot;<span class="variable">$msg</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">create_ds</span></span>() &#123;</span><br><span class="line"><span class="built_in">cat</span> &lt;&lt;<span class="string">EOF &gt; $TEMP_DIR/environment_check.yaml</span></span><br><span class="line"><span class="string">apiVersion: apps/v1</span></span><br><span class="line"><span class="string">kind: DaemonSet</span></span><br><span class="line"><span class="string">metadata:</span></span><br><span class="line"><span class="string">  labels:</span></span><br><span class="line"><span class="string">    app: longhorn-environment-check</span></span><br><span class="line"><span class="string">  name: longhorn-environment-check</span></span><br><span class="line"><span class="string">spec:</span></span><br><span class="line"><span class="string">  selector:</span></span><br><span class="line"><span class="string">    matchLabels:</span></span><br><span class="line"><span class="string">      app: longhorn-environment-check</span></span><br><span class="line"><span class="string">  template:</span></span><br><span class="line"><span class="string">    metadata:</span></span><br><span class="line"><span class="string">      labels:</span></span><br><span class="line"><span class="string">        app: longhorn-environment-check</span></span><br><span class="line"><span class="string">    spec:</span></span><br><span class="line"><span class="string">      hostPID: true</span></span><br><span class="line"><span class="string">      containers:</span></span><br><span class="line"><span class="string">      - name: longhorn-environment-check</span></span><br><span class="line"><span class="string">        image: alpine:3.12</span></span><br><span class="line"><span class="string">        args: [&quot;/bin/sh&quot;, &quot;-c&quot;, &quot;sleep 1000000000&quot;]</span></span><br><span class="line"><span class="string">        volumeMounts:</span></span><br><span class="line"><span class="string">        - name: mountpoint</span></span><br><span class="line"><span class="string">          mountPath: /tmp/longhorn-environment-check</span></span><br><span class="line"><span class="string">          mountPropagation: Bidirectional</span></span><br><span class="line"><span class="string">        securityContext:</span></span><br><span class="line"><span class="string">          privileged: true</span></span><br><span class="line"><span class="string">      volumes:</span></span><br><span class="line"><span class="string">      - name: mountpoint</span></span><br><span class="line"><span class="string">        hostPath:</span></span><br><span class="line"><span class="string">            path: /tmp/longhorn-environment-check</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">  kubectl create -f <span class="variable">$TEMP_DIR</span>/environment_check.yaml &gt; /dev/null</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">cleanup</span></span>() &#123;</span><br><span class="line">  info <span class="string">&quot;Cleaning up longhorn-environment-check pods...&quot;</span></span><br><span class="line">  kubectl delete -f <span class="variable">$TEMP_DIR</span>/environment_check.yaml &gt; /dev/null</span><br><span class="line">  <span class="built_in">rm</span> -rf <span class="variable">$TEMP_DIR</span></span><br><span class="line">  info <span class="string">&quot;Cleanup completed.&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">wait_ds_ready</span></span>() &#123;</span><br><span class="line">  <span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">local</span> ds=$(kubectl get ds/longhorn-environment-check -o json)</span><br><span class="line">    <span class="built_in">local</span> numberReady=$(<span class="built_in">echo</span> <span class="variable">$ds</span> | jq .status.numberReady)</span><br><span class="line">    <span class="built_in">local</span> desiredNumberScheduled=$(<span class="built_in">echo</span> <span class="variable">$ds</span> | jq .status.desiredNumberScheduled)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$desiredNumberScheduled</span>&quot;</span> = <span class="string">&quot;<span class="variable">$numberReady</span>&quot;</span> ] &amp;&amp; [ <span class="string">&quot;<span class="variable">$desiredNumberScheduled</span>&quot;</span> != <span class="string">&quot;0&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">      info <span class="string">&quot;All longhorn-environment-check pods are ready (<span class="variable">$numberReady</span>/<span class="variable">$desiredNumberScheduled</span>).&quot;</span></span><br><span class="line">      <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    info <span class="string">&quot;Waiting for longhorn-environment-check pods to become ready (<span class="variable">$numberReady</span>/<span class="variable">$desiredNumberScheduled</span>)...&quot;</span></span><br><span class="line">    <span class="built_in">sleep</span> 3</span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_mount_propagation</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> allSupported=<span class="literal">true</span></span><br><span class="line">  <span class="built_in">local</span> pods=$(kubectl -l app=longhorn-environment-check get po -o json)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> ds=$(kubectl get ds/longhorn-environment-check -o json)</span><br><span class="line">  <span class="built_in">local</span> desiredNumberScheduled=$(<span class="built_in">echo</span> <span class="variable">$ds</span> | jq .status.desiredNumberScheduled)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> ((i=<span class="number">0</span>; i&lt;desiredNumberScheduled; i++)); <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">local</span> pod=$(<span class="built_in">echo</span> <span class="variable">$pods</span> | jq .items[<span class="variable">$i</span>])</span><br><span class="line">    <span class="built_in">local</span> nodeName=$(<span class="built_in">echo</span> <span class="variable">$pod</span> | jq -r .spec.nodeName)</span><br><span class="line">    <span class="built_in">local</span> mountPropagation=$(<span class="built_in">echo</span> <span class="variable">$pod</span> | jq -r <span class="string">&#x27;.spec.containers[0].volumeMounts[] | select(.name==&quot;mountpoint&quot;) | .mountPropagation&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$mountPropagation</span>&quot;</span> != <span class="string">&quot;Bidirectional&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">      allSupported=<span class="literal">false</span></span><br><span class="line">      error <span class="string">&quot;node <span class="variable">$nodeName</span>: MountPropagation is disabled&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$allSupported</span>&quot;</span> != <span class="string">&quot;true&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    error <span class="string">&quot;MountPropagation is disabled on at least one node. As a result, CSI driver and Base image cannot be supported&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    info <span class="string">&quot;MountPropagation is enabled&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_hostname_uniqueness</span></span>() &#123;</span><br><span class="line">  hostnames=$(kubectl get nodes -o jsonpath=<span class="string">&#x27;&#123;.items[*].status.addresses[?(@.type==&quot;Hostname&quot;)].address&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">    error <span class="string">&quot;kubectl get nodes failed - check KUBECONFIG setup&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [[ ! <span class="variable">$&#123;hostnames[@]&#125;</span> ]]; <span class="keyword">then</span></span><br><span class="line">    error <span class="string">&quot;kubectl get nodes returned empty list - check KUBECONFIG setup&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  deduplicate_hostnames=()</span><br><span class="line">  num_nodes=0</span><br><span class="line">  <span class="keyword">for</span> hostname <span class="keyword">in</span> <span class="variable">$&#123;hostnames&#125;</span>; <span class="keyword">do</span></span><br><span class="line">    num_nodes=$((num_nodes+<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">if</span> ! <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;deduplicate_hostnames[@]&#125;</span>&quot;</span> | grep -q <span class="string">&quot;\&lt;<span class="variable">$&#123;hostname&#125;</span>\&gt;&quot;</span>; <span class="keyword">then</span></span><br><span class="line">      deduplicate_hostnames+=(<span class="string">&quot;<span class="variable">$&#123;hostname&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$&#123;#deduplicate_hostnames[@]&#125;</span>&quot;</span> != <span class="string">&quot;<span class="variable">$&#123;num_nodes&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    error <span class="string">&quot;Nodes do not have unique hostnames.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 2</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  info <span class="string">&quot;All nodes have unique hostnames.&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_nodes</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> name=<span class="variable">$1</span></span><br><span class="line">  <span class="built_in">local</span> callback=<span class="variable">$2</span></span><br><span class="line">  <span class="built_in">shift</span></span><br><span class="line">  <span class="built_in">shift</span></span><br><span class="line"></span><br><span class="line">  info <span class="string">&quot;Checking <span class="variable">$name</span>...&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> all_passed=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> pods=$(kubectl get pods -o name -l app=longhorn-environment-check)</span><br><span class="line">  <span class="keyword">for</span> pod <span class="keyword">in</span> <span class="variable">$&#123;pods&#125;</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">eval</span> <span class="string">&quot;<span class="variable">$&#123;callback&#125;</span> <span class="variable">$&#123;pod&#125;</span> <span class="variable">$@</span>&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      all_passed=<span class="literal">false</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$all_passed</span>&quot;</span> = <span class="string">&quot;false&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">verlte</span></span>() &#123;</span><br><span class="line">    <span class="built_in">printf</span> <span class="string">&#x27;%s\n&#x27;</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span> <span class="string">&quot;<span class="variable">$2</span>&quot;</span> | <span class="built_in">sort</span> -C -V</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">verlt</span></span>() &#123;</span><br><span class="line">    ! verlte <span class="string">&quot;<span class="variable">$2</span>&quot;</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">kernel_in_range</span></span>() &#123;</span><br><span class="line">    verlte <span class="string">&quot;<span class="variable">$2</span>&quot;</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span> &amp;&amp; verlt <span class="string">&quot;<span class="variable">$1</span>&quot;</span> <span class="string">&quot;<span class="variable">$3</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_kernel_release</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="variable">$1</span></span><br><span class="line">  <span class="built_in">local</span> node=$(kubectl get <span class="variable">$&#123;pod&#125;</span> --no-headers -o=custom-columns=:.spec.nodeName)</span><br><span class="line"></span><br><span class="line">  recommended_kernel_release=<span class="string">&quot;5.8&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> kernel=$(detect_node_kernel_release <span class="variable">$&#123;pod&#125;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> verlt <span class="string">&quot;<span class="variable">$kernel</span>&quot;</span> <span class="string">&quot;<span class="variable">$recommended_kernel_release</span>&quot;</span>  ; <span class="keyword">then</span></span><br><span class="line">    warn <span class="string">&quot;Node <span class="variable">$node</span> has outdated kernel release: <span class="variable">$kernel</span>. Recommending kernel release &gt;= <span class="variable">$recommended_kernel_release</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> broken_kernel=(<span class="string">&quot;5.15.0-94&quot;</span> <span class="string">&quot;6.5.6&quot;</span>)</span><br><span class="line">  <span class="built_in">local</span> fixed_kernel=(<span class="string">&quot;5.15.0-100&quot;</span> <span class="string">&quot;6.5.7&quot;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$&#123;!broken_kernel[@]&#125;</span>; <span class="keyword">do</span></span><br><span class="line">      <span class="keyword">if</span> kernel_in_range <span class="string">&quot;<span class="variable">$kernel</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;broken_kernel[$i]&#125;</span>&quot;</span> <span class="string">&quot;<span class="variable">$&#123;fixed_kernel[$i]&#125;</span>&quot;</span> ; <span class="keyword">then</span></span><br><span class="line">        warn <span class="string">&quot;Node <span class="variable">$node</span> has a kernel version <span class="variable">$kernel</span> known to have a breakage that affects Longhorn. See description and solution at https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported&quot;</span></span><br><span class="line">        <span class="built_in">return</span> 1</span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_iscsid</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line">  kubectl <span class="built_in">exec</span> <span class="variable">$&#123;pod&#125;</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&quot;systemctl status --no-pager iscsid.service&quot;</span> &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">  <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">    kubectl <span class="built_in">exec</span> <span class="variable">$&#123;pod&#125;</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&quot;systemctl status --no-pager iscsid.socket&quot;</span> &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">      <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      node=$(kubectl get <span class="variable">$&#123;pod&#125;</span> --no-headers -o=custom-columns=:.spec.nodeName)</span><br><span class="line">      error <span class="string">&quot;Neither iscsid.service nor iscsid.socket is running on <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">      <span class="built_in">return</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_multipathd</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line">  kubectl <span class="built_in">exec</span> <span class="variable">$pod</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&quot;systemctl status --no-pager multipathd.service&quot;</span> &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">  <span class="keyword">if</span> [ $? = 0 ]; <span class="keyword">then</span></span><br><span class="line">    node=$(kubectl get <span class="variable">$&#123;pod&#125;</span> --no-headers -o=custom-columns=:.spec.nodeName)</span><br><span class="line">    warn <span class="string">&quot;multipathd is running on <span class="variable">$&#123;node&#125;</span> known to have a breakage that affects Longhorn.  See description and solution at https://longhorn.io/kb/troubleshooting-volume-with-multipath&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_packages</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line">  OS=$(detect_node_os <span class="variable">$&#123;pod&#125;</span>)</span><br><span class="line">  <span class="keyword">if</span> [ x<span class="string">&quot;<span class="variable">$OS</span>&quot;</span> = x<span class="string">&quot;&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    error <span class="string">&quot;Failed to detect OS on node <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  set_packages_and_check_cmd</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> ((i=<span class="number">0</span>; i&lt;<span class="variable">$&#123;#PACKAGES[@]&#125;</span>; i++)); <span class="keyword">do</span></span><br><span class="line">    check_package <span class="variable">$&#123;PACKAGES[$i]&#125;</span></span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">return</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_package</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> package=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line">  kubectl <span class="built_in">exec</span> <span class="variable">$pod</span> -- nsenter --mount=/proc/1/ns/mnt -- <span class="built_in">timeout</span> 30 bash -c <span class="string">&quot;<span class="variable">$CHECK_CMD</span> <span class="variable">$package</span>&quot;</span> &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">  <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">    node=$(kubectl get <span class="variable">$&#123;pod&#125;</span> --no-headers -o=custom-columns=:.spec.nodeName)</span><br><span class="line">    error <span class="string">&quot;<span class="variable">$package</span> is not found in <span class="variable">$node</span>.&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_nfs_client</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="variable">$1</span></span><br><span class="line">  <span class="built_in">local</span> node=$(kubectl get <span class="variable">$&#123;pod&#125;</span> --no-headers -o=custom-columns=:.spec.nodeName)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> options=(<span class="string">&quot;CONFIG_NFS_V4_2&quot;</span>  <span class="string">&quot;CONFIG_NFS_V4_1&quot;</span> <span class="string">&quot;CONFIG_NFS_V4&quot;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> kernel=$(detect_node_kernel_release <span class="variable">$&#123;pod&#125;</span>)</span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;x<span class="variable">$&#123;kernel&#125;</span>&quot;</span> = <span class="string">&quot;x&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    warn <span class="string">&quot;Failed to check NFS client installation, because unable to detect kernel release on node <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> option <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;options[@]&#125;</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">    kubectl <span class="built_in">exec</span> <span class="variable">$&#123;pod&#125;</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&quot;[ -f /boot/config-<span class="variable">$&#123;kernel&#125;</span> ]&quot;</span> &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      warn <span class="string">&quot;Failed to check <span class="variable">$option</span> on node <span class="variable">$&#123;node&#125;</span>, because /boot/config-<span class="variable">$&#123;kernel&#125;</span> does not exist on node <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">      <span class="built_in">continue</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    check_kernel_module <span class="variable">$&#123;pod&#125;</span> <span class="variable">$&#123;option&#125;</span> nfs</span><br><span class="line">    <span class="keyword">if</span> [ $? = 0 ]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">return</span> 0</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">  error <span class="string">&quot;NFS clients <span class="variable">$&#123;options[*]&#125;</span> not found. At least one should be enabled&quot;</span></span><br><span class="line">  <span class="built_in">return</span> 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_kernel_module</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="variable">$1</span></span><br><span class="line">  <span class="built_in">local</span> option=<span class="variable">$2</span></span><br><span class="line">  <span class="built_in">local</span> module=<span class="variable">$3</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> kernel=$(detect_node_kernel_release <span class="variable">$&#123;pod&#125;</span>)</span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;x<span class="variable">$&#123;kernel&#125;</span>&quot;</span> = <span class="string">&quot;x&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    warn <span class="string">&quot;Failed to check kernel config option <span class="variable">$&#123;option&#125;</span>, because unable to detect kernel release on node <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  kubectl <span class="built_in">exec</span> <span class="variable">$&#123;pod&#125;</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&quot;[ -e /boot/config-<span class="variable">$&#123;kernel&#125;</span> ]&quot;</span> &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">  <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">    warn <span class="string">&quot;Failed to check kernel config option <span class="variable">$&#123;option&#125;</span>, because /boot/config-<span class="variable">$&#123;kernel&#125;</span> does not exist on node <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  value=$(kubectl <span class="built_in">exec</span> <span class="variable">$&#123;pod&#125;</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&quot;grep &quot;</span>^<span class="variable">$option</span>=<span class="string">&quot; /boot/config-<span class="variable">$&#123;kernel&#125;</span> | cut -d= -f2&quot;</span>)</span><br><span class="line">  <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$&#123;value&#125;</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    error <span class="string">&quot;Failed to find kernel config <span class="variable">$option</span> on node <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">elif</span> [ <span class="string">&quot;<span class="variable">$&#123;value&#125;</span>&quot;</span> = <span class="string">&quot;m&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    kubectl <span class="built_in">exec</span> <span class="variable">$&#123;pod&#125;</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&quot;lsmod | grep <span class="variable">$&#123;module&#125;</span>&quot;</span> &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      node=$(kubectl get <span class="variable">$&#123;pod&#125;</span> --no-headers -o=custom-columns=:.spec.nodeName)</span><br><span class="line">      error <span class="string">&quot;kernel module <span class="variable">$&#123;module&#125;</span> is not enabled on <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">      <span class="built_in">return</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">elif</span> [ <span class="string">&quot;<span class="variable">$&#123;value&#125;</span>&quot;</span> = <span class="string">&quot;y&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">return</span> 0</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    warn <span class="string">&quot;Unknown value for <span class="variable">$option</span>: <span class="variable">$value</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">check_hugepage</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="variable">$1</span></span><br><span class="line">  <span class="built_in">local</span> expected_nr_hugepages=<span class="variable">$2</span></span><br><span class="line"></span><br><span class="line">  nr_hugepages=$(kubectl <span class="built_in">exec</span> <span class="variable">$&#123;pod&#125;</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&#x27;cat /proc/sys/vm/nr_hugepages&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">    error <span class="string">&quot;Failed to check hugepage size on node <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [ <span class="variable">$nr_hugepages</span> -lt <span class="variable">$expected_nr_hugepages</span> ]; <span class="keyword">then</span></span><br><span class="line">    error <span class="string">&quot;Hugepage size is not enough on node <span class="variable">$&#123;node&#125;</span>. Expected: <span class="variable">$&#123;expected_nr_hugepages&#125;</span>, Actual: <span class="variable">$&#123;nr_hugepages&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">check_sse42_support</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> pod=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line">  node=$(kubectl get <span class="variable">$&#123;pod&#125;</span> --no-headers -o=custom-columns=:.spec.nodeName)</span><br><span class="line"></span><br><span class="line">  machine=$(kubectl <span class="built_in">exec</span> <span class="variable">$pod</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&#x27;uname -m&#x27;</span> 2&gt;/dev/null)</span><br><span class="line">  <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">    error <span class="string">&quot;Failed to check machine on node <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$machine</span>&quot;</span> = <span class="string">&quot;x86_64&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    sse42_support=$(kubectl <span class="built_in">exec</span> <span class="variable">$pod</span> -- nsenter --mount=/proc/1/ns/mnt -- bash -c <span class="string">&#x27;grep -o sse4_2 /proc/cpuinfo | wc -l&#x27;</span> 2&gt;/dev/null)</span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      error <span class="string">&quot;Failed to check SSE4.2 instruction set on node <span class="variable">$&#123;node&#125;</span>&quot;</span></span><br><span class="line">      <span class="built_in">return</span> 1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$sse42_support</span>&quot;</span> -ge 1 ]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">return</span> 0</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    error <span class="string">&quot;CPU does not support SSE4.2&quot;</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    warn <span class="string">&quot;Skip SSE4.2 instruction set check on node <span class="variable">$&#123;node&#125;</span> because it is not x86_64&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">show_help</span></span>() &#123;</span><br><span class="line">    <span class="built_in">cat</span> &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">Usage: $0 [OPTIONS]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Options:</span></span><br><span class="line"><span class="string">    -s, --enable-spdk           Enable checking SPDK prerequisites</span></span><br><span class="line"><span class="string">    -p, --expected-nr-hugepages Expected number of 2 MiB hugepages for SPDK. Default: 1024</span></span><br><span class="line"><span class="string">    -h, --help                  Show this help message and exit</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">enable_spdk=<span class="literal">false</span></span><br><span class="line">expected_nr_hugepages=1024</span><br><span class="line"><span class="keyword">while</span> [[ <span class="variable">$#</span> -gt 0 ]]; <span class="keyword">do</span></span><br><span class="line">    opt=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">    <span class="keyword">case</span> <span class="variable">$opt</span> <span class="keyword">in</span></span><br><span class="line">        -s|--enable-spdk)</span><br><span class="line">            enable_spdk=<span class="literal">true</span></span><br><span class="line">            ;;</span><br><span class="line">        -p|--expected-nr-hugepages)</span><br><span class="line">            expected_nr_hugepages=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">            <span class="built_in">shift</span></span><br><span class="line">            ;;</span><br><span class="line">        -h|--<span class="built_in">help</span>)</span><br><span class="line">            show_help</span><br><span class="line">            ;;</span><br><span class="line">        *)</span><br><span class="line">            instance_manager_options+=(<span class="string">&quot;<span class="variable">$1</span>&quot;</span>)</span><br><span class="line">            ;;</span><br><span class="line">    <span class="keyword">esac</span></span><br><span class="line">    <span class="built_in">shift</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################</span></span><br><span class="line"><span class="comment"># Main logics</span></span><br><span class="line"><span class="comment">######################################################</span></span><br><span class="line">DEPENDENCIES=(<span class="string">&quot;kubectl&quot;</span> <span class="string">&quot;jq&quot;</span> <span class="string">&quot;mktemp&quot;</span> <span class="string">&quot;sort&quot;</span> <span class="string">&quot;printf&quot;</span>)</span><br><span class="line">check_local_dependencies <span class="string">&quot;<span class="variable">$&#123;DEPENDENCIES[@]&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Check the each host has a unique hostname (for RWX volume)</span></span><br><span class="line">check_hostname_uniqueness</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a daemonset for checking the requirements in each node</span></span><br><span class="line">TEMP_DIR=$(<span class="built_in">mktemp</span> -d)</span><br><span class="line"></span><br><span class="line"><span class="built_in">trap</span> cleanup EXIT</span><br><span class="line">create_ds</span><br><span class="line">wait_ds_ready</span><br><span class="line"></span><br><span class="line">check_mount_propagation</span><br><span class="line">check_nodes <span class="string">&quot;kernel release&quot;</span> check_kernel_release</span><br><span class="line">check_nodes <span class="string">&quot;iscsid&quot;</span> check_iscsid</span><br><span class="line">check_nodes <span class="string">&quot;multipathd&quot;</span> check_multipathd</span><br><span class="line">check_nodes <span class="string">&quot;packages&quot;</span> check_packages</span><br><span class="line">check_nodes <span class="string">&quot;nfs client&quot;</span> check_nfs_client</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$enable_spdk</span>&quot;</span> = <span class="string">&quot;true&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  check_nodes <span class="string">&quot;x86-64 SSE4.2 instruction set&quot;</span> check_sse42_support</span><br><span class="line">  check_nodes <span class="string">&quot;kernel module nvme_tcp&quot;</span> check_kernel_module CONFIG_NVME_TCP nvme_tcp</span><br><span class="line">  check_nodes <span class="string">&quot;kernel module uio_pci_generic&quot;</span> check_kernel_module CONFIG_UIO_PCI_GENERIC uio_pci_generic</span><br><span class="line">  check_nodes <span class="string">&quot;hugepage&quot;</span> check_hugepage <span class="variable">$&#123;expected_nr_hugepages&#125;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>当前支持<a target="_blank" rel="noopener" href="https://longhorn.io/docs/1.7.0/deploy/install/install-with-rancher/">Racher</a> 、<a target="_blank" rel="noopener" href="https://longhorn.io/docs/1.7.0/deploy/install/install-with-kubectl/">Kubectl</a>、<a target="_blank" rel="noopener" href="https://longhorn.io/docs/1.7.0/deploy/install/install-with-helm/">Helm</a>安装，本文档采用Helm安装</p>
+<ol>
+<li><p>添加Helm仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">helm repo add longhorn https://charts.longhorn.io</span><br><span class="line">helm repo update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载包</span></span><br><span class="line">helm fetch longhorn/longhorn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压包</span></span><br><span class="line">tar xf longhorn-1.7.0.tgz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者去官网下载tgz包</span></span><br><span class="line"><span class="comment"># https://github.com/longhorn/longhorn/releases/tag/v1.7.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改配置</p>
+</li>
+</ol>
+<ul>
+<li>values.yaml</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 看需求设置是否为默认storageclass（defaultClass），修改pvc策略为Retain</span></span><br><span class="line"><span class="attr">persistence:</span></span><br><span class="line">  <span class="attr">defaultClass:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">defaultFsType:</span> <span class="string">ext4</span></span><br><span class="line">  <span class="attr">defaultMkfsParams:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">  <span class="attr">defaultClassReplicaCount:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">defaultDataLocality:</span> <span class="string">disabled</span> <span class="comment"># best-effort otherwise</span></span><br><span class="line">  <span class="attr">reclaimPolicy:</span> <span class="string">Retain</span></span><br><span class="line">  <span class="attr">migratable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">recurringJobSelector:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">jobList:</span> []</span><br><span class="line">  <span class="attr">backingImage:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">~</span></span><br><span class="line">    <span class="attr">dataSourceType:</span> <span class="string">~</span></span><br><span class="line">    <span class="attr">dataSourceParameters:</span> <span class="string">~</span></span><br><span class="line">    <span class="attr">expectedChecksum:</span> <span class="string">~</span></span><br><span class="line">  <span class="attr">defaultNodeSelector:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span> <span class="comment"># disable by default</span></span><br><span class="line">    <span class="attr">selector:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">  <span class="attr">removeSnapshotsDuringFilesystemTrim:</span> <span class="string">ignored</span> <span class="comment"># &quot;enabled&quot; or &quot;disabled&quot; otherwise</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置longhorn挂载的本地存储路径，/data/longhorn</span></span><br><span class="line"><span class="attr">defaultSettings:</span></span><br><span class="line">  <span class="attr">backupTarget:</span> <span class="string">~</span></span><br><span class="line">  <span class="attr">backupTargetCredentialSecret:</span> <span class="string">~</span></span><br><span class="line">  <span class="attr">allowRecurringJobWhileVolumeDetached:</span> <span class="string">~</span></span><br><span class="line">  <span class="attr">createDefaultDiskLabeledNodes:</span> <span class="string">~</span></span><br><span class="line">  <span class="attr">defaultDataPath:</span> <span class="string">/data/longhorn</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 修改ui界面的service类型为NodePort</span></span><br><span class="line"><span class="attr">service:</span></span><br><span class="line">  <span class="attr">ui:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="literal">null</span></span><br><span class="line">  <span class="attr">manager:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">ClusterIP</span></span><br><span class="line">    <span class="attr">nodePort:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="attr">loadBalancerIP:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="attr">loadBalancerSourceRanges:</span> <span class="string">&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在线部署命令</span></span><br><span class="line">helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace -f ./values.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment"># 离线环境安装命令，进入到longhorn的helm目录下</span></span><br><span class="line">helm install longhorn  --namespace longhorn-system --create-namespace -f ./</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">kubectl get all -n longhorn-system</span><br><span class="line"></span><br><span class="line"><span class="comment">###############PS:LOG################################</span></span><br><span class="line">(base) [root@node77 longhorn]# kubectl get all -n longhorn-system</span><br><span class="line">NAME                                                    READY   STATUS    RESTARTS       AGE</span><br><span class="line">pod/csi-attacher-54946dbcb8-88kmf                       1/1     Running   2 (27h ago)    4d1h</span><br><span class="line">pod/csi-attacher-54946dbcb8-frz87                       1/1     Running   1              4d1h</span><br><span class="line">pod/csi-attacher-54946dbcb8-pc2c2                       1/1     Running   1 (4d1h ago)   4d1h</span><br><span class="line">pod/csi-provisioner-7b64855c94-2ns99                    1/1     Running   2 (27h ago)    4d1h</span><br><span class="line">pod/csi-provisioner-7b64855c94-dssvx                    1/1     Running   2 (4d1h ago)   4d1h</span><br><span class="line">pod/csi-provisioner-7b64855c94-vr5ms                    1/1     Running   1 (4d1h ago)   4d1h</span><br><span class="line">pod/csi-resizer-8b4b94dcd-lg5t4                         1/1     Running   1 (4d1h ago)   4d1h</span><br><span class="line">pod/csi-resizer-8b4b94dcd-sc6r9                         1/1     Running   2 (27h ago)    4d1h</span><br><span class="line">pod/csi-resizer-8b4b94dcd-zsd7t                         1/1     Running   1 (4d1h ago)   4d1h</span><br><span class="line">pod/csi-snapshotter-5847d4c879-mkmsp                    1/1     Running   0              4d1h</span><br><span class="line">pod/csi-snapshotter-5847d4c879-qxhxc                    1/1     Running   1 (4d1h ago)   4d1h</span><br><span class="line">pod/csi-snapshotter-5847d4c879-t5nh5                    1/1     Running   1 (27h ago)    4d1h</span><br><span class="line">pod/engine-image-ei-b0369a5d-g6jnc                      1/1     Running   1 (27h ago)    32h</span><br><span class="line">pod/engine-image-ei-b0369a5d-n6hjh                      1/1     Running   3 (27h ago)    4d1h</span><br><span class="line">pod/engine-image-ei-b0369a5d-v5qw7                      1/1     Running   1 (27h ago)    4d1h</span><br><span class="line">pod/instance-manager-01b254fdf9643d3bc7715d8ad0beeeef   1/1     Running   0              27h</span><br><span class="line">pod/instance-manager-0eab76db8dc7fc6ffb02464073dcd3b7   1/1     Running   0              27h</span><br><span class="line">pod/instance-manager-65b907de8eac2c4029e4abf9b53b17c4   1/1     Running   0              27h</span><br><span class="line">pod/longhorn-csi-plugin-6q74l                           3/3     Running   1 (4d1h ago)   4d1h</span><br><span class="line">pod/longhorn-csi-plugin-dg825                           3/3     Running   1              4d1h</span><br><span class="line">pod/longhorn-csi-plugin-qsnzn                           3/3     Running   0              32h</span><br><span class="line">pod/longhorn-driver-deployer-68cb9bf546-x5ls7           1/1     Running   1              4d1h</span><br><span class="line">pod/longhorn-manager-6rtxm                              1/1     Running   1 (4d1h ago)   4d1h</span><br><span class="line">pod/longhorn-manager-f9dll                              1/1     Running   1              4d1h</span><br><span class="line">pod/longhorn-manager-trp7k                              1/1     Running   0              32h</span><br><span class="line">pod/longhorn-ui-5db87b4db5-2h8gk                        1/1     Running   0              4d1h</span><br><span class="line">pod/longhorn-ui-5db87b4db5-6p9vq                        1/1     Running   0              4d1h</span><br><span class="line"></span><br><span class="line">NAME                                  TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE</span><br><span class="line">service/longhorn-admission-webhook    ClusterIP   10.96.0.169   &lt;none&gt;        9502/TCP       4d1h</span><br><span class="line">service/longhorn-backend              ClusterIP   10.96.0.91    &lt;none&gt;        9500/TCP       4d1h</span><br><span class="line">service/longhorn-conversion-webhook   ClusterIP   10.96.0.89    &lt;none&gt;        9501/TCP       4d1h</span><br><span class="line">service/longhorn-engine-manager       ClusterIP   None          &lt;none&gt;        &lt;none&gt;         4d1h</span><br><span class="line">service/longhorn-frontend             NodePort    10.96.0.249   &lt;none&gt;        80:32601/TCP   4d1h</span><br><span class="line">service/longhorn-recovery-backend     ClusterIP   10.96.1.207   &lt;none&gt;        9503/TCP       4d1h</span><br><span class="line">service/longhorn-replica-manager      ClusterIP   None          &lt;none&gt;        &lt;none&gt;         4d1h</span><br><span class="line"></span><br><span class="line">NAME                                      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE</span><br><span class="line">daemonset.apps/engine-image-ei-b0369a5d   3         3         3       3            3           &lt;none&gt;          4d1h</span><br><span class="line">daemonset.apps/longhorn-csi-plugin        3         3         3       3            3           &lt;none&gt;          4d1h</span><br><span class="line">daemonset.apps/longhorn-manager           3         3         3       3            3           &lt;none&gt;          4d1h</span><br><span class="line"></span><br><span class="line">NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">deployment.apps/csi-attacher               3/3     3            3           4d1h</span><br><span class="line">deployment.apps/csi-provisioner            3/3     3            3           4d1h</span><br><span class="line">deployment.apps/csi-resizer                3/3     3            3           4d1h</span><br><span class="line">deployment.apps/csi-snapshotter            3/3     3            3           4d1h</span><br><span class="line">deployment.apps/longhorn-driver-deployer   1/1     1            1           4d1h</span><br><span class="line">deployment.apps/longhorn-ui                2/2     2            2           4d1h</span><br><span class="line"></span><br><span class="line">NAME                                                  DESIRED   CURRENT   READY   AGE</span><br><span class="line">replicaset.apps/csi-attacher-54946dbcb8               3         3         3       4d1h</span><br><span class="line">replicaset.apps/csi-provisioner-7b64855c94            3         3         3       4d1h</span><br><span class="line">replicaset.apps/csi-resizer-8b4b94dcd                 3         3         3       4d1h</span><br><span class="line">replicaset.apps/csi-snapshotter-5847d4c879            3         3         3       4d1h</span><br><span class="line">replicaset.apps/longhorn-driver-deployer-68cb9bf546   1         1         1       4d1h</span><br><span class="line">replicaset.apps/longhorn-ui-5db87b4db5                2         2         2       4d1h</span><br><span class="line"></span><br><span class="line">NAME               COMPLETIONS   DURATION   AGE</span><br><span class="line">job.batch/kbench   0/1           4d1h       4d1h</span><br></pre></td></tr></table></figure>
+<h2 id="测试安装"><a href="#测试安装" class="headerlink" title="测试安装"></a>测试安装</h2><h3 id="测试说明"><a href="#测试说明" class="headerlink" title="测试说明"></a>测试说明</h3><p>基于<a target="_blank" rel="noopener" href="https://github.com/yasker/kbench">https://github.com/yasker/kbench</a>项目进行性能测试<br>对于官方基准测试：</p>
+<ol>
+<li>SIZE环境变量：大小应至少为<strong>读&#x2F;写带宽的 25 倍</strong>，以避免缓存影响结果。</li>
+<li>如果要测试像 Longhorn 这样的分布式存储解决方案，请<strong>始终首先针对本地存储进行测试</strong>，以了解基线是什么。<ul>
+<li>如果您使用 Kubernetes 进行测试，则可以为本地存储安装存储提供程序，例如<a target="_blank" rel="noopener" href="https://github.com/rancher/local-path-provisioner">本地路径配置器</a>，用于此测试。</li>
+</ul>
+</li>
+<li>CPU_IDLE_PROF环境变量：CPU 空闲度分析测量 CPU 空闲，但它会带来额外的开销并降低存储性能。默认情况下，该标志处于禁用状态。</li>
+</ol>
+<h3 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h3><ul>
+<li><strong>IOPS</strong>：每秒 IO 操作数。<em>越高越好。</em><ul>
+<li>它是衡量设备在一秒钟内可以处理多少 IO 操作的度量，主要涉及较小的 IO 块，例如 4k。</li>
+</ul>
+</li>
+<li><strong>带宽</strong>：也称为<strong>吞吐量</strong>。<em>越高越好。</em><ul>
+<li>它是设备在一秒钟内可以读取&#x2F;写入多少数据的度量。它主要是处理较大的IO块，例如128k。</li>
+</ul>
+</li>
+<li><strong>延迟</strong>：每个请求在 IO 路径中花费的总时间。越_低越好。_<ul>
+<li>它是存储系统处理每个请求的效率的度量。</li>
+<li>存储系统的数据路径开销可以表示为它在本机存储系统 （SSD&#x2F;NVMe） 之上增加的延迟。</li>
+</ul>
+</li>
+<li>CPU 空闲：运行测试的节点上的 <strong>CPU 空闲</strong>程度。<em>越高越好。</em><ul>
+<li>它是存储设备生成的 CPU 负载&#x2F;开销的度量。</li>
+<li>请注意，这是空闲，因此如果该值更高，则意味着该节点上的 CPU 具有更多的空闲周期。</li>
+<li>不幸的是，此测量值目前无法反映分布式存储系统整个群集上的负载。但是，在基准测试时，它仍然是存储客户端的CPU负载的值得参考（取决于分布式存储的架构方式）。</li>
+</ul>
+</li>
+<li>对于_比较基准_，该列指示将第二个卷与第一个卷进行比较时的百分比差异。<ul>
+<li>对于 **IOPS、带宽、CPU 空闲，**正百分比更好。</li>
+<li>对于<strong>延迟</strong>，负百分比更好。</li>
+<li>对于 **CPU 空闲，**我们显示的不是变化的百分比，而是差异。</li>
+</ul>
+</li>
+</ul>
+<h3 id="了解分布式存储系统的结果"><a href="#了解分布式存储系统的结果" class="headerlink" title="了解分布式存储系统的结果"></a>了解分布式存储系统的结果</h3><p>对于分布式存储系统，始终需要先测试本地存储作为基准。<br>_在以下_情况下出现问题：</p>
+<ol>
+<li>读取_延迟低于本地存储_。<ul>
+<li>您可能会获得比本地存储更高的读取 IOPS&#x2F;带宽，因为存储引擎可以聚合来自不同节点&#x2F;磁盘的性能。但是，与本地存储相比，您应该无法获得更低的读取延迟。</li>
+<li>如果发生这种情况，很可能是由于存在缓存。增加以避免这种情况。SIZE</li>
+</ul>
+</li>
+<li><em>写入 IOPS&#x2F;带宽&#x2F;延迟比本地存储更好</em>。<ul>
+<li>与分布式存储解决方案的本地存储相比，几乎不可能获得更好的写入性能，除非在本地存储前面有一个持久性缓存设备。</li>
+<li>如果得到此结果，则存储解决方案可能不是崩溃一致的，因此它不会在响应之前将数据提交到磁盘中，这意味着在发生事件时，您可能会丢失数据。</li>
+</ul>
+</li>
+<li>您将获得延迟_基准的低 CPU 空闲率，例如 <code>&lt;40%</code>。<ul>
+<li>对于<strong>延迟</strong>，CPU <strong>空闲应</strong>至少为 40%，以确保测试不会受到 CPU 不足的影响。</li>
+<li>如果发生这种情况，请向节点添加更多 CPU，或移动到增强计算机。</li>
+</ul>
+</li>
+</ol>
+<h3 id="部署-FIO-基准"><a href="#部署-FIO-基准" class="headerlink" title="部署 FIO 基准"></a>部署 FIO 基准</h3><h4 id="在-Kubernetes-集群中部署单卷基准测试"><a href="#在-Kubernetes-集群中部署单卷基准测试" class="headerlink" title="在 Kubernetes 集群中部署单卷基准测试"></a>在 Kubernetes 集群中部署单卷基准测试</h4><p>默认情况下：</p>
+<ol>
+<li>基准测试将使用<strong>默认存储类</strong>。<ul>
+<li>您可以在本地使用 YAML 指定存储类。</li>
+</ul>
+</li>
+<li>将使用<strong>文件系统模式</strong>。<ul>
+<li>您可以在本地使用 YAML 切换到阻止模式。</li>
+</ul>
+</li>
+<li>该测试暂时需要 <strong>33G</strong> PVC。<ul>
+<li>可以在本地使用 YAML 更改测试大小。</li>
+<li>如上所述，对于正式基准测试，大小应<strong>至少为读&#x2F;写带宽的 25 倍</strong>，以避免缓存影响结果。</li>
+</ul>
+</li>
+</ol>
+<h3 id="测试步骤"><a href="#测试步骤" class="headerlink" title="测试步骤"></a>测试步骤</h3><h4 id="Longhorn基准测试"><a href="#Longhorn基准测试" class="headerlink" title="Longhorn基准测试"></a>Longhorn基准测试</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/yasker/kbench/main/deploy/fio.yaml</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolumeClaim</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kbench-pvc</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">volumeMode:</span> <span class="string">Filesystem</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteOnce</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">requests:</span></span><br><span class="line">      <span class="attr">storage:</span> <span class="string">33Gi</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">batch/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Job</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kbench</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">kbench:</span> <span class="string">fio</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">kbench</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">yasker/kbench:latest</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line">        <span class="attr">env:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">FILE_NAME</span></span><br><span class="line">          <span class="attr">value:</span> <span class="string">&quot;/volume/test&quot;</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">SIZE</span></span><br><span class="line">          <span class="attr">value:</span> <span class="string">&quot;30G&quot;</span> <span class="comment"># must be 10% smaller than the PVC size due to filesystem also took space</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">CPU_IDLE_PROF</span></span><br><span class="line">          <span class="attr">value:</span> <span class="string">&quot;disabled&quot;</span> <span class="comment"># must be &quot;enabled&quot; or &quot;disabled&quot;</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">vol</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/volume/</span></span><br><span class="line">      <span class="attr">restartPolicy:</span> <span class="string">Never</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">vol</span></span><br><span class="line">        <span class="attr">persistentVolumeClaim:</span></span><br><span class="line">          <span class="attr">claimName:</span> <span class="string">kbench-pvc</span></span><br><span class="line">  <span class="attr">backoffLimit:</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h4 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示"></a>结果展示</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(base) [root@node77 longhorn]# kubectl logs -f kbench-msz5k</span><br><span class="line">TEST_FILE: /volume/test</span><br><span class="line">TEST_OUTPUT_PREFIX: test_device</span><br><span class="line">TEST_SIZE: 30G</span><br><span class="line">Benchmarking iops.fio into test_device-iops.json</span><br><span class="line">fio: pid=0, err=30/file:filesetup.c:224, func=write, error=Read-only file system</span><br><span class="line">fio: io_u error on file /volume/test: Read-only file system: <span class="built_in">read</span> offset=0, buflen=4096</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="卸载步骤"><a href="#卸载步骤" class="headerlink" title="卸载步骤"></a>卸载步骤</h2><p><strong>注意：卸载前最好将所有pvc及pv都逐个删除</strong></p>
+<h3 id="删除标志设置：方式一，终端"><a href="#删除标志设置：方式一，终端" class="headerlink" title="删除标志设置：方式一，终端"></a>删除标志设置：方式一，终端</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">kubectl</span> <span class="string">-n</span> <span class="string">longhorn-system</span> <span class="string">patch</span> <span class="string">-p</span> <span class="string">&#x27;&#123;&quot;value&quot;: &quot;true&quot;&#125;&#x27;</span> <span class="string">--type=merge</span> <span class="string">lhs</span> <span class="string">deleting-confirmation-flag</span></span><br></pre></td></tr></table></figure>
+<h3 id="删除标志设置：方式二，界面"><a href="#删除标志设置：方式二，界面" class="headerlink" title="删除标志设置：方式二，界面"></a>删除标志设置：方式二，界面</h3><ul>
+<li>勾选<strong>Deleting Confirmation Flag选项</strong></li>
+</ul>
+<p><img src="http://cdn.sswfive.xyz/2025-09/14-longhorn_delete_1758207775056.png" alt="14-longhorn_delete.png"></p>
+<h3 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">helm</span> <span class="string">uninstall</span> <span class="string">longhorn</span> <span class="string">-n</span> <span class="string">longhorn-system</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><ol>
+<li><h2 id="安装iscsi-initiator-utils报错"><a href="#安装iscsi-initiator-utils报错" class="headerlink" title="安装iscsi-initiator-utils报错"></a>安装iscsi-initiator-utils报错</h2><ul>
+<li>报错信息如下</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">http://mirrors.bfsu.edu.cn/centos/7.9.2009/updates/x86_64/Packages/iscsi-initiator-utils-iscsiuio-6.2.0.874-22.el7_9.x86_64.rpm: [Errno 14] HTTP Error 404 - Not Found--:-- ETA </span><br><span class="line">Trying other mirror.</span><br><span class="line">iscsi-initiator-utils-6.2.0.87 FAILED                                          </span><br><span class="line">http://mirrors.huaweicloud.com/centos/7.9.2009/updates/x86_64/Packages/iscsi-initiator-utils-6.2.0.874-22.el7_9.x86_64.rpm: [Errno 14] HTTP Error 404 - Not Found  --:--:-- ETA </span><br><span class="line">Trying other mirror.</span><br><span class="line">iscsi-initiator-utils-iscsiuio FAILED                                          </span><br><span class="line">http://mirrors.163.com/centos/7.9.2009/updates/x86_64/Packages/iscsi-initiator-utils-iscsiuio-6.2.0.874-22.el7_9.x86_64.rpm: [Errno 14] HTTP Error 404 - Not Found --:--:-- ETA </span><br><span class="line">Trying other mirror.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Error downloading packages:</span><br><span class="line">  iscsi-initiator-utils-6.2.0.874-22.el7_9.x86_64: [Errno 256] No more mirrors to try.</span><br><span class="line">  iscsi-initiator-utils-iscsiuio-6.2.0.874-22.el7_9.x86_64: [Errno 256] No more mirrors to try.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解决方案：<ul>
+<li>更换yum.repo.d&#x2F;Centos.Base.repo</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS-Base.repo</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The mirror system uses the connecting IP address of the client and the</span></span><br><span class="line"><span class="comment"># update status of each mirror to pick mirrors that are updated to and</span></span><br><span class="line"><span class="comment"># geographically close to the client.  You should use this for CentOS updates</span></span><br><span class="line"><span class="comment"># unless you are manually picking other mirrors.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># If the mirrorlist= does not work for you, as a fall back you can try the </span></span><br><span class="line"><span class="comment"># remarked out baseurl= line instead.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line">[base]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - Base - mirrors.aliyun.com</span><br><span class="line">failovermethod=priority</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos/<span class="variable">$releasever</span>/os/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.aliyuncs.com/centos/<span class="variable">$releasever</span>/os/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.cloud.aliyuncs.com/centos/<span class="variable">$releasever</span>/os/<span class="variable">$basearch</span>/</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line"><span class="comment">#released updates </span></span><br><span class="line">[updates]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - Updates - mirrors.aliyun.com</span><br><span class="line">failovermethod=priority</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos/<span class="variable">$releasever</span>/updates/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.aliyuncs.com/centos/<span class="variable">$releasever</span>/updates/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.cloud.aliyuncs.com/centos/<span class="variable">$releasever</span>/updates/<span class="variable">$basearch</span>/</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line"><span class="comment">#additional packages that may be useful</span></span><br><span class="line">[extras]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - Extras - mirrors.aliyun.com</span><br><span class="line">failovermethod=priority</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos/<span class="variable">$releasever</span>/extras/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.aliyuncs.com/centos/<span class="variable">$releasever</span>/extras/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.cloud.aliyuncs.com/centos/<span class="variable">$releasever</span>/extras/<span class="variable">$basearch</span>/</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line"><span class="comment">#additional packages that extend functionality of existing packages</span></span><br><span class="line">[centosplus]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - Plus - mirrors.aliyun.com</span><br><span class="line">failovermethod=priority</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos/<span class="variable">$releasever</span>/centosplus/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.aliyuncs.com/centos/<span class="variable">$releasever</span>/centosplus/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.cloud.aliyuncs.com/centos/<span class="variable">$releasever</span>/centosplus/<span class="variable">$basearch</span>/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=0</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line"><span class="comment">#contrib - packages by Centos Users</span></span><br><span class="line">[contrib]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - Contrib - mirrors.aliyun.com</span><br><span class="line">failovermethod=priority</span><br><span class="line">baseurl=http://mirrors.aliyun.com/centos/<span class="variable">$releasever</span>/contrib/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.aliyuncs.com/centos/<span class="variable">$releasever</span>/contrib/<span class="variable">$basearch</span>/</span><br><span class="line">        http://mirrors.cloud.aliyuncs.com/centos/<span class="variable">$releasever</span>/contrib/<span class="variable">$basearch</span>/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=0</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>更换后再执行安装命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> yum install iscsi-initiator-utils</span><br><span class="line"></span><br><span class="line"><span class="comment">#################op log#############################</span></span><br><span class="line">Running transaction check</span><br><span class="line">Running transaction <span class="built_in">test</span></span><br><span class="line">Transaction <span class="built_in">test</span> succeeded</span><br><span class="line">Running transaction</span><br><span class="line">  Installing : iscsi-initiator-utils-iscsiuio-6.2.0.874-22.el7_9.x86_64              1/2 </span><br><span class="line">  Installing : iscsi-initiator-utils-6.2.0.874-22.el7_9.x86_64                       2/2 </span><br><span class="line">  Verifying  : iscsi-initiator-utils-6.2.0.874-22.el7_9.x86_64                       1/2 </span><br><span class="line">  Verifying  : iscsi-initiator-utils-iscsiuio-6.2.0.874-22.el7_9.x86_64              2/2 </span><br><span class="line"></span><br><span class="line">Installed:</span><br><span class="line">  iscsi-initiator-utils.x86_64 0:6.2.0.874-22.el7_9                                      </span><br><span class="line"></span><br><span class="line">Dependency Installed:</span><br><span class="line">  iscsi-initiator-utils-iscsiuio.x86_64 0:6.2.0.874-22.el7_9    </span><br></pre></td></tr></table></figure>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://sswfive.xyz/2025/03/12/tech/k8s/02-longhorn/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://sswfive.xyz/2025/03/12/tech/k8s/02-longhorn/"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2025/03/12/tech/k8s/03-ktconnect/">开发工具之KtConnect的使用</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/03/11/tech/k8s/01-helm/">包管理工具Helm的使用</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">BluesSen</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2"><span class="toc-text">安装部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E6%8F%90%E6%9D%A1%E4%BB%B6"><span class="toc-text">前提条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%A3%80%E6%B5%8B"><span class="toc-text">环境检测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="toc-text">部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B"><span class="toc-text">查看</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%AE%89%E8%A3%85"><span class="toc-text">测试安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E8%AF%B4%E6%98%8E"><span class="toc-text">测试说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90"><span class="toc-text">参数解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-text">了解分布式存储系统的结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2-FIO-%E5%9F%BA%E5%87%86"><span class="toc-text">部署 FIO 基准</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8-Kubernetes-%E9%9B%86%E7%BE%A4%E4%B8%AD%E9%83%A8%E7%BD%B2%E5%8D%95%E5%8D%B7%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95"><span class="toc-text">在 Kubernetes 集群中部署单卷基准测试</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E6%AD%A5%E9%AA%A4"><span class="toc-text">测试步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Longhorn%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95"><span class="toc-text">Longhorn基准测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="toc-text">结果展示</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BD%E6%AD%A5%E9%AA%A4"><span class="toc-text">卸载步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%A0%87%E5%BF%97%E8%AE%BE%E7%BD%AE%EF%BC%9A%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%8C%E7%BB%88%E7%AB%AF"><span class="toc-text">删除标志设置：方式一，终端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%A0%87%E5%BF%97%E8%AE%BE%E7%BD%AE%EF%BC%9A%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%8C%E7%95%8C%E9%9D%A2"><span class="toc-text">删除标志设置：方式二，界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C"><span class="toc-text">删除操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FAQ"><span class="toc-text">FAQ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85iscsi-initiator-utils%E6%8A%A5%E9%94%99"><span class="toc-text">安装iscsi-initiator-utils报错</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  const el = document.getElementById('waline_container');
+  util.viewportLazyload(el, load_waline, true);
+
+  function load_waline(){
+    if (!el) return;
+
+    utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+    utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+
+    const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+    const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+      el: '#waline_container',
+      path: path,
+      
+    }));
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

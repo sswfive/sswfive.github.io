@@ -1,0 +1,1040 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Supervisor：三年后的更新，把我三年前的笔记唤醒 - AInLife</title>
+
+  
+    <meta name="description" content="失踪人口回归：Supervisor时隔三年再更新时隔近三年，这款经典的进程管理工具终于迎来了更新。 最近偶然注意到Supervisor项目发布了新版本（4.3.0—2025.08.23)，印象中这个项目已经很久没有动静了。于是特意去翻看了更新日志，才发现距离上个版本发布已经过去了两年零八个月。仔细阅读版本说明后，发现这次更新主要集中在性能优化和稳定性提升，主要包括了： 两项重要Bug修复:  CP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Supervisor：三年后的更新，把我三年前的笔记唤醒">
+<meta property="og:url" content="http://sswfive.xyz/2025/08/30/tech/python/250830-supervisor/">
+<meta property="og:site_name" content="AInLife">
+<meta property="og:description" content="失踪人口回归：Supervisor时隔三年再更新时隔近三年，这款经典的进程管理工具终于迎来了更新。 最近偶然注意到Supervisor项目发布了新版本（4.3.0—2025.08.23)，印象中这个项目已经很久没有动静了。于是特意去翻看了更新日志，才发现距离上个版本发布已经过去了两年零八个月。仔细阅读版本说明后，发现这次更新主要集中在性能优化和稳定性提升，主要包括了： 两项重要Bug修复:  CP">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-30T13:11:31.000Z">
+<meta property="article:modified_time" content="2025-09-24T15:06:59.000Z">
+<meta property="article:author" content="BluesSen">
+<meta property="article:tag" content="进程管理">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="进程管理">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="AInLife" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"BluesSen","sameAs":[]},"dateCreated":"2025-08-30T21:11:31+08:00","dateModified":"2025-09-24T23:06:59+08:00","datePublished":"2025-08-30T21:11:31+08:00","description":"","headline":"Supervisor：三年后的更新，把我三年前的笔记唤醒","mainEntityOfPage":{"@type":"WebPage","@id":"http://sswfive.xyz/2025/08/30/tech/python/250830-supervisor/"},"publisher":{"@type":"Organization","name":"BluesSen","sameAs":[]},"url":"http://sswfive.xyz/2025/08/30/tech/python/250830-supervisor/","keywords":"进程管理","image":[]}</script>
+  
+</head>
+<body>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">AInLife</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 向阳而深 & BluesSen...</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="收藏夹" href="/notes/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<widget class="widget-wrapper related post-list"><div class="widget-header dis-select"><span class="name">专栏：python</span></div><div class="widget-body"><a class="item" href="/2025/09/23/tech/python/250923-py-magic-methods/"><span class="title">Python开发必备：解锁魔法方法的实用技巧大全</span></a><a class="item" href="/2025/09/14/tech/python/250914-py-data-struct/"><span class="title">Python中的数据类型用法剖析：从底层实现到高效应用</span></a><a class="item" href="/2025/09/11/tech/python/250308-pylib-pathlib/"><span class="title">用了pathlib后，我再也不想碰os.path了！</span></a><a class="item" href="/2025/09/08/tech/python/250907-py-async-challenges/"><span class="title">Python异步编程十年沉浮：且看3.14版本重要更新</span></a><a class="item active" href="/2025/08/30/tech/python/250830-supervisor/"><span class="title">Supervisor：三年后的更新，把我三年前的笔记唤醒</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="item" href="/2025/08/28/tech/python/250827-py-env-package/"><span class="title">我用过的Python工具链：从virtualenv到uv的演进之路</span></a><a class="item" href="/2025/08/26/tech/python/250826-pygc/"><span class="title">从计数到分代一步步窥探Python的垃圾回收机制</span></a><a class="item" href="/2025/08/24/tech/python/250824-pylib-faststream/"><span class="title">异步消息处理的利器之FastStream</span></a><a class="item" href="/2025/03/08/tech/python/08-pylib-subprocess/"><span class="title">子进程管理工具之subprocess</span></a><a class="item" href="/2025/03/07/tech/python/07-pylib-supervisor/"><span class="title">进程管理工具之Supervisor</span></a><a class="item" href="/2025/03/06/tech/python/06-pylib-apscheduler/"><span class="title">任务管理工具之APScheduler</span></a><a class="item" href="/2025/03/06/tech/python/05-pylib-awesome/"><span class="title">Python常用库汇总[awesome]</span></a><a class="item" href="/2025/03/04/tech/python/03-py-pypi-source/"><span class="title">常用的Pypi源汇总</span></a><a class="item" href="/2025/03/03/tech/python/250903-py-coding-statndards/"><span class="title">Pythoner的优雅编码之道</span></a></div></widget>
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/01/08/260108-test-cicd/"><span class="title">260108-test-cicd</span></a><a class="item title" href="/2026/01/06/tech/python/260106-why-is-uv-so-fast/"><span class="title">不止Rust，uv如此速度的背后真实原因</span></a><a class="item title" href="/2026/01/04/tech/python/260104-py-performace-analysis-and-practice/"><span class="title">Python开发者必知的性能数据与实用技巧</span></a><a class="item title" href="/2024/03/28/tech/python/240328-pyflink-usage/"><span class="title">pyflink之分布式计算</span></a><a class="item title" href="/2025/08/31/dsa/250831-dsa-intro/"><span class="title">重回原点再出发</span></a><a class="item title" href="/2025/09/01/dsa/250831-dsa-basic/"><span class="title">浅析数据结构与算法的核心概念</span></a><a class="item title" href="/2025/09/02/dsa/250902-data-structure-basic/"><span class="title">数据结构的基本知识</span></a><a class="item title" href="/2025/09/01/dsa/250901-complexity-analysis/"><span class="title">复杂度分析与大O表示法</span></a><a class="item title" href="/2025/09/10/dsa/250910-array/"><span class="title">数据结构之【数组】</span></a><a class="item title" href="/2025/09/12/dsa/250912-linkedlist/"><span class="title">数据结构之【链表】</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></a><a class="social" href="https://x.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a><a class="social" href="/atom.xml" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.462v4.003c6.988 0 12.65 5.646 12.65 12.618H18.33c0-9.69-7.93-17.621-17.621-17.621H1.677zM1.677.014v4.005C13.486 4.019 23 13.527 23 25.339h4.005C27.005 11.336 15.677.014 1.677.014z"/></svg></a><a class="social" href="mailto:sswss5005@163.com" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.724l9.615-6.903h.749c.904 0 1.636.732 1.636 1.636z"/></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2025/09/23/tech/python/250923-py-magic-methods/">python</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-08-30T13:11:31.000Z">2025-08-30</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-09-24T15:06:59.000Z">2025-09-24</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Supervisor：三年后的更新，把我三年前的笔记唤醒</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="失踪人口回归：Supervisor时隔三年再更新"><a href="#失踪人口回归：Supervisor时隔三年再更新" class="headerlink" title="失踪人口回归：Supervisor时隔三年再更新"></a>失踪人口回归：Supervisor时隔三年再更新</h2><p>时隔近三年，这款经典的进程管理工具终于迎来了更新。</p>
+<p>最近偶然注意到Supervisor项目发布了新版本（4.3.0—2025.08.23)，印象中这个项目已经很久没有动静了。于是特意去翻看了更新日志，才发现距离上个版本发布已经过去了两年零八个月。仔细阅读版本说明后，发现这次更新主要集中在性能优化和稳定性提升，主要包括了：</p>
+<p>两项重要Bug修复:</p>
+<ul>
+<li>CPU 使用率优化：修复了在某些情况下轮询器未注销已关闭的文件描述符，导致过度轮询、CPU 占用异常升高的问题。</li>
+<li>重启稳定性提升：修复了在重启期间若有 HTTP 请求可能导致“端口已被占用”错误的问题。</li>
+</ul>
+<p>兼容性更新</p>
+<ul>
+<li>支持 Python 3.13：修复了仅在 Python 3.13 环境下会失败的单元测试。</li>
+<li>清理依赖关系：Python 3.8 及以上版本不再需要 setuptools 作为运行时依赖；Python 3.7 及以下版本仍需手动安装 setuptools。</li>
+</ul>
+<p>时间飞逝，Supervisor已有近三年未发布版本了，而我也差不多有三年多没有使用这个组件了。正好借此机会，我将之前在使用过程中记录的笔记重新整理了一遍，分享给大家。</p>
+<h2 id="初识Supervisor：你的进程管理"><a href="#初识Supervisor：你的进程管理" class="headerlink" title="初识Supervisor：你的进程管理"></a>初识Supervisor：你的进程管理</h2><p>Supervisor是用Python开发的一款用于Linux的进程管理工具，采用典型的C&#x2F;S架构，够高效监控和管理进程状态。官方资源：<a target="_blank" rel="noopener" href="https://github.com/Supervisor/supervisor">Github仓库</a>、<a target="_blank" rel="noopener" href="https://supervisord.org/">官方文档</a></p>
+<p>Supervisor主要包含两个组件：</p>
+<ul>
+<li><p>supervisord：服务端，负责启动、监控和管理子进程。</p>
+</li>
+<li><p>supervisorctl：客户端，提供命令行界面管理子进程。</p>
+</li>
+</ul>
+<p>主要特点：</p>
+<ul>
+<li>进程状态监控和管理</li>
+<li>进程崩溃自动重启</li>
+<li>统一的进程管理接口</li>
+<li>Web管理界面支持</li>
+<li>进程组管理功能</li>
+</ul>
+<p>注意事项：</p>
+<ul>
+<li>Supervisor要求要离的程序必须非守护进程方式运行（例如：管理nginx，必须在 nginx 的配置文件里添加一行设置 daemon off 让 nginx 以非 daemon 方式启动）</li>
+<li>修改配置文件（配置文件通常位于<code>/etc/supervisord.conf</code>）后需要执行reload才能更改生效。</li>
+</ul>
+<h2 id="快速上手：你只需要几分钟"><a href="#快速上手：你只需要几分钟" class="headerlink" title="快速上手：你只需要几分钟"></a>快速上手：你只需要几分钟</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pip install supervisor  <span class="comment"># 或 uv add supervisor</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成配置文件到指定路径（此处路径指定为了/etc/supervisord.conf）</span></span><br><span class="line">echo_supervisord_conf &gt; /etc/supervisord.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
+<li>supervisord: 服务端命令：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">supervisord -c /etc/supervisord.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看是否在运行</span></span><br><span class="line">ps aux | grep supervisord</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>supervisorctl: 客户端命令：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl status                         <span class="comment"># 查看进程状态</span></span><br><span class="line">supervisorctl start program_name             <span class="comment"># 启动program_name进程</span></span><br><span class="line">supervisorctl stop program_name              <span class="comment"># 终止program_name进程</span></span><br><span class="line">supervisorctl restart program_name           <span class="comment"># 重启program_name进程</span></span><br><span class="line">supervisorctl reread                         <span class="comment"># 更新配置，根据最新的配置启动所有程序</span></span><br><span class="line">supervisorctl update                         <span class="comment"># 更新配置，重启配置有变化的进程</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>supervisorctl: shell命令：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl                <span class="comment"># 进入shell命令行</span></span><br><span class="line">&gt; status                     <span class="comment"># 查看进程状态</span></span><br><span class="line">&gt; start program_name         <span class="comment"># 启动program_name进程</span></span><br><span class="line">&gt; stop program_name          <span class="comment"># 终止program_name进程</span></span><br><span class="line">&gt; restart program_name       <span class="comment"># 重启program_name进程</span></span><br><span class="line">&gt; reread                     <span class="comment"># 更新配置，根据最新的配置启动所有程序</span></span><br><span class="line">&gt; update                     <span class="comment"># 更新配置，重启配置有变化的进程</span></span><br><span class="line">&gt; start fastapi:*            <span class="comment"># 启动 fastapi组 程序</span></span><br><span class="line">&gt; stop fastapi:*             <span class="comment"># 停止 fastapi组 程序</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="基础使用："><a href="#基础使用：" class="headerlink" title="基础使用："></a>基础使用：</h3><ul>
+<li>step1：编辑supervisor主配置文件，在配置文件的末尾加上[include]内容</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">[include]</span><br><span class="line">files=/etc/supervisor.d/*.conf  <span class="comment">#若你本地无/etc/supervisor.d目录，请自建</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>step2：创建应用配置文件：<code>/etc/supervisor.d/demo.conf</code> 配置文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[program:自定义的服务名称]</span><br><span class="line"><span class="built_in">command</span>=python3 /xxxx/main.py  <span class="comment">#服务的启动命令，在这里用的python环境为supervisor安装的环境，若想指定其他python环境则可指定python包的位置如command=xxxx/xxxx/bin/python3 /xxxx/main.py便可</span></span><br><span class="line">directory=/xxxx</span><br><span class="line">process_name=%(program_name)s</span><br><span class="line">autorestart=<span class="literal">true</span></span><br><span class="line">startsecs=3</span><br><span class="line">stdout_logfile=/home/task.log  <span class="comment">#输出日志文件路径</span></span><br><span class="line">stderr_logfile=/home/task.log  <span class="comment">#报错日志文件路径</span></span><br><span class="line">user=your_username</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>step3:启动</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisord -c /etc/supervisor.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置详解：磨刀不误砍柴工"><a href="#配置详解：磨刀不误砍柴工" class="headerlink" title="配置详解：磨刀不误砍柴工"></a>配置详解：磨刀不误砍柴工</h2><blockquote>
+<p>打开配置文件： &#x2F;etc&#x2F;supervisord.conf</p>
+</blockquote>
+<h3 id="基础配置段"><a href="#基础配置段" class="headerlink" title="基础配置段"></a>基础配置段</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[unix_http_server]</span><br><span class="line">file=/var/run/supervisor.sock   ; socket文件路径</span><br><span class="line">;<span class="built_in">chmod</span>=0700                     ;socket文件的mode，默认是0700</span><br><span class="line">;<span class="built_in">chown</span>=nobody:nogroup           ;socket文件的owner，格式：uid:gid</span><br><span class="line"></span><br><span class="line">[inet_http_server]              ;HTTP服务器，提供web管理界面 </span><br><span class="line">port=0.0.0.0:9001               ;Web管理后台运行的IP和端口，如果开放到公网，需要注意安全性</span><br><span class="line">username=user                   ;登录管理后台的用户名</span><br><span class="line">password=<span class="built_in">pwd</span>                    ;登录管理后台的密码</span><br><span class="line"></span><br><span class="line">[supervisord]</span><br><span class="line">logfile=/tmp/supervisord.log    ;日志文件，默认是 <span class="variable">$CWD</span>/supervisord.log</span><br><span class="line">logfile_maxbytes=50MB           ;日志文件大小，超出会rotate，默认 50MB，如果设成0，表示不限制大小</span><br><span class="line">logfile_backups=10              ;日志文件保留备份数量默认10，设为0表示不备份</span><br><span class="line">loglevel=info                   ;日志级别，默认info，其它: debug,warn,trace</span><br><span class="line">pidfile=/tmp/supervisord.pid    ;pid 文件</span><br><span class="line">nodaemon=<span class="literal">false</span>                  ;是否在前台启动，默认是<span class="literal">false</span>，即以 daemon 的方式启动</span><br><span class="line">minfds=1024                     ;可以打开的文件描述符的最小值，默认 1024</span><br><span class="line">minprocs=200                    ;可以打开的进程数的最小值，默认 200</span><br><span class="line"></span><br><span class="line">[supervisorctl]</span><br><span class="line">serverurl=unix:///tmp/supervisor.sock ;通过UNIX socket连接supervisord，路径与unix_http_server部分的file一致</span><br><span class="line">;serverurl=http://127.0.0.1:9001 ; 通过HTTP的方式连接supervisord</span><br><span class="line"></span><br><span class="line">[include]</span><br><span class="line">files=/etc/supervisor.d/*.conf  <span class="comment">#若你本地无/etc/supervisor.d目录，请自建</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="程序配置段"><a href="#程序配置段" class="headerlink" title="程序配置段"></a>程序配置段</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[program:your_program_name]</span><br><span class="line"><span class="built_in">command</span>=/path/to/your/command   ; 必须：要执行的命令</span><br><span class="line">process_name=%(program_name)s   ; 进程名</span><br><span class="line">numprocs=1                      ; 进程数量</span><br><span class="line">directory=/path/to/run/in       ; 执行命令前切换的目录</span><br><span class="line">autostart=<span class="literal">true</span>                  ; 是否随supervisor启动</span><br><span class="line">autorestart=unexpected          ; 退出时是否自动重启</span><br><span class="line">startsecs=1                     ; 启动后持续运行1秒才认为是成功</span><br><span class="line">startretries=3                  ; 启动失败时的重试次数</span><br><span class="line">user=username                   ; 运行用户</span><br><span class="line">redirect_stderr=<span class="literal">true</span>            ; 重定向stderr到stdout</span><br><span class="line">stdout_logfile=/path/to/logfile ; stdout日志路径</span><br><span class="line">stdout_logfile_maxbytes=1MB     ; 日志文件最大大小</span><br><span class="line">stdout_logfile_backups=10       ; 日志备份数量</span><br><span class="line">environment=KEY=<span class="string">&quot;value&quot;</span>         ; 环境变量</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="入门到进阶：让效率翻倍"><a href="#入门到进阶：让效率翻倍" class="headerlink" title="入门到进阶：让效率翻倍"></a>入门到进阶：让效率翻倍</h2><h3 id="Web管理界面"><a href="#Web管理界面" class="headerlink" title="Web管理界面"></a>Web管理界面</h3><p>启动Web管理界面可以直观地监控和管理进程, 在&#x2F;etc&#x2F;supervisord.conf中修改[inet_http_server]的参数下列参数，修改后记得重启supervisor进程，在浏览器访问 <code>http://&lt;host-ip&gt;:9001</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[inet_http_server]</span><br><span class="line">port=0.0.0.0:9001</span><br><span class="line">username=your_username</span><br><span class="line">password=your_password</span><br></pre></td></tr></table></figure>
+
+<h3 id="进程分组管理"><a href="#进程分组管理" class="headerlink" title="进程分组管理"></a>进程分组管理</h3><p>对于多个相关进程，可以使用分组功能进行统一管理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[group:app_group]</span><br><span class="line">programs=app1,app2,app3</span><br><span class="line"></span><br><span class="line">[program:app1]</span><br><span class="line"><span class="built_in">command</span>=/path/to/app1</span><br><span class="line"></span><br><span class="line">[program:app2]</span><br><span class="line"><span class="built_in">command</span>=/path/to/app2</span><br><span class="line"></span><br><span class="line">[program:app3]</span><br><span class="line"><span class="built_in">command</span>=/path/to/app3</span><br></pre></td></tr></table></figure>
+
+<p>分组后可以使用下列命令进行管理整个组：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl start app_group:</span><br><span class="line">supervisorctl stop app_group:</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是：</p>
+<ul>
+<li>当添加了上述配置后，app1、app2和app3 的进程名就会变成 app_group:app1 、 app_group:app2和app_group:app1 ，以后就要用这个名字来管理进程了，而不是之前的 app[x]了。</li>
+</ul>
+<h3 id="Supervisor配置开机启动"><a href="#Supervisor配置开机启动" class="headerlink" title="Supervisor配置开机启动"></a>Supervisor配置开机启动</h3><h4 id="方式一："><a href="#方式一：" class="headerlink" title="方式一："></a>方式一：</h4><blockquote>
+<p>centos-7</p>
+</blockquote>
+<ul>
+<li>进入 &#x2F; lib&#x2F;systemd&#x2F;system 目录，并创建 supervisord.service 文件。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=supervisord</span><br><span class="line">After=network.target</span><br><span class="line"> </span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</span><br><span class="line">ExecStop=/usr/bin/supervisorctl <span class="variable">$OPTIONS</span> shutdown</span><br><span class="line">ExecReload=/usr/bin/supervisorctl <span class="variable">$OPTIONS</span> reload</span><br><span class="line">KillMode=process</span><br><span class="line">Restart=on-failure</span><br><span class="line">RestartSec=42s</span><br><span class="line"> </span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>加入开机启动</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> supervisord</span><br><span class="line">systemctl start supervisord</span><br></pre></td></tr></table></figure>
+
+<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><ul>
+<li>Linux环境中：以systemd的方式管理<ul>
+<li>编写启动脚本：vim &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;supervisord</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># /etc/rc.d/init.d/supervisord</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Supervisor is a client/server system that</span></span><br><span class="line"><span class="comment"># allows its users to monitor and control a</span></span><br><span class="line"><span class="comment"># number of processes on UNIX-like operating</span></span><br><span class="line"><span class="comment"># systems.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># chkconfig: - 64 36</span></span><br><span class="line"><span class="comment"># description: Supervisor Server</span></span><br><span class="line"><span class="comment"># processname: supervisord</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Source init functions</span></span><br><span class="line">. /etc/rc.d/init.d/functions</span><br><span class="line"></span><br><span class="line">prog=<span class="string">&quot;supervisord&quot;</span></span><br><span class="line"></span><br><span class="line">prefix=<span class="string">&quot;/usr&quot;</span></span><br><span class="line">exec_prefix=<span class="string">&quot;<span class="variable">$&#123;prefix&#125;</span>&quot;</span></span><br><span class="line">prog_bin=<span class="string">&quot;<span class="variable">$&#123;exec_prefix&#125;</span>/bin/supervisord&quot;</span></span><br><span class="line">PIDFILE=<span class="string">&quot;/var/run/<span class="variable">$prog</span>.pid&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">start</span></span>()</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">echo</span> -n $<span class="string">&quot;Starting <span class="variable">$prog</span>: &quot;</span></span><br><span class="line">daemon <span class="variable">$prog_bin</span> --pidfile <span class="variable">$PIDFILE</span> -c /etc/supervisord.conf</span><br><span class="line">[ -f <span class="variable">$PIDFILE</span> ] &amp;&amp; success $<span class="string">&quot;<span class="variable">$prog</span> startup&quot;</span> || failure $<span class="string">&quot;<span class="variable">$prog</span> startup&quot;</span></span><br><span class="line"><span class="built_in">echo</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">stop</span></span>()</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">echo</span> -n $<span class="string">&quot;Shutting down <span class="variable">$prog</span>: &quot;</span></span><br><span class="line">[ -f <span class="variable">$PIDFILE</span> ] &amp;&amp; killproc <span class="variable">$prog</span> || success $<span class="string">&quot;<span class="variable">$prog</span> shutdown&quot;</span></span><br><span class="line"><span class="built_in">echo</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span> <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">start)</span><br><span class="line">start</span><br><span class="line">;;</span><br><span class="line"></span><br><span class="line">stop)</span><br><span class="line">stop</span><br><span class="line">;;</span><br><span class="line"></span><br><span class="line">status)</span><br><span class="line">status <span class="variable">$prog</span></span><br><span class="line">;;</span><br><span class="line"></span><br><span class="line">restart)</span><br><span class="line">stop</span><br><span class="line">start</span><br><span class="line">;;</span><br><span class="line"></span><br><span class="line">*)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Usage: <span class="variable">$0</span> &#123;start|stop|restart|status&#125;&quot;</span></span><br><span class="line">;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置开机启动及systemd方式启动。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> +x /etc/rc.d/init.d/supervisord</span><br><span class="line"><span class="built_in">sudo</span> chkconfig --add supervisord</span><br><span class="line"><span class="built_in">sudo</span> chkconfig supervisord on</span><br><span class="line"><span class="built_in">sudo</span> service supervisord start</span><br></pre></td></tr></table></figure>
+
+<h2 id="实践出真知"><a href="#实践出真知" class="headerlink" title="实践出真知"></a>实践出真知</h2><h3 id="Django应用配置"><a href="#Django应用配置" class="headerlink" title="Django应用配置"></a>Django应用配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#项目名</span></span><br><span class="line">[program:django]</span><br><span class="line"><span class="comment">#脚本目录</span></span><br><span class="line">directory=/root/social_engineering/</span><br><span class="line"><span class="comment">#脚本执行命令</span></span><br><span class="line"><span class="built_in">command</span>=/root/anaconda3/bin/python manage.py runserver 0.0.0.0:8000   <span class="comment"># 或用gunicorn等服务启动</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#supervisor启动的时候是否随着同时启动，默认True</span></span><br><span class="line">autostart=<span class="literal">true</span></span><br><span class="line"><span class="comment">#当程序exit的时候，这个program不会自动重启,默认unexpected，设置子进程挂掉后自动重启的情况，有三个选项，false,unexpected和true。如果为false的时候，无论什么情况下，都不会被重新启动，如果为unexpected，只有当进程的退出码不在下面的exitcodes里面定义的</span></span><br><span class="line">autorestart=<span class="literal">true</span></span><br><span class="line"><span class="comment">#这个选项是子进程启动多少秒之后，此时状态如果是running，则我们认为启动成功了。默认值为1</span></span><br><span class="line">startsecs=1</span><br><span class="line"></span><br><span class="line"><span class="comment">#脚本运行的用户身份 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#日志输出 </span></span><br><span class="line">stderr_logfile=/tmp/django_stderr.log</span><br><span class="line">stdout_logfile=/tmp/django_stdout.log</span><br><span class="line"><span class="comment">#把stderr重定向到stdout，默认 false</span></span><br><span class="line">redirect_stderr = <span class="literal">true</span></span><br><span class="line"><span class="comment">#stdout日志文件大小，默认 50MB</span></span><br><span class="line">stdout_logfile_maxbytes = 20</span><br><span class="line"><span class="comment">#stdout日志文件备份数</span></span><br><span class="line">stdout_logfile_backups = 20</span><br><span class="line"></span><br><span class="line">; 可以通过 environment 来添加需要的环境变量，一种常见的用法是修改 PYTHONPATH</span><br><span class="line">; environment=PYTHONPATH=<span class="variable">$PYTHONPATH</span>:/path/to/somewhere</span><br></pre></td></tr></table></figure>
+
+<h3 id="Celery应用配置"><a href="#Celery应用配置" class="headerlink" title="Celery应用配置"></a>Celery应用配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#项目名</span></span><br><span class="line">[program:celery]</span><br><span class="line"><span class="comment">#脚本目录</span></span><br><span class="line">directory=/root/social_engineering/</span><br><span class="line"><span class="comment">#脚本执行命令</span></span><br><span class="line"><span class="built_in">command</span>=/root/anaconda3/bin/celery -A tasks worker --loglevel=info</span><br><span class="line"></span><br><span class="line"><span class="comment">#supervisor启动的时候是否随着同时启动，默认True</span></span><br><span class="line">autostart=<span class="literal">true</span></span><br><span class="line"><span class="comment">#程序崩溃时自动重启</span></span><br><span class="line">autorestart=<span class="literal">true</span></span><br><span class="line"><span class="comment">#这个选项是子进程启动多少秒之后，此时状态如果是running，则我们认为启动成功了。默认值为1</span></span><br><span class="line">startsecs=1</span><br><span class="line"></span><br><span class="line"><span class="comment">#脚本运行的用户身份 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#日志输出 </span></span><br><span class="line">stderr_logfile=/tmp/celery_stderr.log</span><br><span class="line">stdout_logfile=/tmp/celery_stdout.log</span><br><span class="line"><span class="comment">#把stderr重定向到stdout，默认 false</span></span><br><span class="line">redirect_stderr = <span class="literal">true</span></span><br><span class="line"><span class="comment">#stdout日志文件大小，默认 50MB</span></span><br><span class="line">stdout_logfile_maxbytes = 20</span><br><span class="line"><span class="comment">#stdout日志文件备份数</span></span><br><span class="line">stdout_logfile_backups = 20</span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis服务配置"><a href="#Redis服务配置" class="headerlink" title="Redis服务配置"></a>Redis服务配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[program:zedis]</span><br><span class="line"><span class="built_in">command</span>=/opt/zedis/redis-server /opt/zedis/redis.conf</span><br><span class="line">user=redisuser</span><br><span class="line">autostart=<span class="literal">true</span>                         </span><br><span class="line">;启动supervisord的时候会将该配置项设置为<span class="literal">true</span>的所有进程自动启动</span><br><span class="line">stopasgroup=<span class="literal">true</span>                    </span><br><span class="line">;使用supervisorctl停止zedis时，子进程也会一起停止</span><br><span class="line">killasgroup=<span class="literal">true</span>                    </span><br><span class="line">;向进程组发送<span class="built_in">kill</span>信号，包括子进程</span><br><span class="line">startsecs=10                        </span><br><span class="line">;进程从STARING状态转换到RUNNING状态所需要保持运行10s时间</span><br><span class="line">startretries=3                      </span><br><span class="line">;启动失败自动重试次数，默认是3</span><br><span class="line">autorestart=<span class="literal">true</span>                    </span><br><span class="line">;进程停止后自动启动</span><br><span class="line">stdout_logfile=/var/log/zedis-out</span><br><span class="line">stdout_logfile_maxbytes=1MB</span><br><span class="line">stdout_logfile_backups=10</span><br><span class="line">stderr_logfile=/var/log/zedis-err</span><br><span class="line">stderr_logfile_maxbytes=1MB</span><br><span class="line">stderr_logfile_backups=10</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Ø 因为无法监视后台进程，需要把Zedis前台运行（daemonize no），否则会识别不到Zedis启动，重试启动3次,日志提示6379已占用。</li>
+<li>Ø 因为redis.conf指定了logfile，stdout_logfile并无内容输出；如果不指定redis.conf只是启动redis-server，日志会输出到stdout_logfile。</li>
+</ul>
+<h3 id="组应用配置"><a href="#组应用配置" class="headerlink" title="组应用配置"></a>组应用配置</h3><ul>
+<li>新建文件，fastapi_app.conf</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[group:fastapi]</span><br><span class="line">programs=fastapi-app</span><br><span class="line"></span><br><span class="line">[program:fastapi-1]</span><br><span class="line"><span class="built_in">command</span>=/home/python/scripts/fastapi1_app.sh</span><br><span class="line">directory=/home/python/fastapi-1-backend</span><br><span class="line">user=python</span><br><span class="line">autorestart=<span class="literal">true</span></span><br><span class="line">redirect_stderr=<span class="literal">false</span></span><br><span class="line">loglevel=info</span><br><span class="line">stopsignal=KILL</span><br><span class="line">stopasgroup=<span class="literal">true</span></span><br><span class="line">killasgroup=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line">[program:fastapi-2]</span><br><span class="line"><span class="built_in">command</span>=/home/python/scripts/fastapi-2.sh</span><br><span class="line">directory=/home/python/fastapi-2-backend</span><br><span class="line">user=python</span><br><span class="line">autorestart=<span class="literal">true</span></span><br><span class="line">redirect_stderr=<span class="literal">false</span></span><br><span class="line">loglevel=info</span><br><span class="line">stopsignal=KILL</span><br><span class="line">stopasgroup=<span class="literal">true</span></span><br><span class="line">killasgroup=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="避坑指南"><a href="#避坑指南" class="headerlink" title="避坑指南"></a>避坑指南</h2><h3 id="问题1：sock文件不存在"><a href="#问题1：sock文件不存在" class="headerlink" title="问题1：sock文件不存在"></a>问题1：sock文件不存在</h3><p><strong>问题描述</strong>：<code>unix:///tmp/supervisor.sock no such file</code></p>
+<p>**根源分析：**在supervisor默认配置中，其启动的sock等都会放到tmp目录，而tmp目录会自动清理导致无法使用supervisorctl</p>
+<p><strong>解决方案</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改主配置文件中的tmp路径</span></span><br><span class="line">sed -i <span class="string">&#x27;s|/tmp/supervisor|/var/run/supervisor|g&#x27;</span> /etc/supervisord.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建所需目录并设置权限</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /var/run/supervisor</span><br><span class="line"><span class="built_in">chmod</span> 755 /var/run/supervisor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启supervisor</span></span><br><span class="line">supervisorctl reload</span><br></pre></td></tr></table></figure>
+
+<h3 id="问题2：进程不断重启"><a href="#问题2：进程不断重启" class="headerlink" title="问题2：进程不断重启"></a>问题2：进程不断重启</h3><p><strong>问题描述</strong>：进程启动后Supervisor不断尝试重启</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>确保管理的进程以前台方式运行</li>
+<li>检查进程启动命令是否正确</li>
+<li>查看日志文件定位具体问题</li>
+</ul>
+<h3 id="问题3：启动了多个supervisord服务，导致无法正常关闭服务"><a href="#问题3：启动了多个supervisord服务，导致无法正常关闭服务" class="headerlink" title="问题3：启动了多个supervisord服务，导致无法正常关闭服务"></a>问题3：启动了多个supervisord服务，导致无法正常关闭服务</h3><p><strong>问题描述</strong>：在运行<code>supervisord -c /etc/supervisord.conf</code>之前，直接运行过&#96;&#96;supervisord -c &#x2F;etc&#x2F;supervisord.d&#x2F;xx.conf&#96;导致有些进程被多个superviord管理，无法正常关闭进程</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>使用<code>ps -fe | grep supervisord</code>查看所有启动过的supervisord服务，kill相关的进程。</li>
+</ul>
+<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>Supervisor是一款强大且灵活的进程管理工具，合理配置显著提升服务的稳定性和可维护性。本文从安装配置、基础使用到进阶使用全面介绍了Supervisor的使用方法， 希望能帮助你在实际工作中更好地运用这一工具。</p>
+<p>最佳实践建议：</p>
+<ul>
+<li>为每个服务创建独立的配置文件</li>
+<li>合理配置日志轮转，避免磁盘空间不足</li>
+<li>使用Web界面进行日常监控和管理</li>
+<li>设置进程分组，简化管理操作</li>
+<li>配置开机启动，确保服务可靠性</li>
+</ul>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://sswfive.xyz/2025/08/30/tech/python/250830-supervisor/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://sswfive.xyz/2025/08/30/tech/python/250830-supervisor/"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2025/08/31/dsa/250831-dsa-intro/">重回原点再出发</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/08/28/tech/python/250827-py-env-package/">我用过的Python工具链：从virtualenv到uv的演进之路</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">BluesSen</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%B1%E8%B8%AA%E4%BA%BA%E5%8F%A3%E5%9B%9E%E5%BD%92%EF%BC%9ASupervisor%E6%97%B6%E9%9A%94%E4%B8%89%E5%B9%B4%E5%86%8D%E6%9B%B4%E6%96%B0"><span class="toc-text">失踪人口回归：Supervisor时隔三年再更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E8%AF%86Supervisor%EF%BC%9A%E4%BD%A0%E7%9A%84%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-text">初识Supervisor：你的进程管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B%EF%BC%9A%E4%BD%A0%E5%8F%AA%E9%9C%80%E8%A6%81%E5%87%A0%E5%88%86%E9%92%9F"><span class="toc-text">快速上手：你只需要几分钟</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-text">基础使用：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%EF%BC%9A%E7%A3%A8%E5%88%80%E4%B8%8D%E8%AF%AF%E7%A0%8D%E6%9F%B4%E5%B7%A5"><span class="toc-text">配置详解：磨刀不误砍柴工</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E6%AE%B5"><span class="toc-text">基础配置段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E9%85%8D%E7%BD%AE%E6%AE%B5"><span class="toc-text">程序配置段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6%EF%BC%9A%E8%AE%A9%E6%95%88%E7%8E%87%E7%BF%BB%E5%80%8D"><span class="toc-text">入门到进阶：让效率翻倍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web%E7%AE%A1%E7%90%86%E7%95%8C%E9%9D%A2"><span class="toc-text">Web管理界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%86%E7%BB%84%E7%AE%A1%E7%90%86"><span class="toc-text">进程分组管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Supervisor%E9%85%8D%E7%BD%AE%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8"><span class="toc-text">Supervisor配置开机启动</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9A"><span class="toc-text">方式一：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C"><span class="toc-text">方式二</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E5%87%BA%E7%9C%9F%E7%9F%A5"><span class="toc-text">实践出真知</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Django%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="toc-text">Django应用配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Celery%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="toc-text">Celery应用配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE"><span class="toc-text">Redis服务配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="toc-text">组应用配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97"><span class="toc-text">避坑指南</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9Asock%E6%96%87%E4%BB%B6%E4%B8%8D%E5%AD%98%E5%9C%A8"><span class="toc-text">问题1：sock文件不存在</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E8%BF%9B%E7%A8%8B%E4%B8%8D%E6%96%AD%E9%87%8D%E5%90%AF"><span class="toc-text">问题2：进程不断重启</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%983%EF%BC%9A%E5%90%AF%E5%8A%A8%E4%BA%86%E5%A4%9A%E4%B8%AAsupervisord%E6%9C%8D%E5%8A%A1%EF%BC%8C%E5%AF%BC%E8%87%B4%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E5%85%B3%E9%97%AD%E6%9C%8D%E5%8A%A1"><span class="toc-text">问题3：启动了多个supervisord服务，导致无法正常关闭服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%80%E4%B8%8B"><span class="toc-text">总结一下</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  const el = document.getElementById('waline_container');
+  util.viewportLazyload(el, load_waline, true);
+
+  function load_waline(){
+    if (!el) return;
+
+    utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+    utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+
+    const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+    const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+      el: '#waline_container',
+      path: path,
+      
+    }));
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

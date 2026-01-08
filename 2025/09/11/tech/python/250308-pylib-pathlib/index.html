@@ -1,0 +1,1056 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>用了pathlib后，我再也不想碰os.path了！ - AInLife</title>
+
+  
+    <meta name="description" content="在日常Python开发中，文件路径操作是绕不开的话题。你是否还在使用os.path.join()拼接路径？是否还在为Windows和Linux的路径分隔符头疼？是否期待一种更Pythonic的方式来处理路径？ 先来看一个直观的对比，即使你现在还不熟悉pathlib，也能一眼看出来区别： 12345678910111213# 传统方式：繁琐且易出错import osbase_path &#x3D; os.pa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用了pathlib后，我再也不想碰os.path了！">
+<meta property="og:url" content="http://sswfive.xyz/2025/09/11/tech/python/250308-pylib-pathlib/">
+<meta property="og:site_name" content="AInLife">
+<meta property="og:description" content="在日常Python开发中，文件路径操作是绕不开的话题。你是否还在使用os.path.join()拼接路径？是否还在为Windows和Linux的路径分隔符头疼？是否期待一种更Pythonic的方式来处理路径？ 先来看一个直观的对比，即使你现在还不熟悉pathlib，也能一眼看出来区别： 12345678910111213# 传统方式：繁琐且易出错import osbase_path &#x3D; os.pa">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-11T02:17:00.000Z">
+<meta property="article:modified_time" content="2025-09-24T15:06:59.000Z">
+<meta property="article:author" content="BluesSen">
+<meta property="article:tag" content="python库">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="python库">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="AInLife" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"BluesSen","sameAs":[]},"dateCreated":"2025-09-11T10:17:00+08:00","dateModified":"2025-09-24T23:06:59+08:00","datePublished":"2025-09-11T10:17:00+08:00","description":"","headline":"用了pathlib后，我再也不想碰os.path了！","mainEntityOfPage":{"@type":"WebPage","@id":"http://sswfive.xyz/2025/09/11/tech/python/250308-pylib-pathlib/"},"publisher":{"@type":"Organization","name":"BluesSen","sameAs":[]},"url":"http://sswfive.xyz/2025/09/11/tech/python/250308-pylib-pathlib/","keywords":"python库","image":[]}</script>
+  
+</head>
+<body>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">AInLife</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 向阳而深 & BluesSen...</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="收藏夹" href="/notes/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<widget class="widget-wrapper related post-list"><div class="widget-header dis-select"><span class="name">专栏：python</span></div><div class="widget-body"><a class="item" href="/2025/09/23/tech/python/250923-py-magic-methods/"><span class="title">Python开发必备：解锁魔法方法的实用技巧大全</span></a><a class="item" href="/2025/09/14/tech/python/250914-py-data-struct/"><span class="title">Python中的数据类型用法剖析：从底层实现到高效应用</span></a><a class="item active" href="/2025/09/11/tech/python/250308-pylib-pathlib/"><span class="title">用了pathlib后，我再也不想碰os.path了！</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="item" href="/2025/09/08/tech/python/250907-py-async-challenges/"><span class="title">Python异步编程十年沉浮：且看3.14版本重要更新</span></a><a class="item" href="/2025/08/30/tech/python/250830-supervisor/"><span class="title">Supervisor：三年后的更新，把我三年前的笔记唤醒</span></a><a class="item" href="/2025/08/28/tech/python/250827-py-env-package/"><span class="title">我用过的Python工具链：从virtualenv到uv的演进之路</span></a><a class="item" href="/2025/08/26/tech/python/250826-pygc/"><span class="title">从计数到分代一步步窥探Python的垃圾回收机制</span></a><a class="item" href="/2025/08/24/tech/python/250824-pylib-faststream/"><span class="title">异步消息处理的利器之FastStream</span></a><a class="item" href="/2025/03/08/tech/python/08-pylib-subprocess/"><span class="title">子进程管理工具之subprocess</span></a><a class="item" href="/2025/03/07/tech/python/07-pylib-supervisor/"><span class="title">进程管理工具之Supervisor</span></a><a class="item" href="/2025/03/06/tech/python/06-pylib-apscheduler/"><span class="title">任务管理工具之APScheduler</span></a><a class="item" href="/2025/03/06/tech/python/05-pylib-awesome/"><span class="title">Python常用库汇总[awesome]</span></a><a class="item" href="/2025/03/04/tech/python/03-py-pypi-source/"><span class="title">常用的Pypi源汇总</span></a><a class="item" href="/2025/03/03/tech/python/250903-py-coding-statndards/"><span class="title">Pythoner的优雅编码之道</span></a></div></widget>
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/01/08/260108-test-cicd/"><span class="title">260108-test-cicd</span></a><a class="item title" href="/2026/01/06/tech/python/260106-why-is-uv-so-fast/"><span class="title">不止Rust，uv如此速度的背后真实原因</span></a><a class="item title" href="/2026/01/04/tech/python/260104-py-performace-analysis-and-practice/"><span class="title">Python开发者必知的性能数据与实用技巧</span></a><a class="item title" href="/2024/03/28/tech/python/240328-pyflink-usage/"><span class="title">pyflink之分布式计算</span></a><a class="item title" href="/2025/08/31/dsa/250831-dsa-intro/"><span class="title">重回原点再出发</span></a><a class="item title" href="/2025/09/01/dsa/250831-dsa-basic/"><span class="title">浅析数据结构与算法的核心概念</span></a><a class="item title" href="/2025/09/02/dsa/250902-data-structure-basic/"><span class="title">数据结构的基本知识</span></a><a class="item title" href="/2025/09/01/dsa/250901-complexity-analysis/"><span class="title">复杂度分析与大O表示法</span></a><a class="item title" href="/2025/09/10/dsa/250910-array/"><span class="title">数据结构之【数组】</span></a><a class="item title" href="/2025/09/12/dsa/250912-linkedlist/"><span class="title">数据结构之【链表】</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></a><a class="social" href="https://x.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a><a class="social" href="/atom.xml" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.462v4.003c6.988 0 12.65 5.646 12.65 12.618H18.33c0-9.69-7.93-17.621-17.621-17.621H1.677zM1.677.014v4.005C13.486 4.019 23 13.527 23 25.339h4.005C27.005 11.336 15.677.014 1.677.014z"/></svg></a><a class="social" href="mailto:sswss5005@163.com" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.724l9.615-6.903h.749c.904 0 1.636.732 1.636 1.636z"/></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2025/09/23/tech/python/250923-py-magic-methods/">python</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-09-11T02:17:00.000Z">2025-09-11</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-09-24T15:06:59.000Z">2025-09-24</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>用了pathlib后，我再也不想碰os.path了！</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>在日常Python开发中，文件路径操作是绕不开的话题。你是否还在使用<code>os.path.join()</code>拼接路径？是否还在为Windows和Linux的路径分隔符头疼？是否期待一种更Pythonic的方式来处理路径？</p>
+<p>先来看一个直观的对比，即使你现在还不熟悉pathlib，也能一眼看出来区别：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 传统方式：繁琐且易出错</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">base_path = os.path.dirname(os.path.dirname(os.getcwd()))</span><br><span class="line">file_path = os.path.join(base_path, <span class="string">&#x27;data&#x27;</span>, <span class="string">&#x27;users&#x27;</span>, <span class="string">&#x27;profile.json&#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> os.path.exists(file_path):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        content = f.read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># pathlib方式：简洁优雅</span></span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line">file_path = Path.cwd().parent.parent / <span class="string">&#x27;data&#x27;</span> / <span class="string">&#x27;users&#x27;</span> / <span class="string">&#x27;profile.json&#x27;</span></span><br><span class="line"><span class="keyword">if</span> file_path.exists():</span><br><span class="line">    content = file_path.read_text()</span><br></pre></td></tr></table></figure>
+
+<p>看出差异了吗？今天要介绍的，正是这个让文件路径操作变得优雅如诗的Python标准库——<strong>pathlib</strong>。</p>
+<h2 id="pathlib是什么？"><a href="#pathlib是什么？" class="headerlink" title="pathlib是什么？"></a>pathlib是什么？</h2><p>pathlib是Python 3.4中新增的标准库模块，提供了面向对象的文件系统路径操作方式。官网地址：<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/pathlib.html">点击前往</a></p>
+<p>它的核心优势包括：</p>
+<ul>
+<li><strong>面向对象API</strong>：路径不再是字符串，而是Path对象，方法可以链式调用 </li>
+<li><strong>跨平台统一</strong>：无缝兼容Windows和Unix系统，自动处理不同操作系统的路径差异</li>
+<li><strong>直观易懂</strong>：代码即文档，一看就懂 </li>
+<li><strong>功能强大</strong>：覆盖了绝大部分文件路径操作需求，包括文件操作、路径查询、模式匹配等功能</li>
+</ul>
+<p>日常开发中，我们最常用的是<strong>Path</strong>类，它可以完全替代os.path的功能。</p>
+<h2 id="为什么需要pathlib？"><a href="#为什么需要pathlib？" class="headerlink" title="为什么需要pathlib？"></a>为什么需要pathlib？</h2><blockquote>
+<p><strong>传统os.path的三大痛点</strong></p>
+</blockquote>
+<p><strong>1. 函数式编程，缺乏连贯性</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># os.path: 需要不断传递路径字符串</span></span><br><span class="line">path = <span class="string">&#x27;/Users/astonwang/projects&#x27;</span></span><br><span class="line">parent = os.path.dirname(path)</span><br><span class="line">grandparent = os.path.dirname(parent)</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 跨平台兼容性问题</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Windows: C:\Users\Name\Documents</span></span><br><span class="line"><span class="comment"># Linux: /home/name/documents</span></span><br><span class="line"><span class="comment"># 需要手动处理路径分隔符差异</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 代码可读性差</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这行代码在做什么？一眼看不出来</span></span><br><span class="line">full_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), <span class="string">&#x27;..&#x27;</span>, <span class="string">&#x27;data&#x27;</span>, <span class="string">&#x27;config.json&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="pathlib的核心设计"><a href="#pathlib的核心设计" class="headerlink" title="pathlib的核心设计"></a>pathlib的核心设计</h2><p>pathlib提供了丰富的类来处理不同场景下的路径操作：</p>
+<h3 id="两大分支：纯路径-vs-具体路径"><a href="#两大分支：纯路径-vs-具体路径" class="headerlink" title="两大分支：纯路径 vs 具体路径"></a>两大分支：纯路径 vs 具体路径</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 纯路径：只做路径运算，不访问文件系统</span></span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> PurePath, PurePosixPath, PureWindowsPath</span><br><span class="line"></span><br><span class="line"><span class="comment"># 具体路径：可以访问文件系统，进行I/O操作  </span></span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path, PosixPath, WindowsPath</span><br></pre></td></tr></table></figure>
+
+<p><strong>纯路径家族</strong>（Pure Path）- 理论派</p>
+<ul>
+<li>只负责路径的逻辑运算</li>
+<li>不会访问真实的文件系统</li>
+<li>适合路径字符串的处理和转换</li>
+</ul>
+<p><strong>具体路径家族</strong>（Concrete Path）- 实践派</p>
+<ul>
+<li>可以创建、读取、写入文件</li>
+<li>能够检查文件是否存在</li>
+<li>支持所有文件系统操作</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 纯路径操作（无I/O）</span></span><br><span class="line">PurePath</span><br><span class="line">├── PurePosixPath  <span class="comment"># Unix风格</span></span><br><span class="line">└── PureWindowsPath <span class="comment"># Windows风格</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 具体路径操作（带I/O）</span></span><br><span class="line">Path</span><br><span class="line">├── PosixPath      <span class="comment"># Unix系统</span></span><br><span class="line">└── WindowsPath    <span class="comment"># Windows系统</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="日常开发首选：Path类"><a href="#日常开发首选：Path类" class="headerlink" title="日常开发首选：Path类"></a>日常开发首选：Path类</h3><p>在99%的场景中，你只需要使用<strong>Path类</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="comment"># Path会自动选择合适的子类</span></span><br><span class="line"><span class="comment"># 在Linux/Mac上 -&gt; PosixPath  </span></span><br><span class="line"><span class="comment"># 在Windows上 -&gt; WindowsPath</span></span><br><span class="line">current_dir = Path.cwd()</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(current_dir))  <span class="comment"># 自动适配当前系统</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>记住这个原则</strong>：除非有特殊需求，否则直接用<code>Path</code>就够了！</p>
+<h2 id="pathlib-VS-os-path-的API对比"><a href="#pathlib-VS-os-path-的API对比" class="headerlink" title="pathlib VS os.path 的API对比"></a>pathlib VS os.path 的API对比</h2><p>想知道pathlib到底比os.path强在哪里？来看看这个对比表：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>pathlib优雅写法</th>
+<th>os.path传统写法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>获取当前目录</strong></td>
+<td><code>Path.cwd()</code></td>
+<td><code>os.getcwd()</code></td>
+</tr>
+<tr>
+<td><strong>获取主目录</strong></td>
+<td><code>Path.home()</code></td>
+<td><code>os.path.expanduser(&#39;~&#39;)</code></td>
+</tr>
+<tr>
+<td><strong>路径拼接</strong></td>
+<td><code>Path(&#39;a&#39;) / &#39;b&#39; / &#39;c&#39;</code></td>
+<td><code>os.path.join(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)</code></td>
+</tr>
+<tr>
+<td><strong>获取绝对路径</strong></td>
+<td><code>path.absolute()</code></td>
+<td><code>os.path.abspath(path)</code></td>
+</tr>
+<tr>
+<td><strong>获取父目录</strong></td>
+<td><code>path.parent</code></td>
+<td><code>os.path.dirname(path)</code></td>
+</tr>
+<tr>
+<td><strong>获取文件名</strong></td>
+<td><code>path.name</code></td>
+<td><code>os.path.basename(path)</code></td>
+</tr>
+<tr>
+<td><strong>判断是否存在</strong></td>
+<td><code>path.exists()</code></td>
+<td><code>os.path.exists(path)</code></td>
+</tr>
+<tr>
+<td><strong>判断是否文件</strong></td>
+<td><code>path.is_file()</code></td>
+<td><code>os.path.isfile(path)</code></td>
+</tr>
+<tr>
+<td><strong>创建目录</strong></td>
+<td><code>path.mkdir(parents=True)</code></td>
+<td><code>os.makedirs(path)</code></td>
+</tr>
+<tr>
+<td><strong>读取文件</strong></td>
+<td><code>path.read_text()</code></td>
+<td><code>open(path).read()</code></td>
+</tr>
+<tr>
+<td><strong>写入文件</strong></td>
+<td><code>path.write_text(data)</code></td>
+<td><code>open(path, &#39;w&#39;).write(data)</code></td>
+</tr>
+</tbody></table>
+<p><strong>一句话总结</strong>：pathlib让你的代码从”写给计算机看”变成”写给人类看”！</p>
+<h2 id="Pathlib基础实践指南—Path类"><a href="#Pathlib基础实践指南—Path类" class="headerlink" title="Pathlib基础实践指南—Path类"></a>Pathlib基础实践指南—Path类</h2><p>pathlib的强大之处在于它丰富的方法库，让我们按使用场景来分类介绍：</p>
+<h3 id="路径探索操作"><a href="#路径探索操作" class="headerlink" title="路径探索操作"></a>路径探索操作</h3><h4 id="获取特殊目录"><a href="#获取特殊目录" class="headerlink" title="获取特殊目录"></a>获取特殊目录</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前工作目录 - 相当于 os.getcwd()</span></span><br><span class="line">current_dir = Path.cwd()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;当前目录: <span class="subst">&#123;current_dir&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户主目录 - 相当于 os.path.expanduser(&#x27;~&#x27;)  </span></span><br><span class="line">home_dir = Path.home()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;主目录: <span class="subst">&#123;home_dir&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查路径是否存在 - 相当于 os.path.exists()</span></span><br><span class="line">config_file = Path(<span class="string">&quot;config.json&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> config_file.exists():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;配置文件存在&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件搜索"><a href="#文件搜索" class="headerlink" title="文件搜索"></a>文件搜索</h4><p>pathlib的<code>glob</code>功能堪比终端的find命令，让文件搜索变得简单：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查找当前目录所有Python文件</span></span><br><span class="line">python_files = <span class="built_in">list</span>(Path(<span class="string">&quot;.&quot;</span>).glob(<span class="string">&quot;*.py&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;找到 <span class="subst">&#123;<span class="built_in">len</span>(python_files)&#125;</span> 个Python文件&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归搜索所有Python文件 - 相当于 find . -name &quot;*.py&quot;</span></span><br><span class="line">all_python_files = <span class="built_in">list</span>(Path(<span class="string">&quot;.&quot;</span>).rglob(<span class="string">&quot;*.py&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找特定模式的文件</span></span><br><span class="line">test_files = <span class="built_in">list</span>(Path(<span class="string">&quot;.&quot;</span>).rglob(<span class="string">&quot;test_*.py&quot;</span>))</span><br><span class="line">config_files = <span class="built_in">list</span>(Path(<span class="string">&quot;.&quot;</span>).rglob(<span class="string">&quot;**/config/*.json&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<h4 id="目录遍历"><a href="#目录遍历" class="headerlink" title="目录遍历"></a>目录遍历</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出目录内容 - 相当于 os.listdir()</span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> Path(<span class="string">&quot;.&quot;</span>).iterdir():</span><br><span class="line">    <span class="keyword">if</span> item.is_file():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;文件: <span class="subst">&#123;item.name&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">elif</span> item.is_dir():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;目录: <span class="subst">&#123;item.name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归遍历目录树 - 相当于 os.walk()</span></span><br><span class="line"><span class="keyword">for</span> dirpath, dirnames, filenames <span class="keyword">in</span> Path(<span class="string">&quot;.&quot;</span>).walk():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;当前目录: <span class="subst">&#123;dirpath&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;子目录: <span class="subst">&#123;dirnames&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;文件: <span class="subst">&#123;filenames[:<span class="number">3</span>]&#125;</span>...&quot;</span>)  <span class="comment"># 只显示前3个文件</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="路径转换"><a href="#路径转换" class="headerlink" title="路径转换"></a>路径转换</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取绝对路径 - 相当于 os.path.abspath()</span></span><br><span class="line">relative_path = Path(<span class="string">&quot;../data/file.txt&quot;</span>)</span><br><span class="line">absolute_path = relative_path.absolute()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析软链接 - 相当于 os.path.realpath()</span></span><br><span class="line">resolved_path = relative_path.resolve()</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="路径类型判断"><a href="#路径类型判断" class="headerlink" title="路径类型判断"></a>路径类型判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断路径类型 - 比 os.path.isfile/isdir 更直观</span></span><br><span class="line">data_path = Path(<span class="string">&quot;data.txt&quot;</span>)</span><br><span class="line">config_dir = Path(<span class="string">&quot;config/&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基础判断</span></span><br><span class="line"><span class="keyword">if</span> data_path.is_file():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;这是一个文件&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> config_dir.is_dir():  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;这是一个目录&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 比较两个路径是否指向同一个文件 - 相当于 os.path.samefile()</span></span><br><span class="line"><span class="keyword">if</span> Path(<span class="string">&quot;file1.txt&quot;</span>).samefile(Path(<span class="string">&quot;file2.txt&quot;</span>)):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;两个路径指向同一个文件&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件与目录操作"><a href="#文件与目录操作" class="headerlink" title="文件与目录操作"></a>文件与目录操作</h3><h4 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建目录 - 比 os.makedirs 更简洁</span></span><br><span class="line">new_dir = Path(<span class="string">&quot;project/src/utils&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归创建目录（相当于 mkdir -p）</span></span><br><span class="line">new_dir.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除空目录 - 相当于 os.rmdir()</span></span><br><span class="line">empty_dir = Path(<span class="string">&quot;temp&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> empty_dir.exists() <span class="keyword">and</span> empty_dir.is_dir():</span><br><span class="line">    empty_dir.rmdir()</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><p>pathlib最让人惊喜的地方就是内置的文件读写方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建空文件（相当于 touch 命令）</span></span><br><span class="line">log_file = Path(<span class="string">&quot;app.log&quot;</span>)</span><br><span class="line">log_file.touch(exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一行代码读取文件 - 告别繁琐的open/close</span></span><br><span class="line">config_text = Path(<span class="string">&quot;config.txt&quot;</span>).read_text(encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">binary_data = Path(<span class="string">&quot;image.png&quot;</span>).read_bytes()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一行代码写入文件</span></span><br><span class="line">Path(<span class="string">&quot;output.txt&quot;</span>).write_text(<span class="string">&quot;Hello, pathlib!&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">Path(<span class="string">&quot;data.bin&quot;</span>).write_bytes(<span class="string">b&quot;binary data&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件重命名 - 相当于 os.rename()</span></span><br><span class="line">old_file = Path(<span class="string">&quot;old_name.txt&quot;</span>)</span><br><span class="line">new_file = old_file.rename(<span class="string">&quot;new_name.txt&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件信息查询"><a href="#文件信息查询" class="headerlink" title="文件信息查询"></a>文件信息查询</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取文件详细信息 - 相当于 os.stat()</span></span><br><span class="line">file_path = Path(<span class="string">&quot;document.pdf&quot;</span>)</span><br><span class="line">stat_info = file_path.stat()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;文件大小: <span class="subst">&#123;stat_info.st_size&#125;</span> 字节&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;修改时间: <span class="subst">&#123;stat_info.st_mtime&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;创建时间: <span class="subst">&#123;stat_info.st_ctime&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改文件权限 - 相当于 chmod</span></span><br><span class="line">script_file = Path(<span class="string">&quot;deploy.sh&quot;</span>)</span><br><span class="line">script_file.chmod(<span class="number">0o755</span>)  <span class="comment"># 给脚本添加执行权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取文件所有者信息（Unix/Linux系统）</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    owner = script_file.owner()</span><br><span class="line">    group = script_file.group()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;所有者: <span class="subst">&#123;owner&#125;</span>, 组: <span class="subst">&#123;group&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">except</span> KeyError:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;无法获取所有者信息&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="pathlib工程实践技巧"><a href="#pathlib工程实践技巧" class="headerlink" title="pathlib工程实践技巧"></a>pathlib工程实践技巧</h2><h3 id="实践技巧一：链式调用的艺术"><a href="#实践技巧一：链式调用的艺术" class="headerlink" title="实践技巧一：链式调用的艺术"></a>实践技巧一：链式调用的艺术</h3><p>pathlib最大的魅力在于可以进行优雅的链式调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一行代码完成复杂操作</span></span><br><span class="line">result = (Path.cwd()</span><br><span class="line">          .parent                    <span class="comment"># 获取父目录</span></span><br><span class="line">          .parent                    <span class="comment"># 再获取父目录</span></span><br><span class="line">          / <span class="string">&quot;data&quot;</span>                   <span class="comment"># 进入data文件夹</span></span><br><span class="line">          / <span class="string">&quot;config.json&quot;</span>)           <span class="comment"># 指向配置文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 链式判断和操作</span></span><br><span class="line"><span class="keyword">if</span> (Path.home() / <span class="string">&quot;.ssh&quot;</span> / <span class="string">&quot;id_rsa&quot;</span>).exists():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;SSH密钥存在&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链式文件处理</span></span><br><span class="line">(Path(<span class="string">&quot;temp&quot;</span>) </span><br><span class="line"> .mkdir(exist_ok=<span class="literal">True</span>)             <span class="comment"># 创建临时目录</span></span><br><span class="line"> .joinpath(<span class="string">&quot;output.txt&quot;</span>)           <span class="comment"># 创建文件路径</span></span><br><span class="line"> .write_text(<span class="string">&quot;Hello, World!&quot;</span>))     <span class="comment"># 写入内容</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="实践技巧二：优雅的错误处理"><a href="#实践技巧二：优雅的错误处理" class="headerlink" title="实践技巧二：优雅的错误处理"></a>实践技巧二：优雅的错误处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">safe_read_config</span>(<span class="params">config_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;安全读取配置文件&quot;&quot;&quot;</span></span><br><span class="line">    path = Path(config_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查文件是否存在</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> path.exists():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;配置文件不存在: <span class="subst">&#123;path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查是否为文件</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> path.is_file():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;路径不是文件: <span class="subst">&#123;path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 安全读取</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        content = path.read_text(encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> json.loads(content)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;读取配置失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实践建议一：使用-Path-替代字符串拼接"><a href="#实践建议一：使用-Path-替代字符串拼接" class="headerlink" title="实践建议一：使用 Path 替代字符串拼接"></a>实践建议一：使用 Path 替代字符串拼接</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不推荐：字符串拼接</span></span><br><span class="line">config_path = os.path.join(os.path.expanduser(<span class="string">&quot;~&quot;</span>), <span class="string">&quot;.config&quot;</span>, <span class="string">&quot;app&quot;</span>, <span class="string">&quot;settings.json&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐：pathlib方式</span></span><br><span class="line">config_path = Path.home() / <span class="string">&quot;.config&quot;</span> / <span class="string">&quot;app&quot;</span> / <span class="string">&quot;settings.json&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="实践建议二：利用-操作符进行路径拼接"><a href="#实践建议二：利用-操作符进行路径拼接" class="headerlink" title="实践建议二：利用 &#x2F; 操作符进行路径拼接"></a>实践建议二：利用 &#x2F; 操作符进行路径拼接</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 推荐：使用 / 操作符，简洁直观</span></span><br><span class="line">project_root = Path(__file__).parent.parent</span><br><span class="line">data_dir = project_root / <span class="string">&quot;data&quot;</span></span><br><span class="line">output_file = data_dir / <span class="string">&quot;results&quot;</span> / <span class="string">f&quot;output_<span class="subst">&#123;datetime.now().strftime(<span class="string">&#x27;%Y%m%d&#x27;</span>)&#125;</span>.csv&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="实践建议三：使用上下文管理器"><a href="#实践建议三：使用上下文管理器" class="headerlink" title="实践建议三：使用上下文管理器"></a>实践建议三：使用上下文管理器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 推荐：安全的文件操作</span></span><br><span class="line"><span class="keyword">with</span> Path(<span class="string">&quot;data.txt&quot;</span>).<span class="built_in">open</span>(<span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">&quot;重要数据&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者更简洁的方式</span></span><br><span class="line">Path(<span class="string">&quot;data.txt&quot;</span>).write_text(<span class="string">&quot;重要数据&quot;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-充分利用内置方法"><a href="#4-充分利用内置方法" class="headerlink" title="4. 充分利用内置方法"></a>4. 充分利用内置方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 推荐：使用pathlib内置方法</span></span><br><span class="line">files = [f <span class="keyword">for</span> f <span class="keyword">in</span> Path(<span class="string">&quot;.&quot;</span>).iterdir() <span class="keyword">if</span> f.suffix == <span class="string">&quot;.py&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更推荐：使用glob</span></span><br><span class="line">files = <span class="built_in">list</span>(Path(<span class="string">&quot;.&quot;</span>).glob(<span class="string">&quot;*.py&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<h2 id="pathlib的实践应用场景"><a href="#pathlib的实践应用场景" class="headerlink" title="pathlib的实践应用场景"></a>pathlib的实践应用场景</h2><p>让我们通过几个真实场景，看看pathlib如何让复杂的文件操作变得简单。</p>
+<h3 id="场景一：项目结构分析器"><a href="#场景一：项目结构分析器" class="headerlink" title="场景一：项目结构分析器"></a>场景一：项目结构分析器</h3><p>假设你要分析一个Python项目的结构，统计代码行数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">analyze_project</span>(<span class="params">project_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;分析Python项目结构&quot;&quot;&quot;</span></span><br><span class="line">    project = Path(project_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 统计不同类型的文件</span></span><br><span class="line">    py_files = <span class="built_in">list</span>(project.rglob(<span class="string">&quot;*.py&quot;</span>))  <span class="comment"># 所有Python文件</span></span><br><span class="line">    test_files = <span class="built_in">list</span>(project.rglob(<span class="string">&quot;test_*.py&quot;</span>))  <span class="comment"># 测试文件</span></span><br><span class="line">    config_files = <span class="built_in">list</span>(project.rglob(<span class="string">&quot;*.json&quot;</span>)) + <span class="built_in">list</span>(project.rglob(<span class="string">&quot;*.yaml&quot;</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算总代码行数</span></span><br><span class="line">    total_lines = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> py_file <span class="keyword">in</span> py_files:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            lines = <span class="built_in">len</span>(py_file.read_text(encoding=<span class="string">&#x27;utf-8&#x27;</span>).splitlines())</span><br><span class="line">            total_lines += lines</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;项目分析报告 - <span class="subst">&#123;project.name&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Python文件: <span class="subst">&#123;<span class="built_in">len</span>(py_files)&#125;</span> 个&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;测试文件: <span class="subst">&#123;<span class="built_in">len</span>(test_files)&#125;</span> 个&quot;</span>) </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;配置文件: <span class="subst">&#123;<span class="built_in">len</span>(config_files)&#125;</span> 个&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;总代码行数: <span class="subst">&#123;total_lines:,&#125;</span> 行&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">analyze_project(<span class="string">&quot;/path/to/your/project&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="场景二：智能文件整理器"><a href="#场景二：智能文件整理器" class="headerlink" title="场景二：智能文件整理器"></a>场景二：智能文件整理器</h3><p>整理下载文件夹，按文件类型自动分类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">organize_downloads</span>(<span class="params">downloads_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;智能整理下载文件夹&quot;&quot;&quot;</span></span><br><span class="line">    downloads = Path(downloads_dir)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 定义文件类型映射</span></span><br><span class="line">    type_mapping = &#123;</span><br><span class="line">        <span class="string">&#x27;images&#x27;</span>: [<span class="string">&#x27;.jpg&#x27;</span>, <span class="string">&#x27;.png&#x27;</span>, <span class="string">&#x27;.gif&#x27;</span>, <span class="string">&#x27;.jpeg&#x27;</span>, <span class="string">&#x27;.svg&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;documents&#x27;</span>: [<span class="string">&#x27;.pdf&#x27;</span>, <span class="string">&#x27;.doc&#x27;</span>, <span class="string">&#x27;.docx&#x27;</span>, <span class="string">&#x27;.txt&#x27;</span>, <span class="string">&#x27;.md&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;videos&#x27;</span>: [<span class="string">&#x27;.mp4&#x27;</span>, <span class="string">&#x27;.avi&#x27;</span>, <span class="string">&#x27;.mkv&#x27;</span>, <span class="string">&#x27;.mov&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;music&#x27;</span>: [<span class="string">&#x27;.mp3&#x27;</span>, <span class="string">&#x27;.wav&#x27;</span>, <span class="string">&#x27;.flac&#x27;</span>, <span class="string">&#x27;.m4a&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;archives&#x27;</span>: [<span class="string">&#x27;.zip&#x27;</span>, <span class="string">&#x27;.rar&#x27;</span>, <span class="string">&#x27;.7z&#x27;</span>, <span class="string">&#x27;.tar.gz&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建分类文件夹</span></span><br><span class="line">    <span class="keyword">for</span> folder_name <span class="keyword">in</span> type_mapping.keys():</span><br><span class="line">        (downloads / folder_name).mkdir(exist_ok=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 开始整理文件</span></span><br><span class="line">    moved_count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> file_path <span class="keyword">in</span> downloads.iterdir():</span><br><span class="line">        <span class="keyword">if</span> file_path.is_file():</span><br><span class="line">            file_ext = file_path.suffix.lower()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 找到对应的分类</span></span><br><span class="line">            <span class="keyword">for</span> folder_name, extensions <span class="keyword">in</span> type_mapping.items():</span><br><span class="line">                <span class="keyword">if</span> file_ext <span class="keyword">in</span> extensions:</span><br><span class="line">                    new_path = downloads / folder_name / file_path.name</span><br><span class="line">                    file_path.rename(new_path)</span><br><span class="line">                    moved_count += <span class="number">1</span></span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot; <span class="subst">&#123;file_path.name&#125;</span> → <span class="subst">&#123;folder_name&#125;</span>/&quot;</span>)</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;整理完成！共移动了 <span class="subst">&#123;moved_count&#125;</span> 个文件&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例  </span></span><br><span class="line">organize_downloads(Path.home() / <span class="string">&quot;Downloads&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="场景三：路径解析"><a href="#场景三：路径解析" class="headerlink" title="场景三：路径解析"></a>场景三：路径解析</h3><p>解析文件路径的各个组成部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">analyze_file_path</span>(<span class="params">file_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;详细分析文件路径组成&quot;&quot;&quot;</span></span><br><span class="line">    path = Path(file_path)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;路径分析：<span class="subst">&#123;path&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;所在目录: <span class="subst">&#123;path.parent&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;完整文件名: <span class="subst">&#123;path.name&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;主文件名: <span class="subst">&#123;path.stem&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;文件扩展名: <span class="subst">&#123;path.suffix&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;是否绝对路径: <span class="subst">&#123;path.is_absolute()&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 显示目录层级</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;目录层级:&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> i, parent <span class="keyword">in</span> <span class="built_in">enumerate</span>(path.parents):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  级别 <span class="subst">&#123;i+<span class="number">1</span>&#125;</span>: <span class="subst">&#123;parent&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">analyze_file_path(<span class="string">&quot;/xxx/utils/helper.py&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="场景四：配置文件管理器"><a href="#场景四：配置文件管理器" class="headerlink" title="场景四：配置文件管理器"></a>场景四：配置文件管理器</h3><p>优雅地处理应用配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ConfigManager</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;配置文件管理器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, app_name</span>):</span><br><span class="line">        <span class="variable language_">self</span>.app_name = app_name</span><br><span class="line">        <span class="comment"># 创建配置目录</span></span><br><span class="line">        <span class="variable language_">self</span>.config_dir = Path.home() / <span class="string">f&quot;.<span class="subst">&#123;app_name&#125;</span>&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.config_dir.mkdir(exist_ok=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 定义配置文件路径</span></span><br><span class="line">        <span class="variable language_">self</span>.config_file = <span class="variable language_">self</span>.config_dir / <span class="string">&quot;config.json&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.log_file = <span class="variable language_">self</span>.config_dir / <span class="string">&quot;app.log&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">save_config</span>(<span class="params">self, config_data</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;保存配置&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">import</span> json</span><br><span class="line">        <span class="variable language_">self</span>.config_file.write_text(</span><br><span class="line">            json.dumps(config_data, indent=<span class="number">2</span>, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">        )</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;配置已保存到: <span class="subst">&#123;self.config_file&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_config</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;加载配置&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.config_file.exists():</span><br><span class="line">            <span class="keyword">import</span> json</span><br><span class="line">            <span class="keyword">return</span> json.loads(<span class="variable language_">self</span>.config_file.read_text())</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">log_message</span>(<span class="params">self, message</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;写入日志&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line">        timestamp = datetime.now().strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span><br><span class="line">        log_entry = <span class="string">f&quot;[<span class="subst">&#123;timestamp&#125;</span>] <span class="subst">&#123;message&#125;</span>\n&quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 追加写入日志</span></span><br><span class="line">        <span class="keyword">with</span> <span class="variable language_">self</span>.log_file.<span class="built_in">open</span>(<span class="string">&#x27;a&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(log_entry)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">config_mgr = ConfigManager(<span class="string">&quot;myapp&quot;</span>)</span><br><span class="line">config_mgr.save_config(&#123;<span class="string">&quot;theme&quot;</span>: <span class="string">&quot;dark&quot;</span>, <span class="string">&quot;language&quot;</span>: <span class="string">&quot;zh-CN&quot;</span>&#125;)</span><br><span class="line">config_mgr.log_message(<span class="string">&quot;应用启动&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>从os.path到pathlib，这不仅仅是一个库的替换，更是Python在”优雅”和”可读性”道路上的又一次进化。</p>
+<p>下次当你需要处理文件路径时，不妨试试pathlib。相信我，一旦习惯了这种优雅的写法，你就再也回不去os.path的繁琐世界了。</p>
+<hr>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/pathlib.html">官方文档</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://peps.python.org/pep-0428/">PEP 428: The pathlib module</a></li>
+</ul>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://sswfive.xyz/2025/09/11/tech/python/250308-pylib-pathlib/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://sswfive.xyz/2025/09/11/tech/python/250308-pylib-pathlib/"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2025/09/12/dsa/250912-linkedlist/">数据结构之【链表】</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/09/10/dsa/250910-array/">数据结构之【数组】</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">BluesSen</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#pathlib%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">pathlib是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81pathlib%EF%BC%9F"><span class="toc-text">为什么需要pathlib？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pathlib%E7%9A%84%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1"><span class="toc-text">pathlib的核心设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E5%A4%A7%E5%88%86%E6%94%AF%EF%BC%9A%E7%BA%AF%E8%B7%AF%E5%BE%84-vs-%E5%85%B7%E4%BD%93%E8%B7%AF%E5%BE%84"><span class="toc-text">两大分支：纯路径 vs 具体路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%A6%96%E9%80%89%EF%BC%9APath%E7%B1%BB"><span class="toc-text">日常开发首选：Path类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pathlib-VS-os-path-%E7%9A%84API%E5%AF%B9%E6%AF%94"><span class="toc-text">pathlib VS os.path 的API对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pathlib%E5%9F%BA%E7%A1%80%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97%E2%80%94Path%E7%B1%BB"><span class="toc-text">Pathlib基础实践指南—Path类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E5%BE%84%E6%8E%A2%E7%B4%A2%E6%93%8D%E4%BD%9C"><span class="toc-text">路径探索操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E7%89%B9%E6%AE%8A%E7%9B%AE%E5%BD%95"><span class="toc-text">获取特殊目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2"><span class="toc-text">文件搜索</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86"><span class="toc-text">目录遍历</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%AF%E5%BE%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">路径转换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E5%BE%84%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD"><span class="toc-text">路径类型判断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8E%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C"><span class="toc-text">文件与目录操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C"><span class="toc-text">目录操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">文件操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2"><span class="toc-text">文件信息查询</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="toc-text">权限管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pathlib%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5%E6%8A%80%E5%B7%A7"><span class="toc-text">pathlib工程实践技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E6%8A%80%E5%B7%A7%E4%B8%80%EF%BC%9A%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E7%9A%84%E8%89%BA%E6%9C%AF"><span class="toc-text">实践技巧一：链式调用的艺术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E6%8A%80%E5%B7%A7%E4%BA%8C%EF%BC%9A%E4%BC%98%E9%9B%85%E7%9A%84%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-text">实践技巧二：优雅的错误处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE%E4%B8%80%EF%BC%9A%E4%BD%BF%E7%94%A8-Path-%E6%9B%BF%E4%BB%A3%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5"><span class="toc-text">实践建议一：使用 Path 替代字符串拼接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE%E4%BA%8C%EF%BC%9A%E5%88%A9%E7%94%A8-%E6%93%8D%E4%BD%9C%E7%AC%A6%E8%BF%9B%E8%A1%8C%E8%B7%AF%E5%BE%84%E6%8B%BC%E6%8E%A5"><span class="toc-text">实践建议二：利用 &#x2F; 操作符进行路径拼接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE%E4%B8%89%EF%BC%9A%E4%BD%BF%E7%94%A8%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-text">实践建议三：使用上下文管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%85%85%E5%88%86%E5%88%A9%E7%94%A8%E5%86%85%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="toc-text">4. 充分利用内置方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pathlib%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">pathlib的实践应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%80%EF%BC%9A%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%E5%99%A8"><span class="toc-text">场景一：项目结构分析器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%8C%EF%BC%9A%E6%99%BA%E8%83%BD%E6%96%87%E4%BB%B6%E6%95%B4%E7%90%86%E5%99%A8"><span class="toc-text">场景二：智能文件整理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%89%EF%BC%9A%E8%B7%AF%E5%BE%84%E8%A7%A3%E6%9E%90"><span class="toc-text">场景三：路径解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E5%9B%9B%EF%BC%9A%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-text">场景四：配置文件管理器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-text">写在最后</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  const el = document.getElementById('waline_container');
+  util.viewportLazyload(el, load_waline, true);
+
+  function load_waline(){
+    if (!el) return;
+
+    utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+    utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+
+    const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+    const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+      el: '#waline_container',
+      path: path,
+      
+    }));
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

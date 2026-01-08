@@ -1,0 +1,1112 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Python开发必备：解锁魔法方法的实用技巧大全 - AInLife</title>
+
+  
+    <meta name="description" content="Python的魔法方法是Python面向对象编程的精髓，理解魔法方法不仅能让开发者写出更优雅的代码，更重要的是能让你深入理解Python对象模型的工作原理。那么今天我们就来系统性的梳理一下Python魔法方法的基础知识、常用魔法方法与分类，以及应用场景实践。  官方文档：点击前往 -&gt;魔法方法介绍  什么是魔法方法？想象一下这样的场景：当你写下 len([1, 2, 3]) 时，Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python开发必备：解锁魔法方法的实用技巧大全">
+<meta property="og:url" content="http://sswfive.xyz/2025/09/23/tech/python/250923-py-magic-methods/">
+<meta property="og:site_name" content="AInLife">
+<meta property="og:description" content="Python的魔法方法是Python面向对象编程的精髓，理解魔法方法不仅能让开发者写出更优雅的代码，更重要的是能让你深入理解Python对象模型的工作原理。那么今天我们就来系统性的梳理一下Python魔法方法的基础知识、常用魔法方法与分类，以及应用场景实践。  官方文档：点击前往 -&gt;魔法方法介绍  什么是魔法方法？想象一下这样的场景：当你写下 len([1, 2, 3]) 时，Python">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-23T14:34:51.000Z">
+<meta property="article:modified_time" content="2025-09-24T15:06:59.000Z">
+<meta property="article:author" content="BluesSen">
+<meta property="article:tag" content="Python核心知识">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="Python核心知识">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="AInLife" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"BluesSen","sameAs":[]},"dateCreated":"2025-09-23T22:34:51+08:00","dateModified":"2025-09-24T23:06:59+08:00","datePublished":"2025-09-23T22:34:51+08:00","description":"","headline":"Python开发必备：解锁魔法方法的实用技巧大全","mainEntityOfPage":{"@type":"WebPage","@id":"http://sswfive.xyz/2025/09/23/tech/python/250923-py-magic-methods/"},"publisher":{"@type":"Organization","name":"BluesSen","sameAs":[]},"url":"http://sswfive.xyz/2025/09/23/tech/python/250923-py-magic-methods/","keywords":"Python核心知识","image":[]}</script>
+  
+</head>
+<body>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">AInLife</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 向阳而深 & BluesSen...</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="收藏夹" href="/notes/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<widget class="widget-wrapper related post-list"><div class="widget-header dis-select"><span class="name">专栏：python</span></div><div class="widget-body"><a class="item active" href="/2025/09/23/tech/python/250923-py-magic-methods/"><span class="title">Python开发必备：解锁魔法方法的实用技巧大全</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="item" href="/2025/09/14/tech/python/250914-py-data-struct/"><span class="title">Python中的数据类型用法剖析：从底层实现到高效应用</span></a><a class="item" href="/2025/09/11/tech/python/250308-pylib-pathlib/"><span class="title">用了pathlib后，我再也不想碰os.path了！</span></a><a class="item" href="/2025/09/08/tech/python/250907-py-async-challenges/"><span class="title">Python异步编程十年沉浮：且看3.14版本重要更新</span></a><a class="item" href="/2025/08/30/tech/python/250830-supervisor/"><span class="title">Supervisor：三年后的更新，把我三年前的笔记唤醒</span></a><a class="item" href="/2025/08/28/tech/python/250827-py-env-package/"><span class="title">我用过的Python工具链：从virtualenv到uv的演进之路</span></a><a class="item" href="/2025/08/26/tech/python/250826-pygc/"><span class="title">从计数到分代一步步窥探Python的垃圾回收机制</span></a><a class="item" href="/2025/08/24/tech/python/250824-pylib-faststream/"><span class="title">异步消息处理的利器之FastStream</span></a><a class="item" href="/2025/03/08/tech/python/08-pylib-subprocess/"><span class="title">子进程管理工具之subprocess</span></a><a class="item" href="/2025/03/07/tech/python/07-pylib-supervisor/"><span class="title">进程管理工具之Supervisor</span></a><a class="item" href="/2025/03/06/tech/python/06-pylib-apscheduler/"><span class="title">任务管理工具之APScheduler</span></a><a class="item" href="/2025/03/06/tech/python/05-pylib-awesome/"><span class="title">Python常用库汇总[awesome]</span></a><a class="item" href="/2025/03/04/tech/python/03-py-pypi-source/"><span class="title">常用的Pypi源汇总</span></a><a class="item" href="/2025/03/03/tech/python/250903-py-coding-statndards/"><span class="title">Pythoner的优雅编码之道</span></a></div></widget>
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/01/08/260108-test-cicd/"><span class="title">260108-test-cicd</span></a><a class="item title" href="/2026/01/06/tech/python/260106-why-is-uv-so-fast/"><span class="title">不止Rust，uv如此速度的背后真实原因</span></a><a class="item title" href="/2026/01/04/tech/python/260104-py-performace-analysis-and-practice/"><span class="title">Python开发者必知的性能数据与实用技巧</span></a><a class="item title" href="/2024/03/28/tech/python/240328-pyflink-usage/"><span class="title">pyflink之分布式计算</span></a><a class="item title" href="/2025/08/31/dsa/250831-dsa-intro/"><span class="title">重回原点再出发</span></a><a class="item title" href="/2025/09/01/dsa/250831-dsa-basic/"><span class="title">浅析数据结构与算法的核心概念</span></a><a class="item title" href="/2025/09/02/dsa/250902-data-structure-basic/"><span class="title">数据结构的基本知识</span></a><a class="item title" href="/2025/09/01/dsa/250901-complexity-analysis/"><span class="title">复杂度分析与大O表示法</span></a><a class="item title" href="/2025/09/10/dsa/250910-array/"><span class="title">数据结构之【数组】</span></a><a class="item title" href="/2025/09/12/dsa/250912-linkedlist/"><span class="title">数据结构之【链表】</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></a><a class="social" href="https://x.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a><a class="social" href="/atom.xml" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.462v4.003c6.988 0 12.65 5.646 12.65 12.618H18.33c0-9.69-7.93-17.621-17.621-17.621H1.677zM1.677.014v4.005C13.486 4.019 23 13.527 23 25.339h4.005C27.005 11.336 15.677.014 1.677.014z"/></svg></a><a class="social" href="mailto:sswss5005@163.com" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.724l9.615-6.903h.749c.904 0 1.636.732 1.636 1.636z"/></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2025/09/23/tech/python/250923-py-magic-methods/">python</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-09-23T14:34:51.000Z">2025-09-23</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-09-24T15:06:59.000Z">2025-09-24</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Python开发必备：解锁魔法方法的实用技巧大全</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>Python的魔法方法是Python面向对象编程的精髓，理解魔法方法不仅能让开发者写出更优雅的代码，更重要的是能让你深入理解Python对象模型的工作原理。那么今天我们就来系统性的梳理一下Python魔法方法的基础知识、常用魔法方法与分类，以及应用场景实践。</p>
+<ul>
+<li>官方文档：点击前往 -&gt;<a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/datamodel.html#special-method-names">魔法方法介绍</a></li>
+</ul>
+<h2 id="什么是魔法方法？"><a href="#什么是魔法方法？" class="headerlink" title="什么是魔法方法？"></a>什么是魔法方法？</h2><p>想象一下这样的场景：当你写下 <code>len([1, 2, 3])</code> 时，Python是如何知道要返回3的？当你使用 <code>+</code> 连接两个字符串时，背后发生了什么？答案就藏在魔法方法中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这些看似普通的操作，背后都有魔法方法在工作</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))        <span class="comment"># 调用了 list.__len__()</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hello&quot;</span> + <span class="string">&quot;world&quot;</span>)     <span class="comment"># 调用了 str.__add__()</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">str</span>(<span class="number">42</span>))               <span class="comment"># 调用了 int.__str__()</span></span><br></pre></td></tr></table></figure>
+<p>魔法方法是Python中以双下划线开头和结尾的特殊方法，也称为双下划线方法（如<code>__init__</code>、<code>__str__</code>、<code>__new__</code>等）。它们是Python中的一种协议机制，也是面向对象编程的核心机制之一，赋予了开发者自定义类行为的能力，让自定义类能像内置类型一样与Python语法无缝集成。</p>
+<h2 id="了解并理解魔法方法"><a href="#了解并理解魔法方法" class="headerlink" title="了解并理解魔法方法"></a>了解并理解魔法方法</h2><p>对于我们Pythoner来说，不要把它们看作简单的”特殊方法”，而应该理解为：</p>
+<ul>
+<li><strong>是协议的实现</strong>：魔法方法是Python鸭子类型的核心体现</li>
+<li><strong>是语言的扩展点</strong>：通过它们可以扩展Python语言本身的能力</li>
+<li><strong>是语法的委托机制</strong>：Python的语法很大程度上委托给对象本身来定义<br>正如Python之禅所说：”Python应该提供一种方法，但最好是只有一种明显的方法来做这件事。”魔法方法正是这种哲学的完美体现。</li>
+</ul>
+<h2 id="魔法方法的特点与分类"><a href="#魔法方法的特点与分类" class="headerlink" title="魔法方法的特点与分类"></a>魔法方法的特点与分类</h2><p>魔法方法是由Python解释器在特定场景下自动调用，无需显示调用，例如当你使用<code>len(obj)</code> 时，Python会调用对象的<code>__len__</code>方法。<br>由于魔法方法种类繁多，根据功能可以分为以下几类：</p>
+<ul>
+<li>对象生命周期管理</li>
+<li>对象表示与格式化</li>
+<li>运算符重载</li>
+<li>属性访问控制</li>
+<li>容器与迭代器</li>
+<li>同（异）步上下文管理</li>
+<li>可调用对象与描述符</li>
+<li>一些不常见但很有用的用法</li>
+</ul>
+<p>下面将针对常用的场景进行展开分析</p>
+<h2 id="魔法方法在不同场景中的分析与实践"><a href="#魔法方法在不同场景中的分析与实践" class="headerlink" title="魔法方法在不同场景中的分析与实践"></a>魔法方法在不同场景中的分析与实践</h2><h3 id="场景1：对象生命周期管理"><a href="#场景1：对象生命周期管理" class="headerlink" title="场景1：对象生命周期管理"></a>场景1：对象生命周期管理</h3><p>下列这些魔法方法控制对象的创建，初始化和销毁。</p>
+<ul>
+<li><code>__new__(cls, *args, **kwargs)</code>：控制对象的创建，是真正的<strong>构造器</strong>，是对象创建过程中的第一个方法（静态方法），它在<code>__init__</code>之前调用。通常情况下，是不需要直接使用<code>__new__</code>，但如果你需要控制对象的创建过程（如：实现单例模式或自定义元类），可以重写它。</li>
+<li><code>__init__(self, *args, **kwargs)</code>：是<strong>初始化器</strong>，初始化对象的，对象在内存已经分配，即self已经存在，接收参数并设置初始状态，它在每次创建对象时被自动调用，几乎每个类都会实现它。</li>
+<li><code>__del__(self)</code>：定义对象被垃圾回收时的行为。需要注意的是，最好谨慎使用，如果使用不当，可能引发资源管理问题。因为该方法不保证一定被调用，其主要依赖垃圾回收机制的策略。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Resource</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, *args, **kwargs</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;在__init__之前调用&quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;__new__: 创建对象实例&quot;</span>)</span><br><span class="line">        instance = <span class="built_in">super</span>().__new__(cls)</span><br><span class="line">        <span class="keyword">return</span> instance</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;设置对象初始状态&quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;__init__: 初始化资源 &#x27;<span class="subst">&#123;name&#125;</span>&#x27;&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>._resource = <span class="variable language_">self</span>._acquire_resource()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__del__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;对象被垃圾回收时调用&quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;__del__: 清理资源 &#x27;<span class="subst">&#123;self.name&#125;</span>&#x27;&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>._release_resource()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_acquire_resource</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;获取系统资源...&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;模拟的资源句柄&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_release_resource</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;释放系统资源...&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">resource = Resource(<span class="string">&quot;数据库连接&quot;</span>)</span><br><span class="line"><span class="comment"># 当对象被垃圾回收时，__del__会自动调用</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="场景2：对象表示与格式化"><a href="#场景2：对象表示与格式化" class="headerlink" title="场景2：对象表示与格式化"></a>场景2：对象表示与格式化</h3><p>下列这些魔法方法控制对象的字符串表示，用于调试或展示。</p>
+<ul>
+<li><code>__str__(self)</code>：为最终用户设计，要求可读性好，定义<code>str(obj)</code>或<code>print(obj)</code>时的行为，也就是常被用于输出或打印，这个方法应该返回一个易于理解的字符串，用于展示对象的“外观”。</li>
+<li><code>__repr__(self)</code>：为开发者设计，要求明确无误，定义<code>repr(obj)</code>或交互环境中对象的表示，通常用于开发者调试，返回详细信息，它的目标是生成一个可以通过<code>eval()</code>恢复的字符串（即反向构造对象）。</li>
+<li><code>__format__(self, format_spec)</code>：定义<code>format(obj, spec)</code>或<code>f-string</code> 中的格式化的行为，支持自定义格式化。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.age = age</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;这是对象的官方字符串表示，主要给开发者看&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Student(name=&#x27;<span class="subst">&#123;self.name&#125;</span>&#x27;, age=<span class="subst">&#123;self.age&#125;</span>)&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;这是对象的非正式字符串表示，主要给用户看&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;<span class="subst">&#123;self.name&#125;</span>，<span class="subst">&#123;self.age&#125;</span>岁&quot;</span></span><br><span class="line"></span><br><span class="line">ssw = Student(<span class="string">&quot;BluesSen&quot;</span>, <span class="number">32</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">repr</span>(tom))  <span class="comment"># Student(name=&#x27;BluesSen&#x27;, age=32)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">str</span>(tom))   <span class="comment"># ssw，32岁</span></span><br><span class="line"><span class="built_in">print</span>(tom)        <span class="comment"># ssw，32岁</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="场景3：属性访问控制"><a href="#场景3：属性访问控制" class="headerlink" title="场景3：属性访问控制"></a>场景3：属性访问控制</h3><p>下列这些魔法方法控制对象的访问、设置和删除行为，适合实现动态属性或代理模式。</p>
+<ul>
+<li><code>__getattr__(self, name)</code>：当访问不存在的属性时调用，适合实现灵活的属性延迟加载或代理模式,比如实现一个ORM模型。</li>
+<li><code>__setattr__(self, name, value)</code>：设置属性时调用，但需要注意避免无限递归的问题，实际开发中建议使用 <code>super().__setattr__</code> 来避免递归。</li>
+<li><code>__delattr__(self, name)</code>：删除属性时调用。</li>
+<li><code>__getattribute__(self, name)</code>：无条件访问任何属性时都会调用。极其强大，也极其危险，容易引发无限递归（必须通过<code>super().__getattribute__</code>来访问属性）。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LazyObject</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.exists = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;只有在找不到已存在的属性时才会调用&quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;__getattr__被调用，尝试获取不存在的属性: &#x27;<span class="subst">&#123;name&#125;</span>&#x27;&quot;</span>)</span><br><span class="line">        value = <span class="string">f&quot;这是动态生成的属性 &#x27;<span class="subst">&#123;name&#125;</span>&#x27; 的值&quot;</span></span><br><span class="line">        <span class="built_in">setattr</span>(<span class="variable language_">self</span>, name, value)  <span class="comment"># 将其设置为实例属性，下次就不用走__getattr__了</span></span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 谨慎使用 __getattribute__，容易导致无限递归！</span></span><br><span class="line">    <span class="comment"># def __getattribute__(self, name):</span></span><br><span class="line">    <span class="comment">#    print(f&quot;__getattribute__被调用，获取属性: &#x27;&#123;name&#125;&#x27;&quot;)</span></span><br><span class="line">    <span class="comment">#    # 必须通过super()来避免递归</span></span><br><span class="line">    <span class="comment">#    return super().__getattribute__(name)</span></span><br><span class="line"></span><br><span class="line">obj = LazyObject()</span><br><span class="line"><span class="built_in">print</span>(obj.exists)    <span class="comment"># 输出：5 (正常访问，不会触发__getattr__)</span></span><br><span class="line"><span class="built_in">print</span>(obj.foo)       <span class="comment"># 输出：__getattr__被调用... -&gt; 这是动态生成的属性 &#x27;foo&#x27; 的值</span></span><br><span class="line"><span class="built_in">print</span>(obj.foo)       <span class="comment"># 输出：这是动态生成的属性 &#x27;foo&#x27; 的值 (第二次访问，foo已存在，不再触发__getattr__)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="场景4：容器与迭代器"><a href="#场景4：容器与迭代器" class="headerlink" title="场景4：容器与迭代器"></a>场景4：容器与迭代器</h3><p>首先需要明确的什么是容器、可迭代对象、迭代器对象：</p>
+<ul>
+<li><strong>容器</strong>：详见<a href="https://sswfive.xyz/2025/09/14/tech/python/250914-py-data-struct/">Python中的数据类型用法剖析：从底层实现到高效应用</a></li>
+<li><strong>可迭代对象</strong>：实现 <code>__iter__</code>，返回迭代器对象（通常 <code>return self</code>）</li>
+<li><strong>迭代器对象</strong>：实现 <code>__iter__</code> 和 <code>__next__</code>，返回下一个值，结束时抛出 <code>StopIteration</code>。<br>下列这些魔法方法让类支持容器操作（如<code>in</code>、索引)和迭代。</li>
+<li><code>__len__(self)</code>：定义<code>len(obj)</code>的行为。</li>
+<li><code>__getitem__(self, key)</code>：可以实现自定义对象的下标访问行为，但需要注意的是在实现切片支持时，<code>__getitem__</code>需要处理slice对象。</li>
+<li><code>__setitem__(self, key, value)</code>：可以实现自定义对象的下标赋值行为。</li>
+<li><code>__delitem__(self, key)</code> ：用于实现删除通过键或索引访问的元素的操作。</li>
+<li><code>__iter__(self)</code>、<code>__next__(self)</code> ：使对象可迭代（即支持<code>for</code>循环），这二者可与生成器结合优化内存。</li>
+<li><code>__contains__(self, item)</code> ：定义 <code>in</code> 操作符的行为。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyList</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, items</span>):</span><br><span class="line">        <span class="variable language_">self</span>.items = <span class="built_in">list</span>(items)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>.items)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.items[index]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">iter</span>(<span class="variable language_">self</span>.items)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__contains__</span>(<span class="params">self, item</span>):</span><br><span class="line">        <span class="keyword">return</span> item <span class="keyword">in</span> <span class="variable language_">self</span>.items</span><br><span class="line"></span><br><span class="line">ml = MyList([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(ml))      <span class="comment"># 3</span></span><br><span class="line"><span class="built_in">print</span>(ml[<span class="number">1</span>])        <span class="comment"># 2</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">2</span> <span class="keyword">in</span> ml)      <span class="comment"># True</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ml:</span><br><span class="line">    <span class="built_in">print</span>(x)        <span class="comment"># 1, 2, 3</span></span><br></pre></td></tr></table></figure>
+<h3 id="场景5：同步-上下文管理"><a href="#场景5：同步-上下文管理" class="headerlink" title="场景5：同步-上下文管理"></a>场景5：同步-上下文管理</h3><p>下列这些魔法方法让类支持<code>with</code>语句，用于资源管理。</p>
+<ul>
+<li><code>__enter__(self)</code>：进入<code>with</code>时调用，返回上下文对象。</li>
+<li><code>__exit__(self, exc_type, exc_value, traceback)</code>：退出<code>with</code>时调用，处理异常，需要提醒的是，该方法返回<code>True</code>时可抑制异常，也就是说异常会被“吞掉”，上下文管理器外的代码不会收到异常。这是一个强大但危险的特性。很适合事务处理，如果结合<code>contextlib</code>模块可简化上下文管理器的实现。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Timer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;一个计时器上下文管理器&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__enter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">import</span> time</span><br><span class="line">        <span class="variable language_">self</span>.start = time.time()</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>  <span class="comment"># as 后面的变量得到的是这个返回值</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__exit__</span>(<span class="params">self, exc_type, exc_val, exc_tb</span>):</span><br><span class="line">        <span class="keyword">import</span> time</span><br><span class="line">        <span class="variable language_">self</span>.elapsed = time.time() - <span class="variable language_">self</span>.start</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;代码块运行耗时: <span class="subst">&#123;self.elapsed:<span class="number">.4</span>f&#125;</span> 秒&quot;</span>)</span><br><span class="line">        <span class="comment"># 返回 False 表示不压制异常；返回 True 则异常会被吞掉，外部不会收到异常。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用上下文管理器</span></span><br><span class="line"><span class="keyword">with</span> Timer() <span class="keyword">as</span> t:</span><br><span class="line">    <span class="comment"># 模拟一些耗时操作</span></span><br><span class="line">    <span class="built_in">sum</span>(i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000000</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出 with 块后会自动打印时间</span></span><br><span class="line"><span class="comment"># 并且我们还可以访问 t.elapsed 这个属性</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;外部访问耗时: <span class="subst">&#123;t.elapsed&#125;</span>秒&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="场景6：异步-上下文管理"><a href="#场景6：异步-上下文管理" class="headerlink" title="场景6：异步-上下文管理"></a>场景6：异步-上下文管理</h3><p>下列这些魔法方法必须定义在支持异步的类中。</p>
+<ul>
+<li><code>__await__(self)</code>(可等待对象)：必须返回一个迭代器（通常通过 <code>iter()</code> 包装一个生成器）,可用于实现自定义可等待对象（如 <code>asyncio.Future</code>）。</li>
+<li><code>__alter__(self)</code>(异步迭代器)：返回异步迭代器对象，通常<code>return self</code>。</li>
+<li><code>__anext__</code>：必须返回一个<code>awaitable</code> 对象，（通常是 <code>coroutine</code> 或 <code>Task</code>）。</li>
+<li><code>__aenter__(self)</code>(异步上下文管理器)：返回进入时的资源，常为<code>await self.connect()</code>.</li>
+<li><code>__aexit__(self, exc_type, exc_value, traceback)</code>：用于异步清理（如关闭连接），可处理异常</li>
+<li><code>StopAsyncIteration</code> 是异步迭代结束的信号（不要手动抛出，除非你控制迭代逻辑）。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义异步上下文管理器</span></span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AsyncDatabase</span>:</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">connect</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;正在连接数据库...&quot;</span>)</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;数据库连接成功&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">disconnect</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;正在断开数据库...&quot;</span>)</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">0.5</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;数据库已断开&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 异步上下文管理器</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__aenter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.connect()  <span class="comment"># 返回一个协程</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__aexit__</span>(<span class="params">self, exc_type, exc_value, traceback</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.disconnect()  <span class="comment"># 返回一个协程</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> AsyncDatabase() <span class="keyword">as</span> db:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;数据库操作中...&quot;</span>)</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义异步迭代器</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AsyncCounter</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, limit</span>):</span><br><span class="line">        <span class="variable language_">self</span>.limit = limit</span><br><span class="line">        <span class="variable language_">self</span>.current = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__aiter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">__anext__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.current &lt; <span class="variable language_">self</span>.limit:</span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(<span class="number">0.1</span>)  <span class="comment"># 模拟异步操作</span></span><br><span class="line">            <span class="variable language_">self</span>.current += <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.current</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> StopAsyncIteration</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">for</span> num <span class="keyword">in</span> AsyncCounter(<span class="number">5</span>):</span><br><span class="line">        <span class="built_in">print</span>(num)</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
+<h3 id="场景7：可调用对象"><a href="#场景7：可调用对象" class="headerlink" title="场景7：可调用对象"></a>场景7：可调用对象</h3><p>下列魔法方法让普通对象变为可调用对象，可用于实现函数式接口、装饰器类、回调等。</p>
+<ul>
+<li><code>__call__(self, *args, **kwargs)</code> ：让类的实例像函数一样被调用，适合实现装饰器或函数式接口。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Counter</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;一个计数器，每次调用都会递增&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, start=<span class="number">0</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.count = start</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;使得实例可以像函数一样被调用：obj()&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.count += <span class="number">1</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;当前计数: <span class="subst">&#123;self.count&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.count</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个计数器实例</span></span><br><span class="line">counter = Counter(<span class="number">10</span>)</span><br><span class="line">counter()  <span class="comment"># 输出：当前计数: 11</span></span><br><span class="line">counter()  <span class="comment"># 输出：当前计数: 12</span></span><br><span class="line"><span class="comment"># 它是有状态的</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CallLogger</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;记录函数调用信息的装饰器类&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, func</span>):</span><br><span class="line">        <span class="variable language_">self</span>.func = func</span><br><span class="line">        <span class="variable language_">self</span>.call_count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, *args, **kwargs</span>):</span><br><span class="line">        <span class="variable language_">self</span>.call_count += <span class="number">1</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;开始执行第 <span class="subst">&#123;self.call_count&#125;</span> 次调用: <span class="subst">&#123;self.func.__name__&#125;</span>&quot;</span>)</span><br><span class="line">        result = <span class="variable language_">self</span>.func(*args, **kwargs)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;函数 <span class="subst">&#123;self.func.__name__&#125;</span> 执行完毕&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="meta">@CallLogger</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_hello</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Hello, <span class="subst">&#123;name&#125;</span>!&quot;</span>)</span><br><span class="line"></span><br><span class="line">say_hello(<span class="string">&quot;Alice&quot;</span>)</span><br><span class="line"><span class="comment"># 输出：</span></span><br><span class="line"><span class="comment"># 开始执行第 1 次调用: say_hello</span></span><br><span class="line"><span class="comment"># Hello, Alice!</span></span><br><span class="line"><span class="comment"># 函数 say_hello 执行完毕</span></span><br></pre></td></tr></table></figure>
+<h3 id="场景8：描述符协议"><a href="#场景8：描述符协议" class="headerlink" title="场景8：描述符协议"></a>场景8：描述符协议</h3><p>下列这些魔法方法，用于创建描述符类，控制属性的访问，本质是属性代理。简单地说，它允许一个对象在作为另一个对象的属性时，自定义其获取、设置、删除行为。常被用于<strong>属性验证</strong>、<strong>懒加载</strong>、<strong>ORM 字段</strong>等场景。</p>
+<ul>
+<li><code>__get__(self, instance, owner)</code>：获取属性值。</li>
+<li><code>__set__(self, instance, value)</code>：设置属性值。</li>
+<li><code>__delete__(self, instance)</code> ：输出属性。</li>
+<li><code>__set_name__(self, owner, name)</code>：在类创建时设置描述符名称（Python3.6+）<br><strong>值得一提</strong>：它们是 <code>@property</code>、<code>@classmethod</code>等装饰器的底层实现。在Django中被广泛使用。<br><strong>需要注意</strong>：描述符是实现了<code>__get__</code>、<code>__set__</code>或<code>__delete__</code>中至少一个方法的类。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PositiveNumber</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;一个描述符，确保数值是正数&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">self, instance, owner</span>):</span><br><span class="line">        <span class="comment"># instance 是使用描述符的类的实例（如Rectangle的实例）</span></span><br><span class="line">        <span class="comment"># owner 是使用描述符的类本身（如Rectangle类）</span></span><br><span class="line">        <span class="keyword">return</span> instance.__dict__.get(<span class="variable language_">self</span>.name, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set__</span>(<span class="params">self, instance, value</span>):</span><br><span class="line">        <span class="keyword">if</span> value &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;值必须是正数&quot;</span>)</span><br><span class="line">        <span class="comment"># 将值存储在实例的 __dict__ 中，而不是描述符实例自身</span></span><br><span class="line">        instance.__dict__[<span class="variable language_">self</span>.name] = value</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Rectangle</span>:</span><br><span class="line">    width = PositiveNumber(<span class="string">&#x27;width&#x27;</span>)  <span class="comment"># 描述符实例</span></span><br><span class="line">    height = PositiveNumber(<span class="string">&#x27;height&#x27;</span>) <span class="comment"># 描述符实例</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, w, h</span>):</span><br><span class="line">        <span class="variable language_">self</span>.width = w  <span class="comment"># 触发 PositiveNumber.__set__</span></span><br><span class="line">        <span class="variable language_">self</span>.height = h <span class="comment"># 触发 PositiveNumber.__set__</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">area</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.width * <span class="variable language_">self</span>.height <span class="comment"># 触发 PositiveNumber.__get__</span></span><br><span class="line"></span><br><span class="line">r = Rectangle(<span class="number">5</span>, <span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(r.area) <span class="comment"># 输出：15</span></span><br><span class="line">r.width = <span class="number">10</span>  <span class="comment"># 正常设置</span></span><br><span class="line"><span class="built_in">print</span>(r.area) <span class="comment"># 输出：30</span></span><br><span class="line"><span class="comment"># r.width = -5 # 会抛出 ValueError: 值必须是正数</span></span><br></pre></td></tr></table></figure>
+<p><strong>上述代码分析</strong>：</p>
+<ul>
+<li>描述符<code>PositiveNumber</code>的实例作为类属性（<code>width</code>, <code>height</code>）被赋值给<code>Rectangle</code>类。</li>
+<li>当对实例<code>r</code>的属性（如<code>r.width</code>）进行访问或赋值时，实际上被拦截，转而调用描述符的<code>__get__</code>或<code>__set__</code>方法。</li>
+<li><code>@property</code>本质上就是一个实现了<code>__get__</code>和<code>__set__</code>的描述符。<br>总结：描述符是实现精细属性管理、ORM框架映射关系等高级功能的利器。</li>
+</ul>
+<h3 id="场景9：运算符重载"><a href="#场景9：运算符重载" class="headerlink" title="场景9：运算符重载"></a>场景9：运算符重载</h3><p>下列这些魔法方法允许自定义类支持Python的运算符（如：<code>+</code>、<code>-</code>、<code>&lt;</code>等）。<br>(一) 实现算术运算符：</p>
+<ul>
+<li><code>__add__(self, other)</code>：实现加法运算符 <code>+</code>。</li>
+<li><code>__sub__(self, other)</code>：实现减法运算符 <code>-</code>。</li>
+<li><code>__mul__(self, other)</code>：实现乘法运算符 <code>*</code>。</li>
+<li><code>__truediv__(self, other)</code>：实现真除法运算符 <code>/</code>。</li>
+<li><code>__floordiv__(self, other)</code>：实现整数除法运算符 <code>//</code>。</li>
+<li><code>__mod__(self, other)</code>：实现取模运算符 <code>%</code>。</li>
+<li><code>__pow__(self, other[, modulo])</code>：实现幂运算符 <code>**</code>。</li>
+<li><code>__iadd__(self, other)</code>：实现复合运算符 <code>+=</code></li>
+<li><code>__isub__(self, other)</code>：实现复合运算符 <code>-=</code></li>
+<li><code>__imul__(self, other)</code> ：实现复合运算符 <code>*=</code><br>（二）实现位运算符（不常用）</li>
+<li><code>__lshift__(self, other)</code>：实现左移位运算符 <code>&lt;&lt;</code>。</li>
+<li><code>__rshift__(self, other)</code>：实现右移位运算符 <code>&gt;&gt;</code>。</li>
+<li><code>__and__(self, other)</code>：实现按位与运算符 <code>&amp;</code>。</li>
+<li><code>__xor__(self, other)</code>：实现按位异或运算符 <code>^</code>。</li>
+<li><code>__or__(self, other)</code>：实现按位或运算符 <code>|</code>。<br>（三）实现比较运算符：</li>
+<li><code>__lt__(self, other)</code>：实现小于运算符 <code>&lt;</code>。</li>
+<li><code>__le__(self, other)</code>：实现小于等于运算符 <code>&lt;=</code>。</li>
+<li><code>__eq__(self, other)</code>：实现等于运算符 <code>==</code>。</li>
+<li><code>__ne__(self, other)</code>：实现不等于运算符 <code>!=</code>。</li>
+<li><code>__gt__(self, other)</code>：实现大于运算符 <code>&gt;</code>。 </li>
+<li><code>__ge__(self, other)</code>：实现大于等于运算符 <code>&gt;=</code>。<br>**友情提醒：**实现比较运算符时，建议使用 <code>functools.total_ordering</code> 装饰器，只需定义 <code>__eq__</code> 和 <code>__lt__</code> 即可自动生成其他比较方法。</li>
+</ul>
+<p>（四）实现容器类型类似方法（如序列、映射等）：</p>
+<blockquote>
+<p>这些方法允许对象像列表或字典一样被操作。</p>
+</blockquote>
+<ul>
+<li><code>__getitem__(self, key)</code>：实现通过键或索引获取元素，如 <code>self[key]</code>。</li>
+<li><code>__setitem__(self, key, value)</code>：实现通过键或索引设置元素，如 <code>self[key] = value</code>。</li>
+<li><code>__delitem__(self, key)</code>：实现通过键或索引删除元素，如 <code>del self[key]</code>。</li>
+<li><code>__contains__(self, item)</code>：实现成员测试运算符 <code>in</code>。</li>
+<li><code>__len__(self)</code>：实现内置函数 <code>len()</code>，返回容器的长度。<br>由于方法太多，这里就简单的实现一个计算器功能吧</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 让对象参与数学运算，支持向量的加减法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Vector</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x=<span class="number">0</span>, y=<span class="number">0</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.x = x</span><br><span class="line">        <span class="variable language_">self</span>.y = y</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Vector(<span class="subst">&#123;self.x&#125;</span>, <span class="subst">&#123;self.y&#125;</span>)&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__add__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;实现 v1 + v2 或 v1 + number&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(other, Vector):</span><br><span class="line">            <span class="keyword">return</span> Vector(<span class="variable language_">self</span>.x + other.x, <span class="variable language_">self</span>.y + other.y)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(other, (<span class="built_in">int</span>, <span class="built_in">float</span>)):</span><br><span class="line">            <span class="comment"># 标量加法，x和y都加</span></span><br><span class="line">            <span class="keyword">return</span> Vector(<span class="variable language_">self</span>.x + other, <span class="variable language_">self</span>.y + other)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NotImplemented</span>  <span class="comment"># 告诉Python此操作不支持，让Python尝试 other.__radd__</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__radd__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;实现 number + v1（当数字在左边时调用）&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 向量加法满足交换律，所以直接调用 __add__</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.__add__(other)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iadd__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;实现 v1 += v2 或 v1 += number（就地修改）&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(other, Vector):</span><br><span class="line">            <span class="variable language_">self</span>.x += other.x</span><br><span class="line">            <span class="variable language_">self</span>.y += other.y</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(other, (<span class="built_in">int</span>, <span class="built_in">float</span>)):</span><br><span class="line">            <span class="variable language_">self</span>.x += other</span><br><span class="line">            <span class="variable language_">self</span>.y += other</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NotImplemented</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>  <span class="comment"># 就地运算必须返回self</span></span><br><span class="line"></span><br><span class="line">v1 = Vector(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">v2 = Vector(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(v1 + v2)      <span class="comment"># 输出：Vector(4, 6) (调用 __add__)</span></span><br><span class="line"><span class="built_in">print</span>(v1 + <span class="number">5</span>)       <span class="comment"># 输出：Vector(6, 7) (调用 __add__)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">5</span> + v1)       <span class="comment"># 输出：Vector(6, 7) (先尝试 int.__add__(5, v1) 失败，然后调用 v1.__radd__(5))</span></span><br><span class="line">v1 += v2</span><br><span class="line"><span class="built_in">print</span>(v1)           <span class="comment"># 输出：Vector(4, 6) (调用 __iadd__，就地修改)</span></span><br></pre></td></tr></table></figure>
+<h3 id="场景10：一些不常见但很有用的方法"><a href="#场景10：一些不常见但很有用的方法" class="headerlink" title="场景10：一些不常见但很有用的方法"></a>场景10：一些不常见但很有用的方法</h3><ul>
+<li><code>__slots__</code> ：限制类可添加的属性，优化内存和性能。</li>
+<li><code>__class__</code>  ：获取或修改对象的类，动态性极强。</li>
+<li><code>__copy__(self)</code>：<code>copy.copy(obj)</code>，浅拷贝</li>
+<li><code>__deepcopy__(self, memo)</code>：<code>copy.deepcopy(obj)</code>，深拷贝</li>
+<li><code>__getstate__(self)</code>：<code>pickle</code> 序列化时获取对象状态</li>
+<li><code>_setstate__(self, state)</code>：<code>pickle</code> 反序列化时恢复状态</li>
+<li><code>__dir__(self)</code>：<code>dir(obj)</code>，自定义属性列表</li>
+<li><code>__sizeof__(self)</code>：<code>sys.getsizeof(obj)</code>，返回对象内存大小，</li>
+<li><code>__hash__(self)</code>：<code>hash(obj)</code>，用于哈希表（如字典键），</li>
+<li><code>__instancecheck__(self, instance)</code>、<code>__subclasscheck__(self, subclass)</code> ：自定义 <code>isinstance</code> 和 <code>issubclass</code> 行为，通常在元类中使用。</li>
+</ul>
+<h2 id="一些开箱即用的实践案例"><a href="#一些开箱即用的实践案例" class="headerlink" title="一些开箱即用的实践案例"></a>一些开箱即用的实践案例</h2><h3 id="案例1：实现一个像列表和字典一样的类"><a href="#案例1：实现一个像列表和字典一样的类" class="headerlink" title="案例1：实现一个像列表和字典一样的类"></a>案例1：实现一个像列表和字典一样的类</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Playlist</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;一个简单的播放列表类&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, *songs</span>):</span><br><span class="line">        <span class="variable language_">self</span>._songs = <span class="built_in">list</span>(songs)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;实现 len(obj)&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>._songs)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;实现 obj[index]，还支持切片！&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 直接返回内部列表的对应项，巧妙利用列表的切片功能</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._songs[index]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__contains__</span>(<span class="params">self, song</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;实现 item in obj&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> song <span class="keyword">in</span> <span class="variable language_">self</span>._songs</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;实现迭代，支持 for 循环&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">iter</span>(<span class="variable language_">self</span>._songs)</span><br><span class="line"></span><br><span class="line">my_playlist = Playlist(<span class="string">&quot;Song A&quot;</span>, <span class="string">&quot;Song B&quot;</span>, <span class="string">&quot;Song C&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(my_playlist))        <span class="comment"># 输出：3 (调用 __len__)</span></span><br><span class="line"><span class="built_in">print</span>(my_playlist[<span class="number">1</span>])          <span class="comment"># 输出：Song B (调用 __getitem__)</span></span><br><span class="line"><span class="built_in">print</span>(my_playlist[<span class="number">0</span>:<span class="number">2</span>])        <span class="comment"># 输出：[&#x27;Song A&#x27;, &#x27;Song B&#x27;] (切片也有效！)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Song B&quot;</span> <span class="keyword">in</span> my_playlist) <span class="comment"># 输出：True (调用 __contains__)</span></span><br><span class="line"><span class="keyword">for</span> song <span class="keyword">in</span> my_playlist:       <span class="comment"># 调用 __iter__</span></span><br><span class="line">    <span class="built_in">print</span>(song)                <span class="comment"># 依次输出 Song A, Song B, Song C</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="案例2：实现一个支持对象支持比较类"><a href="#案例2：实现一个支持对象支持比较类" class="headerlink" title="案例2：实现一个支持对象支持比较类"></a>案例2：实现一个支持对象支持比较类</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.age = age</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Student(name=&#x27;<span class="subst">&#123;self.name&#125;</span>&#x27;, age=<span class="subst">&#123;self.age&#125;</span>)&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__eq__</span>(<span class="params">self, other</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;定义相等性：姓名和年龄都相同就认为是同一个学生&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(other, Student):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.name == other.name <span class="keyword">and</span> <span class="variable language_">self</span>.age == other.age</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__hash__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;如果两个对象相等，它们的hash值必须相同&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">hash</span>((<span class="variable language_">self</span>.name, <span class="variable language_">self</span>.age))</span><br><span class="line"></span><br><span class="line">tom1 = Student(<span class="string">&quot;Tom&quot;</span>, <span class="number">20</span>)</span><br><span class="line">tom2 = Student(<span class="string">&quot;Tom&quot;</span>, <span class="number">20</span>)</span><br><span class="line"><span class="built_in">print</span>(tom1 == tom2)  <span class="comment"># True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在可以把学生对象放进set或用作dict的key了</span></span><br><span class="line">students = &#123;tom1, tom2&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(students))  <span class="comment"># 1，因为两个Tom被认为是同一个</span></span><br></pre></td></tr></table></figure>
+<h3 id="案-3：实现一个缓存器"><a href="#案-3：实现一个缓存器" class="headerlink" title="案:3：实现一个缓存器"></a>案:3：实现一个缓存器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> OrderedDict</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LRUCache</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;LRU缓存实现&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, maxsize=<span class="number">128</span>, ttl=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.maxsize = maxsize</span><br><span class="line">        <span class="variable language_">self</span>.ttl = ttl</span><br><span class="line">        <span class="variable language_">self</span>.cache = OrderedDict()</span><br><span class="line">        <span class="variable language_">self</span>.times = &#123;&#125; <span class="keyword">if</span> ttl <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, func</span>):</span><br><span class="line"><span class="meta">        @wraps(<span class="params">func</span>)</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">            key = <span class="variable language_">self</span>._make_key(args, kwargs)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 检查缓存</span></span><br><span class="line">            <span class="keyword">if</span> key <span class="keyword">in</span> <span class="variable language_">self</span>.cache:</span><br><span class="line">                <span class="keyword">if</span> <span class="variable language_">self</span>._is_valid(key):</span><br><span class="line">                    <span class="comment"># 移到末尾（最近使用）</span></span><br><span class="line">                    <span class="variable language_">self</span>.cache.move_to_end(key)</span><br><span class="line">                    <span class="keyword">return</span> <span class="variable language_">self</span>.cache[key]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="comment"># 过期，删除</span></span><br><span class="line">                    <span class="variable language_">self</span>._delete_key(key)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算结果</span></span><br><span class="line">            result = func(*args, **kwargs)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 存储结果</span></span><br><span class="line">            <span class="variable language_">self</span>._store_result(key, result)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line">        </span><br><span class="line">        wrapper.cache_info = <span class="variable language_">self</span>.cache_info</span><br><span class="line">        wrapper.cache_clear = <span class="variable language_">self</span>.cache_clear</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_make_key</span>(<span class="params">self, args, kwargs</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;创建缓存键&quot;&quot;&quot;</span></span><br><span class="line">        key = args</span><br><span class="line">        <span class="keyword">if</span> kwargs:</span><br><span class="line">            key += <span class="built_in">tuple</span>(<span class="built_in">sorted</span>(kwargs.items()))</span><br><span class="line">        <span class="keyword">return</span> key</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_is_valid</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;检查缓存是否有效&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.ttl <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> time.time() - <span class="variable language_">self</span>.times[key] &lt; <span class="variable language_">self</span>.ttl</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_delete_key</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;删除缓存项&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">del</span> <span class="variable language_">self</span>.cache[key]</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.times:</span><br><span class="line">            <span class="keyword">del</span> <span class="variable language_">self</span>.times[key]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_store_result</span>(<span class="params">self, key, result</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;存储缓存结果&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 检查容量</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(<span class="variable language_">self</span>.cache) &gt;= <span class="variable language_">self</span>.maxsize:</span><br><span class="line">            <span class="comment"># 删除最老的项</span></span><br><span class="line">            oldest_key = <span class="built_in">next</span>(<span class="built_in">iter</span>(<span class="variable language_">self</span>.cache))</span><br><span class="line">            <span class="variable language_">self</span>._delete_key(oldest_key)</span><br><span class="line">        </span><br><span class="line">        <span class="variable language_">self</span>.cache[key] = result</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.times:</span><br><span class="line">            <span class="variable language_">self</span>.times[key] = time.time()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cache_info</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;缓存信息&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Cache size: <span class="subst">&#123;<span class="built_in">len</span>(self.cache)&#125;</span>/<span class="subst">&#123;self.maxsize&#125;</span>&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cache_clear</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;清空缓存&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>.cache.clear()</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.times:</span><br><span class="line">            <span class="variable language_">self</span>.times.clear()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line"><span class="meta">@LRUCache(<span class="params">maxsize=<span class="number">100</span>, ttl=<span class="number">300</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">expensive_function</span>(<span class="params">x, y</span>):</span><br><span class="line">    time.sleep(<span class="number">1</span>)  <span class="comment"># 模拟耗时操作</span></span><br><span class="line">    <span class="keyword">return</span> x * y + x ** <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h3 id="案例4：实现一个配置管理器"><a href="#案例4：实现一个配置管理器" class="headerlink" title="案例4：实现一个配置管理器"></a>案例4：实现一个配置管理器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Config</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;支持点号访问和字典访问的配置管理器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, **kwargs</span>):</span><br><span class="line">        <span class="variable language_">self</span>._data = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> kwargs.items():</span><br><span class="line">            <span class="variable language_">self</span>[key] = value</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;字典式访问：config[&#x27;database_url&#x27;]&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._data[key]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setitem__</span>(<span class="params">self, key, value</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;字典式赋值：config[&#x27;database_url&#x27;] = &#x27;sqlite:///app.db&#x27;&quot;&quot;&quot;</span></span><br><span class="line">        <span class="variable language_">self</span>._data[key] = value</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__delitem__</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;删除配置项：del config[&#x27;database_url&#x27;]&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">del</span> <span class="variable language_">self</span>._data[key]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__contains__</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;检查是否存在：&#x27;database_url&#x27; in config&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> key <span class="keyword">in</span> <span class="variable language_">self</span>._data</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;配置项数量：len(config)&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(<span class="variable language_">self</span>._data)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;迭代配置项：for key in config&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">iter</span>(<span class="variable language_">self</span>._data)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;点号访问：config.database_url&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._data[name]</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">f&quot;配置项 &#x27;<span class="subst">&#123;name&#125;</span>&#x27; 不存在&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setattr__</span>(<span class="params">self, name, value</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;点号赋值：config.database_url = &#x27;sqlite:///app.db&#x27;&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> name.startswith(<span class="string">&#x27;_&#x27;</span>):</span><br><span class="line">            <span class="comment"># 私有属性正常处理</span></span><br><span class="line">            <span class="built_in">super</span>().__setattr__(name, value)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 公共属性存储到配置中</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(<span class="variable language_">self</span>, <span class="string">&#x27;_data&#x27;</span>):</span><br><span class="line">                <span class="built_in">super</span>().__setattr__(<span class="string">&#x27;_data&#x27;</span>, &#123;&#125;)</span><br><span class="line">            <span class="variable language_">self</span>._data[name] = value</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        items = [<span class="string">f&quot;<span class="subst">&#123;k&#125;</span>=<span class="subst">&#123;v!r&#125;</span>&quot;</span> <span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="variable language_">self</span>._data.items()]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Config(<span class="subst">&#123;<span class="string">&#x27;, &#x27;</span>.join(items)&#125;</span>)&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">keys</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._data.keys()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">values</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._data.values()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">items</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._data.items()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, key, default=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>._data.get(key, default)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self, **kwargs</span>):</span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> kwargs.items():</span><br><span class="line">            <span class="variable language_">self</span>[key] = value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">config = Config(</span><br><span class="line">    database_url=<span class="string">&quot;sqlite:///app.db&quot;</span>,</span><br><span class="line">    debug=<span class="literal">True</span>,</span><br><span class="line">    max_connections=<span class="number">100</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多种访问方式</span></span><br><span class="line"><span class="built_in">print</span>(config[<span class="string">&#x27;database_url&#x27;</span>])    <span class="comment"># sqlite:///app.db</span></span><br><span class="line"><span class="built_in">print</span>(config.database_url)       <span class="comment"># sqlite:///app.db</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;debug&#x27;</span> <span class="keyword">in</span> config)         <span class="comment"># True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 动态添加配置</span></span><br><span class="line">config.secret_key = <span class="string">&quot;my-secret-key&quot;</span></span><br><span class="line">config[<span class="string">&#x27;cache_timeout&#x27;</span>] = <span class="number">300</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代配置</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> config:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;key&#125;</span>: <span class="subst">&#123;config[key]&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;共有 <span class="subst">&#123;<span class="built_in">len</span>(config)&#125;</span> 个配置项&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="案例5：实现一个单例类"><a href="#案例5：实现一个单例类" class="headerlink" title="案例5：实现一个单例类"></a>案例5：实现一个单例类</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SingletonMeta</span>(<span class="title class_ inherited__">type</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;单例模式元类&quot;&quot;&quot;</span></span><br><span class="line">    _instances = &#123;&#125;</span><br><span class="line">    _lock = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">mcs, name, bases, namespace, **kwargs</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;创建新类时调用&quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;创建类 <span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br><span class="line">        cls = <span class="built_in">super</span>().__new__(mcs, name, bases, namespace)</span><br><span class="line">        <span class="comment"># 为每个类创建一个锁</span></span><br><span class="line">        mcs._lock[cls] = <span class="built_in">__import__</span>(<span class="string">&#x27;threading&#x27;</span>).Lock()</span><br><span class="line">        <span class="keyword">return</span> cls</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">cls, *args, **kwargs</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;创建实例时调用&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> cls._instances:</span><br><span class="line">            <span class="keyword">with</span> cls._lock[cls]:</span><br><span class="line">                <span class="comment"># 双重检查</span></span><br><span class="line">                <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> cls._instances:</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;创建 <span class="subst">&#123;cls.__name__&#125;</span> 的第一个实例&quot;</span>)</span><br><span class="line">                    instance = <span class="built_in">super</span>().__call__(*args, **kwargs)</span><br><span class="line">                    cls._instances[cls] = instance</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;返回 <span class="subst">&#123;cls.__name__&#125;</span> 的现有实例&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;返回 <span class="subst">&#123;cls.__name__&#125;</span> 的现有实例&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> cls._instances[cls]</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DatabaseConnection</span>(metaclass=SingletonMeta):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;数据库连接类（单例）&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, host=<span class="string">&quot;localhost&quot;</span>, port=<span class="number">5432</span></span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(<span class="variable language_">self</span>, <span class="string">&#x27;_initialized&#x27;</span>):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="variable language_">self</span>.host = host</span><br><span class="line">        <span class="variable language_">self</span>.port = port</span><br><span class="line">        <span class="variable language_">self</span>.connected = <span class="literal">False</span></span><br><span class="line">        <span class="variable language_">self</span>._initialized = <span class="literal">True</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;初始化数据库连接: <span class="subst">&#123;host&#125;</span>:<span class="subst">&#123;port&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">connect</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="variable language_">self</span>.connected:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;连接到数据库 <span class="subst">&#123;self.host&#125;</span>:<span class="subst">&#123;self.port&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="variable language_">self</span>.connected = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;已经连接到数据库&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">query</span>(<span class="params">self, sql</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="variable language_">self</span>.connected:</span><br><span class="line">            <span class="variable language_">self</span>.connect()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;执行查询: <span class="subst">&#123;sql&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;查询结果 for &#x27;<span class="subst">&#123;sql&#125;</span>&#x27;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试单例</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;=== 创建数据库连接实例 ===&quot;</span>)</span><br><span class="line">db1 = DatabaseConnection(<span class="string">&quot;192.168.1.100&quot;</span>)</span><br><span class="line">db2 = DatabaseConnection(<span class="string">&quot;localhost&quot;</span>)  <span class="comment"># 参数被忽略</span></span><br><span class="line">db3 = DatabaseConnection()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;db1 is db2: <span class="subst">&#123;db1 <span class="keyword">is</span> db2&#125;</span>&quot;</span>)  <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;db1.host: <span class="subst">&#123;db1.host&#125;</span>&quot;</span>)      <span class="comment"># 192.168.1.100</span></span><br><span class="line"></span><br><span class="line">db1.connect()</span><br><span class="line">db2.query(<span class="string">&quot;SELECT * FROM users&quot;</span>)    <span class="comment"># 使用同一个连接</span></span><br></pre></td></tr></table></figure>
+<h2 id="一些好的实践与建议"><a href="#一些好的实践与建议" class="headerlink" title="一些好的实践与建议"></a>一些好的实践与建议</h2><ul>
+<li><strong>开发调试阶段</strong>：<ul>
+<li><code>__repr__</code> 比 <code>__str__</code> 更重要，调试时非常有用。</li>
+</ul>
+</li>
+<li><strong>建议使用</strong>：<ul>
+<li>实现 <code>__eq__</code> 时，通常也要实现 <code>__hash__</code>（除非对象是可变的）。</li>
+<li>使用 <code>@total_ordering</code> 装饰器可以减少比较方法的编写量（只需实现 <code>__eq__</code> 和一个如 <code>__lt__</code>）。</li>
+<li>在设计类时最好做到总是检查参数类型，使用<code>NotImplemented</code>而不是抛出异常。</li>
+<li>在设计类时考虑使用<code>@dataclass</code>或<code>@attrs</code>来减少样板代码</li>
+<li>魔法方法调用有开销,在性能敏感的循环中，直接调用方法可能比操作符更快。</li>
+</ul>
+</li>
+<li>谨慎使用：<ul>
+<li>在<code>__getattribute__</code>、<code>__setattr__</code>中直接使用<code>self.attr</code>会导致无限递归。必须使用<code>super()</code>或直接操作<code>__dict__</code>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>主要方法</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>对象生命周期</td>
+<td><code>__new__</code>, <code>__init__</code>, <code>__del__</code></td>
+<td>对象创建、初始化、销毁</td>
+</tr>
+<tr>
+<td>对象表示与格式化</td>
+<td><code>__str__</code>, <code>__repr__</code>, <code>__format__</code></td>
+<td>字符串表示、调试输出</td>
+</tr>
+<tr>
+<td>运算符重载</td>
+<td><code>__add__</code>, <code>__eq__</code>, <code>__lt__</code>等</td>
+<td>数学运算、比较操作</td>
+</tr>
+<tr>
+<td>属性访问控制</td>
+<td><code>__getattr__</code>, <code>__setattr__</code>, <code>__getattribute__</code></td>
+<td>动态属性、代理模式</td>
+</tr>
+<tr>
+<td>容器与迭代器</td>
+<td><code>__len__</code>, <code>__getitem__</code>, <code>__iter__</code></td>
+<td>序列、映射、迭代</td>
+</tr>
+<tr>
+<td>上下文管理</td>
+<td><code>__enter__</code>, <code>__exit__</code></td>
+<td>资源管理、with语句</td>
+</tr>
+<tr>
+<td>可调用对象</td>
+<td><code>__call__</code></td>
+<td>函数式接口、装饰器类</td>
+</tr>
+<tr>
+<td>描述符协议</td>
+<td><code>__get__</code>, <code>__set__</code>, <code>__delete__</code></td>
+<td>属性验证、ORM字段</td>
+</tr>
+<tr>
+<td>异步编程</td>
+<td><code>__aenter__</code>, <code>__aexit__</code>, <code>__anext__</code></td>
+<td>异步上下文、迭代</td>
+</tr>
+</tbody></table>
+<p>Python的魔法方法不是“黑魔法”，而是一套精心设计的、用于扩展语言能力的协议系统。作为Python开发者，深入理解并恰当地运用它们，能够让我们设计出API更清晰、更符合Python风格、更强大的代码库。</p>
+<p>然而，常言道：能力越大，责任越大……</p>
+<p>魔法方法虽然功能强大，但滥用魔法方法会让代码变得难以理解和调试。我们应该始终遵循“明确胜于隐晦”的Python之禅，只在真正需要让对象模拟内置行为或实现特定协议时才使用它们。</p>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://sswfive.xyz/2025/09/23/tech/python/250923-py-magic-methods/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://sswfive.xyz/2025/09/23/tech/python/250923-py-magic-methods/"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2025/09/23/dsa/algo_sort/">算法之【排序】</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/09/22/tools/250922-blog-theme-migrate/">遇见Stellar：我的博客站点的又一次翻新之旅</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">BluesSen</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="toc-text">什么是魔法方法？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E5%B9%B6%E7%90%86%E8%A7%A3%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95"><span class="toc-text">了解并理解魔法方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95%E7%9A%84%E7%89%B9%E7%82%B9%E4%B8%8E%E5%88%86%E7%B1%BB"><span class="toc-text">魔法方法的特点与分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95%E5%9C%A8%E4%B8%8D%E5%90%8C%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E8%B7%B5"><span class="toc-text">魔法方法在不同场景中的分析与实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF1%EF%BC%9A%E5%AF%B9%E8%B1%A1%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86"><span class="toc-text">场景1：对象生命周期管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF2%EF%BC%9A%E5%AF%B9%E8%B1%A1%E8%A1%A8%E7%A4%BA%E4%B8%8E%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-text">场景2：对象表示与格式化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF3%EF%BC%9A%E5%B1%9E%E6%80%A7%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="toc-text">场景3：属性访问控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF4%EF%BC%9A%E5%AE%B9%E5%99%A8%E4%B8%8E%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-text">场景4：容器与迭代器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF5%EF%BC%9A%E5%90%8C%E6%AD%A5-%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86"><span class="toc-text">场景5：同步-上下文管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF6%EF%BC%9A%E5%BC%82%E6%AD%A5-%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86"><span class="toc-text">场景6：异步-上下文管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF7%EF%BC%9A%E5%8F%AF%E8%B0%83%E7%94%A8%E5%AF%B9%E8%B1%A1"><span class="toc-text">场景7：可调用对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF8%EF%BC%9A%E6%8F%8F%E8%BF%B0%E7%AC%A6%E5%8D%8F%E8%AE%AE"><span class="toc-text">场景8：描述符协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF9%EF%BC%9A%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="toc-text">场景9：运算符重载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF10%EF%BC%9A%E4%B8%80%E4%BA%9B%E4%B8%8D%E5%B8%B8%E8%A7%81%E4%BD%86%E5%BE%88%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">场景10：一些不常见但很有用的方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8%E7%9A%84%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B"><span class="toc-text">一些开箱即用的实践案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B1%EF%BC%9A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%83%8F%E5%88%97%E8%A1%A8%E5%92%8C%E5%AD%97%E5%85%B8%E4%B8%80%E6%A0%B7%E7%9A%84%E7%B1%BB"><span class="toc-text">案例1：实现一个像列表和字典一样的类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B2%EF%BC%9A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%94%AF%E6%8C%81%E5%AF%B9%E8%B1%A1%E6%94%AF%E6%8C%81%E6%AF%94%E8%BE%83%E7%B1%BB"><span class="toc-text">案例2：实现一个支持对象支持比较类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88-3%EF%BC%9A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%BC%93%E5%AD%98%E5%99%A8"><span class="toc-text">案:3：实现一个缓存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B4%EF%BC%9A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-text">案例4：实现一个配置管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B5%EF%BC%9A%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%8D%95%E4%BE%8B%E7%B1%BB"><span class="toc-text">案例5：实现一个单例类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%A5%BD%E7%9A%84%E5%AE%9E%E8%B7%B5%E4%B8%8E%E5%BB%BA%E8%AE%AE"><span class="toc-text">一些好的实践与建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%80%E4%B8%8B"><span class="toc-text">总结一下</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  const el = document.getElementById('waline_container');
+  util.viewportLazyload(el, load_waline, true);
+
+  function load_waline(){
+    if (!el) return;
+
+    utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+    utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+
+    const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+    const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+      el: '#waline_container',
+      path: path,
+      
+    }));
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

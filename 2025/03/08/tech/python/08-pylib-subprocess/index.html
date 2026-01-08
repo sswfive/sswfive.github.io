@@ -1,0 +1,1031 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>子进程管理工具之subprocess - AInLife</title>
+
+  
+    <meta name="description" content="Reference：官方文档  模块概述介绍：subprocess是Python内置库中用于管理子进程的模块，支持在Windows、Linux、MacOS平台中使用；  该模块通过创建启动一个子进程来执行系统级命令、调用其他的可执行文件或脚本、与其他进程进行交互等等；其主要通过管道技术连接进程间的输入&#x2F;输出&#x2F;错误管道，从而获得返回值。 在subprocess模块发布后，官方建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="子进程管理工具之subprocess">
+<meta property="og:url" content="http://sswfive.xyz/2025/03/08/tech/python/08-pylib-subprocess/">
+<meta property="og:site_name" content="AInLife">
+<meta property="og:description" content="Reference：官方文档  模块概述介绍：subprocess是Python内置库中用于管理子进程的模块，支持在Windows、Linux、MacOS平台中使用；  该模块通过创建启动一个子进程来执行系统级命令、调用其他的可执行文件或脚本、与其他进程进行交互等等；其主要通过管道技术连接进程间的输入&#x2F;输出&#x2F;错误管道，从而获得返回值。 在subprocess模块发布后，官方建">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&clientId=u0bfed3c2-e7cc-4&from=paste&height=150&id=u92fe8a26&originHeight=150&originWidth=850&originalType=binary&ratio=1&rotation=0&showTitle=false&size=9909&status=done&style=none&taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&title=&width=850">
+<meta property="article:published_time" content="2025-03-07T16:48:23.000Z">
+<meta property="article:modified_time" content="2025-09-24T15:06:59.000Z">
+<meta property="article:author" content="BluesSen">
+<meta property="article:tag" content="python库">
+<meta property="article:tag" content="进程管理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&clientId=u0bfed3c2-e7cc-4&from=paste&height=150&id=u92fe8a26&originHeight=150&originWidth=850&originalType=binary&ratio=1&rotation=0&showTitle=false&size=9909&status=done&style=none&taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&title=&width=850">
+  
+  
+  
+  <meta name="keywords" content="python库,进程管理">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="AInLife" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"BluesSen","sameAs":[]},"dateCreated":"2025-03-08T00:48:23+08:00","dateModified":"2025-09-24T23:06:59+08:00","datePublished":"2025-03-08T00:48:23+08:00","description":"","headline":"子进程管理工具之subprocess","mainEntityOfPage":{"@type":"WebPage","@id":"http://sswfive.xyz/2025/03/08/tech/python/08-pylib-subprocess/"},"publisher":{"@type":"Organization","name":"BluesSen","sameAs":[]},"url":"http://sswfive.xyz/2025/03/08/tech/python/08-pylib-subprocess/","keywords":"python库, 进程管理","image":[]}</script>
+  
+</head>
+<body>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">AInLife</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 向阳而深 & BluesSen...</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="收藏夹" href="/notes/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<widget class="widget-wrapper related post-list"><div class="widget-header dis-select"><span class="name">专栏：python</span></div><div class="widget-body"><a class="item" href="/2025/09/23/tech/python/250923-py-magic-methods/"><span class="title">Python开发必备：解锁魔法方法的实用技巧大全</span></a><a class="item" href="/2025/09/14/tech/python/250914-py-data-struct/"><span class="title">Python中的数据类型用法剖析：从底层实现到高效应用</span></a><a class="item" href="/2025/09/11/tech/python/250308-pylib-pathlib/"><span class="title">用了pathlib后，我再也不想碰os.path了！</span></a><a class="item" href="/2025/09/08/tech/python/250907-py-async-challenges/"><span class="title">Python异步编程十年沉浮：且看3.14版本重要更新</span></a><a class="item" href="/2025/08/30/tech/python/250830-supervisor/"><span class="title">Supervisor：三年后的更新，把我三年前的笔记唤醒</span></a><a class="item" href="/2025/08/28/tech/python/250827-py-env-package/"><span class="title">我用过的Python工具链：从virtualenv到uv的演进之路</span></a><a class="item" href="/2025/08/26/tech/python/250826-pygc/"><span class="title">从计数到分代一步步窥探Python的垃圾回收机制</span></a><a class="item" href="/2025/08/24/tech/python/250824-pylib-faststream/"><span class="title">异步消息处理的利器之FastStream</span></a><a class="item active" href="/2025/03/08/tech/python/08-pylib-subprocess/"><span class="title">子进程管理工具之subprocess</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="item" href="/2025/03/07/tech/python/07-pylib-supervisor/"><span class="title">进程管理工具之Supervisor</span></a><a class="item" href="/2025/03/06/tech/python/06-pylib-apscheduler/"><span class="title">任务管理工具之APScheduler</span></a><a class="item" href="/2025/03/06/tech/python/05-pylib-awesome/"><span class="title">Python常用库汇总[awesome]</span></a><a class="item" href="/2025/03/04/tech/python/03-py-pypi-source/"><span class="title">常用的Pypi源汇总</span></a><a class="item" href="/2025/03/03/tech/python/250903-py-coding-statndards/"><span class="title">Pythoner的优雅编码之道</span></a></div></widget>
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/01/08/260108-test-cicd/"><span class="title">260108-test-cicd</span></a><a class="item title" href="/2026/01/06/tech/python/260106-why-is-uv-so-fast/"><span class="title">不止Rust，uv如此速度的背后真实原因</span></a><a class="item title" href="/2026/01/04/tech/python/260104-py-performace-analysis-and-practice/"><span class="title">Python开发者必知的性能数据与实用技巧</span></a><a class="item title" href="/2024/03/28/tech/python/240328-pyflink-usage/"><span class="title">pyflink之分布式计算</span></a><a class="item title" href="/2025/08/31/dsa/250831-dsa-intro/"><span class="title">重回原点再出发</span></a><a class="item title" href="/2025/09/01/dsa/250831-dsa-basic/"><span class="title">浅析数据结构与算法的核心概念</span></a><a class="item title" href="/2025/09/02/dsa/250902-data-structure-basic/"><span class="title">数据结构的基本知识</span></a><a class="item title" href="/2025/09/01/dsa/250901-complexity-analysis/"><span class="title">复杂度分析与大O表示法</span></a><a class="item title" href="/2025/09/10/dsa/250910-array/"><span class="title">数据结构之【数组】</span></a><a class="item title" href="/2025/09/12/dsa/250912-linkedlist/"><span class="title">数据结构之【链表】</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></a><a class="social" href="https://x.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a><a class="social" href="/atom.xml" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.462v4.003c6.988 0 12.65 5.646 12.65 12.618H18.33c0-9.69-7.93-17.621-17.621-17.621H1.677zM1.677.014v4.005C13.486 4.019 23 13.527 23 25.339h4.005C27.005 11.336 15.677.014 1.677.014z"/></svg></a><a class="social" href="mailto:sswss5005@163.com" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.724l9.615-6.903h.749c.904 0 1.636.732 1.636 1.636z"/></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2025/09/23/tech/python/250923-py-magic-methods/">python</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-03-07T16:48:23.000Z">2025-03-08</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-09-24T15:06:59.000Z">2025-09-24</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>子进程管理工具之subprocess</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><blockquote>
+<p>Reference：<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html">官方文档</a></p>
+</blockquote>
+<h2 id="模块概述"><a href="#模块概述" class="headerlink" title="模块概述"></a>模块概述</h2><h3 id="介绍："><a href="#介绍：" class="headerlink" title="介绍："></a>介绍：</h3><p>subprocess是Python内置库中用于管理子进程的模块，支持在Windows、Linux、MacOS平台中使用； </p>
+<p>该模块通过创建启动一个子进程来执行系统级命令、调用其他的可执行文件或脚本、与其他进程进行交互等等；其主要通过管道技术连接进程间的输入&#x2F;输出&#x2F;错误管道，从而获得返回值。</p>
+<p>在subprocess模块发布后，官方建议使用该模块去替换标准库中的os.system()、os.spawn*()等方法去执行系统命令；</p>
+<h3 id="版本更新"><a href="#版本更新" class="headerlink" title="版本更新"></a>版本更新</h3><ol>
+<li>subprocess是python2.4中新增的模块；</li>
+<li>在python3.5之前，可以通过subprocess.call()，subprocess.getoutput()、subprocess.check_output()等等方法实现模块功能；</li>
+<li>在python3.5之后，新增subprocess.run()方法，并且官方文档建议通过subprocess.run()或者subprocess.Popen()来替换原有的老版本的功能函数；</li>
+</ol>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><h3 id="执行系统命令"><a href="#执行系统命令" class="headerlink" title="执行系统命令"></a>执行系统命令</h3><ul>
+<li>在程序内部执行系统级命令，如ls、kill、mkdir、awk等，可以使用subprocess实现；</li>
+</ul>
+<h3 id="调用其他的可执行文件或脚本"><a href="#调用其他的可执行文件或脚本" class="headerlink" title="调用其他的可执行文件或脚本"></a>调用其他的可执行文件或脚本</h3><ul>
+<li>在程序内部执行其他的执行文件或脚本，可以使用subprocess实现；</li>
+</ul>
+<h3 id="与其他的进程交互"><a href="#与其他的进程交互" class="headerlink" title="与其他的进程交互"></a>与其他的进程交互</h3><ul>
+<li>在需要与其他进程进行交互，比如向某个进程发送数据、从某个进程读取数据等，可以使用subprocess实现；</li>
+</ul>
+<h3 id="实现异步任务"><a href="#实现异步任务" class="headerlink" title="实现异步任务"></a>实现异步任务</h3><ul>
+<li>在程序内部中需要实现异步任务，可以使用subprocess实现；</li>
+</ul>
+<h3 id="替代os-system"><a href="#替代os-system" class="headerlink" title="替代os.system()"></a>替代os.system()</h3><ul>
+<li>不想使用os.system()或os.system()无法实现需求时，可以subprocess实现；</li>
+</ul>
+<h2 id="常用接口"><a href="#常用接口" class="headerlink" title="常用接口"></a>常用接口</h2><h3 id="重要接口"><a href="#重要接口" class="headerlink" title="重要接口"></a>重要接口</h3><table>
+<thead>
+<tr>
+<th><strong>接口类别</strong></th>
+<th><strong>接口方法名</strong></th>
+<th><strong>功能描述</strong></th>
+<th><strong>返回结果</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>高阶接口</td>
+<td>subprocess.run()</td>
+<td>执行命令并等待命令完成，返回一个对象，包含了命令的输出信息</td>
+<td>阻塞等待；返回一个对象，包含状态码、输出信息（stdin&#x2F;stdout&#x2F;stderr）</td>
+</tr>
+<tr>
+<td>等层接口</td>
+<td>subprocess.Popen()</td>
+<td>执行命令不等待完成，返回一个对象</td>
+<td>非阻塞等待；返回一个对象，包含状态码、输出信息（stdin&#x2F;stdout&#x2F;stderr）</td>
+</tr>
+<tr>
+<td>低版本接口（基本已被高阶的run()方法替代了）</td>
+<td>subprocess.call()</td>
+<td>执行命令，返回命令的结果和执行状态</td>
+<td>阻塞等待；0或者非0</td>
+</tr>
+<tr>
+<td></td>
+<td>subprocess.check_call()</td>
+<td>执行命令，返回结果和状态</td>
+<td>阻塞等待；正常为0 ，执行错误则抛出异常</td>
+</tr>
+<tr>
+<td></td>
+<td>subprocess.getstatusoutput()</td>
+<td>接受字符串形式的命令，返回 一个元组形式的结果，</td>
+<td>阻塞等待；第一个元素是命令执行状态，第二个为执行结果。</td>
+</tr>
+<tr>
+<td></td>
+<td>subprocess.getoutput()</td>
+<td>接收字符串形式的命令，返回结果</td>
+<td>阻塞等待；返回执行结果</td>
+</tr>
+<tr>
+<td></td>
+<td>subprocess.check_output()</td>
+<td>执行命令，如何执行状态码为0则返回命令的结果，否则抛出异常</td>
+<td>阻塞等待；0或抛出异常</td>
+</tr>
+</tbody></table>
+<h2 id="核心接口分析之subprocess-run"><a href="#核心接口分析之subprocess-run" class="headerlink" title="核心接口分析之subprocess.run()"></a>核心接口分析之subprocess.run()</h2><h3 id="函数特点："><a href="#函数特点：" class="headerlink" title="函数特点："></a>函数特点：</h3><ul>
+<li>输入：默认情况下，子进程会继承父进程的设置，会将输出显示在终端上</li>
+<li>输出：阻塞等待，执行成功returncode为0， 非0，表示执行异常</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">subprocess.run(</span><br><span class="line">    args,   <span class="comment"># 要执行的shell命令，默认应该是一个字符串序列，如[‘df’, ‘-Th’]或(‘df’, ‘-Th’)，也可以是一个字符串，如’df -Th’，但是此时需要把shell参数的值置为True；</span></span><br><span class="line">    *, </span><br><span class="line">    stdin=<span class="literal">None</span>, <span class="comment"># 子进程的标准输入。有三个参数可选：subprocess.PIPE 创建一个管道，允许与子进程进行通信；subprocess.DEVNULL 特殊的文件对象，可以将其用于丢弃子进程的输出；一个打开的文件对象，将内容写入文件</span></span><br><span class="line">    <span class="built_in">input</span>=<span class="literal">None</span>, <span class="comment"># 将参数传递给 Popen.communicate() 以及子进程的 stdin,允许将字节或字符串传递给子进程的标准输入(stdin);</span></span><br><span class="line">    stdout=<span class="literal">None</span>, <span class="comment"># 子进程的标准输出(stdout);</span></span><br><span class="line">    stderr=<span class="literal">None</span>, <span class="comment"># 子进程的标准错误(stderr);</span></span><br><span class="line">    capture_output=<span class="literal">False</span>, <span class="comment">#参数控制是否捕获外部命令的标准输出(stdout)和标准错误(stderr)。如果将其设置为True，run()函数将返回一个CompletedProcess对象，该对象具有stdout和stderr属性，分别存储了命令的标准输出和标准错误输出。如果设置为False，标准输出和标准错误将被发送到控制台。默认为False</span></span><br><span class="line">    shell=<span class="literal">False</span>,  <span class="comment"># 指定是否通过shell来执行命令。如果为True，命令将在shell中执行；如果为False，则直接调用可执行文件；</span></span><br><span class="line">    cwd=<span class="literal">None</span>,  <span class="comment"># 设置子进程的工作目录。默认为None，表示使用当前工作目录；</span></span><br><span class="line">    timeout=<span class="literal">None</span>, <span class="comment">#设置子进程的超时时间（秒）。如果子进程在指定的时间内没有运行完成，则会引发TimeoutExpired异常；</span></span><br><span class="line">    check=<span class="literal">False</span>, <span class="comment"># 设置是否检查子进程的返回码。如果为True，并且子进程的返回码不为零，则会引发CalledProcessError异常；</span></span><br><span class="line">    encoding=<span class="literal">None</span>, <span class="comment"># 默认是字节数据，如果指定了编码格式，则输出为字符串；</span></span><br><span class="line">    errors=<span class="literal">None</span>, <span class="comment"># 该参数定义在解码输出时如何处理编码错误，常用的值包括&quot;strict&quot; (默认值，抛出异常)、&quot;ignore&quot; (忽略错误字符) 和 &quot;replace&quot; (用替代字符代替错误字符);</span></span><br><span class="line">    text=<span class="literal">None</span>,  <span class="comment"># 指定是否将输出结果以文本形式返回。如果为True，则结果以字符串形式返回，同时input或者stdin参数也需要输入String；如果为False，则返回字节流。默认为False。</span></span><br><span class="line">    env=<span class="literal">None</span>, <span class="comment"># 该参数允许您为子进程指定环境变量。它可以接受一个字典类型的对象，其中键是环境变量的名称，值是环境变量的值。通过设置env参数，可以在子进程中使用特定的环境变量。</span></span><br><span class="line">    universal_newlines=<span class="literal">None</span>, <span class="comment"># 该参数影响的是输入与输出的数据格式，比如它的值默认为False，此时stdout和stderr的输出是字节序列；当该参数的值设置为True时，stdout和stderr的输出是字符串。</span></span><br><span class="line">    **other_popen_kwargs</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="重要参数：args"><a href="#重要参数：args" class="headerlink" title="重要参数：args"></a>重要参数：args</h3><ul>
+<li>可以接收两种方法：字符串或列表。</li>
+<li>使用列表形式subprocess.run([“ls”, “-al”])</li>
+<li>使用字符串形式 subprocess.run(“ls -al”, shell&#x3D;True)。使用字符串形式必须设置参数shell&#x3D;True</li>
+</ul>
+<h3 id="重要参数：stdin、stdout、sterr"><a href="#重要参数：stdin、stdout、sterr" class="headerlink" title="重要参数：stdin、stdout、sterr"></a>重要参数：stdin、stdout、sterr</h3><ul>
+<li>用来设置标准输入，标准输出，标准错误的。默认情况下，子进程会继承父进程的设置，会将输出显示在控制台；</li>
+<li>subprocess.PIPE 创建一个管道，允许与子进程进行通信；</li>
+<li>subprocess.DEVNULL 特殊的文件对象，可以将其用于丢弃子进程的输出</li>
+<li>一个打开的文件对象，将内容写入文件</li>
+</ul>
+<h3 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: subprocess.run(<span class="string">&quot;ls -al&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line">total <span class="number">16</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">55</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br><span class="line">Out[<span class="number">3</span>]: CompletedProcess(args=<span class="string">&#x27;ls -al&#x27;</span>, returncode=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>])</span><br><span class="line">total <span class="number">16</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">55</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br><span class="line">Out[<span class="number">4</span>]: CompletedProcess(args=[<span class="string">&#x27;ls&#x27;</span>, <span class="string">&#x27;-al&#x27;</span>], returncode=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: subprocess.run([<span class="string">&quot;ls&quot;</span>, <span class="string">&quot;-l&quot;</span>, <span class="string">&quot;/dev/null&quot;</span>], capture_output=<span class="literal">True</span>)</span><br><span class="line">Out[<span class="number">5</span>]: CompletedProcess(args=[<span class="string">&#x27;ls&#x27;</span>, <span class="string">&#x27;-l&#x27;</span>, <span class="string">&#x27;/dev/null&#x27;</span>], returncode=<span class="number">0</span>, stdout=<span class="string">b&#x27;crw-rw-rw- 1 experiment root 1, 3 2023-07-19 15:53:04 /dev/null\n&#x27;</span>, stderr=<span class="string">b&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>])</span><br><span class="line">total <span class="number">16</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">55</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: res.returncode</span><br><span class="line">Out[<span class="number">7</span>]: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>,<span class="string">&quot;./cmd_output&quot;</span>], stdout=subprocess.PIPE)</span><br><span class="line">ls: cannot access ./cmd_output: No such file <span class="keyword">or</span> directory</span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>,<span class="string">&quot;./&quot;</span>], stdout=subprocess.PIPE)</span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: res.stdout</span><br><span class="line">Out[<span class="number">10</span>]: <span class="string">b&#x27;total 16\ndrwxr-xr-x   3 root root 4096 2024-01-12 16:18:55 .\ndrwxr-xr-x. 14 root root 4096 2024-01-12 16:17:37 ..\n-rw-r--r--   1 root root    0 2024-01-12 16:18:08 find_big_file.log\n-rwxr-xr-x   1 root root 1453 2024-01-12 16:18:00 find_big_file.sh\ndrwxr-xr-x   2 root root 4096 2024-01-12 16:18:56 shell_demo\n&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]: res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>,<span class="string">&quot;./&quot;</span>], stdout=subprocess.PIPE, text=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">12</span>]: res.stdout</span><br><span class="line">Out[<span class="number">12</span>]: <span class="string">&#x27;total 16\ndrwxr-xr-x   3 root root 4096 2024-01-12 16:18:55 .\ndrwxr-xr-x. 14 root root 4096 2024-01-12 16:17:37 ..\n-rw-r--r--   1 root root    0 2024-01-12 16:18:08 find_big_file.log\n-rwxr-xr-x   1 root root 1453 2024-01-12 16:18:00 find_big_file.sh\ndrwxr-xr-x   2 root root 4096 2024-01-12 16:18:56 shell_demo\n&#x27;</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;cmd_output.txt&quot;</span>, <span class="string">&quot;a+&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    ...:     res = subprocess.run([<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-al&quot;</span>,<span class="string">&quot;./&quot;</span>], stdout=f, text=<span class="literal">True</span>)</span><br><span class="line">    ...:     <span class="built_in">print</span>(<span class="string">f&quot;code:<span class="subst">&#123;res.returncode&#125;</span>&quot;</span>)</span><br><span class="line">    ...:     <span class="built_in">print</span>(<span class="string">f&quot;stdout: <span class="subst">&#123;res.stdout&#125;</span>&quot;</span>)</span><br><span class="line">    ...: </span><br><span class="line">code:<span class="number">0</span></span><br><span class="line">stdout: <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: ls</span><br><span class="line">cmd_output.txt  find_big_file.log  find_big_file.sh*  shell_demo/</span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: res = subprocess.run([<span class="string">&quot;cat&quot;</span>,<span class="string">&quot;cmd_output.txt&quot;</span>])</span><br><span class="line">total <span class="number">16</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">27</span>:<span class="number">11</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">27</span>:<span class="number">11</span> cmd_output.txt</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br><span class="line">total <span class="number">20</span></span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">27</span>:<span class="number">11</span> .</span><br><span class="line">drwxr-xr-x. <span class="number">14</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">17</span>:<span class="number">37</span> ..</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root  <span class="number">375</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">27</span>:<span class="number">11</span> cmd_output.txt</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root root    <span class="number">0</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:08 find_big_file.log</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root root <span class="number">1453</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">00</span> find_big_file.sh</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root root <span class="number">4096</span> <span class="number">2024</span>-01-<span class="number">12</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">56</span> shell_demo</span><br></pre></td></tr></table></figure>
+<h2 id="核心接口分析之subprocess-Popen"><a href="#核心接口分析之subprocess-Popen" class="headerlink" title="核心接口分析之subprocess.Popen()"></a>核心接口分析之subprocess.Popen()</h2><h3 id="函数特点：-1"><a href="#函数特点：-1" class="headerlink" title="函数特点："></a>函数特点：</h3><ul>
+<li><strong>run()方法底层调用的是Popen()方法，当run方法无法满足需求是，使用Popen()方法去实现；</strong></li>
+<li>输入：执行的命令</li>
+<li>输出：非阻塞输出，执行后立即返回，执行结果通过返回对象获取</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">subprocess.Popen(</span><br><span class="line">    args,  <span class="comment">#同run()方法</span></span><br><span class="line">    bufsize=- <span class="number">1</span>, <span class="comment"># 定义子进程的缓冲大小，默认值-1表示使用系统默认的缓冲大小；</span></span><br><span class="line">    executable=<span class="literal">None</span>, <span class="comment"># 指定要执行的程序路径，若未指定，则通过PATH环境变量来确定可执行文件位置；</span></span><br><span class="line">    stdin=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    stdout=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    stderr=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    preexec_fn=<span class="literal">None</span>, <span class="comment"># 指定在子进程启动之前要执行的函数，该函数在fork()调用成功，在exec()调用之前被调用；</span></span><br><span class="line">    close_fds=<span class="literal">True</span>, <span class="comment"># 指定是否关闭所有文件描述符，</span></span><br><span class="line">    shell=<span class="literal">False</span>, <span class="comment"># # 同run()方法</span></span><br><span class="line">    cwd=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    env=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    universal_newlines=<span class="literal">None</span>, <span class="comment"># 同run()方法</span></span><br><span class="line">    startupinfo=<span class="literal">None</span>, <span class="comment"># 一个可选的subprocess.STARTUPINFO对象，用于指定子进程的启动信息，如窗口大小、窗口标题等</span></span><br><span class="line">    creationflags=<span class="number">0</span>, <span class="comment"># 用于指定子进程的创建标志，控制子进程的各种行为。可以使用subprocess.CREATE_NEW_CONSOLE、subprocess.CREATE_NEW_PROCESS_GROUP等常量进行设置</span></span><br><span class="line">    restore_signals=<span class="literal">True</span>, <span class="comment"># 用于确定是否在子进程中恢复信号处理程序的默认行为</span></span><br><span class="line">    start_new_session=<span class="literal">False</span>, <span class="comment"># 用于代替使用 preexec_fn 的代码来在子进程中调用 os.setsid() 或 os.setpgid()；如果 start_new_session 为真值则 setsid() 系统调用将在执行子进程之前在子进程中执行</span></span><br><span class="line">    pass_fds=(), <span class="comment"># 是一个可选的在父子进程间保持打开的文件描述符序列。提供任何 pass_fds 将强制 close_fds 为 True</span></span><br><span class="line">    *, </span><br><span class="line">    group=<span class="literal">None</span>, <span class="comment">#（仅 POSIX）: 如果 group 不为 None，则 setregid() 系统调用将于子进程执行之前在下级进程中进行。 如果所提供的值为一个字符串，将通过 grp.getgrnam() 来查找它，并将使用 gr_gid 中的值。 如果该值为一个整数，它将被原样传递</span></span><br><span class="line">    extra_groups=<span class="literal">None</span>, <span class="comment"># （仅 POSIX）: 如果 extra_groups 不为 None，则 setgroups() 系统调用将于子进程之前在下级进程中进行。 在 extra_groups 中提供的字符串将通过 grp.getgrnam() 来查找，并将使用 gr_gid 中的值。 整数值将被原样传递</span></span><br><span class="line">    user=<span class="literal">None</span>, <span class="comment"># 仅 POSIX）: 如果 user 不为 None，则 setreuid() 系统调用将于子进程执行之前在下级进程中进行。 如果所提供的值为一个字符串，将通过 pwd.getpwnam() 来查找它，并将使用 pw_uid 中的值。 如果该值为一个整数，它将被原样传递</span></span><br><span class="line">    umask=- <span class="number">1</span>, <span class="comment"># 如果 umask 不为负值，则 umask() 系统调用将在子进程执行之前在下级进程中进行</span></span><br><span class="line">    encoding=<span class="literal">None</span>,  <span class="comment"># 同run()方法</span></span><br><span class="line">    errors=<span class="literal">None</span>,  <span class="comment"># 同run()方法</span></span><br><span class="line">    text=<span class="literal">None</span>,  <span class="comment"># 同run()方法</span></span><br><span class="line">    pipesize=- <span class="number">1</span>, <span class="comment"># 当 PIPE 被用作 stdin, stdout 或 stderr 时 pipesize 可被用于改变管道的大小。 管道的大小仅会在受支持的平台上被改变（当撰写本文档时只有 Linux 支持）</span></span><br><span class="line">    process_group=<span class="literal">None</span> <span class="comment"># 用于代替使用 preexec_fn 的代码来在子进程中调用 os.setsid() 或 os.setpgid()；如果 start_new_session 为真值则 setsid() 系统调用将在执行子进程之前在子进程中执行</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="重要属性-Popen对象"><a href="#重要属性-Popen对象" class="headerlink" title="重要属性-Popen对象"></a>重要属性-Popen对象</h3><p><img src="https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&clientId=u0bfed3c2-e7cc-4&from=paste&height=150&id=u92fe8a26&originHeight=150&originWidth=850&originalType=binary&ratio=1&rotation=0&showTitle=false&size=9909&status=done&style=none&taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&title=&width=850" alt="image.png"></p>
+<ul>
+<li>Popen.<strong>communicate</strong>(<em>input&#x3D;None</em>, <em>timeout&#x3D;None</em>)<ul>
+<li>与进程交互：将数据发送到 stdin。 从 stdout 和 stderr 读取数据，直到抵达文件结尾。 等待进程终止并设置 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.Popen.returncode">returncode</a> 属性，可选的 <em>input</em> 参数应为要发送到下级进程的数据，或者如果没有要发送到下级进程的数据则为 None。 如果流是以文本模式打开的，则 <em>input</em> 必须为字符串。 在其他情况下，它必须为字节串。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.Popen.communicate">communicate()</a> 返回一个 (stdout_data, stderr_data) 元组。如果文件以文本模式打开则为字符串；否则字节。</li>
+</ul>
+</li>
+<li>Popen.<strong>poll</strong>()<ul>
+<li>检查子进程是否已被终止。设置并返回 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.Popen.returncode">returncode</a> 属性。否则返回 None。</li>
+</ul>
+</li>
+<li>Popen.<strong>wait</strong>(<em>timeout&#x3D;None</em>)<ul>
+<li>等待子进程被终止。设置并返回 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.Popen.returncode">returncode</a> 属性。</li>
+</ul>
+</li>
+<li>Popen.<strong>send_signal</strong>(<em>signal</em>)<ul>
+<li>将信号 <em>signal</em> 发送给子进程，如SIGINT、SIGTERM等</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用示例-1"><a href="#使用示例-1" class="headerlink" title="使用示例"></a>使用示例</h3><ul>
+<li>基本操作</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: res = subprocess.Popen(<span class="string">&quot;sleep 10 &amp;&amp; pwd&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: res</span><br><span class="line">Out[<span class="number">3</span>]: &lt;Popen: returncode: <span class="literal">None</span> args: <span class="string">&#x27;sleep 10 &amp;&amp; pwd&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: res.stdout</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: res.stdout</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: /data/sswang/subprocess_demo</span><br><span class="line">In [<span class="number">7</span>]: </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>案例</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">使用subprocess的Popen来执行shell命令，这种方式会创建一个新的进程来执行shell</span></span><br><span class="line"><span class="string">使用要放在后台一直执行的shell进程，比如通过shell启动某种服务，如果通过上面</span></span><br><span class="line"><span class="string">的方式，就会遇到当python被关闭时，shell启动的程序也被关闭</span></span><br><span class="line"><span class="string">需要注意的是close_fds参数，默认为false，表示继承fb，即文件资源符，如果继承fb，那么当父进程关闭时</span></span><br><span class="line"><span class="string">shell启动的子进程会去继承父进程相应的资源，如Flask web服务中通过shell启动了某个服务，此时Flask关闭了</span></span><br><span class="line"><span class="string">但原本Flask监听的端口依旧会被shell子进程占用，这样就导致Flask无法再次启动。</span></span><br><span class="line"><span class="string">将close_fds设置为false可以避免这种情况</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">execshell2</span>(<span class="params">self,shell</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        p = subprocess.Popen(shell, shell=<span class="literal">True</span>,stdout=subprocess.PIPE ,stderr=subprocess.STDOUT, close_fds=<span class="literal">True</span>)</span><br><span class="line">        output = p.stdout.read()</span><br><span class="line">        <span class="comment"># p.terminate()</span></span><br><span class="line">        code = <span class="number">0</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;%s execute success!&#x27;</span> % shell)</span><br><span class="line">    <span class="keyword">except</span> subprocess.CalledProcessError <span class="keyword">as</span> e:</span><br><span class="line">        code = e.returncode</span><br><span class="line">        output = e.output</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;%s execute error: exit_status [%s] err [%s]&#x27;</span> % (shell, <span class="built_in">str</span>(code), output))</span><br><span class="line">        exit()</span><br><span class="line">    <span class="keyword">return</span> code, output</span><br></pre></td></tr></table></figure>
+<h2 id="subprocess常用异常类"><a href="#subprocess常用异常类" class="headerlink" title="subprocess常用异常类"></a>subprocess常用异常类</h2><h3 id="SubprocessError"><a href="#SubprocessError" class="headerlink" title="SubprocessError"></a>SubprocessError</h3><ul>
+<li>此模块的其他异常</li>
+</ul>
+<h3 id="TimeoutExpired"><a href="#TimeoutExpired" class="headerlink" title="TimeoutExpired"></a>TimeoutExpired</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.SubprocessError">SubprocessError</a> 的子类，等待子进程的过程中发生超时时被抛出</li>
+</ul>
+<h3 id="CalledProcessError"><a href="#CalledProcessError" class="headerlink" title="CalledProcessError"></a>CalledProcessError</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.SubprocessError">SubprocessError</a> 的子类，当一个由 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.check_call">check_call()</a>, <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.check_output">check_output()</a> 或 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/subprocess.html#subprocess.run">run()</a> (附带 check&#x3D;True) 运行的进程返回了非零退出状态码时将被引发</li>
+</ul>
+<h2 id="实践案例"><a href="#实践案例" class="headerlink" title="实践案例"></a>实践案例</h2><ul>
+<li><strong>需求：使用typer+subprocess实现了一个用于管理项目依赖和执行一些常见任务的脚本的工具。</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> click</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UpgradeDependencies</span>:</span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_build_args</span>(<span class="params">cls, dependencies</span>):</span><br><span class="line">        <span class="comment"># 解析依赖项并构建参数</span></span><br><span class="line">        packs, specials = [], &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> dep <span class="keyword">in</span> dependencies:</span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;:&quot;</span> <span class="keyword">in</span> dep:</span><br><span class="line">                k, v = dep.split(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">                specials[k.strip()] = v.strip().split()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                packs.append(dep.strip())</span><br><span class="line">        <span class="keyword">return</span> packs, specials</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_parse_dependencies</span>(<span class="params">cls, text, title</span>):</span><br><span class="line">        <span class="comment"># 从文本中解析依赖项</span></span><br><span class="line">        main, dev = text.split(title)</span><br><span class="line">        devs = dev.split(<span class="string">&quot;[tool.&quot;</span>)[<span class="number">0</span>].strip().splitlines()</span><br><span class="line">        mains = main.strip().splitlines()</span><br><span class="line">        prod_packs, specials = cls._build_args(mains)</span><br><span class="line">        dev_packs, specials = cls._build_args(devs)</span><br><span class="line">        <span class="keyword">return</span> prod_packs, dev_packs, specials</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_args</span>(<span class="params">cls</span>):</span><br><span class="line">        <span class="comment"># 获取依赖项参数</span></span><br><span class="line">        dev_title = <span class="string">&quot;[tool.poetry.group.dev.dependencies]&quot;</span></span><br><span class="line">        dev_flag = <span class="string">&quot;--group dev&quot;</span></span><br><span class="line">        main_args, dev_args, others = [], [], []</span><br><span class="line">        <span class="keyword">if</span> dev_title <span class="keyword">in</span> text:</span><br><span class="line">            main_title = <span class="string">&quot;[tool.poetry.dependencies]&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            dev_flag = <span class="string">&quot;--group dev&quot;</span></span><br><span class="line">            dev_title = <span class="string">&quot;[tool.poetry.group.dev.dependencies]&quot;</span></span><br><span class="line">        main_args, dev_args, others = cls._parse_dependencies(text, main_title, dev_title, dev_flag)</span><br><span class="line">        <span class="keyword">return</span> main_args, dev_args, others, dev_flag</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">gen_cmd</span>(<span class="params">cls</span>):</span><br><span class="line">        <span class="comment"># 生成升级依赖项的命令</span></span><br><span class="line">        main_args, dev_args, others, dev_flag = cls.get_args()</span><br><span class="line">        command = <span class="string">f&quot;poetry add <span class="subst">&#123;<span class="string">&#x27; &#x27;</span>.join(main_args)&#125;</span> &amp;&amp; poetry add <span class="subst">&#123;dev_flag&#125;</span> <span class="subst">&#123;<span class="string">&#x27; &#x27;</span>.join(dev_args)&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">for</span> packages <span class="keyword">in</span> others:</span><br><span class="line">            command += <span class="string">f&quot; &amp;&amp; poetry add <span class="subst">&#123;<span class="string">&#x27; &#x27;</span>.join(packages)&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">return</span> command</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">exit_if_run_failed</span>(<span class="params">cmd</span>):</span><br><span class="line">    <span class="comment"># 如果运行命令失败，则退出</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        subprocess.run(cmd, check=<span class="literal">True</span>, shell=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">except</span> subprocess.CalledProcessError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Error: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;升级所有依赖包到最新版&quot;&quot;&quot;</span></span><br><span class="line">    exit_if_run_failed(UpgradeDependencies.gen_cmd())</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lint</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;格式化加静态检查&quot;&quot;&quot;</span></span><br><span class="line">    remove_imports = <span class="string">&quot;autoflake --in-place --remove-all-unused-imports&quot;</span></span><br><span class="line">    cmd = <span class="string">&quot;&quot;</span></span><br><span class="line">    paths = <span class="string">&quot;.&quot;</span></span><br><span class="line">    <span class="keyword">if</span> args := sys.argv[<span class="number">1</span>:]:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;-r&quot;</span> <span class="keyword">in</span> args:</span><br><span class="line">            args.remove(<span class="string">&quot;-r&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">all</span>(Path(i).is_file() <span class="keyword">for</span> i <span class="keyword">in</span> args):</span><br><span class="line">                cmd = <span class="string">f&quot;<span class="subst">&#123;remove_imports&#125;</span> <span class="subst">&#123;paths&#125;</span> &amp;&amp; &quot;</span> + cmd</span><br><span class="line">        paths = <span class="string">&quot; &quot;</span>.join(args)</span><br><span class="line">    tools = (<span class="string">&quot;isort&quot;</span>, <span class="string">&quot;black&quot;</span>, <span class="string">&quot;ruff&quot;</span>, <span class="string">&quot;mypy&quot;</span>)</span><br><span class="line">    cmd += <span class="string">f&quot;poetry run <span class="subst">&#123;tools[<span class="number">0</span>]&#125;</span> <span class="subst">&#123;paths&#125;</span> &amp;&amp; poetry run <span class="subst">&#123;tools[<span class="number">1</span>]&#125;</span> <span class="subst">&#123;paths&#125;</span> &amp;&amp; poetry run <span class="subst">&#123;tools[<span class="number">2</span>]&#125;</span> <span class="subst">&#123;paths&#125;</span> &amp;&amp; poetry run <span class="subst">&#123;tools[<span class="number">3</span>]&#125;</span> <span class="subst">&#123;paths&#125;</span>&quot;</span></span><br><span class="line">    exit_if_run_failed(cmd)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dev</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;启动服务：相当于django的runserver&quot;&quot;&quot;</span></span><br><span class="line">    cmd = <span class="string">&quot;poetry run python main.py&quot;</span></span><br><span class="line">    <span class="keyword">if</span> args := sys.argv[<span class="number">1</span>:]:</span><br><span class="line">        cmd += <span class="string">&quot; &quot;</span> + <span class="string">&quot; &quot;</span>.join(args)</span><br><span class="line">    exit_if_run_failed(cmd)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">makemigrations</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成数据库迁移文件，类似Django的./manage.py makemigrations&quot;&quot;&quot;</span></span><br><span class="line">    exit_if_run_failed(<span class="string">&quot;aerich migrate&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">migrate</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;更新数据库表结构：相当于django的./manage.py migrate&quot;&quot;&quot;</span></span><br><span class="line">    exit_if_run_failed(<span class="string">&quot;aerich upgrade&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    cli()  <span class="comment"># Assuming you have defined `cli` somewhere</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://sswfive.xyz/2025/03/08/tech/python/08-pylib-subprocess/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://sswfive.xyz/2025/03/08/tech/python/08-pylib-subprocess/"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2025/03/10/tech/docker/01-docker-image-pull-failed/">Docker镜像无法拉取问题的解决方案</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/03/07/tech/python/07-pylib-supervisor/">进程管理工具之Supervisor</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">BluesSen</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E6%A6%82%E8%BF%B0"><span class="toc-text">模块概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0"><span class="toc-text">版本更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4"><span class="toc-text">执行系统命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E5%85%B6%E4%BB%96%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E6%88%96%E8%84%9A%E6%9C%AC"><span class="toc-text">调用其他的可执行文件或脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E7%9A%84%E8%BF%9B%E7%A8%8B%E4%BA%A4%E4%BA%92"><span class="toc-text">与其他的进程交互</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="toc-text">实现异步任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%BF%E4%BB%A3os-system"><span class="toc-text">替代os.system()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%8E%A5%E5%8F%A3"><span class="toc-text">常用接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E6%8E%A5%E5%8F%A3"><span class="toc-text">重要接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3%E5%88%86%E6%9E%90%E4%B9%8Bsubprocess-run"><span class="toc-text">核心接口分析之subprocess.run()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%89%B9%E7%82%B9%EF%BC%9A"><span class="toc-text">函数特点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0%EF%BC%9Aargs"><span class="toc-text">重要参数：args</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0%EF%BC%9Astdin%E3%80%81stdout%E3%80%81sterr"><span class="toc-text">重要参数：stdin、stdout、sterr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-text">使用示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3%E5%88%86%E6%9E%90%E4%B9%8Bsubprocess-Popen"><span class="toc-text">核心接口分析之subprocess.Popen()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%89%B9%E7%82%B9%EF%BC%9A-1"><span class="toc-text">函数特点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E5%B1%9E%E6%80%A7-Popen%E5%AF%B9%E8%B1%A1"><span class="toc-text">重要属性-Popen对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="toc-text">使用示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#subprocess%E5%B8%B8%E7%94%A8%E5%BC%82%E5%B8%B8%E7%B1%BB"><span class="toc-text">subprocess常用异常类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SubprocessError"><span class="toc-text">SubprocessError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TimeoutExpired"><span class="toc-text">TimeoutExpired</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CalledProcessError"><span class="toc-text">CalledProcessError</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B"><span class="toc-text">实践案例</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  const el = document.getElementById('waline_container');
+  util.viewportLazyload(el, load_waline, true);
+
+  function load_waline(){
+    if (!el) return;
+
+    utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+    utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+
+    const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+    const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+      el: '#waline_container',
+      path: path,
+      
+    }));
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

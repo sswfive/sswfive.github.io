@@ -1,0 +1,1121 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>从前端视角理解浏览器和HTTP的缓存机制 - AInLife</title>
+
+  
+    <meta name="description" content="什么是浏览器缓存我们都知道，一个典型的Web应用请求-响应流程通常如下所示：   客户端 -&gt; 发起HTTP请求 -&gt; 服务器端接收请求 -&gt;查询数据库 -&gt; 执行业务逻辑处理 -&gt; 构造HTTP响应 -&gt; 返回客户端    在这一链路中，性能瓶颈往往集中在两个关键阶段：网络请求阶段和服务端计算阶段。  网络请求阶段：主要包括客户端发起的HTTP请求以及服务端对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从前端视角理解浏览器和HTTP的缓存机制">
+<meta property="og:url" content="http://sswfive.xyz/2025/11/06/tech/others/251116-browser-cache/">
+<meta property="og:site_name" content="AInLife">
+<meta property="og:description" content="什么是浏览器缓存我们都知道，一个典型的Web应用请求-响应流程通常如下所示：   客户端 -&gt; 发起HTTP请求 -&gt; 服务器端接收请求 -&gt;查询数据库 -&gt; 执行业务逻辑处理 -&gt; 构造HTTP响应 -&gt; 返回客户端    在这一链路中，性能瓶颈往往集中在两个关键阶段：网络请求阶段和服务端计算阶段。  网络请求阶段：主要包括客户端发起的HTTP请求以及服务端对">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://cdn.sswfive.xyz/2025-11/1762450691248_1762450691252.png">
+<meta property="og:image" content="http://cdn.sswfive.xyz/2025-11/251107013917055_1762450757338.png">
+<meta property="og:image" content="http://cdn.sswfive.xyz/2025-11/251107003355976_1762446835993.png">
+<meta property="og:image" content="http://cdn.sswfive.xyz/2025-11/251107011034261_1762449034268.png">
+<meta property="og:image" content="http://cdn.sswfive.xyz/2025-11/251107013632544_1762450592722.png">
+<meta property="article:published_time" content="2025-11-06T01:45:49.000Z">
+<meta property="article:modified_time" content="2025-11-07T02:26:24.000Z">
+<meta property="article:author" content="BluesSen">
+<meta property="article:tag" content="技术原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cdn.sswfive.xyz/2025-11/1762450691248_1762450691252.png">
+  
+  
+  
+  <meta name="keywords" content="技术原理">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="AInLife" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"BluesSen","sameAs":[]},"dateCreated":"2025-11-06T09:45:49+08:00","dateModified":"2025-11-07T10:26:24+08:00","datePublished":"2025-11-06T09:45:49+08:00","description":"","headline":"从前端视角理解浏览器和HTTP的缓存机制","mainEntityOfPage":{"@type":"WebPage","@id":"http://sswfive.xyz/2025/11/06/tech/others/251116-browser-cache/"},"publisher":{"@type":"Organization","name":"BluesSen","sameAs":[]},"url":"http://sswfive.xyz/2025/11/06/tech/others/251116-browser-cache/","keywords":"技术原理","image":[]}</script>
+  
+</head>
+<body>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">AInLife</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 向阳而深 & BluesSen...</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="收藏夹" href="/notes/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/01/08/260108-test-cicd/"><span class="title">260108-test-cicd</span></a><a class="item title" href="/2026/01/06/tech/python/260106-why-is-uv-so-fast/"><span class="title">不止Rust，uv如此速度的背后真实原因</span></a><a class="item title" href="/2026/01/04/tech/python/260104-py-performace-analysis-and-practice/"><span class="title">Python开发者必知的性能数据与实用技巧</span></a><a class="item title" href="/2024/03/28/tech/python/240328-pyflink-usage/"><span class="title">pyflink之分布式计算</span></a><a class="item title" href="/2025/08/31/dsa/250831-dsa-intro/"><span class="title">重回原点再出发</span></a><a class="item title" href="/2025/09/01/dsa/250831-dsa-basic/"><span class="title">浅析数据结构与算法的核心概念</span></a><a class="item title" href="/2025/09/02/dsa/250902-data-structure-basic/"><span class="title">数据结构的基本知识</span></a><a class="item title" href="/2025/09/01/dsa/250901-complexity-analysis/"><span class="title">复杂度分析与大O表示法</span></a><a class="item title" href="/2025/09/10/dsa/250910-array/"><span class="title">数据结构之【数组】</span></a><a class="item title" href="/2025/09/12/dsa/250912-linkedlist/"><span class="title">数据结构之【链表】</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></a><a class="social" href="https://x.com/sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a><a class="social" href="/atom.xml" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.462v4.003c6.988 0 12.65 5.646 12.65 12.618H18.33c0-9.69-7.93-17.621-17.621-17.621H1.677zM1.677.014v4.005C13.486 4.019 23 13.527 23 25.339h4.005C27.005 11.336 15.677.014 1.677.014z"/></svg></a><a class="social" href="mailto:sswss5005@163.com" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.724l9.615-6.903h.749c.904 0 1.636.732 1.636 1.636z"/></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E8%B7%B5/">技术实践</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-11-06T01:45:49.000Z">2025-11-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-11-07T02:26:24.000Z">2025-11-07</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>从前端视角理解浏览器和HTTP的缓存机制</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="什么是浏览器缓存"><a href="#什么是浏览器缓存" class="headerlink" title="什么是浏览器缓存"></a>什么是浏览器缓存</h2><p>我们都知道，一个典型的Web应用请求-响应流程通常如下所示：</p>
+<ul>
+<li><blockquote>
+<p>客户端 -&gt; 发起HTTP请求 -&gt; 服务器端接收请求 -&gt;查询数据库 -&gt; 执行业务逻辑处理 -&gt; 构造HTTP响应 -&gt; 返回客户端</p>
+</blockquote>
+</li>
+</ul>
+<p>在这一链路中，性能瓶颈往往集中在两个关键阶段：<strong>网络请求阶段</strong>和<strong>服务端计算阶段</strong>。</p>
+<ul>
+<li>网络请求阶段：主要包括客户端发起的HTTP请求以及服务端对数据库的查询请求；</li>
+<li>服务端计算阶段：主要包括业务逻辑处理和数据库查询结果的加工处理。</li>
+</ul>
+<p>为了提高Web应用的响应速度和用户体验，引入缓存技术成为了优化Web应用性能的关键手段之一。通过在不同层级引入缓存，可以显著减少重复计算和网络开销，从而提高页面响应效率。常见的缓存策略包括：</p>
+<ul>
+<li>数据库缓存</li>
+<li>CDN（内容分发网络）缓存</li>
+<li>代理服务器缓存（如反向代理）</li>
+<li>浏览器缓存</li>
+<li>应用层缓存（如Redis、Memcached)</li>
+</ul>
+<p>本文将从前端视角出发，重点探讨浏览器缓存的原理、类型及其实践。</p>
+<h2 id="浏览器缓存的基本原理"><a href="#浏览器缓存的基本原理" class="headerlink" title="浏览器缓存的基本原理"></a>浏览器缓存的基本原理</h2><p>浏览器缓存工作流程：</p>
+<ol>
+<li><strong>浏览器发起第一次HTTP请求</strong>：用户在浏览器中访问某个资源（如页面、图片、脚本等），浏览器向缓存系统发送首次请求。</li>
+<li><strong>缓存未命中（无缓存结果）</strong>：缓存系统检查是否存在该资源的缓存副本，由于是首次请求，缓存中没有对应数据，因此返回“未命中”状态。</li>
+<li><strong>浏览器向服务器发起请求</strong>：由于缓存未命中，浏览器继续向后端服务器发送原始HTTP请求以获取资源。</li>
+<li><strong>服务器返回请求资源</strong>：服务器接收到请求后，处理并返回所需要的资源内容（如HTML、CSS、JS文件等）。</li>
+<li><strong>资源存入缓存中</strong>：浏览器在接收到服务器返回的资源后，将其存储到本地缓存中，以便后续请求时快速读取，避免重复向服务器发起请求。</li>
+</ol>
+<p>整个浏览器缓存的过程基于两个核心原则：</p>
+<ol>
+<li>浏览器每次发起请求时，都会先在浏览器缓存中查找该请求的结果和缓存标识</li>
+<li>浏览器每次拿到返回的请求结果都会将该结果和缓存标识存入浏览器缓存中</li>
+</ol>
+<p>接下来将从两个维度来介绍浏览器缓存：</p>
+<ul>
+<li>缓存的存储位置</li>
+<li>缓存的类型</li>
+</ul>
+<h2 id="按照缓存位置分类"><a href="#按照缓存位置分类" class="headerlink" title="按照缓存位置分类"></a>按照缓存位置分类</h2><p>浏览器缓存存存储位置上分为四种，按照优先级依次查找：</p>
+<ol>
+<li>Service Worker</li>
+<li>Memory Cache</li>
+<li>Disk Cache</li>
+<li>Push Cache</li>
+</ol>
+<h3 id="Service-Worker"><a href="#Service-Worker" class="headerlink" title="Service Worker"></a>Service Worker</h3><p>Service Worker（简称：SW）是运行在浏览器背后的独立线程，一般可以用来实现缓存功能。值得注意的是，使用SW，传输协议必须是HTTPS，因为SW中涉及到请求拦截，所以必须使用HTTPS协议来保障安全。</p>
+<p>SW的的缓存与浏览器的其他内建的缓存机制不同，它可以让我们自由控制缓存哪些文件、如何匹配缓存、如何读取缓存、并且缓存是持续性的，常用于PWA离线访问场景。</p>
+<p>SW的工作流程：</p>
+<ol>
+<li>注册Service Worker</li>
+<li>监听install事件并缓存文件</li>
+<li>拦截请求查询缓存、存在则直接返回，否则继续网络请求</li>
+</ol>
+<p>通常，当SW没有命中缓存时，需要去调用fetch函数获取数据，也就是说，如果没有在SW命中缓存时，会根据缓存优先级查找数据。但不管我们是从Memory Cache中还是请求网络中获取数据，浏览器都会显示我们是从SW中获取的内容。<br><img src="http://cdn.sswfive.xyz/2025-11/1762450691248_1762450691252.png" alt="1762450691248.png"></p>
+<h3 id="Memory-Cache"><a href="#Memory-Cache" class="headerlink" title="Memory Cache"></a>Memory Cache</h3><p>Memory Cache（简称：MC）是内存中的缓存，主要包含的是当前页面中已经抓取的资源，例如页面上已经下载的样式、脚本、图片等。</p>
+<p>读取内存的数据肯定比磁盘高效，但毕竟内存空间有限，所以缓存有效期很短，一般会随着进程的结束而释放，也就是说当我们关闭Tab页面，内存中的缓存也就被释放了。</p>
+<p>当我们访问过页面后，再次刷新页面，可以发现很多数据都来自内存缓存。如下图所示：<br><img src="http://cdn.sswfive.xyz/2025-11/251107013917055_1762450757338.png" alt="251107013917055.png"></p>
+<p>MC机制保证了一个页面如果有两个相同的请求，都只会被请求最多一次，避免请求浪费，如：</p>
+<ul>
+<li>两个<code>src</code>相同的<code>&lt;*img*&gt;</code></li>
+<li>两个<code>href</code>相同的<code>&lt;*link*&gt;</code></li>
+</ul>
+<h3 id="Disk-Cache"><a href="#Disk-Cache" class="headerlink" title="Disk Cache"></a>Disk Cache</h3><p>Disk Cache（简称：DC）是存储在硬盘中的缓存，读取速度慢点，但什么都能存储到磁盘中，比 MC胜在容量和对存储时效性上。</p>
+<p>在所有浏览器缓存中，DC覆盖面是最大的，它会根据HTTP Header中的字段（如：<code>Cache-Control</code>、<code>ETag</code>、<code>Last-Modified</code> ）判断哪些资源需要被缓存，哪些资源可以不请求直接使用，哪些资源已经过期需要重新请求。</p>
+<p>通常，在跨站点时，只要相同地址的资源一旦被硬盘缓存下来，就不会再次去请求，因此绝大部分时候数据都来源于DC。但所有的持久化存储都会面临容量增长的问题，DC也不例外，在浏览器自动清理时，会有特殊的算法去把“最老的”或“最可能过时的”资源删除，因此是一个一个删除的，不过每个浏览器是缓存清除算法不尽相同，这点也可以看作是各个浏览器差异性的体现。</p>
+<h3 id="Push-Cache"><a href="#Push-Cache" class="headerlink" title="Push Cache"></a>Push Cache</h3><p>Push Cache（简称：PC）译作“推送缓存”，是属于HTTP&#x2F;2中新增的内容，当前面三种缓存都没有命中时，它才会被使用。它只会Session中存在，一旦Session结束就会被释放，并且缓存时间也是短暂的。通常在Chrome浏览器中只有5分钟的有效期，同时它也并非严格执行HTTP&#x2F;2头的缓存指令。</p>
+<p>如果想进进一步深入了解PC， 推荐阅读文章：<a target="_blank" rel="noopener" href="https://jakearchibald.com/2017/h2-push-tougher-than-i-thought/"><em>HTTP&#x2F;2 push is tougher than I thought</em></a></p>
+<h3 id="总体缓存流程的总结"><a href="#总体缓存流程的总结" class="headerlink" title="总体缓存流程的总结"></a>总体缓存流程的总结</h3><p>如果一个请求在上述所有阶段都没有找到缓存，那么浏览器会正式发送网络请求去获取资源，之后为了提升请求的缓存命中率，会把请求的资源添加到缓存中去，具体来说：</p>
+<ol>
+<li>根据SW中的handler决定是否存入Cache Storage（额外的缓存位置）。SW是由开发者编写的额外的脚本，且缓存位置独立，出现也比较晚，使用还不算广泛。</li>
+<li>MC保存一份资源的引用，以备下次使用。MC是浏览器为了加快读取缓存速度而进行的自身优化行为，不受开发者控制，也不受HTTP协议头的约束，算是一个黑盒。</li>
+<li>根据HTTP头部的相关字段（<code>Cache-Control</code> 、<code>Pragma</code>等）决定是否存入DS。DS也是我们平时最熟悉的一种缓存机制，也叫HTTP Cache（因为不像MC，它遵守HTTP协议头中的字段)。值得一提的是，我们常说的强制缓存，协商缓存，以及<code>Cache-Control</code>等都归于此类。</li>
+</ol>
+<h2 id="按照缓存类型分类"><a href="#按照缓存类型分类" class="headerlink" title="按照缓存类型分类"></a>按照缓存类型分类</h2><p>按照缓存类型进行分类，可以分为强制缓存和协商缓存。但需要注意的是，这两种缓存类型都是属于Disk Cache或者叫做HTTP Cache里的一种。</p>
+<h3 id="强制缓存"><a href="#强制缓存" class="headerlink" title="强制缓存"></a>强制缓存</h3><p>强制缓存是指当客户端请求时，会先访问本地缓存看缓存是否存在且未过期，若缓存中资源有效直接返回，否则请求后端服务器获取最新资源，并在响应后存储到本地缓存中。通过减少不必要的网络请求，强制缓存能够显著提升网页的加载速度及用户体验，是性能优化中最有效的缓存策略之一。因此，考虑到性能优化时，强化缓存通常是首先得优化手段。</p>
+<p>实现强制缓存的主要依靠HTTP响应头中的相关字段，具体包括：</p>
+<ul>
+<li>Expires：指定了一个具体的日期时间作为缓存的过期时间，它是一个绝对的时间 (通常设置为当前时间+缓存时长)。尽管它是一个早期引入的头字段，但在与Cache-Control共存的情况下，后者优先级更高。</li>
+<li>Cache-Control: 用于指定资源缓存的最大有效时间，在该时间范围内，客户端可以直接使用缓存而无需向服务器发送请求。</li>
+</ul>
+<p>Expires字段存在两个主要缺点：</p>
+<ul>
+<li>由于它使用绝对时间，用户可能会将客户端本地的时间进行修改，而导致浏览器判断缓存失效，从而重新请求该资源。此外，即使不考虑人为修改，时差或者误差等因素也可能造成客户端与服务端的时间不一致，进而影响缓存准确性。</li>
+<li>写法太复杂了。表示时间的字符串多个空格，少个字母，都会导致变为非法属性从而设置失效。</li>
+</ul>
+<p>为了解决Expires的不足，在HTTP&#x2F;1.1中引入了 Cache-Control字段，该字段常用值如下(完整的列表可以查看 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control"><em>MDN</em></a>)：</p>
+<ul>
+<li>max-age：设置缓存的最大有效时间，单位为秒，是一个相对时间。</li>
+<li><em>must-revalidate</em>：如果超过了 <em>max-age</em> 的时间，浏览器必须向服务器发送请求，验证资源是否还有效。</li>
+<li><em>no-cache</em>：虽然字面意思是“不要缓存”，但实际上还是要求客户端缓存内容的，只是是否使用这个内容由后续的协商缓存来决定。</li>
+<li><em>no-store</em>：真正意义上的“不要缓存”。所有内容都不走缓存，包括强制缓存和协商缓存。</li>
+<li><em>public</em>：所有的内容都可以被缓存（包括客户端和代理服务器， 如 <em>CDN</em> ）</li>
+<li><em>private</em>：所有的内容只有客户端才可以缓存，代理服务器不能缓存。默认值。</li>
+</ul>
+<p>这些值可以混合使用，例如<code>Cache-control:public, max-age=2592000</code>.在混合使用时，它们的优先级如下图所示：<br><img src="http://cdn.sswfive.xyz/2025-11/251107003355976_1762446835993.png" alt="251107003355976.png"></p>
+<h3 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h3><p>当强制缓存失效时，就需要使用协商缓存，由服务器决定缓存内容是否失效。具体流程为：浏览器先请求本地缓存数据库获取缓存标识，，随后浏览器拿着这个标识和服务器通讯，若资源未发生变化，则服务器返回HTTP状态码304，通知浏览器继续使用缓存，否则返回200状态码及最新资源。</p>
+<p>协商缓存在请求数上和未使用缓存时相同，但如果是304状态码，返回的仅仅是一个状态码而已，并没有实际的文件内容，从而显著减小了网络传输体积。它的优化点主要体现在“响应”上面通过减少响应体体积，来缩短网络传输时间。因此和强制缓存相比提升幅度较小，但总比没有缓存好。</p>
+<p>协商缓存是可以和强制缓存一起用的，作为强制缓存失效后的一种后备方案，在实际项目中也确实一同出现。对比缓存有 <em>2</em> 组字段（不是两个）：</p>
+<ul>
+<li>Last-Modified &amp; If-Modified-Since</li>
+<li>Etag &amp; If-None-Match</li>
+</ul>
+<p><strong>Last-Modified &amp; If-Modified-Since</strong></p>
+<ol>
+<li>服务器通过 <code>Last-Modified</code> 字段告知客户端，资源最后一次被修改的时间。</li>
+<li>浏览器将这个值和资源一起记录在缓存数据库中。</li>
+<li>再次请求相同资源时时，浏览器从自己的缓存中找出“不确定是否过期的”缓存。因此在请求头中将上次的 <code>Last-Modified</code> 的值写入到请求头的 <code>If-Modified-Since</code> 字段</li>
+<li>服务器会将 <code>If-Modified-Since</code> 的值与 <code>Last-Modified</code> 字段进行对比。如果相等，则表示未修改，响应 <em>304</em>；反之，则表示修改了，响应 <em>200</em> 状态码，并返回数据。</li>
+</ol>
+<p>然而，该机制存在一定局限性：</p>
+<ul>
+<li>如果资源更新的速度是秒以下单位，那么该缓存是不能被使用的，因为它的时间单位最低是秒。</li>
+<li>如果文件是通过服务器动态生成的，那么该方法的更新时间永远是生成的时间，尽管文件可能没有变化，所以起不到缓存的作用。</li>
+</ul>
+<p>因此在 <em>HTTP&#x2F;1.1</em> 出现了 ETag和 If-None-Match</p>
+<p><strong>Etag &amp; If-None-Match</strong><br>为了解决上述问题，出现了一组新的字段 <em>Etag</em> 和 <em>If-None-Match</em>。</p>
+<p><em>Etag</em> 存储的是文件的特殊标识（一般都是一个 <em>Hash</em> 值），服务器存储着文件的 <em>Etag</em> 字段。后续流程和 <em>Last-Modified</em> 一致，只是 Last-Modified 字段和它所表示的更新时间改变成了 Etag 字段和它所表示的文件 <em>hash</em>，把 If-Modified-Since 变成了 If-None-Match。浏览器在下一次加载资源向服务器发送请求时，会将上一次返回的 Etag 值放到请求头里的 If-None-Match 里，服务器只需要比较客户端传来的 If-None-Match跟自己服务器上该资源的 ETag 是否一致，就能很好地判断资源相对客户端而言是否被修改过了。如果服务器发现 ETag 匹配不上，那么直接以常规 GET 200回包形式将新的资源（当然也包括了新的 ETag）发给客户端；如果 ETag是一致的，则直接返回 <em>304</em> 告诉客户端直接使用本地缓存即可。</p>
+<p>以下是对协商缓存中两组字段的简要对比：</p>
+<ul>
+<li>精确度<ul>
+<li><blockquote>
+<p><strong>Etag 更精确</strong>：Last-Modified 的时间单位为秒，若文件在1秒内多次更新，Last-Modified 无法准确反映变化；而 Etag 基于文件内容生成哈希值，任何修改都会改变该值，能准确识别内容变化。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>性能<ul>
+<li><blockquote>
+<p><strong>Last-Modified 更高效</strong>：Last-Modified 仅需记录时间戳，服务端开销较小；而 Etag 需通过算法计算哈希值，对服务器性能有一定消耗。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>优先级<ul>
+<li><blockquote>
+<p><strong>Etag 优先级更高</strong>：当两者同时存在时，服务器会优先校验 Etag，仅在 Etag 不一致或缺失时，才使用 Last-Modified 进行判断。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="浏览器的缓存读取规则"><a href="#浏览器的缓存读取规则" class="headerlink" title="浏览器的缓存读取规则"></a>浏览器的缓存读取规则</h2><p>当浏览器要请求资源时：</p>
+<ol>
+<li>从 Service Worker 中获取内容（ 如果设置了 Service Worker ）</li>
+<li>查看 Memory Cache</li>
+<li>查看 Disk Cache。这里又细分：<ul>
+<li><blockquote>
+<p>如果有强制缓存且未失效，则使用强制缓存，不请求服务器。这时的状态码全部是 200</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>如果有强制缓存但已失效，使用协商缓存，比较后确定 304 还是 200</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>发送网络请求，等待网络响应</li>
+<li>把响应内容存入 Disk Cache (如果 <em>HTTP</em> 响应头信息有相应配置的话)</li>
+<li>把响应内容的引用存入 Memory Cache_(无视 <em>HTTP</em> 头信息的配置)</li>
+<li>把响应内容存入 Service Worker的 Cache Storage（ 如果设置了 Service Worker）</li>
+</ol>
+<p>其中针对第 <em>3</em> 步，具体的流程图如下：<br><img src="http://cdn.sswfive.xyz/2025-11/251107011034261_1762449034268.png" alt="251107011034261.png"></p>
+<h2 id="用户行为对浏览器缓存影响"><a href="#用户行为对浏览器缓存影响" class="headerlink" title="用户行为对浏览器缓存影响"></a>用户行为对浏览器缓存影响</h2><p>在理解了缓存的基本原理后，还需要关注用户的不同操作会出发浏览器采用不同的缓存策略。主要可分为以下三种情况：</p>
+<ol>
+<li>正常打开网页（地址栏输入URL并回车）<ul>
+<li>浏览器会优先查找Disk Cache。如果存在有效缓存，则直接使用；否则向服务器发送网络请求。</li>
+</ul>
+</li>
+<li>普通刷新（F5 或者工具栏刷新按钮）<ul>
+<li>由于页面标签页并未关闭，Memory Cache此时是可用的，因此浏览器会优先使用它（如果命中），其次才会检查Disk Cache。</li>
+</ul>
+</li>
+<li>强制刷新（<code>Ctrl + F5</code> 或 <code>Ctrl + Shift + R</code>）<ul>
+<li>浏览器不使用缓存。因此发送请求头部均带有 <code>Cache-Control: no-cache</code> 和 <code>Pragma: no-cache</code>（为了兼容 HTTP&#x2F;1.0），服务器收到后则会返回 200 状态码及最新的内容。</li>
+</ul>
+</li>
+</ol>
+<h2 id="默认请求与F5与Ctrl-F5刷新"><a href="#默认请求与F5与Ctrl-F5刷新" class="headerlink" title="默认请求与F5与Ctrl + F5刷新"></a>默认请求与F5与Ctrl + F5刷新</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>行为</th>
+<th>缓存影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>普通加载（直接输入 URL &#x2F; 点击链接 &#x2F; 从书签打开）</strong></td>
+<td>正常加载流程</td>
+<td><strong>优先使用强缓存（Memory → Disk）</strong></td>
+</tr>
+<tr>
+<td><strong>刷新（F5）</strong></td>
+<td>“软刷新”，保留部分缓存</td>
+<td><strong>跳过 Memory Cache，但会使用 Disk Cache；仍可能触发协商缓存（304）</strong></td>
+</tr>
+<tr>
+<td><strong>强制刷新（Ctrl + F5 &#x2F; Cmd + Shift + R）</strong></td>
+<td>“硬刷新”，重新拉取</td>
+<td><strong>跳过所有缓存（Memory + Disk），直接向服务器请求新资源（200 from network）</strong></td>
+</tr>
+</tbody></table>
+<h2 id="HTTP缓存协议"><a href="#HTTP缓存协议" class="headerlink" title="HTTP缓存协议"></a>HTTP缓存协议</h2><h3 id="来自服务器的缓存指令"><a href="#来自服务器的缓存指令" class="headerlink" title="来自服务器的缓存指令"></a>来自服务器的缓存指令</h3><p>当客户端发出一个<code>get</code>请求到服务器，服务器可能有以下的内心活动：「你请求的这个资源，我很少会改动它，干脆你把它缓存起来吧，以后就不要来烦我了」</p>
+<p>为了表达这个美好的愿望，服务器在<strong>响应头</strong>中加入了以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: max-age=3600</span><br><span class="line">ETag: W/&quot;121-171ca289ebf&quot;</span><br><span class="line">Date: Thu, 30 Apr 2020 12:39:56 GMT</span><br><span class="line">Last-Modified: Thu, 30 Apr 2020 08:16:31 GMT</span><br></pre></td></tr></table></figure>
+
+<p>这个响应头表达了下面的信息：</p>
+<ul>
+<li><code>Cache-Control: max-age=3600</code>，我希望你把这个资源缓存起来，缓存时间是3600秒（1小时）</li>
+<li><code>ETag: W/&quot;121-171ca289ebf&quot;</code>，这个资源的编号是<code>W/&quot;121-171ca289ebf&quot;</code></li>
+<li><code>Date: Thu, 30 Apr 2020 12:39:56 GMT</code>，我给你响应这个资源的服务器时间是格林威治时间<code>2020-04-30 12:39:56</code></li>
+<li><code>Last-Modified: Thu, 30 Apr 2020 08:16:31 GMT</code>，这个资源的上一次修改时间是格林威治时间<code>2020-04-30 08:16:31</code></li>
+</ul>
+<p>这个美好的缓存愿望，就这样通过响应头传递给客户端了，如果客户端是其他应用程序，可能并不会理会服务器的愿望，也就是说，可能根本不会缓存任何东西。但是凑巧客户端是一个浏览器，它和服务器一直以来都是相亲相爱的小伙伴，当它看到服务器的这个响应头表达的美好愿望后，立即忙起来：</p>
+<ul>
+<li>浏览器把这次请求得到的响应体缓存到本地文件中</li>
+<li>浏览器标记这次请求的请求方法和请求路径</li>
+<li>浏览器标记这次缓存的时间是3600秒</li>
+<li>浏览器记录服务器的响应时间是格林威治时间<code>2020-04-30 12:39:56</code></li>
+<li>浏览器记录服务器给予的资源编号<code>W/&quot;121-171ca289ebf&quot;</code></li>
+<li>浏览器记录资源的上一次修改时间是格林威治时间<code>2020-04-30 08:16:31</code></li>
+</ul>
+<h3 id="来自客户端的缓存指令"><a href="#来自客户端的缓存指令" class="headerlink" title="来自客户端的缓存指令"></a>来自客户端的缓存指令</h3><p>当客户端收拾好行李，准备再次请求<code>GET /index.js</code>时，它突然想起了一件事：我需要的东西在不在缓存里呢？此时，客户端会到缓存中去寻找是否有缓存的资源，寻找的过程如下：</p>
+<ol>
+<li>缓存中是否有匹配的请求方法和路径？</li>
+<li>如果有，该缓存资源是否还有效呢？</li>
+</ol>
+<p>以上两个验证会导致浏览器产生不同的行为，要验证是否有匹配的缓存非常简单，只需要验证当前的请求方法<code>GET</code>和当前的请求路径<code>/index.js</code>是否有对应的缓存存在即可，如果没有，就直接请求服务器，就和第一次请求服务器时一样，无需赘述。</p>
+<p>关键在于如何验证缓存是否有效？<br>非常简单，就是把<code>max-age + Date</code>，得到一个过期时间，看看这个过期时间是否大于当前时间，如果是，则表示缓存还没有过期，仍然有效，如果不是，则表示缓存失效。</p>
+<h3 id="完整流程图"><a href="#完整流程图" class="headerlink" title="完整流程图"></a>完整流程图</h3><p><img src="http://cdn.sswfive.xyz/2025-11/251107013632544_1762450592722.png" alt="251107013632544.png"></p>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://sswfive.xyz/2025/11/06/tech/others/251116-browser-cache/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://sswfive.xyz/2025/11/06/tech/others/251116-browser-cache/"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/01/04/tech/python/260104-py-performace-analysis-and-practice/">Python开发者必知的性能数据与实用技巧</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/10/26/thinking/251026-liurun-speech-2025/">阅后记：刘润2025年度演讲《进化的力量》</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">BluesSen</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98"><span class="toc-text">什么是浏览器缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-text">浏览器缓存的基本原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E7%85%A7%E7%BC%93%E5%AD%98%E4%BD%8D%E7%BD%AE%E5%88%86%E7%B1%BB"><span class="toc-text">按照缓存位置分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-Worker"><span class="toc-text">Service Worker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Memory-Cache"><span class="toc-text">Memory Cache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Disk-Cache"><span class="toc-text">Disk Cache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Push-Cache"><span class="toc-text">Push Cache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E7%BC%93%E5%AD%98%E6%B5%81%E7%A8%8B%E7%9A%84%E6%80%BB%E7%BB%93"><span class="toc-text">总体缓存流程的总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E7%85%A7%E7%BC%93%E5%AD%98%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB"><span class="toc-text">按照缓存类型分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98"><span class="toc-text">强制缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98"><span class="toc-text">协商缓存</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BC%93%E5%AD%98%E8%AF%BB%E5%8F%96%E8%A7%84%E5%88%99"><span class="toc-text">浏览器的缓存读取规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E5%AF%B9%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E5%BD%B1%E5%93%8D"><span class="toc-text">用户行为对浏览器缓存影响</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E8%AF%B7%E6%B1%82%E4%B8%8EF5%E4%B8%8ECtrl-F5%E5%88%B7%E6%96%B0"><span class="toc-text">默认请求与F5与Ctrl + F5刷新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP%E7%BC%93%E5%AD%98%E5%8D%8F%E8%AE%AE"><span class="toc-text">HTTP缓存协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A5%E8%87%AA%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%BC%93%E5%AD%98%E6%8C%87%E4%BB%A4"><span class="toc-text">来自服务器的缓存指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A5%E8%87%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E7%BC%93%E5%AD%98%E6%8C%87%E4%BB%A4"><span class="toc-text">来自客户端的缓存指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-text">完整流程图</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  const el = document.getElementById('waline_container');
+  util.viewportLazyload(el, load_waline, true);
+
+  function load_waline(){
+    if (!el) return;
+
+    utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+    utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+
+    const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+    const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+      el: '#waline_container',
+      path: path,
+      
+    }));
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
