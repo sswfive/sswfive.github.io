@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>AInLife</title>
   
-  <subtitle>BluesSen Blog</subtitle>
+  
   <link href="http://sswfive.xyz/atom.xml" rel="self"/>
   
   <link href="http://sswfive.xyz/"/>
@@ -10,7 +10,7 @@
   <id>http://sswfive.xyz/</id>
   
   <author>
-    <name>BluesSen</name>
+    <name>sswfive</name>
     
   </author>
   
