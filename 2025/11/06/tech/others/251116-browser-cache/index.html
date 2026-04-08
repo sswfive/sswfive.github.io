@@ -17,14 +17,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>从前端视角理解浏览器和HTTP的缓存机制 - AInLife</title>
+  <title>从前端视角理解浏览器和HTTP的缓存机制 - ssw5ive</title>
 
   
     <meta name="description" content="什么是浏览器缓存我们都知道，一个典型的Web应用请求-响应流程通常如下所示：   客户端 -&gt; 发起HTTP请求 -&gt; 服务器端接收请求 -&gt;查询数据库 -&gt; 执行业务逻辑处理 -&gt; 构造HTTP响应 -&gt; 返回客户端    在这一链路中，性能瓶颈往往集中在两个关键阶段：网络请求阶段和服务端计算阶段。  网络请求阶段：主要包括客户端发起的HTTP请求以及服务端对">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从前端视角理解浏览器和HTTP的缓存机制">
 <meta property="og:url" content="http://sswfive.xyz/2025/11/06/tech/others/251116-browser-cache/">
-<meta property="og:site_name" content="AInLife">
+<meta property="og:site_name" content="ssw5ive">
 <meta property="og:description" content="什么是浏览器缓存我们都知道，一个典型的Web应用请求-响应流程通常如下所示：   客户端 -&gt; 发起HTTP请求 -&gt; 服务器端接收请求 -&gt;查询数据库 -&gt; 执行业务逻辑处理 -&gt; 构造HTTP响应 -&gt; 返回客户端    在这一链路中，性能瓶颈往往集中在两个关键阶段：网络请求阶段和服务端计算阶段。  网络请求阶段：主要包括客户端发起的HTTP请求以及服务端对">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://cdn.sswfive.xyz/2025-11/1762450691248_1762450691252.png">
@@ -45,7 +45,7 @@
 
   <!-- feed -->
   
-    <link rel="alternate" href="/atom.xml" title="AInLife" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
   
 
   <link rel="stylesheet" href="/css/main.css?v=1.33.1">
@@ -65,7 +65,7 @@
 <div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
-<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">AInLife</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 一念净心花开遍世界</div></a></div></header>
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">ssw5ive</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 一念净心花开遍世界</div></a></div></header>
 
 <div class="nav-area">
 

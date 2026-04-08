@@ -17,14 +17,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>Docker镜像无法拉取问题的解决方案 - AInLife</title>
+  <title>Docker镜像无法拉取问题的解决方案 - ssw5ive</title>
 
   
     <meta name="description" content="自2024年5月底6月初，由于某些原因，突然间在国内就无法正常访问和拉取Docker镜像源，鉴于笔者目前从事云原生ModelOps工作，几乎每天都要和K8S、Docker打交道，镜像无法拉取一直让人很苦恼和无奈，所以在日常工作和探索中，总结汇总了如下可以拉去的官方镜像源的解决方案，由于之前都是零零散散的记录在不同的笔记中，一直想找个时间系统的整理汇总一下，拖了很久，终于在这个周末挤出了一些时间进行">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker镜像无法拉取问题的解决方案">
 <meta property="og:url" content="http://sswfive.xyz/2025/03/10/tech/docker/01-docker-image-pull-failed/">
-<meta property="og:site_name" content="AInLife">
+<meta property="og:site_name" content="ssw5ive">
 <meta property="og:description" content="自2024年5月底6月初，由于某些原因，突然间在国内就无法正常访问和拉取Docker镜像源，鉴于笔者目前从事云原生ModelOps工作，几乎每天都要和K8S、Docker打交道，镜像无法拉取一直让人很苦恼和无奈，所以在日常工作和探索中，总结汇总了如下可以拉去的官方镜像源的解决方案，由于之前都是零零散散的记录在不同的笔记中，一直想找个时间系统的整理汇总一下，拖了很久，终于在这个周末挤出了一些时间进行">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://cdn.sswfive.xyz/2025-09/12-image_pull_error_1758207644912.jpg">
@@ -42,7 +42,7 @@
 
   <!-- feed -->
   
-    <link rel="alternate" href="/atom.xml" title="AInLife" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
   
 
   <link rel="stylesheet" href="/css/main.css?v=1.33.1">
@@ -62,7 +62,7 @@
 <div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
-<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">AInLife</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 一念净心花开遍世界</div></a></div></header>
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">ssw5ive</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 一念净心花开遍世界</div></a></div></header>
 
 <div class="nav-area">
 
