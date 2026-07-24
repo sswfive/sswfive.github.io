@@ -23,7 +23,7 @@
     <meta name="description" content="本周读到了一篇文章《Python has had async for 10 years – why isn’t it more popular?》，深有感触，文章提出了一个值得深思的问题：Python 早在 2015 年就引入了 async 和 await 关键字，距今已近十年，为什么异步编程在 Python 社区中的普及仍不及预期？ 这篇文章中指出了三大困境，也让我这个从Python2.7时代走">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python异步编程十年沉浮：且看3.14版本重要更新">
-<meta property="og:url" content="http://sswfive.xyz/2025/09/08/py-async-challenges/">
+<meta property="og:url" content="https://sswfive.xyz/2025/09/08/py-async-challenges/">
 <meta property="og:site_name" content="ssw5ive">
 <meta property="og:description" content="本周读到了一篇文章《Python has had async for 10 years – why isn’t it more popular?》，深有感触，文章提出了一个值得深思的问题：Python 早在 2015 年就引入了 async 和 await 关键字，距今已近十年，为什么异步编程在 Python 社区中的普及仍不及预期？ 这篇文章中指出了三大困境，也让我这个从Python2.7时代走">
 <meta property="og:locale" content="zh_CN">
@@ -58,7 +58,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2025-09-08T08:08:59+08:00","dateModified":"2026-04-26T17:28:57+08:00","datePublished":"2025-09-08T08:08:59+08:00","description":"","headline":"Python异步编程十年沉浮：且看3.14版本重要更新","mainEntityOfPage":{"@type":"WebPage","@id":"http://sswfive.xyz/2025/09/08/py-async-challenges/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"http://sswfive.xyz/2025/09/08/py-async-challenges/","keywords":"python技术实践, 异步编程","image":[]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2025-09-08T08:08:59+08:00","dateModified":"2026-04-26T17:28:57+08:00","datePublished":"2025-09-08T08:08:59+08:00","description":"","headline":"Python异步编程十年沉浮：且看3.14版本重要更新","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2025/09/08/py-async-challenges/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2025/09/08/py-async-challenges/","keywords":"python技术实践, 异步编程","image":[]}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -330,11 +330,11 @@
     <section id="share">
       <div class="header"><span>分享文章</span></div>
       <div class="body">
-        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://sswfive.xyz/2025/09/08/py-async-challenges/" /></div>
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://sswfive.xyz/2025/09/08/py-async-challenges/" /></div>
         <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
         
         <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://sswfive.xyz/2025/09/08/py-async-challenges/"/>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://sswfive.xyz/2025/09/08/py-async-challenges/"/>
         </div>
         
       </div>
@@ -383,7 +383,7 @@
 
 <script type="text/javascript">
   window.canonical = {"closeEnable":true,"closeText":"关闭提示","originalHost":null,"officialHosts":["localhost"],"encoded":""};
-  window.canonical["param"] = {"permalink":"http://sswfive.xyz/2025/09/08/py-async-challenges/","checklink":"/js/plugins/video.js"};
+  window.canonical["param"] = {"permalink":"https://sswfive.xyz/2025/09/08/py-async-challenges/","checklink":"/js/plugins/video.js"};
   // Fix: Ensure page is at the correct top position on data load
   if (history.scrollRestoration) {
     history.scrollRestoration = 'auto';
@@ -1254,7 +1254,7 @@
 </script>
 <script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
   ctx.fancybox = {
-    selector: `.timenode p>img`,
+    selector: `.timenode p>img, .md-text img`,
     css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
     js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
   };
@@ -1314,7 +1314,62 @@
     }
   }, 'swiper');
 </script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script defer type="text/javascript" src="https://gcore.jsdelivr.net/npm/mermaid@v9/dist/mermaid.min.js"></script>
 <script>
+  utils.initPlugin(() => {
+    const els = document.querySelectorAll('.mermaid');
+    if (els.length > 0) {
+      const mermaid_config = {
+        startOnLoad: false,
+        theme:
+          "auto" == "auto" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "neutral",
+        logLevel: 3,
+        themeVariables: {
+          darkMode: true
+        },
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          curve: "linear"
+        },
+        gantt: {
+          axisFormat: "%Y/%m/%d"
+        },
+        sequence: {
+          actorMargin: 50
+        }
+      }
+      mermaid.initialize(mermaid_config);
+      mermaid.run();
+    }
+  }, 'mermaid');
+</script><script>
   utils.initPlugin(() => {
     const codeElements = document.querySelectorAll('.code');
     if (codeElements.length > 0) {

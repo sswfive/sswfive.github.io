@@ -23,7 +23,7 @@
     <meta name="description" content="在编程世界中，高效的内存管理是保证程序稳定运行的关键之一。然而Python作为一门高级编程语言，其自动垃圾回收（Garbage Collection, GC）常常被Pythoner们当做理所当然的黑盒，可一旦线上出现内存飙升，GC就成了最熟悉的陌生人。今天就来拆开这个黑盒，一窥究竟，看看Python是如何优化的帮我们进行垃圾回收的。 Python的垃圾回收主要依赖于引用计数，并在此基础上引入标记-">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从计数到分代一步步窥探Python的垃圾回收机制">
-<meta property="og:url" content="http://sswfive.xyz/2025/08/26/pygc/">
+<meta property="og:url" content="https://sswfive.xyz/2025/08/26/pygc/">
 <meta property="og:site_name" content="ssw5ive">
 <meta property="og:description" content="在编程世界中，高效的内存管理是保证程序稳定运行的关键之一。然而Python作为一门高级编程语言，其自动垃圾回收（Garbage Collection, GC）常常被Pythoner们当做理所当然的黑盒，可一旦线上出现内存飙升，GC就成了最熟悉的陌生人。今天就来拆开这个黑盒，一窥究竟，看看Python是如何优化的帮我们进行垃圾回收的。 Python的垃圾回收主要依赖于引用计数，并在此基础上引入标记-">
 <meta property="og:locale" content="zh_CN">
@@ -57,7 +57,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2025-08-26T16:16:18+08:00","dateModified":"2026-04-26T17:28:57+08:00","datePublished":"2025-08-26T16:16:18+08:00","description":"","headline":"从计数到分代一步步窥探Python的垃圾回收机制","mainEntityOfPage":{"@type":"WebPage","@id":"http://sswfive.xyz/2025/08/26/pygc/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"http://sswfive.xyz/2025/08/26/pygc/","keywords":"gc","image":[]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2025-08-26T16:16:18+08:00","dateModified":"2026-04-26T17:28:57+08:00","datePublished":"2025-08-26T16:16:18+08:00","description":"","headline":"从计数到分代一步步窥探Python的垃圾回收机制","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2025/08/26/pygc/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2025/08/26/pygc/","keywords":"gc","image":[]}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -204,11 +204,11 @@
     <section id="share">
       <div class="header"><span>分享文章</span></div>
       <div class="body">
-        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="http://sswfive.xyz/2025/08/26/pygc/" /></div>
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://sswfive.xyz/2025/08/26/pygc/" /></div>
         <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img  src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
         
         <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://sswfive.xyz/2025/08/26/pygc/"/>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://sswfive.xyz/2025/08/26/pygc/"/>
         </div>
         
       </div>
@@ -257,7 +257,7 @@
 
 <script type="text/javascript">
   window.canonical = {"closeEnable":true,"closeText":"关闭提示","originalHost":null,"officialHosts":["localhost"],"encoded":""};
-  window.canonical["param"] = {"permalink":"http://sswfive.xyz/2025/08/26/pygc/","checklink":"/js/plugins/video.js"};
+  window.canonical["param"] = {"permalink":"https://sswfive.xyz/2025/08/26/pygc/","checklink":"/js/plugins/video.js"};
   // Fix: Ensure page is at the correct top position on data load
   if (history.scrollRestoration) {
     history.scrollRestoration = 'auto';
@@ -1128,7 +1128,7 @@
 </script>
 <script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
   ctx.fancybox = {
-    selector: `.timenode p>img`,
+    selector: `.timenode p>img, .md-text img`,
     css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
     js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
   };
@@ -1188,7 +1188,62 @@
     }
   }, 'swiper');
 </script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script defer type="text/javascript" src="https://gcore.jsdelivr.net/npm/mermaid@v9/dist/mermaid.min.js"></script>
 <script>
+  utils.initPlugin(() => {
+    const els = document.querySelectorAll('.mermaid');
+    if (els.length > 0) {
+      const mermaid_config = {
+        startOnLoad: false,
+        theme:
+          "auto" == "auto" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "neutral",
+        logLevel: 3,
+        themeVariables: {
+          darkMode: true
+        },
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          curve: "linear"
+        },
+        gantt: {
+          axisFormat: "%Y/%m/%d"
+        },
+        sequence: {
+          actorMargin: 50
+        }
+      }
+      mermaid.initialize(mermaid_config);
+      mermaid.run();
+    }
+  }, 'mermaid');
+</script><script>
   utils.initPlugin(() => {
     const codeElements = document.querySelectorAll('.code');
     if (codeElements.length > 0) {

@@ -23,7 +23,7 @@
     <meta name="description" content="一念净心花开遍世界">
 <meta property="og:type" content="website">
 <meta property="og:title" content="归档">
-<meta property="og:url" content="http://sswfive.xyz/archives/2024/03/">
+<meta property="og:url" content="https://sswfive.xyz/archives/2024/03/">
 <meta property="og:site_name" content="ssw5ive">
 <meta property="og:description" content="一念净心花开遍世界">
 <meta property="og:locale" content="zh_CN">
@@ -54,7 +54,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"http://sswfive.xyz","author":{"@type":"Person","name":"sswfive","sameAs":[]},"name":"ssw5ive","description":"一念净心花开遍世界","url":"http://sswfive.xyz"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://sswfive.xyz","author":{"@type":"Person","name":"sswfive","sameAs":[]},"name":"ssw5ive","description":"一念净心花开遍世界","url":"https://sswfive.xyz"}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -966,7 +966,7 @@
 </script>
 <script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
   ctx.fancybox = {
-    selector: `.timenode p>img`,
+    selector: `.timenode p>img, .md-text img`,
     css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
     js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
   };
@@ -1026,7 +1026,62 @@
     }
   }, 'swiper');
 </script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script defer type="text/javascript" src="https://gcore.jsdelivr.net/npm/mermaid@v9/dist/mermaid.min.js"></script>
 <script>
+  utils.initPlugin(() => {
+    const els = document.querySelectorAll('.mermaid');
+    if (els.length > 0) {
+      const mermaid_config = {
+        startOnLoad: false,
+        theme:
+          "auto" == "auto" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "neutral",
+        logLevel: 3,
+        themeVariables: {
+          darkMode: true
+        },
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          curve: "linear"
+        },
+        gantt: {
+          axisFormat: "%Y/%m/%d"
+        },
+        sequence: {
+          actorMargin: 50
+        }
+      }
+      mermaid.initialize(mermaid_config);
+      mermaid.run();
+    }
+  }, 'mermaid');
+</script><script>
   utils.initPlugin(() => {
     const codeElements = document.querySelectorAll('.code');
     if (codeElements.length > 0) {
