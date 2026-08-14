@@ -1,0 +1,2129 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.40.0" theme-name="Stellar" theme-version="1.40.0">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin><link rel="preconnect" href="https://unpkg.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>AI Agent 系统设计（一）：意图识别 - ssw5ive</title>
+
+  <meta name="description" content="写在前面最近在做 Agent 相关的事情，踩了不少坑。其中让我印象最深的，就是意图识别。 说实话，刚开始做的时候，我觉得意图识别不就是调用一次大模型，让它判断用户想干嘛嘛。结果真正跑起来才发现，这玩意儿远没有想象中那么简单。用户的输入千奇百怪——病句、代词、缩写、黑话，想到什么说什么。你要是不处理好这一步，后面所有的流程都是在沙子上盖楼。 这篇文章是”AI Agent 系统设计”系列的第一篇，我想">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Agent 系统设计（一）：意图识别">
+<meta property="og:url" content="https://sswfive.xyz/2026/08/14/agent-intent-recognition/">
+<meta property="og:site_name" content="AI Agent 系统设计（一）：意图识别">
+<meta property="og:description" content="写在前面最近在做 Agent 相关的事情，踩了不少坑。其中让我印象最深的，就是意图识别。 说实话，刚开始做的时候，我觉得意图识别不就是调用一次大模型，让它判断用户想干嘛嘛。结果真正跑起来才发现，这玩意儿远没有想象中那么简单。用户的输入千奇百怪——病句、代词、缩写、黑话，想到什么说什么。你要是不处理好这一步，后面所有的流程都是在沙子上盖楼。 这篇文章是”AI Agent 系统设计”系列的第一篇，我想">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-14T14:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-14T15:30:49.000Z">
+<meta property="article:author" content="sswfive">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="大模型">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="AI Agent 系统设计（一）：意图识别">
+  
+  
+  <meta name="keywords" content="AI Agent,大模型">
+
+  <!-- feed -->
+  
+    
+
+    
+      
+        <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
+      
+    
+  
+
+  <link rel="preload" href="/css/main.css?v=1.40.0" as="style">
+  <link rel="stylesheet" href="/css/main.css?v=1.40.0">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2026-08-14T22:00:00+08:00","dateModified":"2026-08-14T23:30:49+08:00","datePublished":"2026-08-14T22:00:00+08:00","description":"","headline":"AI Agent 系统设计（一）：意图识别","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2026/08/14/agent-intent-recognition/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2026/08/14/agent-intent-recognition/","keywords":"AI Agent, 大模型","image":[]}</script>
+  <style>
+  /* 中文排版优化 */
+  .md-text {
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+  .md-text p {
+    margin-bottom: 1em;
+  }
+  /* 标题间距优化 */
+  .md-text h2 {
+    margin-top: 2em;
+    margin-bottom: 0.8em;
+  }
+  .md-text h3 {
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+  }
+  /* 代码块优化 */
+  .md-text pre {
+    border-radius: 8px;
+  }
+  /* 行内代码优化 */
+  .md-text code {
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+  }
+  /* 引用块优化 */
+  .md-text blockquote {
+    border-radius: 8px;
+  }
+</style>
+
+</head>
+<body><div id="l_cover"></div><div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left leftbar-card"><div class="sidebg"></div><div class="leftbar-container">
+
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">ssw5ive</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 一念净心花开遍世界</div></a></div></header>
+
+
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<div class="widgets">
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="leftbar-active-icon-grad" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item active themed" style="--item-grad:url(#menu-grad-post);--item-theme:#1BCDFC" title="文章" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>文章</span><span class="active-dot"></span>
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-post" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+</a><a class="nav-item themed" style="--item-grad:url(#menu-grad-notes);--item-theme:#3DC550" title="笔记" href="/notes/"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>笔记</span>
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-notes" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+</a><a class="nav-item themed" style="--item-grad:url(#menu-grad-friends);--item-theme:#FA6400" title="咖啡" href="/friends/"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.25 11.88c-.01.177.015.39.065.818l.401 3.428A5.515 5.515 0 0 0 8.193 21h3.614a5.52 5.52 0 0 0 5.028-3.25H19a3.75 3.75 0 1 0 0-7.5h-2.279a2 2 0 0 0-.618-.22c-.174-.03-.39-.03-.82-.03H4.717c-.43 0-.645 0-.819.03a2 2 0 0 0-1.646 1.85m15.487-.13q.008.065.012.13c.01.177-.014.39-.064.818l-.401 3.428l-.016.124H19a2.25 2.25 0 0 0 0-4.5z"/><path d="M10.53 1.47a.75.75 0 0 1 0 1.06a.666.666 0 0 0 0 .94a2.164 2.164 0 0 1 0 3.06a.75.75 0 0 1-1.06-1.06c.26-.26.26-.68 0-.94a2.164 2.164 0 0 1 0-3.06a.75.75 0 0 1 1.06 0m-4.5 1.5a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.116.116A.75.75 0 0 1 4.47 6.97l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0m9.5 0a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.117.116a.75.75 0 1 1-1.06-1.06l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0" opacity=".5"/></g></svg><span>咖啡</span>
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-friends" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+</a></nav>
+</div>
+
+
+<widget class="widget-wrapper slide-up recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/06/30/agent-intent-recognition/"><span class="title">Agent 开发手记（一）：意图识别</span></a><a class="item title" href="/2026/08/14/agent-intent-recognition/"><span class="title">AI Agent 系统设计（一）：意图识别</span></a><a class="item title" href="/2023/01/10/how-to-focus/"><span class="title">有舍有得：个人战略上的聚焦和放弃</span></a><a class="item title" href="/2026/05/11/prompt-engineering-guide/"><span class="title">提示词实践笔记：系统提示词和用户提示词</span></a><a class="item title" href="/2025/04/02/mac-usage-summary/"><span class="title">Mac使用配置与常用快捷键</span></a><a class="item title" href="/2025/03/20/git-commit-lint/"><span class="title">Git的约定式提交规范</span></a><a class="item title" href="/2025/09/27/my-usage-pc-tools/"><span class="title">这些年：我所有用的工具整理</span></a><a class="item title" href="/2026/05/05/find-yourself/"><span class="title">AI洪流之中，停下脚步去寻找自我</span></a><a class="item title" href="/2025/04/01/new-tools/"><span class="title">旧去新来：我的新生产力工具</span></a><a class="item title" href="/2025/09/19/terminal-alacritty/"><span class="title">效率工具：我将终端工具从iTerm2迁移到了Alacritty</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></a><a class="social" href="https:&#x2F;&#x2F;x.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a><a class="social" href="&#x2F;atom.xml" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.462v4.003c6.988 0 12.65 5.646 12.65 12.618H18.33c0-9.69-7.93-17.621-17.621-17.621H1.677zM1.677.014v4.005C13.486 4.019 23 13.527 23 25.339h4.005C27.005 11.336 15.677.014 1.677.014z"/></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+
+<div class="article-banner-wrap slide-up"><div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/LLM%E4%B8%8EAI%E5%BA%94%E7%94%A8/">LLM与AI应用</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-08-14T14:00:00.000Z">2026-08-14</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-14T15:30:49.000Z">2026-08-14</time></span></div>
+</div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>AI Agent 系统设计（一）：意图识别</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div></div>
+<article class="md-text content slide-up"><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>最近在做 Agent 相关的事情，踩了不少坑。其中让我印象最深的，就是<strong>意图识别</strong>。</p>
+<p>说实话，刚开始做的时候，我觉得意图识别不就是调用一次大模型，让它判断用户想干嘛嘛。结果真正跑起来才发现，这玩意儿远没有想象中那么简单。用户的输入千奇百怪——病句、代词、缩写、黑话，想到什么说什么。你要是不处理好这一步，后面所有的流程都是在沙子上盖楼。</p>
+<p>这篇文章是”AI Agent 系统设计”系列的第一篇，我想把自己在意图识别上的实践和思考整理下来。后续会陆续聊规划执行、上下文管理、工具调用等话题。</p>
+<hr>
+<h2 id="从一个让我头疼的场景说起"><a href="#从一个让我头疼的场景说起" class="headerlink" title="从一个让我头疼的场景说起"></a>从一个让我头疼的场景说起</h2><p>前阵子遇到一个典型的 case。用户在聊了一轮云服务的话题后，突然来了一句：</p>
+<blockquote>
+<p>“帮我找个更靠谱的”</p>
+</blockquote>
+<p>就这么一句话。缺主语、缺宾语，”靠谱”还是个主观判断词。Agent 该怎么理解？是找更靠谱的云服务商？还是更靠谱的技术方案？还是更靠谱的部署架构？</p>
+<p>我当时的第一反应是：这有啥难的，让大模型推理一下不就行了。结果发现，大模型确实能猜，但猜对猜错全看运气。而且更麻烦的是，这种模糊输入不是个例，用户说话就是这么随意。</p>
+<blockquote>
+<p>意图识别不是给用户输入贴个标签就完事了。它决定了三件事：</p>
+</blockquote>
+<p><strong>加载哪套 Prompt &#x2F; 业务规范。</strong> 技术选型和架构设计的思考过程完全不同——技术选型要考虑业务场景、性能要求、团队技术栈、成本预算、运维能力；架构设计要看现有系统瓶颈、数据量级、可用性要求、扩展性需求。两个流程的 Prompt &#x2F; Spec 完全不一样，意图识别错了，后面加载的业务规范就是错的。</p>
+<p><strong>往上下文窗口里塞什么内容。</strong> 不同意图需要的上下文不一样。技术选型重点放候选方案对比、社区活跃度、性能基准测试；架构设计重点放现有系统拓扑、流量模型、故障历史。在架构设计场景里塞一堆候选方案的社区 star 数，就是浪费上下文窗口。</p>
+<p><strong>调用哪个工具、进入哪个业务流程。</strong> 技术选型调方案检索工具，架构设计调系统拓扑分析工具，性能优化调压测工具。意图识别错了，工具调用大概率也错，或者大模型根本选不出合适的工具。最极端的情况下，意图识别之后会分发到不同的子 Agent 上，子 Agent 内部还可以进一步做子意图识别和分发。</p>
+<p>方向不对，后面做得再好也是白费功夫。</p>
+<hr>
+<h2 id="用户输入能有多乱"><a href="#用户输入能有多乱" class="headerlink" title="用户输入能有多乱"></a>用户输入能有多乱</h2><p>在说怎么做之前，先感受一下真实的用户输入：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>代词指代</td>
+<td>“刚才那个方案可行吗？”</td>
+</tr>
+<tr>
+<td>说话不完整</td>
+<td>“成功率有多高？”</td>
+</tr>
+<tr>
+<td>口语化 &#x2F; 病句</td>
+<td>“不对不对，我说的是另外那个”</td>
+</tr>
+<tr>
+<td>黑话 &#x2F; 缩写</td>
+<td>“K8s &#x2F; Kubernetes &#x2F; 容器编排”</td>
+</tr>
+<tr>
+<td>主观判断</td>
+<td>“哪个更稳定？”</td>
+</tr>
+<tr>
+<td>依赖实时信息</td>
+<td>“目前哪家响应最快？”</td>
+</tr>
+</tbody></table>
+<p>这些问题不是调用一次大模型就能解决的。你得先做一步<strong>用户输入规范化</strong>，把用户的口语化表达整理成 Agent 能处理的结构化信息。</p>
+<hr>
+<h2 id="用户输入规范化"><a href="#用户输入规范化" class="headerlink" title="用户输入规范化"></a>用户输入规范化</h2><p>这一步我一开始没做，直接跳到了意图识别。结果发现 Agent 经常”听不懂”用户在说什么，尤其是涉及代词和省略句的时候。</p>
+<p>后来我加了这一步，效果好了很多。它的职责很明确：</p>
+<p><strong>能做的：</strong></p>
+<ul>
+<li>指代消解（”那个方案” → 具体是哪个方案）</li>
+<li>省略句补全（补主语、宾语）</li>
+<li>病句修正</li>
+<li>术语标准化</li>
+<li>多义词消歧</li>
+</ul>
+<p><strong>不能做的：</strong></p>
+<ul>
+<li>直接回答用户问题（这个最容易犯）</li>
+<li>执行工具</li>
+<li>做最终推荐</li>
+<li>自行补充事实</li>
+</ul>
+<blockquote>
+<p>我之前犯过一个错误：没有在 Prompt 里约束好职责边界，结果大模型”过于自主”，一股脑把输入规范化和意图识别全干了，甚至直接给了答案。所以 Prompt 里一定要明确说清楚：这一步只做规范化，不做别的。</p>
+</blockquote>
+<h3 id="处理时机"><a href="#处理时机" class="headerlink" title="处理时机"></a>处理时机</h3><p>输入规范化不是一步到位的，我把它分成了两个阶段：</p>
+<p><strong>初步处理</strong>：在意图识别之前，处理大部分输入。代词消解、病句修正这类工作在这一步完成。</p>
+<p><strong>深度处理</strong>：在 ReAct 循环中，处理那些依赖上下文的输入。比如”更靠谱”这种主观判断词，得结合具体场景才能理解它到底在说什么。</p>
+<h3 id="几个实用技巧"><a href="#几个实用技巧" class="headerlink" title="几个实用技巧"></a>几个实用技巧</h3><p><strong>1. 命名很重要</strong></p>
+<p>这个是我后来才意识到的。Agent 输出的时候，如果输出”方案一”、”方案二”这种，用户后续就会用”方案一”来引用。但如果你输出的是”TCC 方案”、”Redis 方案”这种有具体名字的，用户后续就容易用”TCC 方案”来代指。</p>
+<p>这种按名索引的好处是：能有效规避大模型推理阶段的引用错误。”方案一”和”方案二”太容易搞混了，但”TCC 方案”和”Redis 方案”不会。</p>
+<p><strong>2. 代词消解表格</strong></p>
+<p>我现在的做法是让模型输出一个代词消解的表格，作为关键事实贯穿整个对话：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;那个方案&quot;  →  基于 Redis 缓存的方案</span><br><span class="line">&quot;刚才说的&quot;  →  上一轮讨论的数据库选型</span><br></pre></td></tr></table></figure>
+
+<p>这个表格在多轮对话里特别有用，不然 Agent 经常搞混指代关系。</p>
+<p><strong>3. 可量化</strong></p>
+<p>这很重要。任何未量化的形容词都会导致 Agent 输出漂移。</p>
+<p>用户说”找个更靠谱的”，你得让 Agent 把”靠谱”转化成具体指标：可用性 99.9%？响应时间 &lt; 100ms？有 SLA 保障？不量化的话，每次跑出来的结果可能都不一样。</p>
+<p><strong>4. 迭代式词汇表</strong></p>
+<p>同一个词在不同行业意思完全不同。CRM 在 IT 行业是客户关系管理，在医疗行业是临床研究管理。</p>
+<p>我的做法是维护一个词汇表，输入规范化前先检索，把结果注入上下文。然后离线分析多轮对话，把频繁出现的新词汇沉淀下来，达到一定阈值后自动入表。可以拆成公共词汇表和用户个人词汇表，效果更好。</p>
+<p><strong>5. 基于属性 + 检索的推理</strong></p>
+<p>这个是处理长时间跨度指代问题的。比如用户上周让你帮他选一个缓存方案，你推荐了 Redis Cluster。一周后用户说：</p>
+<blockquote>
+<p>“你上次说的那个支持分片的缓存方案……”</p>
+</blockquote>
+<p>这种问题有两个难点：一是时间跨度长，短期记忆没了；二是”支持分片的缓存方案”不是简单的”那个”，而是带属性的指代。</p>
+<p>我的做法分两步：先用”缓存、分片”这些属性关键词去历史对话里召回细节，再让大模型基于召回内容做指代消解。如果第一步检索不顺利，还可以让模型提取属性发起工具调用，再做一轮推理。</p>
+<p><strong>6. 结构化输出</strong></p>
+<p>有些时候，光靠自然语言处理还不够。可以让模型输出更加规范的结构，比如主谓宾三个字段，再加上定状补的解释。这样做的好处是：后续的工具调用可以直接从结构化输出里取参数，不用再让模型二次解析。</p>
+<p>比如用户说”帮我找个更靠谱的”，结构化输出可以是：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;subject&quot;</span><span class="punctuation">:</span> <span class="string">&quot;云服务商&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;predicate&quot;</span><span class="punctuation">:</span> <span class="string">&quot;找&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;object&quot;</span><span class="punctuation">:</span> <span class="string">&quot;更靠谱的&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;modifiers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;靠谱&quot;</span><span class="punctuation">:</span> <span class="string">&quot;可用性高、响应快、有SLA保障&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="深度结合上面几点技巧还不够，还得结合更深层的上下文"><a href="#深度结合上面几点技巧还不够，还得结合更深层的上下文" class="headerlink" title="深度结合上面几点技巧还不够，还得结合更深层的上下文"></a>深度结合上面几点技巧还不够，还得结合更深层的上下文</h3><p>上面说的都是输入层面的处理。但很多时候，理解用户输入需要结合更深层的上下文信息：</p>
+<ul>
+<li><strong>用户画像</strong>：如果一个用户反复讨论某个技术栈，那他后续提到相关术语时，应该倾向于用他熟悉的语境去理解</li>
+<li><strong>关键事实</strong>：前面几轮 Agent 输出的要点、用户已经认可的结论、用户的偏好和态度</li>
+<li><strong>对话历史召回</strong>：可以是摘要，也可以是细节</li>
+</ul>
+<p>这些信息不是输入规范化本身能搞定的，需要在整个 Agent 系统层面来支持。但它们对输入规范化的效果影响很大——上下文越丰富，模型理解用户输入就越准确。</p>
+<hr>
+<h2 id="三层意图识别"><a href="#三层意图识别" class="headerlink" title="三层意图识别"></a>三层意图识别</h2><p>输入规范化之后，才是真正的意图识别。</p>
+<p>但在说三层模型之前，先聊一个问题：<strong>意图识别在什么时候做？</strong></p>
+<p>我见过三种做法：</p>
+<ol>
+<li><strong>和输入规范化混在一起</strong>：简单系统、领域专属 Agent 常用，一次性搞定</li>
+<li><strong>在进入 ReAct 循环之前独立做</strong>：这是我推荐的方式，边界清晰、可评估、可调试</li>
+<li><strong>在 ReAct 循环中做</strong>：更灵活，但更难控制，调试复杂</li>
+</ol>
+<p>我一开始就是直接调用深度推理大模型，简单粗暴。后来发现两个问题：一是成本高，二是大部分用户输入其实很标准，用深度推理有点杀鸡用牛刀。</p>
+<p>所以我改成了三层递进的方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">第一层：代码规则</span><br><span class="line">  │  关键字匹配、正则、页面引导</span><br><span class="line">  │  快、准、便宜</span><br><span class="line">  ↓ 没命中</span><br><span class="line">第二层：轻量级大模型</span><br><span class="line">  │  Flash / Mini 模型</span><br><span class="line">  │  处理标准表达</span><br><span class="line">  ↓ 置信度不够</span><br><span class="line">第三层：深度推理大模型</span><br><span class="line">    处理复杂场景</span><br></pre></td></tr></table></figure>
+
+<p>你会发现，大部分请求在第一层或第二层就搞定了，真正需要第三层的其实不多。</p>
+<p>但这里有个问题：第二层怎么判断”搞定了没有”？总不能让轻量模型随便输出一个意图就直接用吧。这就引出了置信度的机制。</p>
+<h3 id="置信度怎么用"><a href="#置信度怎么用" class="headerlink" title="置信度怎么用"></a>置信度怎么用</h3><p>模型输出意图的时候，同时输出一个置信度：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span> <span class="attr">&quot;intent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tech_selection&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;confidence&quot;</span><span class="punctuation">:</span> <span class="number">0.91</span> <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>我的阈值设置：</p>
+<ul>
+<li>大于 0.85：直接用</li>
+<li>0.6 到 0.85：再想想，或者问用户</li>
+<li>小于 0.6：交给深度推理模型</li>
+</ul>
+<blockquote>
+<p>有一点要注意：大模型输出的置信度不一定是真正的概率，它更像是一个”自我感觉分数”。别太当真，得结合其他信号一起判断。</p>
+</blockquote>
+<p>到这里，意图本身基本能识别了。但光知道用户想”做技术选型”还不够——什么场景？性能要求多高？预算多少？这些参数不补全，后面的流程也没法走。这就是接下来要聊的 Slot Filling。</p>
+<h3 id="Slot-Filling"><a href="#Slot-Filling" class="headerlink" title="Slot Filling"></a>Slot Filling</h3><p>Slot Filling 说白了就是从用户输入里抽取意图所需的参数。比如用户说”帮我找个消息队列方案”，意图是技术选型，但还缺一些信息：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;intent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tech_selection&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;slots&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;category&quot;</span><span class="punctuation">:</span> <span class="string">&quot;消息队列&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;missing_slots&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;scenario&quot;</span><span class="punctuation">,</span> <span class="string">&quot;throughput&quot;</span><span class="punctuation">,</span> <span class="string">&quot;budget&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里有个细节我觉得特别重要：<strong>约束要区分硬约束和软约束</strong>。</p>
+<ul>
+<li>硬约束：必须满足（”必须支持水平扩展”）</li>
+<li>软约束：尽量满足，不满足要告知用户（”最好是开源的”）</li>
+</ul>
+<blockquote>
+<p>我在用各种 Agent 的时候，最恼火的就是它无视我的硬约束。比如我明确说不要推荐某个品牌，结果它还是推了。这种体验非常差，用户会直接失去信任。</p>
+</blockquote>
+<p>上面说的是正常流程——意图识别到了，参数也补全了。但如果识别不出来呢？很多系统的做法是强行塞一个意图，结果驴唇不对马嘴。</p>
+<h3 id="识别不出来怎么办"><a href="#识别不出来怎么办" class="headerlink" title="识别不出来怎么办"></a>识别不出来怎么办</h3><p>很多系统的问题是，不管用户输入什么，都强行识别到某个意图上。但真实的用户输入经常是不完整、不清楚，甚至超出系统能力的。我觉得应该提供两个出口：</p>
+<ul>
+<li><strong>unsupported</strong>：用户的意图完全不在候选范围。比如用户对技术方案 Agent 说”帮我写一首诗”，这时候就该拒识，老老实实告诉用户你做不了。</li>
+<li><strong>unclear</strong>：意图之间有混淆，或者参数不够。比如用户说”帮我选个方案”，你其实可以先问一下场景和约束，而不是上来就推。</li>
+</ul>
+<blockquote>
+<p>我的理念是：好的回答比快的回答，用户体验更好。先收集完整参数再回答，比急着给一个可能不对的答案要好。</p>
+</blockquote>
+<p>说完了意图识别的整个流程，还有一个绕不开的话题：Prompt 到底怎么写。这一步写不好，前面说的全是白搭。</p>
+<h3 id="Prompt-怎么写"><a href="#Prompt-怎么写" class="headerlink" title="Prompt 怎么写"></a>Prompt 怎么写</h3><p>意图识别的 Prompt 我踩过不少坑。一开始写得很简单，就一句”请判断用户的意图”，结果大模型自由发挥，输出的意图名称、参数字段、置信度都不稳定。</p>
+<p>后来我总结了几个要点：</p>
+<p><strong>1. 定义候选意图</strong></p>
+<p>告诉模型当前系统支持哪些意图，形成一个封闭的枚举集合。不要让模型自己发明意图。</p>
+<p><strong>2. 定义意图边界</strong></p>
+<p>光列意图名称不够，还要解释边界。尤其是两个意图语义接近的时候，一定要澄清。比如”技术选型”和”架构设计”，用户说”帮我看看用什么数据库合适”，到底算哪个？你得在 Prompt 里说清楚。</p>
+<p><strong>3. 定义意图参数</strong></p>
+<p>告诉模型每个意图需要抽取哪些参数，哪些必选，哪些可选，可选参数的默认值是什么。</p>
+<p><strong>4. 加入 few-shot</strong></p>
+<p>不需要很多，关键是覆盖容易混淆的边界。如果 few-shot 太多不知道选哪些，可以用检索机制动态注入——这就是下面要说的动态 few-shot。</p>
+<p>到这里，意图识别的基本流程就跑通了。但跑通不等于跑好。做了一段时间后，我发现识别率上不去，很多时候不是模型的问题，而是系统设计本身有缺陷。</p>
+<hr>
+<h2 id="意图识别不准怎么办"><a href="#意图识别不准怎么办" class="headerlink" title="意图识别不准怎么办"></a>意图识别不准怎么办</h2><p>总结下来，我遇到过五类原因，每类都有对应的解法。</p>
+<h3 id="意图太多"><a href="#意图太多" class="headerlink" title="意图太多"></a>意图太多</h3><p>候选意图一多，问题就来了：把所有意图的定义、边界、参数、few-shot 全部塞进 Prompt，叠加已有的上下文内容，很容易超过大模型的窗口大小。而且就算没超，候选集合越大，分类混淆和上下文噪声也越高，准确率跟着掉。</p>
+<p><strong>解法一：层次意图</strong></p>
+<p>像菜单一样分级，先识别大类，再识别细类：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">技术选型 / 架构设计 / 性能优化 / ...</span><br><span class="line">    ↓</span><br><span class="line">数据库选型 / 缓存方案 / 消息队列 / ...</span><br><span class="line">    ↓</span><br><span class="line">关系型数据库 / NoSQL / NewSQL / ...</span><br></pre></td></tr></table></figure>
+
+<p><strong>解法二：结合检索缩小候选集合</strong></p>
+<p>在意图识别之前加一个检索步骤，从全部候选意图里先粗召回 Top-N 个可能的意图，再只把这 N 个交给大模型精筛。N 可以动态调整——上下文窗口空闲的时候大一些，识别失败重试的时候也扩大。</p>
+<p><strong>解法三：动态 few-shot</strong></p>
+<p>意图多了，few-shot 也多了，全部塞进 Prompt 会很长。我的做法是把 few-shot 存到数据库里，每次根据用户输入检索最相关的 few-shot 注入 Prompt。这样既减少了无关 few-shot 的干扰，又保证了模型看到的都是最相关的案例。</p>
+<p>可以分成固定的 few-shot（比如 unclear 怎么处理、unsupported 怎么处理）和动态的 few-shot（跟当前输入相关的），效果更好。</p>
+<h3 id="意图边界模糊"><a href="#意图边界模糊" class="headerlink" title="意图边界模糊"></a>意图边界模糊</h3><p>“帮我看看有什么合适的消息队列”——这是想查信息，还是想做技术选型？</p>
+<p><strong>解法：保证意图正交</strong></p>
+<p>如果两个意图有重叠，要么拆出第三个意图，要么合并成一个意图用参数区分。</p>
+<blockquote>
+<p>说到底，不要把所有差异都建模成不同的意图，很多差异应该建模成不同的参数。</p>
+</blockquote>
+<h3 id="用户表达太口语化"><a href="#用户表达太口语化" class="headerlink" title="用户表达太口语化"></a>用户表达太口语化</h3><p>“这代码写得跟屎一样，怎么让它跑快点？”——没有出现”性能优化”，但意思就是这个。</p>
+<p><strong>解法：向量匹配兜底</strong></p>
+<p>把常见的口语化表达做成向量，长期积累。新输入进来先向量匹配，匹配上了就直接用对应的意图。</p>
+<p>这个方法在专属领域特别好用，因为用户表达就那么几种模式，甚至可以直接用内存做向量匹配，性能极好。而且这个方案有个额外的好处：它可以作为长期迭代的兜底机制——离线分析多轮对话，把那些”大模型有时候能识别、有时候识别不了”的奇怪输入沉淀下来，逐步充实向量库。</p>
+<h3 id="一句话多个意图"><a href="#一句话多个意图" class="headerlink" title="一句话多个意图"></a>一句话多个意图</h3><p>“帮我查一下最新版本，然后给个升级方案。”</p>
+<p><strong>解法：先判断是不是真的多意图</strong></p>
+<p>很多时候用户一句话里虽然提到了多件事，但本质上只有一个意图。比如”帮我查一下当前的 QPS，然后看看要不要加机器”——用户的真正意图是”容量评估”，”查 QPS”只是过程性的步骤描述，不是独立意图。如果系统真的拆成两个意图分别处理，反而把问题搞复杂了。</p>
+<p>所以第一步是让模型过滤掉这种过程性描述，只抓住最终意图。</p>
+<p>如果确实是多个独立意图，我的做法是每次只做一件事，做完问用户要不要继续。交互感更强，用户也不用等太久。而且说实话，用户真的不在意你是不是一次性解决了多个问题——你一次性处理多个意图，用户反而要等更长时间。</p>
+<h3 id="多轮对话的上下文问题"><a href="#多轮对话的上下文问题" class="headerlink" title="多轮对话的上下文问题"></a>多轮对话的上下文问题</h3><p>第二轮说”预算降到两万以内吧，另外要支持水平扩展”，单独看不知道在说什么，得结合第一轮。</p>
+<p><strong>解法：先跳过，后回滚</strong></p>
+<p>大多数时候用户意图不会变，可以先复用上一轮的意图直接执行。发现不对再回退重新识别。这个策略简单有效，值得一试。</p>
+<h3 id="多识别器仲裁"><a href="#多识别器仲裁" class="headerlink" title="多识别器仲裁"></a>多识别器仲裁</h3><p>这个思路是引入多个识别器，每个独立识别，投票决定最终结果。而且识别器不一定都是大模型——可以一个是向量匹配，一个是大模型，一个是规则引擎。三者投票，票数相当就澄清。</p>
+<p>还可以给不同识别器设权重，加权计算分数。比如向量匹配在专属领域很准，权重可以高一些；规则引擎在特定场景很准，但泛化能力差，权重低一些。</p>
+<h3 id="微调"><a href="#微调" class="headerlink" title="微调"></a>微调</h3><p>除了上面这些工程手段，还有一个选项：微调大模型。</p>
+<p>微调通常用在第二层——轻量级大模型上。通过准备一批标注好的意图识别数据，对模型进行微调，可以让它在你的业务领域上表现更好。</p>
+<p>但说实话，微调是个双刃剑。好处是一旦调好了，效果提升很明显；坏处是数据准备、效果评估、参数调优都有坑，踩进去很费时间。</p>
+<p>我的建议是：如果你的意图识别准确率已经到了一个瓶颈，工程手段都试过了，再考虑微调。别上来就微调，先把基础方案跑通。</p>
+<h3 id="迭代式反馈：一个通用的思维"><a href="#迭代式反馈：一个通用的思维" class="headerlink" title="迭代式反馈：一个通用的思维"></a>迭代式反馈：一个通用的思维</h3><p>上面提到了不少方案，其实它们有一个共同点：<strong>迭代式反馈</strong>。</p>
+<p>向量兜底、词汇表沉淀、动态 few-shot 积累——这些本质上都是同一种机制：在线上运行过程中，不断收集新出现的问题输入，沉淀下来，逐步完善系统。</p>
+<p>这个思维不仅适用于意图识别，也适用于 Agent 的其他环节。先跑起来，发现问题，沉淀经验，再优化。周而复始。</p>
+<hr>
+<h2 id="怎么评估效果"><a href="#怎么评估效果" class="headerlink" title="怎么评估效果"></a>怎么评估效果</h2><p>做系统不能只做不评。我主要看这几个维度的指标：</p>
+<p><strong>意图识别本身：</strong></p>
+<ul>
+<li><strong>Top-1 准确率</strong>：第一个意图是否正确，这是我最常看的指标</li>
+<li><strong>Top-K 准确率</strong>：前 K 个候选中是否包含正确意图</li>
+<li><strong>分意图准确率</strong>：低频意图的识别率，别被整体准确率骗了——如果 80% 的请求都是某一个意图，模型全猜它也能有 80% 的准确率</li>
+</ul>
+<p><strong>拒识和澄清：</strong></p>
+<ul>
+<li><strong>拒识准确率</strong>：应该拒识的时候，系统是否拒识了</li>
+<li><strong>误拒率</strong>：能处理的被错误拒识了</li>
+<li><strong>澄清触发准确率</strong>：缺信息的时候，有没有正确追问</li>
+</ul>
+<p><strong>Slot Filling：</strong></p>
+<ul>
+<li><strong>槽位准确率</strong>：抽出来的值对不对</li>
+<li><strong>槽位召回率</strong>：用户提供的信息有没有被抽出来</li>
+<li><strong>必填槽位完整率</strong>：启动流程必须的槽位齐不齐</li>
+<li><strong>约束识别准确率</strong>：硬约束 &#x2F; 软偏好有没有识别出来</li>
+</ul>
+<p>最后一个是目前所有 Agent 做得最差的，包括我自己。</p>
+<blockquote>
+<p>有一点很有意思：我们还可以结合用户的下一轮输入来评估上一轮的意图识别效果。如果用户说”不是，我不是这个意思”或者”你理解错了”，这就是上一轮意图识别失败的信号。</p>
+</blockquote>
+<p>准确率参考：</p>
+<ul>
+<li>专属领域 Agent：99%+ 是可以做到的</li>
+<li>通用 Agent：Top-1 大概在 80%-90% 之间</li>
+</ul>
+<hr>
+<h2 id="一个完整的案例"><a href="#一个完整的案例" class="headerlink" title="一个完整的案例"></a>一个完整的案例</h2><p>说了这么多，最后用一个完整的案例把上面的内容串起来。假设我们有一个旅行助手 Agent，用户是这样对话的：</p>
+<h3 id="第一轮"><a href="#第一轮" class="headerlink" title="第一轮"></a>第一轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“十一想去云南玩，帮我看下”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<p>模型输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;normalized_input&quot;</span><span class="punctuation">:</span> <span class="string">&quot;用户希望在十一国庆假期去云南省旅游，需要帮助规划&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;pronoun_resolution&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>输入本身还算完整，没有太多需要消解的。</p>
+<p><strong>第二步：意图识别</strong></p>
+<p>走第二层轻量模型，输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;intent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;trip_planning&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;confidence&quot;</span><span class="punctuation">:</span> <span class="number">0.93</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;slots&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;destination&quot;</span><span class="punctuation">:</span> <span class="string">&quot;云南&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;travel_period&quot;</span><span class="punctuation">:</span> <span class="string">&quot;十一国庆&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;missing_slots&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;duration&quot;</span><span class="punctuation">,</span> <span class="string">&quot;budget&quot;</span><span class="punctuation">,</span> <span class="string">&quot;travel_style&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;clarification_question&quot;</span><span class="punctuation">:</span> <span class="string">&quot;好的，云南是个好选择！请问大概玩几天？预算大概多少？喜欢自然风光还是人文体验多一些？&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>置信度 0.93，直接接受。但缺少关键参数，触发澄清。</p>
+<p>Agent 回复：询问天数、预算、旅行偏好。</p>
+<h3 id="第二轮"><a href="#第二轮" class="headerlink" title="第二轮"></a>第二轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“六七天吧，别太贵，想看风景”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<p>模型输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;normalized_input&quot;</span><span class="punctuation">:</span> <span class="string">&quot;用户计划旅行六到七天，预算有限，偏好自然风光&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;pronoun_resolution&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;别太贵&quot;</span><span class="punctuation">:</span> <span class="string">&quot;预算有限，具体金额待定&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>“别太贵”是个主观词，先记录下来，后面结合工具参数来量化。</p>
+<p><strong>第二步：意图识别</strong></p>
+<p>复用上一轮的 <code>trip_planning</code> 意图，补充槽位：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;intent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;trip_planning&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;confidence&quot;</span><span class="punctuation">:</span> <span class="number">0.95</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;slots&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;destination&quot;</span><span class="punctuation">:</span> <span class="string">&quot;云南&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;travel_period&quot;</span><span class="punctuation">:</span> <span class="string">&quot;十一国庆&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;duration&quot;</span><span class="punctuation">:</span> <span class="string">&quot;6-7天&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;budget&quot;</span><span class="punctuation">:</span> <span class="string">&quot;经济型&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;travel_style&quot;</span><span class="punctuation">:</span> <span class="string">&quot;自然风光&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;missing_slots&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hard_constraints&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;十一假期期间&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;soft_constraints&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;预算有限&quot;</span><span class="punctuation">,</span> <span class="string">&quot;自然风光为主&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>参数齐了，进入执行流程。Agent 调用行程规划工具，参数中 <code>budget_level</code> 设为 “economy”，<code>scenery_weight</code> 设为 0.8。</p>
+<p>Agent 回复：推荐了一条昆明-大理-丽江的经典线路。</p>
+<h3 id="第三轮"><a href="#第三轮" class="headerlink" title="第三轮"></a>第三轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“那个雪山能不能上去？”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<p>这里有个指代问题——“那个雪山”是哪个？</p>
+<p>模型结合上一轮 Agent 推荐的内容，输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;normalized_input&quot;</span><span class="punctuation">:</span> <span class="string">&quot;用户询问玉龙雪山是否可以登顶或乘坐索道到达高处&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;pronoun_resolution&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;那个雪山&quot;</span><span class="punctuation">:</span> <span class="string">&quot;玉龙雪山（上一轮推荐线路中的景点）&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>代词消解成功，因为上一轮 Agent 提到了丽江线路中的玉龙雪山。</p>
+<p><strong>第二步：意图识别</strong></p>
+<p>这是一个新的意图——景点查询：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;intent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;spot_query&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;confidence&quot;</span><span class="punctuation">:</span> <span class="number">0.89</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;slots&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;spot_name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;玉龙雪山&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;query_type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;可达性&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>Agent 调用景点信息工具，返回玉龙雪山的索道信息和注意事项。</p>
+<h3 id="第四轮"><a href="#第四轮" class="headerlink" title="第四轮"></a>第四轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“行，就这个方案吧，酒店别太差”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<p>“就这个方案”需要消解：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;normalized_input&quot;</span><span class="punctuation">:</span> <span class="string">&quot;用户确认采纳当前推荐的行程方案，并对酒店提出要求&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;pronoun_resolution&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;这个方案&quot;</span><span class="punctuation">:</span> <span class="string">&quot;昆明-大理-丽江六日游方案（上一轮确认的线路）&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步：意图识别</strong></p>
+<p>意图切换到了酒店预订：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;intent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;hotel_booking&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;confidence&quot;</span><span class="punctuation">:</span> <span class="number">0.91</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;slots&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;destination&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;昆明&quot;</span><span class="punctuation">,</span> <span class="string">&quot;大理&quot;</span><span class="punctuation">,</span> <span class="string">&quot;丽江&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;check_in&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2026-10-01&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;check_out&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2026-10-07&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hard_constraints&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;soft_constraints&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;酒店别太差&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;clarification_question&quot;</span><span class="punctuation">:</span> <span class="string">&quot;酒店的话，大概什么价位可以接受？&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意”酒店别太差”是个软约束，先不量化，追问一下具体预算。</p>
+<p>Agent 回复：询问酒店预算。</p>
+<h3 id="第五轮"><a href="#第五轮" class="headerlink" title="第五轮"></a>第五轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“三星四星都行，别超500一晚”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;normalized_input&quot;</span><span class="punctuation">:</span> <span class="string">&quot;用户要求酒店为三星或四星级，每晚价格不超过500元&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;pronoun_resolution&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步：意图识别</strong></p>
+<p>复用 <code>hotel_booking</code>，补充约束：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;intent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;hotel_booking&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;confidence&quot;</span><span class="punctuation">:</span> <span class="number">0.96</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;slots&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;destination&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;昆明&quot;</span><span class="punctuation">,</span> <span class="string">&quot;大理&quot;</span><span class="punctuation">,</span> <span class="string">&quot;丽江&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;check_in&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2026-10-01&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;check_out&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2026-10-07&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;hotel_level&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;三星&quot;</span><span class="punctuation">,</span> <span class="string">&quot;四星&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;hard_constraints&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;price_per_night &lt;= 500&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;soft_constraints&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;三星或四星&quot;</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;need_clarification&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>“别超500”是硬约束，”三星四星都行”是软约束。Agent 调用酒店搜索工具，参数中 <code>max_price</code> &#x3D; 500，<code>star_level</code> &#x3D; [3, 4]。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>这个案例走下来，可以看到意图识别在实际对话中是怎么运作的：</p>
+<ol>
+<li><strong>用户输入规范化</strong>消解了”那个雪山”、”这个方案”、”别太贵”这些模糊表达</li>
+<li><strong>三层识别</strong>在大部分情况下用轻量模型就够了，置信度都在 0.85 以上</li>
+<li><strong>Slot Filling</strong>逐步补全参数，缺什么问什么</li>
+<li><strong>约束处理</strong>区分了硬约束（价格上限）和软约束（酒店星级偏好）</li>
+<li><strong>意图切换</strong>从行程规划到景点查询到酒店预订，每轮都在动态调整</li>
+<li><strong>代词消解表格</strong>贯穿整个对话，”那个雪山”和”这个方案”都能正确指代</li>
+</ol>
+<p>这就是意图识别在真实场景中的全貌。</p>
+<hr>
+<h2 id="还没解决的问题"><a href="#还没解决的问题" class="headerlink" title="还没解决的问题"></a>还没解决的问题</h2><p>说几个我目前也没找到好办法的问题，写出来一方面是记录，另一方面也想看看有没有人有更好的思路。</p>
+<p><strong>反话和嘲讽。</strong> 大部分 Agent 不需要考虑这个，但有些场景绕不开。比如会议摘要 Agent，有人在会上阴阳怪气说”这个方案真是太棒了”，你得能判断出他其实是在否定。目前没有特别好的通用解法。</p>
+<p><strong>数量范围歧义。</strong> 用户说”帮我草拟一个题目”，他其实不是只要一个，而是一组题目让他挑。这种意图和字面意思不一致的情况，只能靠上下文和业务场景来推断。</p>
+<p><strong>复杂人物关系下的指代。</strong> “A 的前任的前任今天遇到了 B 的现任的前任”——这种在社交、心理咨询类 Agent 里偶尔会遇到。需要对人物关系做结构化建模，难度不小。</p>
+<hr>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>意图识别这事，说简单也简单——调用一次大模型就能出结果；说难也难——要做到真正好用，需要在输入规范化、三层识别、参数补全、持续优化上下不少功夫。</p>
+<p>核心就一句话：<strong>深度整合上下文</strong>。</p>
+<p>说到底，Agent 的能力上限不在于模型有多强，而在于你能不能把用户的意图搞清楚。搞不清楚意图，后面的一切都是空中楼阁。</p>
+<p>如果你也在做 Agent，建议先跑起来，再逐步优化。先有效果，再谈效率。</p>
+<hr>
+<p><em>本系列文章基于个人在 AI Agent 系统设计中的学习和实践，持续更新中。</em></p>
+</article>
+<div class="article-footer slide-up">
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https:&#x2F;&#x2F;sswfive.xyz&#x2F;2026&#x2F;08&#x2F;14&#x2F;agent-intent-recognition&#x2F;" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https%3A%2F%2Fsswfive.xyz%2F2026%2F08%2F14%2Fagent-intent-recognition%2F"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/06/30/agent-intent-recognition/">Agent 开发手记（一）：意图识别</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread with-fancybox"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.40.0">Stellar 1.40.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right"><div class="widgets">
+
+
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E8%AE%A9%E6%88%91%E5%A4%B4%E7%96%BC%E7%9A%84%E5%9C%BA%E6%99%AF%E8%AF%B4%E8%B5%B7"><span class="toc-text">从一个让我头疼的场景说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5%E8%83%BD%E6%9C%89%E5%A4%9A%E4%B9%B1"><span class="toc-text">用户输入能有多乱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5%E8%A7%84%E8%8C%83%E5%8C%96"><span class="toc-text">用户输入规范化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%97%B6%E6%9C%BA"><span class="toc-text">处理时机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-text">几个实用技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E7%BB%93%E5%90%88%E4%B8%8A%E9%9D%A2%E5%87%A0%E7%82%B9%E6%8A%80%E5%B7%A7%E8%BF%98%E4%B8%8D%E5%A4%9F%EF%BC%8C%E8%BF%98%E5%BE%97%E7%BB%93%E5%90%88%E6%9B%B4%E6%B7%B1%E5%B1%82%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-text">深度结合上面几点技巧还不够，还得结合更深层的上下文</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%B1%82%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB"><span class="toc-text">三层意图识别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%AE%E4%BF%A1%E5%BA%A6%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-text">置信度怎么用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Slot-Filling"><span class="toc-text">Slot Filling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%86%E5%88%AB%E4%B8%8D%E5%87%BA%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">识别不出来怎么办</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Prompt-%E6%80%8E%E4%B9%88%E5%86%99"><span class="toc-text">Prompt 怎么写</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB%E4%B8%8D%E5%87%86%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">意图识别不准怎么办</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%84%8F%E5%9B%BE%E5%A4%AA%E5%A4%9A"><span class="toc-text">意图太多</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%84%8F%E5%9B%BE%E8%BE%B9%E7%95%8C%E6%A8%A1%E7%B3%8A"><span class="toc-text">意图边界模糊</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%A1%A8%E8%BE%BE%E5%A4%AA%E5%8F%A3%E8%AF%AD%E5%8C%96"><span class="toc-text">用户表达太口语化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E5%A4%9A%E4%B8%AA%E6%84%8F%E5%9B%BE"><span class="toc-text">一句话多个意图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%BD%AE%E5%AF%B9%E8%AF%9D%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E9%97%AE%E9%A2%98"><span class="toc-text">多轮对话的上下文问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%AF%86%E5%88%AB%E5%99%A8%E4%BB%B2%E8%A3%81"><span class="toc-text">多识别器仲裁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E8%B0%83"><span class="toc-text">微调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%BC%8F%E5%8F%8D%E9%A6%88%EF%BC%9A%E4%B8%80%E4%B8%AA%E9%80%9A%E7%94%A8%E7%9A%84%E6%80%9D%E7%BB%B4"><span class="toc-text">迭代式反馈：一个通用的思维</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%AF%84%E4%BC%B0%E6%95%88%E6%9E%9C"><span class="toc-text">怎么评估效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E6%A1%88%E4%BE%8B"><span class="toc-text">一个完整的案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%BD%AE"><span class="toc-text">第一轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E8%BD%AE"><span class="toc-text">第二轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E8%BD%AE"><span class="toc-text">第三轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E8%BD%AE"><span class="toc-text">第四轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E8%BD%AE"><span class="toc-text">第五轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%98%E6%B2%A1%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">还没解决的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-text">写在最后</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M8 10.5h8M8 14h5.5M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10c0-1.821-.487-3.53-1.338-5"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  window.canonical["param"] = {"permalink":"https://sswfive.xyz/2026/08/14/agent-intent-recognition/","checklink":"/js/plugins/video.js"};
+  // Fix: Ensure page is at the correct top position on data load
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'auto';
+  }
+  (function() {
+    const scrollHandler = () => {
+      const wikiCover = document.querySelector('#l_cover .l_cover.wiki');
+      const startEl = document.getElementById('start');
+      // 存在有效锚点时，等待布局稳定后滚动到目标
+      // （浏览器原生锚点滚动发生在布局完成前，长文章的懒加载图片/异步组件会把目标顶偏）
+      const hash = window.location.hash;
+      if (hash.length > 1) {
+        let anchorId = hash.slice(1);
+        try {
+          anchorId = decodeURIComponent(anchorId);
+        } catch (e) {
+          // 片段含非法编码时按原样查找
+        }
+        const anchor = document.getElementById(anchorId);
+        if (anchor) {
+          // #start 锚点贴顶，不预留 offset；其余锚点与 TOC 点击滚动保持一致
+          const offset = anchorId === 'start' ? 0 : 32;
+          const targetY = () => anchor.getBoundingClientRect().top + window.scrollY - offset;
+          let timer = null;
+          let lastY = null;
+          let quiet = 0;
+          let attempts = 0;
+          // 记录最近一次资源加载完成时间，判断异步数据/图片是否仍在改变布局
+          let lastResourceTime = performance.now();
+          let observer = null;
+          try {
+            observer = new PerformanceObserver(function (list) {
+              lastResourceTime = performance.now();
+            });
+            observer.observe({ entryTypes: ['resource'] });
+          } catch (e) {}
+          // 统计进行中的 fetch/XHR 请求，异步组件（timeline 等）未完成前不判定布局稳定
+          let pendingRequests = 0;
+          const trackRequest = (fn) => {
+            pendingRequests++;
+            try {
+              const result = fn();
+              if (result && typeof result.finally === 'function') {
+                result.finally(function () {
+                  pendingRequests = Math.max(0, pendingRequests - 1);
+                });
+              } else {
+                pendingRequests = Math.max(0, pendingRequests - 1);
+              }
+              return result;
+            } catch (e) {
+              pendingRequests = Math.max(0, pendingRequests - 1);
+              throw e;
+            }
+          };
+          if (typeof window.fetch === 'function') {
+            const origFetch = window.fetch.bind(window);
+            window.fetch = function () {
+              const args = arguments;
+              return trackRequest(function () {
+                return origFetch.apply(window, args);
+              });
+            };
+          }
+          if (window.XMLHttpRequest) {
+            const origOpen = window.XMLHttpRequest.prototype.open;
+            const origSend = window.XMLHttpRequest.prototype.send;
+            window.XMLHttpRequest.prototype.open = function () {
+              this.__anchorTracked = true;
+              return origOpen.apply(this, arguments);
+            };
+            window.XMLHttpRequest.prototype.send = function () {
+              if (this.__anchorTracked) {
+                pendingRequests++;
+                const done = () => {
+                  if (this.__anchorTracked) {
+                    this.__anchorTracked = false;
+                    pendingRequests = Math.max(0, pendingRequests - 1);
+                  }
+                };
+                this.addEventListener('loadend', done);
+              }
+              return origSend.apply(this, arguments);
+            };
+          }
+          const cancel = () => {
+            if (timer !== null) {
+              clearInterval(timer);
+              timer = null;
+            }
+            if (observer !== null) {
+              try {
+                observer.disconnect();
+              } catch (e) {}
+            }
+          };
+          const adjust = () => {
+            const y = targetY();
+            const atTarget = Math.abs(window.scrollY - y) <= 2;
+            if (!atTarget || lastY === null || Math.abs(y - lastY) > 2) {
+              window.scrollTo({ top: y, behavior: 'instant' });
+              lastY = y;
+              quiet = 0;
+            } else {
+              quiet++;
+            }
+            attempts++;
+            const resourceQuiet = performance.now() - lastResourceTime > 3000;
+            // 位置连续 1.8 秒无变化、无进行中的请求且最近 3 秒无资源加载才视为稳定；最长等待 30 秒
+            if ((quiet >= 3 && pendingRequests === 0 && resourceQuiet) || attempts >= 50) {
+              cancel();
+            }
+          };
+          requestAnimationFrame(() => {
+            // 锚点链接打开时直接定位，不做动画；用户主动点击（如 TOC）仍走平滑滚动
+            window.scrollTo({ top: targetY(), behavior: 'instant' });
+            timer = setInterval(adjust, 600);
+          });
+          // 用户主动滚动时停止自动校正
+          window.addEventListener('wheel', cancel, { passive: true });
+          window.addEventListener('touchstart', cancel, { passive: true });
+          window.addEventListener('mousedown', cancel, { passive: true });
+          window.addEventListener('keydown', cancel, { passive: true });
+          return;
+        }
+      }
+      if (wikiCover && startEl) {
+        window.scrollTo(0, startEl.offsetTop);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+    if (document.readyState !== 'loading') scrollHandler();
+    else document.addEventListener('DOMContentLoaded', scrollHandler);
+  })();
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+    data_cache: {"enable":true,"default_ttl":3600,"ttl":{"giscus":600,"waline":600,"artalk":600,"memos":600,"memos-user":86400,"sites":86400,"friends":86400,"friends_and_posts":86400,"siteinfo":86400},"max_entries":200},
+  };
+  const deps = {
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js`
+  }
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      // 倒序遍历避免 splice 后的索引问题
+      for (let index = this.list.length - 1; index >= 0; index--) {
+        const e = this.list[index];
+        if (e.name === name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 已加载样式缓存
+    _loadedStyles: new Set(),
+
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      // 如果样式已加载，直接返回 null
+      if (utils._loadedStyles.has(href)) {
+        return null;
+      }
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      // 标记样式为已加载 (在创建元素后立即标记，防止重复创建)
+      utils._loadedStyles.add(href);
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 已加载脚本缓存
+    _loadedScripts: new Set(),
+
+    // 已加载元素缓存 (使用 WeakSet 追踪元素实例,避免重复加载)
+    _loadedElements: new WeakSet(),
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      // 如果脚本已加载，直接返回
+      if (utils._loadedScripts.has(src)) {
+        resolve();
+        return;
+      }
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        utils._loadedScripts.add(src);
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // 原生 DOM 工具：querySelector / querySelectorAll 简写
+    qs: (sel, ctx) => (ctx || document).querySelector(sel),
+    qsa: (sel, ctx) => Array.prototype.slice.call((ctx || document).querySelectorAll(sel)),
+
+    // 原生 DOM 封装：常用 DOM 操作方法子集（find/append/class/attr/事件等）
+    dom: (selector, ctx) => {
+      var els = [];
+      if (typeof selector === 'string') {
+        els = utils.qsa(selector, ctx);
+      } else if (selector && selector.nodeType === 1) {
+        els = [selector];
+      } else if (selector && typeof selector.length === 'number') {
+        els = Array.prototype.slice.call(selector);
+      }
+      var api = {
+        length: els.length,
+        each: function (fn) {
+          els.forEach(function (el, i) {
+            fn.call(el, i, el);
+          });
+          return api;
+        },
+        find: function (sel) {
+          var result = [];
+          els.forEach(function (el) {
+            Array.prototype.push.apply(result, el.querySelectorAll(sel));
+          });
+          return utils.dom(result);
+        },
+        append: function (content) {
+          els.forEach(function (el) {
+            if (typeof content === 'string') {
+              el.insertAdjacentHTML('beforeend', content);
+            } else if (content && content.nodeType === 1) {
+              el.appendChild(content);
+            } else if (content && typeof content.length === 'number') {
+              Array.prototype.forEach.call(content, function (child) {
+                if (child && child.nodeType === 1) el.appendChild(child);
+              });
+            }
+          });
+          return api;
+        },
+        remove: function () {
+          els.forEach(function (el) {
+            el.remove();
+          });
+        },
+        addClass: function (cls) {
+          els.forEach(function (el) {
+            cls.trim().split(/\s+/).forEach(function (c) {
+              if (c) el.classList.add(c);
+            });
+          });
+          return api;
+        },
+        removeClass: function (cls) {
+          els.forEach(function (el) {
+            cls.trim().split(/\s+/).forEach(function (c) {
+              if (c) el.classList.remove(c);
+            });
+          });
+          return api;
+        },
+        toggleClass: function (cls, force) {
+          els.forEach(function (el) {
+            cls.trim().split(/\s+/).forEach(function (c) {
+              if (c) el.classList.toggle(c, force);
+            });
+          });
+          return api;
+        },
+        attr: function (name, value) {
+          if (value === undefined) {
+            return els[0] ? els[0].getAttribute(name) : undefined;
+          }
+          els.forEach(function (el) {
+            el.setAttribute(name, value);
+          });
+          return api;
+        },
+        data: function (name) {
+          return els[0] ? els[0].getAttribute('data-' + name) : undefined;
+        },
+        text: function (value) {
+          if (value === undefined) {
+            return els[0] ? els[0].textContent : undefined;
+          }
+          els.forEach(function (el) {
+            el.textContent = value;
+          });
+          return api;
+        },
+        html: function (content) {
+          if (content === undefined) {
+            return els[0] ? els[0].innerHTML : undefined;
+          }
+          els.forEach(function (el) {
+            if (typeof content !== 'string' && content && typeof content.length === 'number' && content[0] && content[0].nodeType === 1) {
+              var frag = document.createDocumentFragment();
+              Array.prototype.forEach.call(content, function (child) {
+                frag.appendChild(child);
+              });
+              el.replaceChildren(frag);
+            } else {
+              el.innerHTML = content;
+            }
+          });
+          return api;
+        },
+        val: function (value) {
+          if (value === undefined) {
+            return els[0] ? els[0].value : undefined;
+          }
+          els.forEach(function (el) {
+            el.value = value;
+          });
+          return api;
+        },
+        offset: function () {
+          var el = els[0];
+          if (!el) return { top: 0, left: 0 };
+          var rect = el.getBoundingClientRect();
+          return { top: rect.top + window.scrollY, left: rect.left + window.scrollX };
+        },
+        on: function (event, cb) {
+          els.forEach(function (el) {
+            el.addEventListener(event, cb);
+          });
+          return api;
+        },
+        click: function (cb) { return api.on('click', cb); },
+        focus: function (cb) { return api.on('focus', cb); },
+        keydown: function (cb) { return api.on('keydown', cb); },
+        empty: function () {
+          els.forEach(function (el) {
+            el.replaceChildren();
+          });
+          return api;
+        }
+      };
+      els.forEach(function (el, i) {
+        api[i] = el;
+      });
+      return api;
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        if (el.querySelector('.loading-wrap') === null) {
+          el.insertAdjacentHTML('beforeend', '<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+        }
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        var wrap = el.querySelector('.loading-wrap');
+        if (wrap) wrap.remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        var wrap = el.querySelector('.loading-wrap');
+        if (wrap) {
+          var svg = wrap.querySelector('svg');
+          if (svg) svg.remove();
+          wrap.insertAdjacentHTML('beforeend', '<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+          wrap.classList.add('error');
+        }
+      }
+    },
+    /********************** data cache ********************************/
+    // 动态数据本地缓存：TTL 未过期直接命中；过期后先显示缓存再后台刷新（stale-while-revalidate）
+    _cacheEnabled: true,
+    _cacheMaxEntryBytes: 200 * 1024,
+    // 同 URL 并发请求去重：页面内多个组件请求同一接口时共享一次 fetch
+    _pendingRequests: {},
+    _fetchShared: (url, options) => {
+      const key = (options && options.method || 'GET') + ' ' + url;
+      if (utils._pendingRequests[key]) {
+        return utils._pendingRequests[key].then(resp => resp.clone());
+      }
+      const promise = fetch(url, options).then(resp => {
+        if (!resp.ok) throw new Error('响应失败');
+        return resp;
+      }).finally(() => {
+        delete utils._pendingRequests[key];
+      });
+      utils._pendingRequests[key] = promise;
+      // 每个调用方各自 clone，避免 Response body 被消费后其他调用方取不到数据
+      return promise.then(resp => resp.clone());
+    },
+    // 延迟执行：缓存写入等非关键操作让出主线程
+    _defer: (fn) => {
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(fn, { timeout: 3000 });
+      } else {
+        setTimeout(fn, 0);
+      }
+    },
+    cache: {
+      prefix: 'Stellar.data_cache.v1.',
+      enabled: () => !!def.data_cache?.enable && utils._cacheEnabled,
+      serviceId: (el, options) => {
+        if (options && options.service) return options.service;
+        if (el) {
+          const match = String(el.className || '').match(/\bds-([\w-]+)\b/);
+          if (match) return match[1];
+        }
+        return null;
+      },
+      ttl: (el, options) => {
+        const conf = def.data_cache || {};
+        const id = utils.cache.serviceId(el, options);
+        const value = id && conf.ttl && conf.ttl[id] != null ? conf.ttl[id] : conf.default_ttl;
+        return typeof value === 'number' && value > 0 ? value : 0;
+      },
+      shouldCache: (url, options) => {
+        if (!utils.cache.enabled()) return false;
+        if (options && (options.cache === false || options.cache === 'no-store')) return false;
+        if (options && options.method && options.method !== 'GET') return false;
+        // 带时间戳缓存破坏参数的请求不缓存（如 mdrender 的 ?t=）
+        if (/[?&]t=\d{10,}/.test(url)) return false;
+        return true;
+      },
+      get: (url) => {
+        try {
+          const raw = localStorage.getItem(utils.cache.prefix + url);
+          if (!raw) return null;
+          const entry = JSON.parse(raw);
+          if (!entry || typeof entry.text !== 'string' || typeof entry.ts !== 'number') return null;
+          return entry;
+        } catch (e) {
+          console.warn('[cache] 读取失败:', url, e);
+          return null;
+        }
+      },
+      set: (url, text, contentType, ttl) => {
+        if (!(ttl > 0)) return;
+        if (text.length > utils._cacheMaxEntryBytes) return;
+        const entry = JSON.stringify({
+          text: text,
+          contentType: contentType || 'application/json',
+          ts: Date.now(),
+          ttl: ttl
+        });
+        const trySet = () => {
+          try {
+            localStorage.setItem(utils.cache.prefix + url, entry);
+            utils.cache.trim();
+            return true;
+          } catch (e) {
+            return false;
+          }
+        };
+        if (!trySet()) {
+          // 配额不足时淘汰最旧条目后重试一次，仍失败则本会话禁用缓存
+          utils.cache.evictOldest(url);
+          if (!trySet()) {
+            console.warn('[cache] 写入失败，本会话禁用缓存:', url);
+            utils._cacheEnabled = false;
+          }
+        }
+      },
+      trim: () => {
+        try {
+          const max = (def.data_cache && def.data_cache.max_entries) || 200;
+          const keys = [];
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.indexOf(utils.cache.prefix) === 0) keys.push(key);
+          }
+          if (keys.length <= max) return;
+          const sorted = keys.map((key) => {
+            let ts = 0;
+            try {
+              const entry = JSON.parse(localStorage.getItem(key) || 'null');
+              if (entry && typeof entry.ts === 'number') ts = entry.ts;
+            } catch (e) {}
+            return { key, ts };
+          }).sort((a, b) => a.ts - b.ts);
+          for (let i = 0; i < sorted.length - max; i++) {
+            localStorage.removeItem(sorted[i].key);
+          }
+        } catch (e) {
+          console.warn('[cache] 清理失败:', e);
+        }
+      },
+      evictOldest: (exceptUrl) => {
+        try {
+          let oldestKey = null;
+          let oldestTs = Infinity;
+          const exceptKey = utils.cache.prefix + exceptUrl;
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (!key || key.indexOf(utils.cache.prefix) !== 0 || key === exceptKey) continue;
+            let ts = 0;
+            try {
+              const entry = JSON.parse(localStorage.getItem(key) || 'null');
+              if (entry && typeof entry.ts === 'number') ts = entry.ts;
+            } catch (e) {}
+            if (ts < oldestTs) {
+              oldestTs = ts;
+              oldestKey = key;
+            }
+          }
+          if (oldestKey) localStorage.removeItem(oldestKey);
+        } catch (e) {}
+      },
+      isFresh: (entry) => {
+        if (!entry || typeof entry.ts !== 'number' || typeof entry.ttl !== 'number') return false;
+        if (!(entry.ttl > 0)) return false;
+        return Date.now() - entry.ts < entry.ttl * 1000;
+      },
+      // 用缓存文本重建 Response，兼容回调中的 resp.json() / resp.text()
+      toResponse: (entry) => new Response(entry.text, {
+        status: 200,
+        statusText: 'OK',
+        headers: { 'Content-Type': entry.contentType }
+      })
+    },
+    request: (el, url, callback, onFailure, options) => {
+      // 检查元素实例是否已加载 (而不是检查属性)
+      if (el && utils._loadedElements.has(el)) {
+        return;
+      }
+      const maxRetry = 3;
+      let retryCount = 0;
+      const ttl = utils.cache.ttl(el, options);
+      const cacheable = utils.cache.shouldCache(url, options) && ttl > 0;
+      const cached = cacheable ? utils.cache.get(url) : null;
+      // 缓存渲染前的初始结构，后台刷新渲染前恢复，避免重复渲染
+      let initialHTML = null;
+      // 缓存渲染完成后（或超时兜底）再启动后台刷新，避免异步渲染未结束就清空重绘
+      let cacheRenderDone = null;
+
+      if (cached) {
+        if (el) {
+          // 已有缓存时不显示加载动画
+          utils.onLoadSuccess?.(el);
+          initialHTML = el.innerHTML;
+        }
+        try {
+          cacheRenderDone = Promise.resolve(callback(utils.cache.toResponse(cached))).catch(e => {
+            console.warn('[request] 缓存渲染失败:', url, e);
+          });
+        } catch (e) {
+          console.warn('[request] 缓存渲染失败:', url, e);
+        }
+        // 缓存未过期：直接完成，不发请求
+        if (utils.cache.isFresh(cached)) {
+          if (el) utils._loadedElements.add(el);
+          return Promise.resolve(cached.text);
+        }
+      } else {
+        utils.onLoading?.(el);
+      }
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              if (cached) {
+                // 已有缓存渲染，保留缓存内容，不显示失败
+                resolve(cached.text);
+              } else {
+                utils.onLoadFailure?.(el);
+                onFailure?.();
+                reject('请求超时');
+              }
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          utils._fetchShared(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            // 标记元素实例为已加载
+            if (el) utils._loadedElements.add(el);
+            // 写入缓存（克隆响应，避免影响回调读取；延迟执行，避免阻塞渲染）
+            if (cacheable && data.ok) {
+              utils._defer(() => {
+                data.clone().text().then(text => {
+                  utils.cache.set(url, text, data.headers.get('Content-Type') || 'application/json', ttl);
+                }).catch(() => {});
+              });
+            }
+            // 后台刷新渲染前恢复初始结构，避免缓存渲染的内容重复
+            if (el && initialHTML !== null) {
+              el.innerHTML = initialHTML;
+            }
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              if (cached) {
+                resolve(cached.text);
+              } else {
+                utils.onLoadFailure?.(el);
+                onFailure?.();
+                reject(err);
+              }
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        if (cacheRenderDone) {
+          Promise.race([
+            cacheRenderDone,
+            new Promise(resolve => setTimeout(resolve, 5000))
+          ]).then(load);
+        } else {
+          load();
+        }
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      const ttl = utils.cache.ttl(null, options);
+      const cacheable = utils.cache.shouldCache(url, options) && ttl > 0;
+      const cached = cacheable ? utils.cache.get(url) : null;
+
+      if (cached && utils.cache.isFresh(cached)) {
+        return Promise.resolve(utils.cache.toResponse(cached));
+      }
+
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+        // 与 request 保持一致：最终失败时回退 stale 缓存，避免闪失败态
+        const fallback = () => {
+          if (cached) {
+            resolve(utils.cache.toResponse(cached));
+          } else {
+            reject('timeout');
+          }
+        };
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) fallback();
+            else tryRequest();
+          }, timeout);
+
+          utils._fetchShared(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (timedOut) return;
+              if (cacheable) {
+                utils._defer(() => {
+                  resp.clone().text().then(text => {
+                    utils.cache.set(url, text, resp.headers.get('Content-Type') || 'application/json', ttl);
+                  }).catch(() => {});
+                });
+              }
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (timedOut) return;
+              if (++retryCount > maxRetry) {
+                if (cached) {
+                  resolve(utils.cache.toResponse(cached));
+                } else {
+                  reject(err);
+                }
+              } else {
+                setTimeout(tryRequest, 500);
+              }
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+
+    // 插件初始化管理器 - 统一处理 DOMContentLoaded 事件
+    _pluginInitializers: [],
+    _pluginCleanups: new Map(), // 存储每个插件的清理函数
+    
+    initPlugin: (initFn, name, options = {}) => {
+      if (!initFn || typeof initFn !== 'function') return;
+      
+      // 避免重复注册
+      const pluginName = name || initFn.name;
+      if (utils._pluginInitializers.some(p => p.name === pluginName)) return;
+      
+      // 包装初始化函数，添加防重复执行的保护
+      const wrappedInit = () => {
+        try {
+          // 在执行前先清理旧的资源
+          if (utils._pluginCleanups.has(pluginName)) {
+            const cleanup = utils._pluginCleanups.get(pluginName);
+            if (typeof cleanup === 'function') {
+              cleanup();
+            }
+          }
+          
+          // 执行初始化，可能返回清理函数
+          const cleanup = initFn();
+          
+          // 如果初始化函数返回了清理函数，保存它
+          if (typeof cleanup === 'function') {
+            utils._pluginCleanups.set(pluginName, cleanup);
+          }
+        } catch (error) {
+          console.error(`[Plugin ${pluginName}] 初始化失败:`, error);
+        }
+      };
+      
+      utils._pluginInitializers.push({ 
+        fn: wrappedInit, 
+        name: pluginName,
+        options: options 
+      });
+      
+      // 如果 DOM 已经加载完成，立即执行
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        wrappedInit();
+      } else {
+        // 否则等待 DOMContentLoaded
+        window.addEventListener('DOMContentLoaded', wrappedInit, { once: true });
+      }
+    },
+
+    // 清理所有插件资源
+    cleanupPlugins: () => {
+      utils._pluginCleanups.forEach((cleanup, name) => {
+        try {
+          cleanup();
+        } catch (error) {
+          console.error(`[Plugin ${name}] 清理失败:`, error);
+        }
+      });
+      utils._pluginCleanups.clear();
+    },
+    
+    // 清理所有资源（用于页面卸载或重置）
+    cleanupAll: () => {
+      utils.cleanupPlugins();
+    },
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script>
+  // 先声明配置与初始化监听，再异步加载库：
+  // 保证库执行时 lazyLoadOptions 已就绪，避免 async 脚本抢先执行导致自初始化失败
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      // {% image %} 没有 .lazy-box 包裹，回退到父元素查找加载图标
+      const wrapper = el.closest('.lazy-box') || el.parentElement;
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // 监听初始化事件，获取 LazyLoad 实例
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  // 兜底：动态插入的 .lazy 元素（如站点自定义脚本在 update() 之后追加的图片）
+  // 不会被 vanilla-lazyload 自动扫描，未注册的 img.lazy 会被 CSS opacity:0 永久隐藏。
+  // MutationObserver 检测到新增 .lazy 元素后自动调用 update() 重新注册。
+  if (window.MutationObserver) {
+    window.lazyMutationObserver = new MutationObserver((mutations) => {
+      if (window.lazyMutationObserver._pending) return;
+      const hasLazy = mutations.some((m) =>
+        Array.prototype.some.call(m.addedNodes, (node) =>
+          node.nodeType === 1 &&
+          (node.matches?.('.lazy') || !!node.querySelector?.('.lazy'))
+        )
+      );
+      if (!hasLazy) return;
+      window.lazyMutationObserver._pending = requestAnimationFrame(() => {
+        window.lazyMutationObserver._pending = null;
+        window.lazyLoadInstance?.update();
+      });
+    });
+    window.lazyMutationObserver.observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+</script>
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.40.0" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  
+  function initWaline() {
+    const el = document.getElementById('waline_container');
+    if (!el) return;
+
+    function load_waline() {
+      utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+      utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    }
+    
+    util.viewportLazyload(el, load_waline);
+  }
+  
+  // Initialize on page load
+  initWaline();
+</script>
+
+
+
+
+<script defer>
+  const initServices = () => {
+    // 用于存储需要清理的资源
+    let timers = [];
+    
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"},"rss":{"js":"/js/services/rss.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        const cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(cardlinks);
+          });
+        }
+      } else if (id == 'ghinfo') {
+        const els = document.querySelectorAll('.ds-ghinfo');
+        if (els.length > 0) {
+          utils.js(js, { defer: true });
+        }
+      } else if (id == 'voice') {
+        const voiceAudios = document.querySelectorAll('.voice>audio');
+        if (voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        const videos = document.querySelectorAll('.video>video');
+        if (videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        const files = document.querySelectorAll('.chat-file');
+        if (files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          if (id == 'timeline' || id == 'memos' || id == 'marked' || id == 'mdrender') {
+            utils.js(deps.marked).then(function () {
+              utils.js(js, { defer: true });
+            });
+          } else {
+            utils.js(js, { defer: true });
+          }
+        }
+      }
+    }
+
+    // search
+    if (ctx.search && typeof searchFunc === 'function') {
+      const inputArea = document.querySelector("input#search-input");
+      if (inputArea && !inputArea._searchInitialized) {
+        const path = ctx.search.path.startsWith('/') ? ctx.root + ctx.search.path.substring(1) : ctx.root + ctx.search.path;
+        const filter = inputArea.getAttribute('data-filter') || '';
+        searchFunc(path, filter, 'search-wrapper', 'search-input', 'search-result');
+        // 标记为已初始化，防止重复绑定
+        inputArea._searchInitialized = true;
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+    let firstAdjustInterval = null;
+    let mainInterval = null;
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      const date = new Date();
+      const sec = date.getSeconds();
+      firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+      timers.push(firstAdjustInterval);
+
+      function firstAdjustTime() {
+        NowTime();
+        if (firstAdjustInterval) {
+          clearInterval(firstAdjustInterval);
+          firstAdjustInterval = null;
+        }
+        mainInterval = setInterval(NowTime, 1000 * 60);
+        timers.push(mainInterval);
+      }
+
+      function NowTime() {
+        for (let i = 0; i < phoneTimes.length; ++i) {
+          const timeSpan = phoneTimes[i];
+          const date = new Date();
+          const hour = date.getHours();
+          const min = date.getMinutes();
+          timeSpan.innerHTML = check(hour) + ":" + check(min);
+        }
+      };
+
+      function check(val) {
+        if (val < 10) {
+          return ("0" + val);
+        }
+        return (val);
+      }
+    }
+
+    // chat quote - 存储事件监听器以便清理
+    const quoteClickHandlers = new Map();
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      const handler = function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      };
+      quote.addEventListener('click', handler);
+      quoteClickHandlers.set(quote, handler); // 保存处理器引用
+    });
+
+    // 返回清理函数，用于清理定时器和观察器
+    return () => {
+      // 清理所有定时器（包括可能未完成的 firstAdjustInterval）
+      timers.forEach(timer => {
+        if (timer) clearInterval(timer);
+      });
+      timers = [];
+      if (firstAdjustInterval) {
+        clearInterval(firstAdjustInterval);
+        firstAdjustInterval = null;
+      }
+      if (mainInterval) {
+        clearInterval(mainInterval);
+        mainInterval = null;
+      }
+      
+      // 断开观察器
+      if (chat_quote_obverser) {
+        chat_quote_obverser.disconnect();
+      }
+      
+      // 移除所有 click 事件监听器
+      quoteClickHandlers.forEach((handler, quote) => {
+        quote.removeEventListener('click', handler);
+      });
+      quoteClickHandlers.clear();
+    };
+  };
+
+  utils.initPlugin(initServices, 'services');
+</script>
+
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    mode: `auto`,
+    selector: `.timenode p>img, .md-text img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  // auto=按需：页面存在可弹窗图片才加载；global=全局：所有页面加载
+  const isGlobal = ctx.fancybox.mode === 'global';
+  // 评论区图片（artalk/twikoo/waline）显示较小，自动支持放大
+  var selector = '[data-fancybox]:not(.error), .with-fancybox img:not([atk-emoticon]):not([class*="emo"])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = isGlobal;
+  if (!needFancybox) {
+    needFancybox = document.querySelectorAll(selector).length !== 0;
+    if (!needFancybox) {
+      // 图片型评论系统容器：评论区图片小图需要 fancybox
+      const withFancybox = document.getElementsByClassName('with-fancybox');
+      if (withFancybox != undefined && withFancybox.length > 0) {
+        needFancybox = true;
+      }
+    }
+    if (!needFancybox) {
+      // 动态数据服务：memos 渲染的图片需要 fancybox
+      const memos = document.getElementsByClassName('ds-memos');
+      if (memos != undefined && memos.length > 0) {
+        needFancybox = true;
+      }
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      if (isGlobal) {
+        // 全局模式：正文所有非内联图片均可弹窗
+        selector += ', .md-text img:not(.inline):not([atk-emoticon])';
+      }
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  utils.initPlugin(() => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  }, 'swiper');
+</script>
+<script>
+  utils.initPlugin(() => {
+    const els = Array.prototype.slice.call(document.querySelectorAll('.slide-up'));
+    if (els.length === 0) return;
+
+    // 吸顶/固定定位容器内的元素始终在视口内（或由容器控制显隐），
+    // 但 ScrollReveal 按文档坐标判断可见性，会误判这类元素为不可见，
+    // 导致带锚点/恢复滚动位置打开页面时组件一直不显示。
+    // 解决方式：以最近的吸顶/固定祖先作为该组元素的容器，
+    // 使可见性判断恒成立，入场动画保留且不再依赖主文档滚动。
+    const findPinnedContainer = (el) => {
+      let node = el;
+      while (node && node.nodeType === 1) {
+        const pos = window.getComputedStyle(node).position;
+        if (pos === 'sticky' || pos === 'fixed') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    // 最近的滚动容器（overflow-y: auto/scroll）
+    // 吸顶容器内可能存在内部滚动容器（如侧栏 .widgets），
+    // 若直接用吸顶容器做 reveal 容器，折叠区下方的元素永远不会进入视口，导致一直不显示。
+    const findScrollContainer = (el) => {
+      let node = el.parentElement;
+      while (node && node.nodeType === 1) {
+        const oy = window.getComputedStyle(node).overflowY;
+        if (oy === 'auto' || oy === 'scroll') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    const pinnedGroups = new Map(); // 容器 -> 元素列表
+    const targets = [];
+    els.forEach((el) => {
+      const pinned = findPinnedContainer(el);
+      if (pinned) {
+        // 优先使用最近的滚动容器，其次才用吸顶容器
+        const container = findScrollContainer(el) || pinned;
+        const group = pinnedGroups.get(container) || [];
+        group.push(el);
+        pinnedGroups.set(container, group);
+      } else {
+        targets.push(el);
+      }
+    });
+    if (pinnedGroups.size === 0 && targets.length === 0) return;
+
+    // 加载/初始化失败时兜底显示内容，避免整页空白
+    let fallbackApplied = false;
+    const revealFallback = () => {
+      if (fallbackApplied) return;
+      fallbackApplied = true;
+      document.documentElement.classList.add('sr-fallback');
+    };
+
+    const slideUp = {
+      distance: `8px`,
+      duration: `1000`,
+      interval: `100`,
+      scale: `1`,
+      opacity: 0,
+      easing: "ease-out"
+    };
+
+    // 看门狗：CDN 长时间无响应时强制显示内容
+    const watchdog = setTimeout(() => revealFallback(), 3000);
+
+    utils.js(`https://gcore.jsdelivr.net/npm/scrollreveal@4.0/dist/scrollreveal.min.js`, { defer: true })
+      .then(() => {
+        if (fallbackApplied) return;
+        if (typeof ScrollReveal !== 'function') {
+          revealFallback();
+          return;
+        }
+        try {
+          const sr = ScrollReveal();
+          if (targets.length > 0) {
+            sr.reveal(targets, { ...slideUp });
+          }
+          pinnedGroups.forEach((group, container) => {
+            sr.reveal(group, { ...slideUp, container: container });
+          });
+          clearTimeout(watchdog);
+        } catch (err) {
+          console.error('[Plugin scrollreveal] 初始化失败:', err);
+          revealFallback();
+        }
+      })
+      .catch((err) => {
+        console.error('[Plugin scrollreveal] 加载失败:', err);
+        revealFallback();
+      });
+  }, 'scrollreveal');
+</script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script defer type="text/javascript" src="https://gcore.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  utils.initPlugin(() => {
+    const els = document.querySelectorAll('.mermaid');
+    if (els.length > 0) {
+      const mermaid_config = {
+        startOnLoad: false,
+        theme:
+          "auto" == "auto" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "neutral",
+        logLevel: 3,
+        themeVariables: {
+          darkMode: true
+        },
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          curve: "linear"
+        },
+        gantt: {
+          axisFormat: "%Y/%m/%d"
+        },
+        sequence: {
+          actorMargin: 50
+        }
+      }
+      mermaid.initialize(mermaid_config);
+      mermaid.run();
+    }
+  }, 'mermaid');
+</script><script>
+  utils.initPlugin(() => {
+    const codeElements = document.querySelectorAll('.code');
+    if (codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js', { defer: true }).then(() => {
+        if (typeof createCopyButtons === 'function') {
+          createCopyButtons(codeElements);
+        }
+      });
+    }
+  }, 'copycode');
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
