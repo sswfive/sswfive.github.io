@@ -1372,7 +1372,7 @@ a.button.start.gradient {
   -moz-transition: all 0.2s ease-out;
   -webkit-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
-  border-radius: calc(6px + 2px);
+  border-radius: calc(12px + 2px);
   corner-shape: superellipse(1.25);
   box-shadow: 0 0 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
   transition: all 0.2s ease-out;
@@ -1418,7 +1418,7 @@ a.button.start.gradient {
   right: 0;
   top: 0;
   bottom: 0;
-  border-radius: calc(6px + 2px);
+  border-radius: calc(12px + 2px);
   corner-shape: superellipse(1.25);
 }
 .float-panel:before {
@@ -1460,7 +1460,7 @@ a.button.start.gradient {
   padding: 0.25rem 0.75rem;
   line-height: 2;
   font-size: 0.875rem;
-  border-radius: 6px;
+  border-radius: 12px;
   corner-shape: superellipse(1.25);
   font-weight: 500;
   white-space: nowrap;
@@ -1608,7 +1608,7 @@ pre:not([class]):has(>code) {
 .md-text .highlight >table::-webkit-scrollbar-thumb {
   background: transparent;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 12px;
 }
 .md-text .highlight >table:hover::-webkit-scrollbar-thumb {
   background: var(--text-meta);
@@ -2772,7 +2772,7 @@ div.toast.show {
 .navbar-blur {
   margin: 0 1rem;
   position: relative;
-  border-radius: calc(6px + 2px);
+  border-radius: calc(12px + 2px);
   corner-shape: superellipse(1.25);
   box-shadow: 0 0 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
   transition: all 0.2s ease-out;
@@ -2813,7 +2813,7 @@ div.toast.show {
   right: 0;
   top: 0;
   bottom: 0;
-  border-radius: calc(6px + 2px);
+  border-radius: calc(12px + 2px);
   corner-shape: superellipse(1.25);
 }
 .navbar-blur:before {
@@ -2854,7 +2854,7 @@ div.toast.show {
 .navbar-container {
   max-width: 100%;
   margin: 1px;
-  border-radius: calc(6px + 2px);
+  border-radius: calc(12px + 2px);
   overflow: scroll visible;
 }
 .navbar-container::-webkit-scrollbar {
@@ -2886,7 +2886,7 @@ div.toast.show {
   padding: 0.25rem 0.75rem;
   line-height: 2;
   font-size: 0.875rem;
-  border-radius: 6px;
+  border-radius: 12px;
   corner-shape: superellipse(1.25);
   font-weight: 500;
   white-space: nowrap;
@@ -2937,7 +2937,7 @@ div.toast.show {
   font-size: 1rem;
   font-weight: 700;
   background: var(--card);
-  border-radius: calc(6px + 2px);
+  border-radius: calc(12px + 2px);
   overflow: hidden;
   box-shadow: 0 2px 8px 0px rgba(0,0,0,0.03);
   color: var(--text-p3);
@@ -3009,7 +3009,7 @@ div.toast.show {
 }
 .related-wrap a.more {
   padding: 0.25rem 0.5rem;
-  border-radius: 6px;
+  border-radius: 12px;
   color: var(--text-p1);
 }
 article.md-text.content+.related-wrap {
@@ -3595,7 +3595,7 @@ a.tag-plugin.button:hover {
 .md-text .tag-plugin.chat >.content::-webkit-scrollbar-thumb {
   background: transparent;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 12px;
 }
 .md-text .tag-plugin.chat >.content:hover::-webkit-scrollbar-thumb {
   background: var(--text-meta);
@@ -4462,7 +4462,7 @@ a.tag-plugin.button:hover {
   justify-content: space-between;
   box-sizing: border-box;
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 12px;
   border: 1px solid var(--block-border);
   overflow: hidden;
   width: 100%;
@@ -4493,7 +4493,7 @@ a.tag-plugin.button:hover {
 }
 .md-text .tag-plugin.copy button.copy-btn {
   margin: 2px 2px 2px 0;
-  border-radius: calc(6px - 2px);
+  border-radius: calc(12px - 2px);
   display: inline-block;
   background: var(--block);
   transition: all 0.2s ease-out;
@@ -6971,7 +6971,7 @@ aside .tag-plugin.timeline[data-api] .body .lazy-box {
   width: max-content;
   max-width: 18rem;
   padding: 0.35rem 0.7rem;
-  border-radius: 6px;
+  border-radius: 12px;
   corner-shape: superellipse(1.25);
   box-shadow: 0 0 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
   transition: all 0.2s ease-out;
@@ -7021,7 +7021,7 @@ aside .tag-plugin.timeline[data-api] .body .lazy-box {
   right: 0;
   top: 0;
   bottom: 0;
-  border-radius: 6px;
+  border-radius: 12px;
   corner-shape: superellipse(1.25);
 }
 .tag-plugin.tip .tip-bubble:before {
@@ -7401,7 +7401,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   box-sizing: border-box;
   width: 100%;
   min-height: 36px;
-  border-radius: 6px;
+  border-radius: 12px;
   font-size: 0.9375rem;
   color: var(--text-p2);
   text-align: left;
@@ -7527,7 +7527,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   bottom: 0;
   left: 1rem;
   right: 1rem;
-  border-radius: 6px;
+  border-radius: 12px;
   background: var(--leftbar-search-line, var(--bg-a100));
   z-index: 0;
   transition: all 0.2s ease-out;
@@ -7550,7 +7550,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   bottom: 0;
   left: 1rem;
   right: 1rem;
-  border-radius: 6px;
+  border-radius: 12px;
   background: linear-gradient(to right, #04f3ff, #08ffc6, #ddf730, #ffbd19, #ff1fe0, #c418ff, #3b5bff, #04f3ff);
   background-size: 200%;
   animation: search-glow 20s linear infinite;
@@ -7587,7 +7587,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   }
 }
 .search-wrapper .search-button {
-  border-radius: 6px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7624,7 +7624,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   max-height: 60vh;
   overflow: auto;
   scrollbar-width: none;
-  border-radius: 6px;
+  border-radius: 12px;
   mask: linear-gradient(#fff, 90%, transparent);
   -webkit-mask: linear-gradient(#fff, 90%, transparent);
 }
@@ -7823,7 +7823,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   display: none;
 }
 .l_left .leftbar-container >.widgets {
-  border-radius: 6px;
+  border-radius: 12px;
   mask: linear-gradient(#fff, 90%, transparent);
   -webkit-mask: linear-gradient(#fff, 90%, transparent);
 }
@@ -7885,7 +7885,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   filter: unset;
 }
 .linklist .link {
-  border-radius: 6px;
+  border-radius: 12px;
   color: var(--text-p2);
   min-height: 32px;
   padding: 0 4px;
@@ -8169,7 +8169,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   font-size: 0.875rem;
   padding: 6px 16px;
   display: block;
-  border-radius: 6px;
+  border-radius: 12px;
   color: var(--text-p1);
 }
 .widget-wrapper.post-list .widget-body a:hover {
@@ -8447,7 +8447,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   color: var(--text-p3);
   display: block;
   position: relative;
-  border-radius: 6px;
+  border-radius: 12px;
   transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   -webkit-transition: all 0.2s ease-out;
@@ -8622,7 +8622,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   color: inherit;
   font-size: 0.875rem;
   padding: 8px var(--gap-padding);
-  border-radius: 6px;
+  border-radius: 12px;
   transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   -webkit-transition: all 0.2s ease-out;
@@ -8855,7 +8855,7 @@ details.toc[open] >div.body section .header+.doc_tree {
 .post-list #cats a.cat {
   display: flex;
   padding: 0.5em 1rem;
-  border-radius: 6px;
+  border-radius: 12px;
   color: var(--text-p2);
   align-items: center;
   justify-content: space-between;
@@ -10551,8 +10551,8 @@ a[data-fancybox] {
   padding: 0px 0.5rem;
   font-weight: 700;
   visibility: hidden;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
   background: var(--card);
   display: block;
   cursor: pointer;
@@ -10579,7 +10579,7 @@ a[data-fancybox] {
 .md-text .folding[child=codeblock] .code .copy-btn {
   z-index: 1;
   margin-right: 1rem;
-  border-radius: 6px;
+  border-radius: 12px;
 }
 .cmt-body.beaudar {
   margin: 0 -4px;
@@ -11045,7 +11045,7 @@ a[data-fancybox] {
   display: block;
 }
 .cmt-body.artalk .atk-notify-wrap .atk-notify {
-  border-radius: 6px;
+  border-radius: 12px;
   margin: 8px;
 }
 .cmt-body.artalk .atk-editor-plug-emoticons>.atk-grp-wrap>.atk-grp {
