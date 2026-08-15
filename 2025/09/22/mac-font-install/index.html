@@ -138,7 +138,7 @@
 <div class="article-banner-wrap slide-up"><div class="article banner top">
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">实用工具</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a><span class="cap reading right">441 字 · 预计阅读 2 分钟</span></div>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">实用工具</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a><span class="cap reading right">433 字 · 预计阅读 2 分钟</span></div>
 <div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-09-22T14:38:30.000Z">2025-09-22</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-04-26T16:25:22.000Z">2026-04-27</time></span></div>
 </div></div>
     
@@ -161,7 +161,7 @@
 <li>优点：中文显示清晰锐利，字形现代，阅读体验舒适，并提供等宽版本，完美适配代码编辑器。</li>
 </ul>
 <p>在 GitHub releases页面上，可以根据下面字体特点和需求进行选择：</p>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>文件名</th>
@@ -176,7 +176,7 @@
 </tr>
 <tr>
 <td><strong><code>LXGWWenKaiMonoGBScreen.ttf</code></strong></td>
-<td><strong>大陆标准</strong> + <strong>等宽</strong></td>
+<td><strong>大陆标准</strong>&nbsp;+&nbsp;<strong>等宽</strong></td>
 <td><strong>中国大陆的程序员（强烈推荐）</strong></td>
 </tr>
 <tr>
@@ -189,7 +189,7 @@
 <td>通用版 + 等宽</td>
 <td>需要等宽字体的用户</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h2 id="二、安装方法"><a href="#二、安装方法" class="headerlink" title="二、安装方法"></a>二、安装方法</h2><h3 id="方法1：手动安装"><a href="#方法1：手动安装" class="headerlink" title="方法1：手动安装"></a>方法1：手动安装</h3><ul>
 <li>下载字体：<ul>
 <li>JetBrains Mono：访问 <a target="_blank" rel="noopener" href="https://www.jetbrains.com/lp/mono/">官网</a> 下载</li>
@@ -201,7 +201,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="方法-2：使用-Homebrew"><a href="#方法-2：使用-Homebrew" class="headerlink" title="方法 2：使用 Homebrew"></a>方法 2：使用 Homebrew</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># JetBrains Mono</span></span><br><span class="line">brew install --cask font-jetbrains-mono</span><br><span class="line"></span><br><span class="line"><span class="comment"># 霞鹜文楷目前还是建议使用手动安装</span></span><br></pre></td></tr></table></figure>
+<h3 id="方法-2：使用-Homebrew"><a href="#方法-2：使用-Homebrew" class="headerlink" title="方法 2：使用 Homebrew"></a>方法 2：使用 Homebrew</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># JetBrains Mono</span></span><br><span class="line">brew install --cask font-jetbrains-mono</span><br><span class="line"></span><br><span class="line"><span class="comment"># 霞鹜文楷目前还是建议使用手动安装</span></span><br></pre></td></tr></tbody></table></figure>
 
 
 <h2 id="三、在-VS-Code-中启用字体"><a href="#三、在-VS-Code-中启用字体" class="headerlink" title="三、在 VS Code 中启用字体"></a>三、在 VS Code 中启用字体</h2><p>安装后，需在编辑器中设置才能生效。以 VS Code 为例：</p>
@@ -210,7 +210,7 @@
 <li>搜索 font family。</li>
 <li>在设置中添加你的字体，确保将中文字体放在首位：</li>
 </ol>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;editor.fontFamily&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#x27;LXGW WenKai Mono GB Screen&#x27;, &#x27;JetBrains Mono&#x27;, Menlo, Monaco, &#x27;Courier New&#x27;, monospace&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">"editor.fontFamily"</span><span class="punctuation">:</span> <span class="string">"'LXGW WenKai Mono GB Screen', 'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace"</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>配置逻辑：系统会优先使用「霞鹜文楷」渲染所有字符（包括英文），fallback 到「JetBrains Mono」确保特殊符号正常显示。</p>
 </article>

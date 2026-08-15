@@ -138,7 +138,7 @@
 <div class="article-banner-wrap slide-up"><div class="article banner top">
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="cap reading right">2610 字 · 预计阅读 9 分钟</span></div>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="cap reading right">2576 字 · 预计阅读 9 分钟</span></div>
 <div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-01-04T06:59:55.000Z">2026-01-04</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-04-26T09:28:57.000Z">2026-04-26</time></span></div>
 </div></div>
     
@@ -158,7 +158,7 @@
 <h2 id="一、内存开销：看不见的资源消耗"><a href="#一、内存开销：看不见的资源消耗" class="headerlink" title="一、内存开销：看不见的资源消耗"></a>一、内存开销：看不见的资源消耗</h2><p>Python的便利性背后，是显著的内存开销。理解这些开销，是处理大数据集或高并发应用的前提。</p>
 <p><strong>1. 基础对象的“体重”</strong></p>
 <ul>
-<li>一个空的字符串 <code>&quot;&quot;</code> 重达 <strong>41字节</strong>。</li>
+<li>一个空的字符串 <code>""</code> 重达 <strong>41字节</strong>。</li>
 <li>一个小整数（如 <code>1</code>）占用 <strong>28字节</strong>（得益于-5到256的整数池缓存，相同小整数是共享的）。</li>
 <li>一个空列表 <code>[]</code> 需要 <strong>56字节</strong>，一个空字典 <code>{}</code> 需要 <strong>64字节</strong>。</li>
 </ul>
@@ -170,7 +170,7 @@
 </ul>
 <p><strong>3. 类的内存激增</strong><br>面向对象编程的便利伴随着成本。一个具有5个属性的普通类实例占用约 <strong>694字节</strong>。如果程序中需要创建成千上万个实例，内存压力会急剧上升。</p>
 <h2 id="二、常见操作的性能概览：从纳秒到毫秒"><a href="#二、常见操作的性能概览：从纳秒到毫秒" class="headerlink" title="二、常见操作的性能概览：从纳秒到毫秒"></a>二、常见操作的性能概览：从纳秒到毫秒</h2><p>让我们看一下”性能金字塔”，从最快的操作到较慢的操作：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">属性读取 (obj.x)                         14 ns</span><br><span class="line">字典查询                                 22 ns</span><br><span class="line">函数调用（空函数）                         22 ns</span><br><span class="line">列表追加                                 29 ns</span><br><span class="line">f-string 格式化                          65 ns</span><br><span class="line">异常捕获                                 140 ns</span><br><span class="line">orjson 序列化复杂对象                     310 ns</span><br><span class="line">json 反序列化简单对象                     714 ns</span><br><span class="line">遍历 1000 个元素的列表                    7.9 μs</span><br><span class="line">打开并关闭文件                            9.1 μs</span><br><span class="line">SQLite 主键查询                          3.6 μs</span><br><span class="line">写入 1KB 文件                            35 μs</span><br><span class="line">MongoDB find_one                        121 μs</span><br><span class="line">SQLite 插入（带提交）                     192 μs</span><br><span class="line">导入 json 模块                           2.9 ms</span><br><span class="line">导入 asyncio 模块                        18 ms</span><br><span class="line">导入 fastapi 模块                        104 ms</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">属性读取 (obj.x)                         14 ns</span><br><span class="line">字典查询                                 22 ns</span><br><span class="line">函数调用（空函数）                         22 ns</span><br><span class="line">列表追加                                 29 ns</span><br><span class="line">f-string 格式化                          65 ns</span><br><span class="line">异常捕获                                 140 ns</span><br><span class="line">orjson 序列化复杂对象                     310 ns</span><br><span class="line">json 反序列化简单对象                     714 ns</span><br><span class="line">遍历 1000 个元素的列表                    7.9 μs</span><br><span class="line">打开并关闭文件                            9.1 μs</span><br><span class="line">SQLite 主键查询                          3.6 μs</span><br><span class="line">写入 1KB 文件                            35 μs</span><br><span class="line">MongoDB find_one                        121 μs</span><br><span class="line">SQLite 插入（带提交）                     192 μs</span><br><span class="line">导入 json 模块                           2.9 ms</span><br><span class="line">导入 asyncio 模块                        18 ms</span><br><span class="line">导入 fastapi 模块                        104 ms</span><br></pre></td></tr></tbody></table></figure>
 
 <p>数据说话：</p>
 <ul>
@@ -179,7 +179,7 @@
 <li>模块导入可能比你想象的慢的多</li>
 </ul>
 <h2 id="三、数据结构选择：性能差距可达200倍"><a href="#三、数据结构选择：性能差距可达200倍" class="headerlink" title="三、数据结构选择：性能差距可达200倍"></a>三、数据结构选择：性能差距可达200倍</h2><p> 列表 vs 字典 vs 集合的成员检查，在 1000 个元素中查找一个元素：</p>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>数据结构</th>
@@ -190,32 +190,32 @@
 <tbody><tr>
 <td><strong>集合</strong><code>item in set</code></td>
 <td>19 ns</td>
-<td>52.7M ops&#x2F;sec</td>
+<td>52.7M ops/sec</td>
 </tr>
 <tr>
 <td><strong>字典</strong><code>item in dict</code></td>
 <td>22 ns</td>
-<td>45.7M ops&#x2F;sec</td>
+<td>45.7M ops/sec</td>
 </tr>
 <tr>
 <td><strong>列表</strong><code>item in list</code></td>
 <td>3,850 ns</td>
-<td>259.6k ops&#x2F;sec</td>
+<td>259.6k ops/sec</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>数据说话：</p>
 <ul>
-<li><p>结论：列表比集合&#x2F;字典慢 200 倍！本质原因：集合和字典使用哈希表，时间复杂度 O(1)，列表需要线性扫描，时间复杂度 O(n)</p>
+<li><p>结论：列表比集合/字典慢 200 倍！本质原因：集合和字典使用哈希表，时间复杂度 O(1)，列表需要线性扫描，时间复杂度 O(n)</p>
 </li>
 <li><p>实践建议</p>
 </li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不推荐：频繁的成员检查</span></span><br><span class="line">allowed_users = [<span class="string">&#x27;alice&#x27;</span>, <span class="string">&#x27;bob&#x27;</span>, <span class="string">&#x27;charlie&#x27;</span>, ...]  <span class="comment"># 列表</span></span><br><span class="line"><span class="keyword">if</span> user <span class="keyword">in</span> allowed_users:  <span class="comment"># 慢！</span></span><br><span class="line">    process()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐：使用集合</span></span><br><span class="line">allowed_users = &#123;<span class="string">&#x27;alice&#x27;</span>, <span class="string">&#x27;bob&#x27;</span>, <span class="string">&#x27;charlie&#x27;</span>, ...&#125;  <span class="comment"># 集合</span></span><br><span class="line"><span class="keyword">if</span> user <span class="keyword">in</span> allowed_users:  <span class="comment"># 快 200 倍！</span></span><br><span class="line">    process()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不推荐：频繁的成员检查</span></span><br><span class="line">allowed_users = [<span class="string">'alice'</span>, <span class="string">'bob'</span>, <span class="string">'charlie'</span>, ...]  <span class="comment"># 列表</span></span><br><span class="line"><span class="keyword">if</span> user <span class="keyword">in</span> allowed_users:  <span class="comment"># 慢！</span></span><br><span class="line">    process()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐：使用集合</span></span><br><span class="line">allowed_users = {<span class="string">'alice'</span>, <span class="string">'bob'</span>, <span class="string">'charlie'</span>, ...}  <span class="comment"># 集合</span></span><br><span class="line"><span class="keyword">if</span> user <span class="keyword">in</span> allowed_users:  <span class="comment"># 快 200 倍！</span></span><br><span class="line">    process()</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="四、列表推导式真的更快"><a href="#四、列表推导式真的更快" class="headerlink" title="四、列表推导式真的更快"></a>四、列表推导式真的更快</h2><ul>
 <li>对比生成 1000 个元素：</li>
 </ul>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -233,13 +233,13 @@
 <td>11.9 μs</td>
 <td>基准</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>数据说话：</p>
 <ul>
 <li>原因：列表推导式在 C 层面优化，减少了 Python 层面的函数调用开销。</li>
 </ul>
 <h2 id="五、内存优化：强大的-slots"><a href="#五、内存优化：强大的-slots" class="headerlink" title="五、内存优化：强大的__slots__"></a>五、内存优化：强大的<code>__slots__</code></h2><p>单个对象的内存占用</p>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -263,13 +263,13 @@
 <td>-</td>
 </tr>
 <tr>
-<td>dataclass(slots&#x3D;True)</td>
+<td>dataclass(slots=True)</td>
 <td>212 bytes</td>
 <td><strong>69%</strong></td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>1000 个实例的集合</p>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -287,9 +287,9 @@
 <td>215.7 KB</td>
 <td><strong>28%</strong></td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p><strong>使用</strong> <code>__slots__</code> 的示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 普通类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, email, age, city, score</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.email = email</span><br><span class="line">        <span class="variable language_">self</span>.age = age</span><br><span class="line">        <span class="variable language_">self</span>.city = city</span><br><span class="line">        <span class="variable language_">self</span>.score = score</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 __slots__（节省 69% 内存）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>:</span><br><span class="line">    __slots__ = [<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;email&#x27;</span>, <span class="string">&#x27;age&#x27;</span>, <span class="string">&#x27;city&#x27;</span>, <span class="string">&#x27;score&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, email, age, city, score</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.email = email</span><br><span class="line">        <span class="variable language_">self</span>.age = age</span><br><span class="line">        <span class="variable language_">self</span>.city = city</span><br><span class="line">        <span class="variable language_">self</span>.score = score</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 普通类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, email, age, city, score</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.email = email</span><br><span class="line">        <span class="variable language_">self</span>.age = age</span><br><span class="line">        <span class="variable language_">self</span>.city = city</span><br><span class="line">        <span class="variable language_">self</span>.score = score</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 __slots__（节省 69% 内存）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>:</span><br><span class="line">    __slots__ = [<span class="string">'name'</span>, <span class="string">'email'</span>, <span class="string">'age'</span>, <span class="string">'city'</span>, <span class="string">'score'</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, email, age, city, score</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.email = email</span><br><span class="line">        <span class="variable language_">self</span>.age = age</span><br><span class="line">        <span class="variable language_">self</span>.city = city</span><br><span class="line">        <span class="variable language_">self</span>.score = score</span><br></pre></td></tr></tbody></table></figure>
 
 <p><strong>访问速度几乎相同</strong>：</p>
 <ul>
@@ -311,7 +311,7 @@
 <p>tips: Python便利性背后，是显著的内存开销。对于需要海量创建的小型数据对象，优先考虑使用<code>namedtuple</code>、<code>dataclass</code>或手动定义<code>__slots__</code>，可以带来巨大的内存节约</p>
 </blockquote>
 <h2 id="六、JSON-序列化：选对库提速-8-倍"><a href="#六、JSON-序列化：选对库提速-8-倍" class="headerlink" title="六、JSON 序列化：选对库提速 8 倍"></a>六、JSON 序列化：选对库提速 8 倍</h2><p>复杂对象序列化性能对比</p>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>JSON 库</th>
@@ -344,13 +344,13 @@
 <td>2.22 μs</td>
 <td>基准</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>数据说话：</p>
 <ul>
 <li>Python 的标准库稳定可靠，但在性能敏感场景，第三方库往往更胜一筹。如果你的 API 需要高频返回 JSON，换一个序列化库可能就解决了瓶颈。</li>
 </ul>
 <h2 id="七、Web-框架性能对比"><a href="#七、Web-框架性能对比" class="headerlink" title="七、Web 框架性能对比"></a>七、Web 框架性能对比</h2><p>返回简单 JSON 响应的基准测试：</p>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>框架</th>
@@ -389,7 +389,7 @@
 <td>55.4k</td>
 <td>2.26x</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>数据说话：</p>
 <ol>
 <li>现代异步框架（Starlette、FastAPI、Litestar）性能相近</li>
@@ -404,7 +404,7 @@
 <li><strong>性能不是唯一考量</strong>：还要考虑生态系统、团队熟悉度、项目需求</li>
 </ul>
 <h2 id="八、数据库操作性能"><a href="#八、数据库操作性能" class="headerlink" title="八、数据库操作性能"></a>八、数据库操作性能</h2><p>SQLite、diskcache、MongoDB 对比</p>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>操作</th>
@@ -428,7 +428,7 @@
 <tr>
 <td><strong>字段查询</strong></td>
 <td>4.27 μs</td>
-<td>N&#x2F;A</td>
+<td>N/A</td>
 <td>124 μs</td>
 </tr>
 <tr>
@@ -437,14 +437,14 @@
 <td>23.9 μs</td>
 <td>115 μs</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>数据说话：</p>
 <ul>
 <li><strong>SQLite 读取极快</strong>（微秒级），适合读多写少</li>
 <li><strong>diskcache 写入最快</strong>，适合缓存场景</li>
 <li><strong>MongoDB 受网络延迟影响</strong>，进程内数据库（SQLite）更快</li>
 </ul>
-<h2 id="九、字符串格式化：f-string-的优势"><a href="#九、字符串格式化：f-string-的优势" class="headerlink" title="九、字符串格式化：f-string 的优势"></a>九、字符串格式化：f-string 的优势</h2><table>
+<h2 id="九、字符串格式化：f-string-的优势"><a href="#九、字符串格式化：f-string-的优势" class="headerlink" title="九、字符串格式化：f-string 的优势"></a>九、字符串格式化：f-string 的优势</h2><div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>格式化方法</th>
@@ -472,13 +472,13 @@
 <td>103 ns</td>
 <td>1.6x 慢</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>数据说话：</p>
 <ul>
 <li>f-string 在性能和可读性之间达到了最佳平衡，应作为首选。</li>
 </ul>
 <h2 id="十、异步（Async）不是银弹，它有成本"><a href="#十、异步（Async）不是银弹，它有成本" class="headerlink" title="十、异步（Async）不是银弹，它有成本"></a>十、异步（Async）不是银弹，它有成本</h2><p>同步 vs 异步函数调用</p>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>操作</th>
@@ -496,9 +496,9 @@
 <td>28.2 μs</td>
 <td><strong>1,400x 慢</strong></td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>异步操作的开销</p>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>操作</th>
@@ -521,20 +521,20 @@
 <td><code>gather</code><br><br>10 个协程</td>
 <td>55 μs</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>关键认知：很多人以为“用了 async 就更快”，但事实并非如此。</p>
 <ul>
 <li>启动一次空的 <code>asyncio</code> 事件循环：<strong>～28 微秒</strong></li>
 <li>调用一个普通函数：<strong>～20 纳秒</strong></li>
-<li>async 的启动开销比一次磁盘 I&#x2F;O（～10 微秒）还要大！</li>
+<li>async 的启动开销比一次磁盘 I/O（～10 微秒）还要大！</li>
 </ul>
 <p>这意味着：</p>
 <ul>
 <li>如果你的任务是 CPU 密集型（如图像处理、数值计算），async 不仅没用，反而拖慢速度。</li>
 <li>如果你只是调用一次数据库或 API，同步代码更简单、更快。</li>
-<li><strong>只有当你需要同时处理成百上千个 I&#x2F;O 请求时（如聊天服务器、爬虫），async 才真正发挥价值。</strong></li>
+<li><strong>只有当你需要同时处理成百上千个 I/O 请求时（如聊天服务器、爬虫），async 才真正发挥价值。</strong></li>
 </ul>
-<h2 id="十一、异常处理的成本"><a href="#十一、异常处理的成本" class="headerlink" title="十一、异常处理的成本"></a>十一、异常处理的成本</h2><table>
+<h2 id="十一、异常处理的成本"><a href="#十一、异常处理的成本" class="headerlink" title="十一、异常处理的成本"></a>十一、异常处理的成本</h2><div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>操作</th>
@@ -543,18 +543,18 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>try&#x2F;except（无异常）</td>
+<td>try/except（无异常）</td>
 <td>21.5 ns</td>
 <td>基准</td>
 </tr>
 <tr>
-<td>try&#x2F;except（有异常）</td>
+<td>try/except（有异常）</td>
 <td>139 ns</td>
 <td><strong>6.5x 慢</strong></td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p><strong>最佳实践</strong>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不要用异常控制正常流程</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_value</span>(<span class="params">d, key</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> d[key]</span><br><span class="line">    <span class="keyword">except</span> KeyError:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span>  <span class="comment"># 异常路径慢 6.5 倍</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用条件判断</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_value</span>(<span class="params">d, key</span>):</span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">in</span> d:</span><br><span class="line">        <span class="keyword">return</span> d[key]</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或使用 dict.get()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_value</span>(<span class="params">d, key</span>):</span><br><span class="line">    <span class="keyword">return</span> d.get(key)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不要用异常控制正常流程</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_value</span>(<span class="params">d, key</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> d[key]</span><br><span class="line">    <span class="keyword">except</span> KeyError:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span>  <span class="comment"># 异常路径慢 6.5 倍</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用条件判断</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_value</span>(<span class="params">d, key</span>):</span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">in</span> d:</span><br><span class="line">        <span class="keyword">return</span> d[key]</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或使用 dict.get()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_value</span>(<span class="params">d, key</span>):</span><br><span class="line">    <span class="keyword">return</span> d.get(key)</span><br></pre></td></tr></tbody></table></figure>
 
 
 
@@ -574,7 +574,7 @@
 <p>性能优化的黄金原则：</p>
 <ol>
 <li>先让代码正确运行</li>
-<li>用 <code>cProfile</code>、<code>py-spy</code> 等工具定位瓶颈</li>
+<li>用&nbsp;<code>cProfile</code>、<code>py-spy</code>&nbsp;等工具定位瓶颈</li>
 <li>针对瓶颈做有针对性的优化</li>
 <li>用基准测试验证效果</li>
 </ol>

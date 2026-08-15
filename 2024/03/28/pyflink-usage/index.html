@@ -139,7 +139,7 @@
 <div class="article-banner-wrap slide-up"><div class="article banner top">
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="cap reading right">2322 字 · 预计阅读 8 分钟</span></div>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="cap reading right">2274 字 · 预计阅读 8 分钟</span></div>
 <div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-03-27T17:28:31.000Z">2024-03-28</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-04-26T09:28:57.000Z">2026-04-26</time></span></div>
 </div></div>
     
@@ -182,15 +182,15 @@
 </li>
 <li>pyflink安装</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建虚拟环境  </span></span><br><span class="line">conda create -n pyflink-py38env python=3.8 -y  </span><br><span class="line">​  </span><br><span class="line">conda activate pyflink-py38env  </span><br><span class="line">​  </span><br><span class="line">pip install apache-flink==1.17.1  -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建虚拟环境  </span></span><br><span class="line">conda create -n pyflink-py38env python=3.8 -y  </span><br><span class="line">​  </span><br><span class="line">conda activate pyflink-py38env  </span><br><span class="line">​  </span><br><span class="line">pip install apache-flink==1.17.1 &nbsp;-i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></tbody></table></figure>
 
 <ul>
 <li>环境验证</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">conda activate pyflink-py38env  </span><br><span class="line">​  </span><br><span class="line"><span class="built_in">cd</span> -/pyflink-py38env/lib/python3.8/site-packages/pyflink/   </span><br><span class="line">​  </span><br><span class="line">python examples/table/word_count.py   </span><br><span class="line">-----------&lt;<span class="built_in">log</span>&gt;----------------  </span><br><span class="line">(pyflink-py38env) [root@node80 pyflink]# python examples/table/word_count.py   </span><br><span class="line">Using Any <span class="keyword">for</span> unsupported <span class="built_in">type</span>: typing.Sequence[~T]  </span><br><span class="line">No module named google.cloud.bigquery_storage_v1. As a result, the ReadFromBigQuery transform *CANNOT* be used with `method=DIRECT_READ`.  </span><br><span class="line">Executing word_count example with default input data <span class="built_in">set</span>.  </span><br><span class="line">Use --input to specify file input.  </span><br><span class="line">Printing result to stdout. Use --output to specify output path.  </span><br><span class="line">+I[To, 1]  </span><br><span class="line">+I[be,, 1]  </span><br><span class="line">+I[or, 1]  </span><br><span class="line">+I[not, 1]  </span><br><span class="line">+I[to, 1]  </span><br><span class="line">+I[be,--that, 1]  </span><br><span class="line">+I[is, 1]  </span><br><span class="line">+I[the, 1]  </span><br><span class="line">+I[question:--, 1]  </span><br><span class="line">+I[Whether, 1]  </span><br><span class="line">...  </span><br><span class="line"></span><br><span class="line"><span class="comment"># pyflink安装成功</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">conda activate pyflink-py38env  </span><br><span class="line">​  </span><br><span class="line"><span class="built_in">cd</span> -/pyflink-py38env/lib/python3.8/site-packages/pyflink/   </span><br><span class="line">​  </span><br><span class="line">python examples/table/word_count.py   </span><br><span class="line">-----------&lt;<span class="built_in">log</span>&gt;----------------  </span><br><span class="line">(pyflink-py38env) [root@node80 pyflink]# python examples/table/word_count.py   </span><br><span class="line">Using Any <span class="keyword">for</span> unsupported <span class="built_in">type</span>: typing.Sequence[~T]  </span><br><span class="line">No module named google.cloud.bigquery_storage_v1. As a result, the ReadFromBigQuery transform *CANNOT* be used with `method=DIRECT_READ`.  </span><br><span class="line">Executing word_count example with default input data <span class="built_in">set</span>.  </span><br><span class="line">Use --input to specify file input.  </span><br><span class="line">Printing result to stdout. Use --output to specify output path.  </span><br><span class="line">+I[To, 1]  </span><br><span class="line">+I[be,, 1]  </span><br><span class="line">+I[or, 1]  </span><br><span class="line">+I[not, 1]  </span><br><span class="line">+I[to, 1]  </span><br><span class="line">+I[be,--that, 1]  </span><br><span class="line">+I[is, 1]  </span><br><span class="line">+I[the, 1]  </span><br><span class="line">+I[question:--, 1]  </span><br><span class="line">+I[Whether, 1]  </span><br><span class="line">...  </span><br><span class="line"></span><br><span class="line"><span class="comment"># pyflink安装成功</span></span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li><strong>重要提示：</strong><ul>
-<li>如果需要将pyflink程序提交到远程的YARN集群，需要从集群拷贝如下配置文件，并到到该虚拟环境的pyflink&#x2F;conf目录下<ul>
+<li>如果需要将pyflink程序提交到远程的YARN集群，需要从集群拷贝如下配置文件，并到到该虚拟环境的pyflink/conf目录下<ul>
 <li>core-site.xml</li>
 <li>hdfs-site.xml</li>
 <li>flink-conf.yaml</li>
@@ -205,7 +205,7 @@
 <h3 id="第三方依赖的使用"><a href="#第三方依赖的使用" class="headerlink" title="第三方依赖的使用"></a>第三方依赖的使用</h3><p>在使用pyflink进行程序开发时，用户在开发UDF算子时常常会引入第三方依赖库,此时对依赖包引入和运行的管理就会成为刚需；当在本地执行pyflink时，用户可以将第三方python库下载安装到本地后在进行执行，但当pyflink程序需要提交到远程执行时，此方法就行不通。于是pyflink官方提供了对依赖包的管理方法，其中在DataStream API 和 Table API实现方式是不同的。</p>
 <ul>
 <li>目前官方提供了对Jar依赖和Python依赖管理的说明和示例，详见<a target="_blank" rel="noopener" href="https://nightlies.apache.org/flink/flink-docs-release-1.17/docs/dev/python/dependency_management/">官方链接</a>，</li>
-<li><strong>需要注意是，在pyflink代码中添加依赖时，目前只支持本地文件的引入（即：file:&#x2F;&#x2F;&#x2F;)，不支持远程（如 hdfs:&#x2F;&#x2F;&#x2F;）方式的引入</strong>。</li>
+<li><strong>需要注意是，在pyflink代码中添加依赖时，目前只支持本地文件的引入（即：file:///)，不支持远程（如 hdfs:///）方式的引入</strong>。</li>
 </ul>
 <h2 id="提交pyflink程序（部署）"><a href="#提交pyflink程序（部署）" class="headerlink" title="提交pyflink程序（部署）"></a>提交pyflink程序（部署）</h2><h3 id="提交模式概述"><a href="#提交模式概述" class="headerlink" title="提交模式概述"></a>提交模式概述</h3><p>当通过flink run 提交pyflink程序时，flink将执行python命令，解析编译pyflink程序，生成一个jar程序，此过程也被称为JobGraph对象生成，其本质是python vm 与java vm 通过RPC的方式进行通信，当然，不同的提交模式，其实现逻辑会不同；目前，提交模式分为以下几种：</p>
 <ul>
@@ -217,7 +217,7 @@
 <h3 id="提交参数说明"><a href="#提交参数说明" class="headerlink" title="提交参数说明"></a>提交参数说明</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://nightlies.apache.org/flink/flink-docs-release-1.17/docs/deployment/cli/">官方参数使用说明</a></li>
 </ul>
-<table>
+<div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th><strong>选项</strong></th>
@@ -234,57 +234,57 @@
 </tr>
 <tr>
 <td>-pyfs、–pyFiles</td>
-<td>为作业附加自定义文件。支持 .py&#x2F;.egg&#x2F;.zip&#x2F;.whl 之类的标准资源文件后缀或目录。这些文件将被添加到本地客户端和远程 Python UDF Worker 的 PYTHONPATH 中。以 .zip 为后缀的文件将被解压缩，并且被添加到 PYTHONPATH。逗号（“,”）可以用作指定多个文件的分隔符（比如，–pyFiles file:&#x2F;&#x2F;&#x2F;tmp&#x2F;myresource.zip,hdfs:&#x2F;&#x2F;&#x2F;$namenode_address&#x2F;myresource2.zip）。</td>
+<td>为作业附加自定义文件。支持 .py/.egg/.zip/.whl 之类的标准资源文件后缀或目录。这些文件将被添加到本地客户端和远程 Python UDF Worker 的 PYTHONPATH 中。以 .zip 为后缀的文件将被解压缩，并且被添加到 PYTHONPATH。逗号（“,”）可以用作指定多个文件的分隔符（比如，–pyFiles file:///tmp/myresource.zip,hdfs:///$namenode_address/myresource2.zip）。</td>
 </tr>
 <tr>
 <td>-pyarch、–pyArchives</td>
-<td>为作业添加 Python 归档文件。归档文件将被解压缩到 Python UDF Worker 的工作目录。可以为每个归档文件指定目标目录。如果指定目标目录名称，那么归档文件将被解压缩到具有指定名称的目录。否则，归档文件将被解压缩到与归档文件同名的目录中。通过该选项上传的文件可以通过相对路径访问。可以使用 “#” 作为归档文件路径和目标目录名称的分隔符。可以使用 “,” 作为指定多个归档文件的分隔符。可以使用该选项上传 Python UDF 中使用的虚拟环境和数据文件（比如，–pyArchives file:&#x2F;&#x2F;&#x2F;tmp&#x2F;py37.zip,file:&#x2F;&#x2F;&#x2F;tmp&#x2F;data.zip#data –pyExecutable py37.zip&#x2F;py37&#x2F;bin&#x2F;python）。在 Python UDF 中可以访问数据文件，比如：f &#x3D; open(‘data&#x2F;data.txt’, ‘r’)。</td>
+<td>为作业添加 Python 归档文件。归档文件将被解压缩到 Python UDF Worker 的工作目录。可以为每个归档文件指定目标目录。如果指定目标目录名称，那么归档文件将被解压缩到具有指定名称的目录。否则，归档文件将被解压缩到与归档文件同名的目录中。通过该选项上传的文件可以通过相对路径访问。可以使用 “#” 作为归档文件路径和目标目录名称的分隔符。可以使用 “,” 作为指定多个归档文件的分隔符。可以使用该选项上传 Python UDF 中使用的虚拟环境和数据文件（比如，–pyArchives file:///tmp/py37.zip,file:///tmp/data.zip#data –pyExecutable py37.zip/py37/bin/python）。在 Python UDF 中可以访问数据文件，比如：f = open(‘data/data.txt’, ‘r’)。</td>
 </tr>
 <tr>
 <td>-pyclientexec、–pyClientExecutable</td>
-<td>当通过 “flink run” 提交 Python 作业或编译包含 Python UDF 的 Java&#x2F;Scala 作业时，用于发起 Python 进程的 Python 解释器的路径（比如，–pyArchives file:&#x2F;&#x2F;&#x2F;tmp&#x2F;py37.zip –pyClientExecutable py37.zip&#x2F;py37&#x2F;python）。</td>
+<td>当通过 “flink run” 提交 Python 作业或编译包含 Python UDF 的 Java/Scala 作业时，用于发起 Python 进程的 Python 解释器的路径（比如，–pyArchives file:///tmp/py37.zip –pyClientExecutable py37.zip/py37/python）。</td>
 </tr>
 <tr>
 <td>-pyexec、–pyExecutable</td>
-<td>指定用于执行 Python UDF Worker 的 Python 解释器的路径（比如，–pyExecutable &#x2F;usr&#x2F;local&#x2F;bin&#x2F;python3）。Python UDF Worker 依赖 Python 3.7+、Apache Beam（版本 &#x3D;&#x3D; 2.43.0）、Pip（版本 &gt;&#x3D; 20.3）和 SetupTools（版本 &gt;&#x3D; 37.0.0）。请确保指定的环境满足上述要求。</td>
+<td>指定用于执行 Python UDF Worker 的 Python 解释器的路径（比如，–pyExecutable /usr/local/bin/python3）。Python UDF Worker 依赖 Python 3.7+、Apache Beam（版本 == 2.43.0）、Pip（版本 &gt;= 20.3）和 SetupTools（版本 &gt;= 37.0.0）。请确保指定的环境满足上述要求。</td>
 </tr>
 <tr>
 <td>-pyreq、–pyRequirements</td>
-<td>指定定义第三方依赖的 requirements.txt 文件。这些依赖将被安装，并且被添加到 Python UDF Worker 的 PYTHONPATH。可选地指定包含这些依赖的安装包的目录。如果可选参数存在，那么使用“#”作为分隔符（–pyRequirements file:&#x2F;&#x2F;&#x2F;tmp&#x2F;requirements.txt#file:&#x2F;&#x2F;&#x2F;tmp&#x2F;cached_dir）。</td>
+<td>指定定义第三方依赖的 requirements.txt 文件。这些依赖将被安装，并且被添加到 Python UDF Worker 的 PYTHONPATH。可选地指定包含这些依赖的安装包的目录。如果可选参数存在，那么使用“#”作为分隔符（–pyRequirements file:///tmp/requirements.txt#file:///tmp/cached_dir）。</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <ul>
-<li>Note: 通过 -pyarch 指定的归档文件将通过 Blob 服务被分发到 TaskManager，文件大小限制是 2GB。如果归档文件的大小超过 2GB，那么可以将它上传到分布式文件系统，然后在命令行选项 -pyarch 中使用路径</li>
+<li>Note: 通过&nbsp;-pyarch&nbsp;指定的归档文件将通过 Blob 服务被分发到 TaskManager，文件大小限制是 2GB。如果归档文件的大小超过 2GB，那么可以将它上传到分布式文件系统，然后在命令行选项&nbsp;-pyarch&nbsp;中使用路径</li>
 <li>打包pyflink运行环境</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到 minconda(安装路径 envs目录下) 或者对应虚拟环境安装目录</span></span><br><span class="line"><span class="comment"># 打包 pyflink-py38env 虚拟环境</span></span><br><span class="line"><span class="built_in">cd</span> -/conda/envs/pyflink-py38env</span><br><span class="line">zip -r pyflink-py38env.zip pyflink-py38env  </span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到 minconda(安装路径 envs目录下) 或者对应虚拟环境安装目录</span></span><br><span class="line"><span class="comment"># 打包 pyflink-py38env 虚拟环境</span></span><br><span class="line"><span class="built_in">cd</span> -/conda/envs/pyflink-py38env</span><br><span class="line">zip -r pyflink-py38env.zip pyflink-py38env  </span><br></pre></td></tr></tbody></table></figure>
 <ul>
-<li>Note： 需要注意打包后的zip是单层（pyflink-py38env.zip&#x2F;bin&#x2F;python）的还是双层的(pyflink-py38env.zip&#x2F;pyflink-py38env&#x2F;bin&#x2F;python)</li>
+<li>Note： 需要注意打包后的zip是单层（pyflink-py38env.zip/bin/python）的还是双层的(pyflink-py38env.zip/pyflink-py38env/bin/python)</li>
 </ul>
 <h3 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h3><ul>
 <li>无依赖的运行</li>
 </ul>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> ./bin/flink run --python examples/python/table/word_count.py   <span class="comment"># pyflink/bin/flink</span></span><br><span class="line"> ```   </span><br><span class="line"></span><br><span class="line">- 引入外部资源时运行</span><br><span class="line">```bash</span><br><span class="line">./bin/flink run \  </span><br><span class="line">      --python examples/python/table/word_count.py \  </span><br><span class="line">      --pyFiles file:///user.txt,hdfs:///<span class="variable">$namenode_address</span>/username.txt</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> ./bin/flink run --python examples/python/table/word_count.py   <span class="comment"># pyflink/bin/flink</span></span><br><span class="line"> ```   </span><br><span class="line"></span><br><span class="line">- 引入外部资源时运行</span><br><span class="line">```bash</span><br><span class="line">./bin/flink run \  </span><br><span class="line"> &nbsp; &nbsp; &nbsp;--python examples/python/table/word_count.py \  </span><br><span class="line"> &nbsp; &nbsp; &nbsp;--pyFiles file:///user.txt,hdfs:///<span class="variable">$namenode_address</span>/username.txt</span><br></pre></td></tr></tbody></table></figure>
 
 <ul>
-<li>运行引用 Java UDF 或外部连接器的 PyFlink 作业。在 –jarfile 指定的文件将被上传到集群。</li>
+<li>运行引用 Java UDF 或外部连接器的 PyFlink 作业。在&nbsp;–jarfile&nbsp;指定的文件将被上传到集群。</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./bin/flink run \  </span><br><span class="line">      --python examples/python/table/word_count.py \  </span><br><span class="line">      --jarfile &lt;jarFile&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./bin/flink run \  </span><br><span class="line"> &nbsp; &nbsp; &nbsp;--python examples/python/table/word_count.py \  </span><br><span class="line"> &nbsp; &nbsp; &nbsp;--jarfile &lt;jarFile&gt;</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="提交到JobManager"><a href="#提交到JobManager" class="headerlink" title="提交到JobManager"></a>提交到JobManager</h3><ul>
 <li>Tips：<ul>
-<li>如果提交的pyflink程序及其依赖在本地：路径参数采用：file:&#x2F;&#x2F;&#x2F;</li>
-<li>如果提交的pyflink程序在文件系统（如hdfs）,路径参数采用：hdfs:&#x2F;&#x2F;&#x2F;</li>
+<li>如果提交的pyflink程序及其依赖在本地：路径参数采用：file:///</li>
+<li>如果提交的pyflink程序在文件系统（如hdfs）,路径参数采用：hdfs:///</li>
 </ul>
 </li>
 <li>单文件提交</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./flink run \  </span><br><span class="line">--jobmanager localhost:8081 \  </span><br><span class="line">-pyarch file:///path/pyflink-py38env.zip \  </span><br><span class="line">-pyexec pyflink-py38env.zip/bin/python3 \  </span><br><span class="line">-pyclientexec pyflink-py38env.zip/bin/python3 \  </span><br><span class="line">-py /pyflink-py38env/lib/python3.8/site-packages/pyflink/examples/table/word_count.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./flink run \  </span><br><span class="line">--jobmanager localhost:8081 \  </span><br><span class="line">-pyarch file:///path/pyflink-py38env.zip \  </span><br><span class="line">-pyexec pyflink-py38env.zip/bin/python3 \  </span><br><span class="line">-pyclientexec pyflink-py38env.zip/bin/python3 \  </span><br><span class="line">-py /pyflink-py38env/lib/python3.8/site-packages/pyflink/examples/table/word_count.py</span><br></pre></td></tr></tbody></table></figure>
 
 <ul>
 <li>以工程（文件夹）的方式提交</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./flink run \  </span><br><span class="line">--jobmanager localhost:8081 \  </span><br><span class="line">-pyarch file:///path/pyflink-py38env.zip \  </span><br><span class="line">-pyexec pyflink-py38env.zip/bin/python3 \  </span><br><span class="line">-pyfs /pyflink-py38env/lib/python3.8/site-packages/pyflink/examples/table \  </span><br><span class="line">-pym word_count  <span class="comment"># 入口程序</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./flink run \  </span><br><span class="line">--jobmanager localhost:8081 \  </span><br><span class="line">-pyarch file:///path/pyflink-py38env.zip \  </span><br><span class="line">-pyexec pyflink-py38env.zip/bin/python3 \  </span><br><span class="line">-pyfs /pyflink-py38env/lib/python3.8/site-packages/pyflink/examples/table \  </span><br><span class="line">-pym word_count &nbsp;<span class="comment"># 入口程序</span></span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="提交到YARN（Flink-On-YARN）"><a href="#提交到YARN（Flink-On-YARN）" class="headerlink" title="提交到YARN（Flink On YARN）"></a>提交到YARN（Flink On YARN）</h3><blockquote>
 <p>此处使用的run-application模式，其他模式类似</p>
@@ -292,7 +292,7 @@
 <ul>
 <li>提交程序在本地</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">./bin/flink run-application \  </span><br><span class="line">-t yarn-application \  </span><br><span class="line">-Dyarn.ship-files=/data/bluewhale/modelhub/model-pyflink-stream \  </span><br><span class="line">-Dyarn.application.name=pyflink-battery-calculate01 \  </span><br><span class="line">-pyarch model-pyflink-stream/pyflink-py38env.zip \  </span><br><span class="line">-pyclientexec pyflink-py38env/bin/python \  </span><br><span class="line">-pyexec pyflink-py38env/bin/python \  </span><br><span class="line">-pyfs model-pyflink-stream \  </span><br><span class="line">-pym evcrrc_calculate_code_by_kafka \  </span><br><span class="line">--jarfile /data/workspace/flink-1.17.1/lib/flink-sql-connector-kafka-1.17.1.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">./bin/flink run-application \  </span><br><span class="line">-t yarn-application \  </span><br><span class="line">-Dyarn.ship-files=/data/bluewhale/modelhub/model-pyflink-stream \  </span><br><span class="line">-Dyarn.application.name=pyflink-battery-calculate01 \  </span><br><span class="line">-pyarch model-pyflink-stream/pyflink-py38env.zip \  </span><br><span class="line">-pyclientexec pyflink-py38env/bin/python \  </span><br><span class="line">-pyexec pyflink-py38env/bin/python \  </span><br><span class="line">-pyfs model-pyflink-stream \  </span><br><span class="line">-pym evcrrc_calculate_code_by_kafka \  </span><br><span class="line">--jarfile /data/workspace/flink-1.17.1/lib/flink-sql-connector-kafka-1.17.1.jar</span><br></pre></td></tr></tbody></table></figure>
 
 <ul>
 <li>提交程序在hdfs<ul>
@@ -300,7 +300,7 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">./bin/flink run-application   </span><br><span class="line">-t yarn-application \  </span><br><span class="line">-pyarch hdfs:///data/mmodelhub/model-pyflink-stream/pyflink-py38env.zip \  </span><br><span class="line">-Dyarn.application.name=pyflink-stream-model-1 \  </span><br><span class="line">-pyclientexec pyflink-py38env.zip/bin/python \  </span><br><span class="line">-pyexec pyflink-py38env.zip/bin/python \  </span><br><span class="line">-py hdfs:///data/mmodelhub/model-pyflink-stream/pyflink-stream-kafka.py \  </span><br><span class="line">--jarfile /data/workspace/flink-1.17.1/lib/flink-sql-connector-kafka-1.17.1.jar</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">./bin/flink run-application   </span><br><span class="line">-t yarn-application \  </span><br><span class="line">-pyarch hdfs:///data/mmodelhub/model-pyflink-stream/pyflink-py38env.zip \  </span><br><span class="line">-Dyarn.application.name=pyflink-stream-model-1 \  </span><br><span class="line">-pyclientexec pyflink-py38env.zip/bin/python \  </span><br><span class="line">-pyexec pyflink-py38env.zip/bin/python \  </span><br><span class="line">-py hdfs:///data/mmodelhub/model-pyflink-stream/pyflink-stream-kafka.py \  </span><br><span class="line">--jarfile /data/workspace/flink-1.17.1/lib/flink-sql-connector-kafka-1.17.1.jar</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 
 <p>提交的是pyflink-datastream模型，需要注意一下参数</p>
 <ul>
@@ -308,7 +308,7 @@
 <li>-pyfs和-pym需要一起使用</li>
 </ul>
 <h2 id="实践总结"><a href="#实践总结" class="headerlink" title="实践总结"></a>实践总结</h2><ul>
-<li>使用Application模式提交pyflink程序时，建议优先将pyflink程序使用到的依赖包，执行环境提前上传到HDFS文件系统（或其他文件系统）上，再在Shell 命令中以hdfs:&#x2F;&#x2F;&#x2F;的方式指定需要用到的资源路径，以提高作业提交的效率。</li>
+<li>使用Application模式提交pyflink程序时，建议优先将pyflink程序使用到的依赖包，执行环境提前上传到HDFS文件系统（或其他文件系统）上，再在Shell 命令中以hdfs:///的方式指定需要用到的资源路径，以提高作业提交的效率。</li>
 <li>在开发pyflink程序时，若需要引入第三方Jar，建议在提交任务时通过–jarfile 指定Jar包，不建议在代码中通过add_jar方式，因为此方式目前仅支持指定本地Jar路径，不支持指定hdfs路径。</li>
 <li>在Flink On Yarn高可用架构下，目前遇到提交多个任务，在集群中只有一个任务正常执行，其他任务提交成功但未执行的问题，目前解决方案是：在flink-conf.yaml配置中，将cluster.id配置内容注释掉，此配置主要用于zookeeper管理多个flink集群，至于高可用部署场景该配置是否为必配置项，暂未深入分析；<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40308031/article/details/123207933">参考</a></li>
 </ul>

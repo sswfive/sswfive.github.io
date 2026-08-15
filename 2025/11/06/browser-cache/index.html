@@ -140,7 +140,7 @@
 <div class="article-banner-wrap slide-up"><div class="article banner top">
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/">前端技术</a><span class="cap reading right">5016 字 · 预计阅读 17 分钟</span></div>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/">前端技术</a><span class="cap reading right">5002 字 · 预计阅读 17 分钟</span></div>
 <div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-11-06T01:45:49.000Z">2025-11-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-04-26T09:28:57.000Z">2026-04-26</time></span></div>
 </div></div>
     
@@ -220,8 +220,8 @@
 <h3 id="Disk-Cache"><a href="#Disk-Cache" class="headerlink" title="Disk Cache"></a>Disk Cache</h3><p>Disk Cache（简称：DC）是存储在硬盘中的缓存，读取速度慢点，但什么都能存储到磁盘中，比 MC胜在容量和对存储时效性上。</p>
 <p>在所有浏览器缓存中，DC覆盖面是最大的，它会根据HTTP Header中的字段（如：<code>Cache-Control</code>、<code>ETag</code>、<code>Last-Modified</code> ）判断哪些资源需要被缓存，哪些资源可以不请求直接使用，哪些资源已经过期需要重新请求。</p>
 <p>通常，在跨站点时，只要相同地址的资源一旦被硬盘缓存下来，就不会再次去请求，因此绝大部分时候数据都来源于DC。但所有的持久化存储都会面临容量增长的问题，DC也不例外，在浏览器自动清理时，会有特殊的算法去把“最老的”或“最可能过时的”资源删除，因此是一个一个删除的，不过每个浏览器是缓存清除算法不尽相同，这点也可以看作是各个浏览器差异性的体现。</p>
-<h3 id="Push-Cache"><a href="#Push-Cache" class="headerlink" title="Push Cache"></a>Push Cache</h3><p>Push Cache（简称：PC）译作“推送缓存”，是属于HTTP&#x2F;2中新增的内容，当前面三种缓存都没有命中时，它才会被使用。它只会Session中存在，一旦Session结束就会被释放，并且缓存时间也是短暂的。通常在Chrome浏览器中只有5分钟的有效期，同时它也并非严格执行HTTP&#x2F;2头的缓存指令。</p>
-<p>如果想进进一步深入了解PC， 推荐阅读文章：<a target="_blank" rel="noopener" href="https://jakearchibald.com/2017/h2-push-tougher-than-i-thought/"><em>HTTP&#x2F;2 push is tougher than I thought</em></a></p>
+<h3 id="Push-Cache"><a href="#Push-Cache" class="headerlink" title="Push Cache"></a>Push Cache</h3><p>Push Cache（简称：PC）译作“推送缓存”，是属于HTTP/2中新增的内容，当前面三种缓存都没有命中时，它才会被使用。它只会Session中存在，一旦Session结束就会被释放，并且缓存时间也是短暂的。通常在Chrome浏览器中只有5分钟的有效期，同时它也并非严格执行HTTP/2头的缓存指令。</p>
+<p>如果想进进一步深入了解PC， 推荐阅读文章：<a target="_blank" rel="noopener" href="https://jakearchibald.com/2017/h2-push-tougher-than-i-thought/"><em>HTTP/2 push is tougher than I thought</em></a></p>
 <h3 id="总体缓存流程的总结"><a href="#总体缓存流程的总结" class="headerlink" title="总体缓存流程的总结"></a>总体缓存流程的总结</h3><p>如果一个请求在上述所有阶段都没有找到缓存，那么浏览器会正式发送网络请求去获取资源，之后为了提升请求的缓存命中率，会把请求的资源添加到缓存中去，具体来说：</p>
 <ol>
 <li>根据SW中的handler决定是否存入Cache Storage（额外的缓存位置）。SW是由开发者编写的额外的脚本，且缓存位置独立，出现也比较晚，使用还不算广泛。</li>
@@ -240,7 +240,7 @@
 <li>由于它使用绝对时间，用户可能会将客户端本地的时间进行修改，而导致浏览器判断缓存失效，从而重新请求该资源。此外，即使不考虑人为修改，时差或者误差等因素也可能造成客户端与服务端的时间不一致，进而影响缓存准确性。</li>
 <li>写法太复杂了。表示时间的字符串多个空格，少个字母，都会导致变为非法属性从而设置失效。</li>
 </ul>
-<p>为了解决Expires的不足，在HTTP&#x2F;1.1中引入了 Cache-Control字段，该字段常用值如下(完整的列表可以查看 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control"><em>MDN</em></a>)：</p>
+<p>为了解决Expires的不足，在HTTP/1.1中引入了 Cache-Control字段，该字段常用值如下(完整的列表可以查看 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control"><em>MDN</em></a>)：</p>
 <ul>
 <li>max-age：设置缓存的最大有效时间，单位为秒，是一个相对时间。</li>
 <li><em>must-revalidate</em>：如果超过了 <em>max-age</em> 的时间，浏览器必须向服务器发送请求，验证资源是否还有效。</li>
@@ -269,7 +269,7 @@
 <li>如果资源更新的速度是秒以下单位，那么该缓存是不能被使用的，因为它的时间单位最低是秒。</li>
 <li>如果文件是通过服务器动态生成的，那么该方法的更新时间永远是生成的时间，尽管文件可能没有变化，所以起不到缓存的作用。</li>
 </ul>
-<p>因此在 <em>HTTP&#x2F;1.1</em> 出现了 ETag和 If-None-Match</p>
+<p>因此在 <em>HTTP/1.1</em> 出现了 ETag和 If-None-Match</p>
 <p><strong>Etag &amp; If-None-Match</strong><br>为了解决上述问题，出现了一组新的字段 <em>Etag</em> 和 <em>If-None-Match</em>。</p>
 <p><em>Etag</em> 存储的是文件的特殊标识（一般都是一个 <em>Hash</em> 值），服务器存储着文件的 <em>Etag</em> 字段。后续流程和 <em>Last-Modified</em> 一致，只是 Last-Modified 字段和它所表示的更新时间改变成了 Etag 字段和它所表示的文件 <em>hash</em>，把 If-Modified-Since 变成了 If-None-Match。浏览器在下一次加载资源向服务器发送请求时，会将上一次返回的 Etag 值放到请求头里的 If-None-Match 里，服务器只需要比较客户端传来的 If-None-Match跟自己服务器上该资源的 ETag 是否一致，就能很好地判断资源相对客户端而言是否被修改过了。如果服务器发现 ETag 匹配不上，那么直接以常规 GET 200回包形式将新的资源（当然也包括了新的 ETag）发给客户端；如果 ETag是一致的，则直接返回 <em>304</em> 告诉客户端直接使用本地缓存即可。</p>
 <p>以下是对协商缓存中两组字段的简要对比：</p>
@@ -328,11 +328,11 @@
 </ul>
 </li>
 <li>强制刷新（<code>Ctrl + F5</code> 或 <code>Ctrl + Shift + R</code>）<ul>
-<li>浏览器不使用缓存。因此发送请求头部均带有 <code>Cache-Control: no-cache</code> 和 <code>Pragma: no-cache</code>（为了兼容 HTTP&#x2F;1.0），服务器收到后则会返回 200 状态码及最新的内容。</li>
+<li>浏览器不使用缓存。因此发送请求头部均带有&nbsp;<code>Cache-Control: no-cache</code>&nbsp;和&nbsp;<code>Pragma: no-cache</code>（为了兼容 HTTP/1.0），服务器收到后则会返回 200 状态码及最新的内容。</li>
 </ul>
 </li>
 </ol>
-<h2 id="默认请求与F5与Ctrl-F5刷新"><a href="#默认请求与F5与Ctrl-F5刷新" class="headerlink" title="默认请求与F5与Ctrl + F5刷新"></a>默认请求与F5与Ctrl + F5刷新</h2><table>
+<h2 id="默认请求与F5与Ctrl-F5刷新"><a href="#默认请求与F5与Ctrl-F5刷新" class="headerlink" title="默认请求与F5与Ctrl + F5刷新"></a>默认请求与F5与Ctrl + F5刷新</h2><div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>操作</th>
@@ -341,7 +341,7 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><strong>普通加载（直接输入 URL &#x2F; 点击链接 &#x2F; 从书签打开）</strong></td>
+<td><strong>普通加载（直接输入 URL / 点击链接 / 从书签打开）</strong></td>
 <td>正常加载流程</td>
 <td><strong>优先使用强缓存（Memory → Disk）</strong></td>
 </tr>
@@ -351,19 +351,19 @@
 <td><strong>跳过 Memory Cache，但会使用 Disk Cache；仍可能触发协商缓存（304）</strong></td>
 </tr>
 <tr>
-<td><strong>强制刷新（Ctrl + F5 &#x2F; Cmd + Shift + R）</strong></td>
+<td><strong>强制刷新（Ctrl + F5 / Cmd + Shift + R）</strong></td>
 <td>“硬刷新”，重新拉取</td>
 <td><strong>跳过所有缓存（Memory + Disk），直接向服务器请求新资源（200 from network）</strong></td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h2 id="HTTP缓存协议"><a href="#HTTP缓存协议" class="headerlink" title="HTTP缓存协议"></a>HTTP缓存协议</h2><h3 id="来自服务器的缓存指令"><a href="#来自服务器的缓存指令" class="headerlink" title="来自服务器的缓存指令"></a>来自服务器的缓存指令</h3><p>当客户端发出一个<code>get</code>请求到服务器，服务器可能有以下的内心活动：「你请求的这个资源，我很少会改动它，干脆你把它缓存起来吧，以后就不要来烦我了」</p>
 <p>为了表达这个美好的愿望，服务器在<strong>响应头</strong>中加入了以下内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: max-age=3600</span><br><span class="line">ETag: W/&quot;121-171ca289ebf&quot;</span><br><span class="line">Date: Thu, 30 Apr 2020 12:39:56 GMT</span><br><span class="line">Last-Modified: Thu, 30 Apr 2020 08:16:31 GMT</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: max-age=3600</span><br><span class="line">ETag: W/"121-171ca289ebf"</span><br><span class="line">Date: Thu, 30 Apr 2020 12:39:56 GMT</span><br><span class="line">Last-Modified: Thu, 30 Apr 2020 08:16:31 GMT</span><br></pre></td></tr></tbody></table></figure>
 
 <p>这个响应头表达了下面的信息：</p>
 <ul>
 <li><code>Cache-Control: max-age=3600</code>，我希望你把这个资源缓存起来，缓存时间是3600秒（1小时）</li>
-<li><code>ETag: W/&quot;121-171ca289ebf&quot;</code>，这个资源的编号是<code>W/&quot;121-171ca289ebf&quot;</code></li>
+<li><code>ETag: W/"121-171ca289ebf"</code>，这个资源的编号是<code>W/"121-171ca289ebf"</code></li>
 <li><code>Date: Thu, 30 Apr 2020 12:39:56 GMT</code>，我给你响应这个资源的服务器时间是格林威治时间<code>2020-04-30 12:39:56</code></li>
 <li><code>Last-Modified: Thu, 30 Apr 2020 08:16:31 GMT</code>，这个资源的上一次修改时间是格林威治时间<code>2020-04-30 08:16:31</code></li>
 </ul>
@@ -373,7 +373,7 @@
 <li>浏览器标记这次请求的请求方法和请求路径</li>
 <li>浏览器标记这次缓存的时间是3600秒</li>
 <li>浏览器记录服务器的响应时间是格林威治时间<code>2020-04-30 12:39:56</code></li>
-<li>浏览器记录服务器给予的资源编号<code>W/&quot;121-171ca289ebf&quot;</code></li>
+<li>浏览器记录服务器给予的资源编号<code>W/"121-171ca289ebf"</code></li>
 <li>浏览器记录资源的上一次修改时间是格林威治时间<code>2020-04-30 08:16:31</code></li>
 </ul>
 <h3 id="来自客户端的缓存指令"><a href="#来自客户端的缓存指令" class="headerlink" title="来自客户端的缓存指令"></a>来自客户端的缓存指令</h3><p>当客户端收拾好行李，准备再次请求<code>GET /index.js</code>时，它突然想起了一件事：我需要的东西在不在缓存里呢？此时，客户端会到缓存中去寻找是否有缓存的资源，寻找的过程如下：</p>

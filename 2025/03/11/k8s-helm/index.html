@@ -141,7 +141,7 @@
 <div class="article-banner-wrap slide-up"><div class="article banner top">
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a><span class="cap reading right">1129 字 · 预计阅读 4 分钟</span></div>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a><span class="cap reading right">1118 字 · 预计阅读 4 分钟</span></div>
 <div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-03-11T09:55:30.000Z">2025-03-11</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-04-26T09:28:57.000Z">2026-04-26</time></span></div>
 </div></div>
     
@@ -202,18 +202,18 @@
 <li><a target="_blank" rel="noopener" href="https://helm.sh/zh/docs/intro/install/">官方安装指南</a></li>
 <li>Helm 各个版本安装包：<a target="_blank" rel="noopener" href="https://github.com/helm/helm/releases">Helm Releases</a></li>
 </ul>
-<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://get.helm.sh/helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ tar -xvzf helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ <span class="built_in">mv</span> linux-amd64/helm /usr/local/bin/helm</span><br><span class="line">$ <span class="built_in">chmod</span> +x /usr/local/bin/helm</span><br><span class="line">$ helm version  <span class="comment"># 输出版本号即表示安装成功</span></span><br><span class="line"><span class="comment">######log info ########</span></span><br><span class="line">version.BuildInfo&#123;Version:<span class="string">&quot;v3.15.4&quot;</span>, GitCommit:<span class="string">&quot;fa9efb07d9d8debbb4306d72af76a383895aa8c4&quot;</span>, GitTreeState:<span class="string">&quot;clean&quot;</span>, GoVersion:<span class="string">&quot;go1.22.6&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://get.helm.sh/helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ tar -xvzf helm-v3.15.4-linux-amd64.tar.gz</span><br><span class="line">$ <span class="built_in">mv</span> linux-amd64/helm /usr/local/bin/helm</span><br><span class="line">$ <span class="built_in">chmod</span> +x /usr/local/bin/helm</span><br><span class="line">$ helm version  <span class="comment"># 输出版本号即表示安装成功</span></span><br><span class="line"><span class="comment">######log info ########</span></span><br><span class="line">version.BuildInfo{Version:<span class="string">"v3.15.4"</span>, GitCommit:<span class="string">"fa9efb07d9d8debbb4306d72af76a383895aa8c4"</span>, GitTreeState:<span class="string">"clean"</span>, GoVersion:<span class="string">"go1.22.6"</span>}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>安装helm命令自动补全脚本（非必须）</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://helm.sh/docs/helm/helm_completion/">文档参考</a></li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm completion bash &gt; /etc/bash_completion.d/helm</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm completion bash &gt; /etc/bash_completion.d/helm</span><br></pre></td></tr></tbody></table></figure>
 
 <ul>
 <li>执行 helm comp，就会自动补全为helm completion。</li>
 </ul>
-<h2 id="Helm使用"><a href="#Helm使用" class="headerlink" title="Helm使用"></a>Helm使用</h2><h2 id="Helm常用命令汇总"><a href="#Helm常用命令汇总" class="headerlink" title="Helm常用命令汇总"></a>Helm常用命令汇总</h2><table>
+<h2 id="Helm使用"><a href="#Helm使用" class="headerlink" title="Helm使用"></a>Helm使用</h2><h2 id="Helm常用命令汇总"><a href="#Helm常用命令汇总" class="headerlink" title="Helm常用命令汇总"></a>Helm常用命令汇总</h2><div class="md-table-scroll"><table>
 <thead>
 <tr>
 <th>命令</th>
@@ -270,7 +270,7 @@
 </tr>
 <tr>
 <td>pull</td>
-<td>从远程仓库中下载 Chart 并解压到本地，例如helm pull stable&#x2F;redis –untar</td>
+<td>从远程仓库中下载 Chart 并解压到本地，例如helm pull stable/redis –untar</td>
 </tr>
 <tr>
 <td>repo</td>
@@ -316,7 +316,7 @@
 <td>version</td>
 <td>查看 Helm 客户端版本</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 </article>
 
 <div class="article-tags slide-up"><a class="tag" href="/tags/k8s/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>k8s</a><a class="tag" href="/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>包管理工具</a></div>
