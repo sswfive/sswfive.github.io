@@ -1,0 +1,851 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.41.0" theme-name="Stellar" theme-version="1.41.0">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin><link rel="preconnect" href="https://unpkg.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>软件工程中的13条“潜规则”定律 - ssw5ive</title>
+
+  <meta name="description" content="一、帕金森定律(Parkinson’s law)定律：工作会不断扩展，填满所有可用的时间（任务总能拖到最后期限前完成？） 如果你给一个任务设定了1周的期限，它很可能就会花掉1周；如果设定了2周，它就可能花掉2周。这常常被用来解释为什么设定“伪造”的（有时甚至不合理的）截止日期似乎能提高效率—它迫使人们在有限的时间内集中精力。但这一定律也容易被滥用，导致不切实际的期望和压力。所以合理的设定Deadl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件工程中的13条“潜规则”定律">
+<meta property="og:url" content="https://sswfive.xyz/2025/05/12/2025-20250512-software-lows/">
+<meta property="og:site_name" content="ssw5ive">
+<meta property="og:description" content="一、帕金森定律(Parkinson’s law)定律：工作会不断扩展，填满所有可用的时间（任务总能拖到最后期限前完成？） 如果你给一个任务设定了1周的期限，它很可能就会花掉1周；如果设定了2周，它就可能花掉2周。这常常被用来解释为什么设定“伪造”的（有时甚至不合理的）截止日期似乎能提高效率—它迫使人们在有限的时间内集中精力。但这一定律也容易被滥用，导致不切实际的期望和压力。所以合理的设定Deadl">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-12T00:10:49.000Z">
+<meta property="article:modified_time" content="2026-08-16T15:59:29.000Z">
+<meta property="article:author" content="sswfive">
+<meta property="article:tag" content="软件工程">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="软件工程中的13条“潜规则”定律">
+  
+  
+  <meta name="keywords" content="软件工程">
+
+  <!-- feed -->
+  
+    
+
+    
+      
+        <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
+      
+    
+  
+
+  <link rel="preload" href="/css/main.css?v=1.41.0" as="style">
+  <link rel="stylesheet" href="/css/main.css?v=1.41.0">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2025-05-12T08:10:49+08:00","dateModified":"2026-08-16T23:59:29+08:00","datePublished":"2025-05-12T08:10:49+08:00","description":"一、帕金森定律(Parkinson’s law)定律：工作会不断扩展，填满所有可用的时间（任务总能拖到最后期限前完成？）\n如果你给一个任务设定了1周的期限，它很可能就会花掉1周；如果设定了2周，它就可能花掉2周。这常常被用来解释为什么设定“伪造”的（有时甚至不合理的）截止日期似乎能提高效率—它迫使人们在有限的时间内集中精力。但这一定律也容易被滥用，导致不切实际的期望和压力。所以合理的设定De...","headline":"软件工程中的13条“潜规则”定律","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2025/05/12/2025-20250512-software-lows/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2025/05/12/2025-20250512-software-lows/","keywords":"软件工程","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <style>
+  /* 中文排版优化 */
+  .md-text {
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+  .md-text p {
+    margin-bottom: 1em;
+  }
+  /* 标题间距优化 */
+  .md-text h2 {
+    margin-top: 2em;
+    margin-bottom: 0.8em;
+  }
+  .md-text h3 {
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+  }
+  /* 代码块优化 */
+  .md-text pre {
+    border-radius: 8px;
+  }
+  /* 行内代码优化 */
+  .md-text code {
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+  }
+  /* 引用块优化 */
+  .md-text blockquote {
+    border-radius: 8px;
+  }
+</style>
+
+
+  <!-- icons.yml 驱动的 CSS 装饰图标 -->
+  
+  
+  <style>:root {
+  --icon-h3-left: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20Solar%20by%20480%20Design%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M17.75%2019a.75.75%200%200%201-1.32.488l-6-7a.75.75%200%200%201%200-.976l6-7A.75.75%200%200%201%2017.75%205z%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20fill%3D%22currentColor%22%20fill-rule%3D%22evenodd%22%20d%3D%22M13.488%2019.57a.75.75%200%200%200%20.081-1.058L7.988%2012l5.581-6.512a.75.75%200%201%200-1.138-.976l-6%207a.75.75%200%200%200%200%20.976l6%207a.75.75%200%200%200%201.057.082%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  --icon-h3-right: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20Solar%20by%20480%20Design%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M6.25%2019a.75.75%200%200%200%201.32.488l6-7a.75.75%200%200%200%200-.976l-6-7A.75.75%200%200%200%206.25%205z%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20fill%3D%22currentColor%22%20fill-rule%3D%22evenodd%22%20d%3D%22M10.512%2019.57a.75.75%200%200%201-.081-1.058L16.012%2012l-5.581-6.512a.75.75%200%201%201%201.139-.976l6%207a.75.75%200%200%201%200%20.976l-6%207a.75.75%200%200%201-1.058.082%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  --icon-quote-left: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20BoxIcons%20Solid%20by%20Atisa%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M3.691%206.292C5.094%204.771%207.217%204%2010%204h1v2.819l-.804.161c-1.37.274-2.323.813-2.833%201.604A2.9%202.9%200%200%200%206.925%2010H10a1%201%200%200%201%201%201v7c0%201.103-.897%202-2%202H3a1%201%200%200%201-1-1v-5l.003-2.919c-.009-.111-.199-2.741%201.688-4.789M20%2020h-6a1%201%200%200%201-1-1v-5l.003-2.919c-.009-.111-.199-2.741%201.688-4.789C16.094%204.771%2018.217%204%2021%204h1v2.819l-.804.161c-1.37.274-2.323.813-2.833%201.604A2.9%202.9%200%200%200%2017.925%2010H21a1%201%200%200%201%201%201v7c0%201.103-.897%202-2%202%22%2F%3E%3C%2Fsvg%3E");
+  --icon-quote-right: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20BoxIcons%20Solid%20by%20Atisa%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M20.309%2017.708C22.196%2015.66%2022.006%2013.03%2022%2013V5a1%201%200%200%200-1-1h-6c-1.103%200-2%20.897-2%202v7a1%201%200%200%200%201%201h3.078a2.9%202.9%200%200%201-.429%201.396c-.508.801-1.465%201.348-2.846%201.624l-.803.16V20h1c2.783%200%204.906-.771%206.309-2.292m-11.007%200C11.19%2015.66%2010.999%2013.03%2010.993%2013V5a1%201%200%200%200-1-1h-6c-1.103%200-2%20.897-2%202v7a1%201%200%200%200%201%201h3.078a2.9%202.9%200%200%201-.429%201.396c-.508.801-1.465%201.348-2.846%201.624l-.803.16V20h1c2.783%200%204.906-.771%206.309-2.292%22%2F%3E%3C%2Fsvg%3E");
+}</style>
+  
+</head>
+<body><div id="l_cover"></div><div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left leftbar-card"><div class="sidebg"></div><div class="leftbar-container">
+
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">ssw5ive</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 一念净心花开遍世界</div></a></div></header>
+
+
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<div class="widgets">
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="leftbar-active-icon-grad" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item active themed" style="--item-grad:url(#menu-grad-post);--item-theme:#1BCDFC" title="文章" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>文章</span><span class="active-dot"></span>
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-post" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+</a><a class="nav-item themed" style="--item-grad:url(#menu-grad-notes);--item-theme:#3DC550" title="资源" href="/ziliao/"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>资源</span>
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-notes" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+</a><a class="nav-item themed" style="--item-grad:url(#menu-grad-friends);--item-theme:#FA6400" title="咖啡" href="/friends/"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.25 11.88c-.01.177.015.39.065.818l.401 3.428A5.515 5.515 0 0 0 8.193 21h3.614a5.52 5.52 0 0 0 5.028-3.25H19a3.75 3.75 0 1 0 0-7.5h-2.279a2 2 0 0 0-.618-.22c-.174-.03-.39-.03-.82-.03H4.717c-.43 0-.645 0-.819.03a2 2 0 0 0-1.646 1.85m15.487-.13q.008.065.012.13c.01.177-.014.39-.064.818l-.401 3.428l-.016.124H19a2.25 2.25 0 0 0 0-4.5z"/><path d="M10.53 1.47a.75.75 0 0 1 0 1.06a.666.666 0 0 0 0 .94a2.164 2.164 0 0 1 0 3.06a.75.75 0 0 1-1.06-1.06c.26-.26.26-.68 0-.94a2.164 2.164 0 0 1 0-3.06a.75.75 0 0 1 1.06 0m-4.5 1.5a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.116.116A.75.75 0 0 1 4.47 6.97l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0m9.5 0a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.117.116a.75.75 0 1 1-1.06-1.06l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0" opacity=".5"/></g></svg><span>咖啡</span>
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-friends" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+</a></nav>
+</div>
+
+
+<widget class="widget-wrapper slide-up recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/06/30/2026-20260630-agent-intent-recognition/"><span class="title">Agent系统开发手记（一）：意图识别</span></a><a class="item title" href="/2023/01/10/2023-20230110-how-to-focus/"><span class="title">有舍有得：个人战略上的聚焦和放弃</span></a><a class="item title" href="/2023/06/15/2023-20230615-three-elements-for-doing-things/"><span class="title">高效做事：理清楚、讲明白、做到位</span></a><a class="item title" href="/2024/03/28/2024-20240328-pyflink-usage/"><span class="title">PyFlink：python中的分布式计算框架</span></a><a class="item title" href="/2025/03/01/2025-20250301-stellar-blog-site/"><span class="title">遇见Stellar：我的博客站点的又一次翻新之旅</span></a><a class="item title" href="/2025/03/02/2025-20250302-setoff-again/"><span class="title">岁月无声：试着让记忆不再搁浅</span></a><a class="item title" href="/2025/03/06/2025-20250306-pylib-apscheduler/"><span class="title">APScheduler：Python中的任务管理工具</span></a><a class="item title" href="/2025/03/06/2025-20250306-pylib-awesome/"><span class="title">日积月累：优秀的Python库汇总</span></a><a class="item title" href="/2025/09/11/2025-20250308-pylib-pathlib/"><span class="title">用了pathlib后，我再也不想碰os.path了！</span></a><a class="item title" href="/2025/03/10/2025-20250310-docker-image-pull-failed/"><span class="title">Docker镜像无法拉取问题的解决方案</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg class="icon" data-icon="<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>" aria-hidden="true"></svg></a><a class="social" href="https:&#x2F;&#x2F;x.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg class="icon" data-icon="<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>" aria-hidden="true"></svg></a><a class="social" href="&#x2F;atom.xml" rel="noopener noreferrer"><svg class="icon" data-icon="<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.462v4.003c6.988 0 12.65 5.646 12.65 12.618H18.33c0-9.69-7.93-17.621-17.621-17.621H1.677zM1.677.014v4.005C13.486 4.019 23 13.527 23 25.339h4.005C27.005 11.336 15.677.014 1.677.014z"/></svg>" aria-hidden="true"></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg class="icon" data-icon="<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/></svg>" aria-hidden="true"></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+
+<div class="article-banner-wrap slide-up"><div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E4%B8%AA%E4%BA%BA%E9%9A%8F%E7%AC%94/">个人随笔</a><span class="cap reading right">3152 字 · 预计阅读 11 分钟</span></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-05-12T00:10:49.000Z">2025-05-12</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-16T15:59:29.000Z">2026-08-16</time></span></div>
+</div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>软件工程中的13条“潜规则”定律</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div></div>
+<article class="md-text content slide-up"><h2 id="一、帕金森定律-Parkinson’s-law"><a href="#一、帕金森定律-Parkinson’s-law" class="headerlink" title="一、帕金森定律(Parkinson’s law)"></a>一、帕金森定律(Parkinson’s law)</h2><p><strong>定律：工作会不断扩展，填满所有可用的时间（任务总能拖到最后期限前完成？）</strong></p>
+<p>如果你给一个任务设定了1周的期限，它很可能就会花掉1周；如果设定了2周，它就可能花掉2周。这常常被用来解释为什么设定“伪造”的（有时甚至不合理的）截止日期似乎能提高效率—它迫使人们在有限的时间内集中精力。但这一定律也容易被滥用，导致不切实际的期望和压力。所以合理的设定Deadlines是必要的，但要警惕其副作用，并结合对工作量的实际评估。它提醒我们时间管理的重要性，以及在没有明确时间约束时，任务可能无限膨胀的风险。</p>
+<h2 id="二、霍夫施塔特定律-Hofstadter’s-law"><a href="#二、霍夫施塔特定律-Hofstadter’s-law" class="headerlink" title="二、霍夫施塔特定律(Hofstadter’s law)"></a>二、霍夫施塔特定律(Hofstadter’s law)</h2><p><strong>定律：事情总是比你预期的要花费更长的时间，即使你已经考虑了霍夫施塔特定律（估时永远不准？）</strong></p>
+<p>这是对软件项目估时最困难最精准的自嘲。几乎所有的软件项目都会延期，即使你已经预留了缓冲时间。这一定律完美地平衡了帕金森定律：如果你因为帕金森定律而设置过短的Deadline，结果很可能是团队Burnout 或者和项目持续延期。软件工时评估及其困难，充满了不确定性。简单的缓冲时间往往不够。有效的项目管理需要在时间、资源和可协商的范围之间找到平衡，并依赖持续沟通和实践经验。</p>
+<h2 id="三、布鲁克斯定律-Brooks’-law"><a href="#三、布鲁克斯定律-Brooks’-law" class="headerlink" title="三、布鲁克斯定律(Brooks’ law)"></a>三、布鲁克斯定律(Brooks’ law)</h2><p><strong>定律：向一个已延期的软件项目中增加人力，将使其更加延迟（人月神话？）</strong></p>
+<p>这就是著名的“9个孕妇不能在一个月内生出一个婴儿”的道理。当项目延期，高层管理者常常会说：“这个项目很紧急，你可以充其他团队调配任何你需要的人！”但项目经理的内心可能是：“请别再打扰我们，让我们专心工作就好”。增加新人手需要时间成本：新人需要学习项目背景、熟悉代码库、建立沟通渠道。这些都会消耗现有团队成员的时间和精力，增加沟通开销，短期内甚至可能降低整体生产力。在项目后期，尤其是面临延期时，要极其谨慎地考虑增加人手。更好的策略可能是缩减范围，优化流程或给于现在团队更多不受干扰的时间。</p>
+<h2 id="四、康威定律-Conway’s-law"><a href="#四、康威定律-Conway’s-law" class="headerlink" title="四、康威定律(Conway’s law)"></a>四、康威定律(Conway’s law)</h2><p><strong>定律：组织输出的设计是这些组织沟通结构的副本。（你的架构是不是反映了你的团队结构？）</strong></p>
+<p>简单的说，你的系统架构往往是你团队组织结构的镜像。如果你的公司有独立的“前端团队”和“后端团队”，他们之间的沟通壁垒和协作模式，会直接反映在前后端接口的设计、数据格式的匹配度以及可能出下你的额外“胶水代码”上。这一定律告诉我们组织结构对技术决策的深远影响。反过来，我们可可以利用逆康威定律(Inverse Conway Maneuver)：为了达成期望的系统架构，主动调整团队的组织结构和沟通方式。例如，想要微服务化？那就组建更小、更自治、拥有端到端职责的团队。</p>
+<h2 id="五、坎宁安定律-Cunningham’s-law"><a href="#五、坎宁安定律-Cunningham’s-law" class="headerlink" title="五、坎宁安定律(Cunningham’s law)"></a>五、坎宁安定律(Cunningham’s law)</h2><p><strong>定律：在互联网上获得正确答案的最佳方式不是提问，而是发布一个错误的答案。（想得到反馈？先大胆“错”一个？）</strong></p>
+<p>这条定律巧妙地利用了人性—人们往往更乐于纠正错误，而不是回答问题。在工作中遇到阻碍时，可以巧妙运用这一定律。例如：与其提交一个请求单等待DevOps团队处理，不如自己尝试写一个（哪怕不完美的）解决方案，提交一个Pull Request.即使写的不对，通常也能更快地获得相关人员的注意和具体的修改建议。同时也促进了知识的传递和流程的改进。主动迈出第一步，哪怕是“错误”的一步，也比原地等待更有效。</p>
+<h2 id="六、斯特金定律-Sturgeon’s-law"><a href="#六、斯特金定律-Sturgeon’s-law" class="headerlink" title="六、斯特金定律(Sturgeon’s law)"></a>六、斯特金定律(Sturgeon’s law)</h2><p><strong>定律：任何事情（特别是人类创造出来的）90%都是垃圾。（你做的功能多少是真正有价值的？）</strong></p>
+<p>这条定律是对现实的残酷揭示，有点像加强版的“二八定律”。无论是代码、想法、功能特性，大部分都可能是平庸甚至无用的。你发布的大部分功能可能对用户价值寥寥，只有那一小部分核心功能支撑着你的产品。这要求我们具有批判性思维，用于质疑。作为开发者，不能仅仅被动接受产品经理给出的需求列表，而要思考功能的真正价值，避免将精力浪费在那“90%的垃圾”上。这也解释了为什么“10倍工程师”并非写10倍代码的人，而是能创造10倍价值的人——他们更懂得识别和聚焦那些重要的10%。</p>
+<h2 id="七、扎文斯基定律-Zawinski’s-law"><a href="#七、扎文斯基定律-Zawinski’s-law" class="headerlink" title="七、扎文斯基定律(Zawinski’s law)"></a>七、扎文斯基定律(Zawinski’s law)</h2><p><strong>定律：每一个程序都试图扩展直到它能阅读邮件为止。那些不能如此扩展的程序会被可以如此扩展的程序替代掉。（警惕功能蔓延！）</strong></p>
+<p>这条定律形象的描述了“功能蔓延”（feature creep)的现象。程序（或产品）总有一种内在的趋势去添加越来越多的功能，最终变得臃肿不堪。尤其在AI时代，给任何应用加上一个聊天机器人似乎都轻而易举。我们要警惕无休止的功能添加。保持产品的核心价值和简洁性至关重要。过多的功能不仅会增加复杂度和维护成本。还可能让用户（尤其是新用户）感到困惑，找不到真正需要的功能。需要有意识地做减法，抵制“什么都想要”的诱惑。</p>
+<h2 id="八、海勒姆定律-Hyrum’s-law-The-Law-of-Implicit-Interfaces"><a href="#八、海勒姆定律-Hyrum’s-law-The-Law-of-Implicit-Interfaces" class="headerlink" title="八、海勒姆定律(Hyrum’s law &#x2F; The Law of Implicit Interfaces)"></a>八、海勒姆定律(Hyrum’s law &#x2F; The Law of Implicit Interfaces)</h2><p><strong>定律：当你有足够多的API用户时，你在合同（文档）中承诺什么都无关紧要：你系统中所有可观察的行为都会被某些人所依赖。（接口行为不能轻易改动！）</strong></p>
+<p>这条定律对API的设计和维护者至关重要，它揭示了接口（API）维护的残酷现实。即使某个行为没有写在你的官方文档里，只要它是可以观察到的（比如某个特定的错误返回格式、某个未公开的内部端点、某个副作用），一旦有足够多的用户，就一定会有人依赖上这个行为。因此，API的设计和变更需要极其谨慎。任何微小的改动，即使是修复Bug或改动未承诺的行为，都有可能破坏依赖者的系统。这也解释了为什么移除那些依据斯特金定律属于“垃圾”的特性如此困难——总有用户在依赖它们。进行接口设计时，要尽可能减少可观察的副作用，明确接口契约，并为变更做好版本管理和兼容性策略。</p>
+<h2 id="九、普莱斯定律-Price’s-law-Price’s-Square-Root-Law"><a href="#九、普莱斯定律-Price’s-law-Price’s-Square-Root-Law" class="headerlink" title="九、普莱斯定律(Price’s law &#x2F; Price’s Square Root Law)"></a>九、普莱斯定律(Price’s law &#x2F; Price’s Square Root Law)</h2><p><strong>定律：在一个组织中，一半的工作是由占总人数平方根的人完成的。（团队里核心贡献者？</strong>）</p>
+<p>这一定律量化了贡献度的不平均分布。例如：在一个10人的团队里，大约3个人（√10 ≈3.16）完成了50%的工作；在一个100人的公司里，大约10个人（√100 &#x3D;10）的产出相当于剩余90人的总和。这也可以在一定程度上解释了为什么Twitter在大规模裁员后没有立即崩溃。团队规模的扩大并不会带来线性的产出增长。如果你想让产出翻倍，可能需要4倍的人员规模。这警示管理者在扩张团队时需要关注人效和组织结构，识别并赋能那些核心贡献者。</p>
+<h2 id="十、瑞格曼效应-The-Ringelmann-effect"><a href="#十、瑞格曼效应-The-Ringelmann-effect" class="headerlink" title="十、瑞格曼效应(The Ringelmann effect)"></a>十、瑞格曼效应(The Ringelmann effect)</h2><p><strong>定律：当团队的规模增加时，个体成员的生产力趋于下降（人多不一定力量大？）</strong></p>
+<p>这个效应早在1913年就被发现（通过拔河实验）。团队越大，个体平均贡献的力量越小。原因主要有两个：一是动机丧失（即：“社会惰性化”，觉得自己的贡献不重要或者难以衡量）；二是协调成本增加（沟通、同步、冲突解决等开销变大）。这也是对布鲁克斯定律和普莱斯定律的有力补充。保持小而精干的团队往往效率更高，尤其是在需要高度协作和创新的领域。明确的职责划分，有效的沟通机制和对个体贡献者的认可，有助于缓解瑞格曼效应。</p>
+<h2 id="十一、古德哈特定律-Goodhart’s-law"><a href="#十一、古德哈特定律-Goodhart’s-law" class="headerlink" title="十一、古德哈特定律(Goodhart’s law)"></a>十一、古德哈特定律(Goodhart’s law)</h2><p><strong>定律：当一个度量本身成为目标时，它就不再是一个好的度量。（警惕KPI陷阱！）</strong></p>
+<p>这是关于KPI和度量最著名的警告。一旦某个指标（如代码行数、PR数量、Bug数量、用户增长数、客户满意度）被设定为考核目标，人们就会想方设法“优化”这个指标本身，而不是优化它所代表的真实价值，最终导致该指标失去意义。例如，为了提高代码行数二写冗余代码，为了快速关闭工单而不是定位根因并从根因上解决问题。对任何单一的量化指标都要保持警惕。度量是必要的，但不能迷信指标。需要结合多个指标、定性分析以及对最终业务价值的判断，来全面评估绩效和进展。</p>
+<h2 id="十二、吉尔布定律-Gilb’s-law"><a href="#十二、吉尔布定律-Gilb’s-law" class="headerlink" title="十二、吉尔布定律(Gilb’s law)"></a>十二、吉尔布定律(Gilb’s law)</h2><p><strong>定律：任何你需要量化的东西，都可用用某种方式来衡量，这种衡量方式优于完全不衡量。（与上一条辩证看，还是要量化!）</strong></p>
+<p>这一定律是古德哈特定律的必要平衡。它告诉我们，尽管度量可能不完美、可能被“攻击”，但完全放弃量化是不可取的。“没有度量、就没有改进”。找到一个（哪怕是粗糙的）量化方法，总比凭感觉行事要好。因此，不要害怕古德哈特定律而彻底放弃量化。关键在于选择合适的度量维度（比如DORA指标、开发者体验DevEx等），持续迭代和优化度量方法，并结合业务背景进行解读。</p>
+<h2 id="十三、墨菲定律-Murphy’s-law"><a href="#十三、墨菲定律-Murphy’s-law" class="headerlink" title="十三、墨菲定律(Murphy’s law)"></a>十三、墨菲定律(Murphy’s law)</h2><p><strong>定律：任何可能会出错的事情，最终都会出错。（Anything that can go wrong will go wrong.）</strong></p>
+<p>这条定律大家再熟悉不过了。它提醒我们，那些看起来概率极小、懒得处理的边缘情况、那个被你忽略的潜在Bug.那一次“应该没问题”的侥幸操作，往往会在关键的时候给你带来麻烦。在软件工程中，要有敬畏之心。进行充分的测试（尤其是边缘情况的测试）建立健壮的错误处理和容错机制、实施灰度发布和监控告警。都是应对墨菲定律的必要手段。不要低估任何可能出错的环节。</p>
+<hr>
+<p>定律是启发，而非束缚，这13条定律，更像是前辈们用经验和教训为我们绘制的“认知地图”。它们并非严格的科学定理，但在理解软件开发这个复杂系统时，能为我们提供宝贵的视角和警示。将这些定律记在心中，不是为了给自己设定或找借口，而是为了让我们在日常的编码、设计、沟通和决策中，多一份清醒，多一份审慎，少踩一些坑，从而更从容地驾驭软件工程这门充满挑战与乐趣的艺术。</p>
+</article>
+
+<div class="article-tags slide-up"><a class="tag" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>软件工程</a></div>
+
+<div class="article-footer slide-up">
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https:&#x2F;&#x2F;sswfive.xyz&#x2F;2025&#x2F;05&#x2F;12&#x2F;2025-20250512-software-lows&#x2F;" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https%3A%2F%2Fsswfive.xyz%2F2025%2F05%2F12%2F2025-20250512-software-lows%2F"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2025/08/24/2025-20250824-pylib-faststream/">FastStream：Python中的异步消息处理利器</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/04/28/2025-20250428-docker-usage-skills/">一些常用的Docker使用技巧</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread with-fancybox"><svg class="icon" data-icon="default:loading" aria-hidden="true"></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.41.0">Stellar 1.41.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right"><div class="widgets">
+
+
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%B8%95%E9%87%91%E6%A3%AE%E5%AE%9A%E5%BE%8B-Parkinson%E2%80%99s-law"><span class="toc-text">一、帕金森定律(Parkinson’s law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%9C%8D%E5%A4%AB%E6%96%BD%E5%A1%94%E7%89%B9%E5%AE%9A%E5%BE%8B-Hofstadter%E2%80%99s-law"><span class="toc-text">二、霍夫施塔特定律(Hofstadter’s law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B8%83%E9%B2%81%E5%85%8B%E6%96%AF%E5%AE%9A%E5%BE%8B-Brooks%E2%80%99-law"><span class="toc-text">三、布鲁克斯定律(Brooks’ law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%BA%B7%E5%A8%81%E5%AE%9A%E5%BE%8B-Conway%E2%80%99s-law"><span class="toc-text">四、康威定律(Conway’s law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%9D%8E%E5%AE%81%E5%AE%89%E5%AE%9A%E5%BE%8B-Cunningham%E2%80%99s-law"><span class="toc-text">五、坎宁安定律(Cunningham’s law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%96%AF%E7%89%B9%E9%87%91%E5%AE%9A%E5%BE%8B-Sturgeon%E2%80%99s-law"><span class="toc-text">六、斯特金定律(Sturgeon’s law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%89%8E%E6%96%87%E6%96%AF%E5%9F%BA%E5%AE%9A%E5%BE%8B-Zawinski%E2%80%99s-law"><span class="toc-text">七、扎文斯基定律(Zawinski’s law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E6%B5%B7%E5%8B%92%E5%A7%86%E5%AE%9A%E5%BE%8B-Hyrum%E2%80%99s-law-The-Law-of-Implicit-Interfaces"><span class="toc-text">八、海勒姆定律(Hyrum’s law &#x2F; The Law of Implicit Interfaces)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E6%99%AE%E8%8E%B1%E6%96%AF%E5%AE%9A%E5%BE%8B-Price%E2%80%99s-law-Price%E2%80%99s-Square-Root-Law"><span class="toc-text">九、普莱斯定律(Price’s law &#x2F; Price’s Square Root Law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E7%91%9E%E6%A0%BC%E6%9B%BC%E6%95%88%E5%BA%94-The-Ringelmann-effect"><span class="toc-text">十、瑞格曼效应(The Ringelmann effect)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E5%8F%A4%E5%BE%B7%E5%93%88%E7%89%B9%E5%AE%9A%E5%BE%8B-Goodhart%E2%80%99s-law"><span class="toc-text">十一、古德哈特定律(Goodhart’s law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81%E5%90%89%E5%B0%94%E5%B8%83%E5%AE%9A%E5%BE%8B-Gilb%E2%80%99s-law"><span class="toc-text">十二、吉尔布定律(Gilb’s law)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%89%E3%80%81%E5%A2%A8%E8%8F%B2%E5%AE%9A%E5%BE%8B-Murphy%E2%80%99s-law"><span class="toc-text">十三、墨菲定律(Murphy’s law)</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg class="icon" data-icon="default:upup" aria-hidden="true"></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg class="icon" data-icon="default:tocomment" aria-hidden="true"></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  window.canonical["param"] = {"permalink":"https://sswfive.xyz/2025/05/12/2025-20250512-software-lows/","checklink":"/js/plugins/video.js"};
+  // Fix: Ensure page is at the correct top position on data load
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'auto';
+  }
+  (function() {
+    const scrollHandler = () => {
+      const wikiCover = document.querySelector('#l_cover .l_cover.wiki');
+      const startEl = document.getElementById('start');
+      // 存在有效锚点时，等待布局稳定后滚动到目标
+      // （浏览器原生锚点滚动发生在布局完成前，长文章的懒加载图片/异步组件会把目标顶偏）
+      const hash = window.location.hash;
+      if (hash.length > 1) {
+        let anchorId = hash.slice(1);
+        try {
+          anchorId = decodeURIComponent(anchorId);
+        } catch (e) {
+          // 片段含非法编码时按原样查找
+        }
+        const anchor = document.getElementById(anchorId);
+        if (anchor) {
+          // #start 锚点贴顶，不预留 offset；其余锚点与 TOC 点击滚动保持一致
+          const offset = anchorId === 'start' ? 0 : 32;
+          const targetY = () => anchor.getBoundingClientRect().top + window.scrollY - offset;
+          let timer = null;
+          let lastY = null;
+          let quiet = 0;
+          let attempts = 0;
+          // 记录最近一次资源加载完成时间，判断异步数据/图片是否仍在改变布局
+          let lastResourceTime = performance.now();
+          let observer = null;
+          try {
+            observer = new PerformanceObserver(function (list) {
+              lastResourceTime = performance.now();
+            });
+            observer.observe({ entryTypes: ['resource'] });
+          } catch (e) {}
+          // 统计进行中的 fetch/XHR 请求，异步组件（timeline 等）未完成前不判定布局稳定
+          let pendingRequests = 0;
+          const trackRequest = (fn) => {
+            pendingRequests++;
+            try {
+              const result = fn();
+              if (result && typeof result.finally === 'function') {
+                result.finally(function () {
+                  pendingRequests = Math.max(0, pendingRequests - 1);
+                });
+              } else {
+                pendingRequests = Math.max(0, pendingRequests - 1);
+              }
+              return result;
+            } catch (e) {
+              pendingRequests = Math.max(0, pendingRequests - 1);
+              throw e;
+            }
+          };
+          if (typeof window.fetch === 'function') {
+            const origFetch = window.fetch.bind(window);
+            window.fetch = function () {
+              const args = arguments;
+              return trackRequest(function () {
+                return origFetch.apply(window, args);
+              });
+            };
+          }
+          if (window.XMLHttpRequest) {
+            const origOpen = window.XMLHttpRequest.prototype.open;
+            const origSend = window.XMLHttpRequest.prototype.send;
+            window.XMLHttpRequest.prototype.open = function () {
+              this.__anchorTracked = true;
+              return origOpen.apply(this, arguments);
+            };
+            window.XMLHttpRequest.prototype.send = function () {
+              if (this.__anchorTracked) {
+                pendingRequests++;
+                const done = () => {
+                  if (this.__anchorTracked) {
+                    this.__anchorTracked = false;
+                    pendingRequests = Math.max(0, pendingRequests - 1);
+                  }
+                };
+                this.addEventListener('loadend', done);
+              }
+              return origSend.apply(this, arguments);
+            };
+          }
+          const cancel = () => {
+            if (timer !== null) {
+              clearInterval(timer);
+              timer = null;
+            }
+            if (observer !== null) {
+              try {
+                observer.disconnect();
+              } catch (e) {}
+            }
+          };
+          const adjust = () => {
+            const y = targetY();
+            const atTarget = Math.abs(window.scrollY - y) <= 2;
+            if (!atTarget || lastY === null || Math.abs(y - lastY) > 2) {
+              window.scrollTo({ top: y, behavior: 'instant' });
+              lastY = y;
+              quiet = 0;
+            } else {
+              quiet++;
+            }
+            attempts++;
+            const resourceQuiet = performance.now() - lastResourceTime > 3000;
+            // 位置连续 1.8 秒无变化、无进行中的请求且最近 3 秒无资源加载才视为稳定；最长等待 30 秒
+            if ((quiet >= 3 && pendingRequests === 0 && resourceQuiet) || attempts >= 50) {
+              cancel();
+            }
+          };
+          requestAnimationFrame(() => {
+            // 锚点链接打开时直接定位，不做动画；用户主动点击（如 TOC）仍走平滑滚动
+            window.scrollTo({ top: targetY(), behavior: 'instant' });
+            timer = setInterval(adjust, 600);
+          });
+          // 用户主动滚动时停止自动校正
+          window.addEventListener('wheel', cancel, { passive: true });
+          window.addEventListener('touchstart', cancel, { passive: true });
+          window.addEventListener('mousedown', cancel, { passive: true });
+          window.addEventListener('keydown', cancel, { passive: true });
+          return;
+        }
+      }
+      if (wikiCover && startEl) {
+        window.scrollTo(0, startEl.offsetTop);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+    if (document.readyState !== 'loading') scrollHandler();
+    else document.addEventListener('DOMContentLoaded', scrollHandler);
+  })();
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    },
+    // 图标由构建期生成的 /js/stellar-icons.js 填充（defer，早于 DOMContentLoaded 就绪）
+    icons: {},
+    services: {"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"},"rss":{"js":"/js/services/rss.js"}},
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"lazy_load":true,"cache_ttl":86400,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+    data_cache: {"enable":true,"default_ttl":3600,"ttl":{"giscus":600,"waline":600,"artalk":600,"memos":600,"memos-user":86400,"sites":86400,"friends":86400,"friends_and_posts":86400,"siteinfo":86400},"max_entries":200},
+  };
+  const deps = {
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js`
+  }
+
+  // 主题切换提示文案（供 /js/theme.js 使用）
+  window.__STELLAR_I18N__ = {
+    light: `切换到浅色模式`,
+    dark: `切换到深色模式`,
+    auto: `切换到跟随系统配色`,
+  };
+
+  // 搜索跳转高亮：URL 带 ?kw= 时按需加载，定位正文中的匹配词
+  (function () {
+    try {
+      if (!window.location.search) return;
+      if (!new URLSearchParams(window.location.search).has('kw')) return;
+      document.addEventListener('DOMContentLoaded', function () {
+        // utils 为全局词法绑定（顶层 const），不能通过 window.utils 访问
+        if (typeof utils === 'object' && typeof utils.js === 'function') {
+          utils.js('/js/search/highlight.js', { defer: true }).catch(function () {});
+        }
+      });
+    } catch (e) {}
+  })();
+</script>
+
+
+<!-- core: utils 必须同步加载（页尾内联插件片段在解析期即调用 utils.initPlugin） -->
+<script src="/js/utils.js?v=1.41.0"></script>
+<script defer src="/js/stellar-icons.js?v=1.41.0"></script>
+<!-- 非首屏图标异步加载：占位符替换依赖构建期生成的 js/icons/{ns}.json -->
+<script defer src="/js/icons.js?v=1.41.0" data-version="1.41.0"></script>
+<script src="/js/main.js?v=1.41.0" defer></script>
+<script defer src="/js/theme.js?v=1.41.0"></script>
+
+
+
+<script>
+  // 先声明配置与初始化监听，再异步加载库：
+  // 保证库执行时 lazyLoadOptions 已就绪，避免 async 脚本抢先执行导致自初始化失败
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      // {% image %} 没有 .lazy-box 包裹，回退到父元素查找加载图标
+      const wrapper = el.closest('.lazy-box') || el.parentElement;
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // 监听初始化事件，获取 LazyLoad 实例
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  // 兜底：动态插入的 .lazy 元素（如站点自定义脚本在 update() 之后追加的图片）
+  // 不会被 vanilla-lazyload 自动扫描，未注册的 img.lazy 会被 CSS opacity:0 永久隐藏。
+  // MutationObserver 检测到新增 .lazy 元素后自动调用 update() 重新注册。
+  if (window.MutationObserver) {
+    window.lazyMutationObserver = new MutationObserver((mutations) => {
+      if (window.lazyMutationObserver._pending) return;
+      const hasLazy = mutations.some((m) =>
+        Array.prototype.some.call(m.addedNodes, (node) =>
+          node.nodeType === 1 &&
+          (node.matches?.('.lazy') || !!node.querySelector?.('.lazy'))
+        )
+      );
+      if (!hasLazy) return;
+      window.lazyMutationObserver._pending = requestAnimationFrame(() => {
+        window.lazyMutationObserver._pending = null;
+        window.lazyLoadInstance?.update();
+      });
+    });
+    window.lazyMutationObserver.observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+</script>
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  
+  function initWaline() {
+    const el = document.getElementById('waline_container');
+    if (!el) return;
+
+    function load_waline() {
+      utils.css('/css/comments/waline.css?v=1.41.0');
+      utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+      utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    }
+    
+    util.viewportLazyload(el, load_waline);
+  }
+  
+  // Initialize on page load
+  initWaline();
+</script>
+
+
+
+
+<script defer src="/js/services.js?v=1.41.0"></script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = Object.assign({}, ctx.search, {
+      path: `/search.json`,
+      local_search: {"field":"all","path":"/search.json","content":true,"lazy_load":true,"cache_ttl":86400,"skip_search":null,"sort":"-date"},
+    });
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script>
+<script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    mode: `auto`,
+    selector: `.timenode p>img, .md-text img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  // auto=按需：页面存在可弹窗图片才加载；global=全局：所有页面加载
+  const isGlobal = ctx.fancybox.mode === 'global';
+  // 评论区图片（artalk/twikoo/waline）显示较小，自动支持放大；
+  // 仅绑定各评论服务的评论内容区，编辑器、表情面板等非内容区图片不弹窗
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon]):not([class*="emo"]), .with-fancybox .tk-content img:not([atk-emoticon]):not([class*="emo"]), .with-fancybox .wl-content img:not([atk-emoticon]):not([class*="emo"])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = isGlobal;
+  if (!needFancybox) {
+    needFancybox = document.querySelectorAll(selector).length !== 0;
+    if (!needFancybox) {
+      // 图片型评论系统容器：评论区图片小图需要 fancybox
+      const withFancybox = document.getElementsByClassName('with-fancybox');
+      if (withFancybox != undefined && withFancybox.length > 0) {
+        needFancybox = true;
+      }
+    }
+    if (!needFancybox) {
+      // 动态数据服务：memos 渲染的图片需要 fancybox
+      const memos = document.getElementsByClassName('ds-memos');
+      if (memos != undefined && memos.length > 0) {
+        needFancybox = true;
+      }
+    }
+  }
+  if (needFancybox) {
+    utils.css(`/css/plugins/fancybox.css?v=1.41.0`);
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      if (isGlobal) {
+        // 全局模式：正文所有非内联图片均可弹窗
+        selector += ', .md-text img:not(.inline):not([atk-emoticon])';
+      }
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  utils.initPlugin(() => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`/css/plugins/swiper.css?v=1.41.0`);
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  }, 'swiper');
+</script>
+<script>
+  utils.initPlugin(() => {
+    const els = Array.prototype.slice.call(document.querySelectorAll('.slide-up'));
+    if (els.length === 0) return;
+
+    // 吸顶/固定定位容器内的元素始终在视口内（或由容器控制显隐），
+    // 但 ScrollReveal 按文档坐标判断可见性，会误判这类元素为不可见，
+    // 导致带锚点/恢复滚动位置打开页面时组件一直不显示。
+    // 解决方式：以最近的吸顶/固定祖先作为该组元素的容器，
+    // 使可见性判断恒成立，入场动画保留且不再依赖主文档滚动。
+    const findPinnedContainer = (el) => {
+      let node = el;
+      while (node && node.nodeType === 1) {
+        const pos = window.getComputedStyle(node).position;
+        if (pos === 'sticky' || pos === 'fixed') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    // 最近的滚动容器（overflow-y: auto/scroll）
+    // 吸顶容器内可能存在内部滚动容器（如侧栏 .widgets），
+    // 若直接用吸顶容器做 reveal 容器，折叠区下方的元素永远不会进入视口，导致一直不显示。
+    const findScrollContainer = (el) => {
+      let node = el.parentElement;
+      while (node && node.nodeType === 1) {
+        const oy = window.getComputedStyle(node).overflowY;
+        if (oy === 'auto' || oy === 'scroll') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    const pinnedGroups = new Map(); // 容器 -> 元素列表
+    const targets = [];
+    els.forEach((el) => {
+      const pinned = findPinnedContainer(el);
+      if (pinned) {
+        // 优先使用最近的滚动容器，其次才用吸顶容器
+        const container = findScrollContainer(el) || pinned;
+        const group = pinnedGroups.get(container) || [];
+        group.push(el);
+        pinnedGroups.set(container, group);
+      } else {
+        targets.push(el);
+      }
+    });
+    if (pinnedGroups.size === 0 && targets.length === 0) return;
+
+    // 加载/初始化失败时兜底显示内容，避免整页空白
+    let fallbackApplied = false;
+    const revealFallback = () => {
+      if (fallbackApplied) return;
+      fallbackApplied = true;
+      document.documentElement.classList.add('sr-fallback');
+    };
+
+    const slideUp = {
+      distance: `8px`,
+      duration: `1000`,
+      interval: `100`,
+      scale: `1`,
+      opacity: 0,
+      easing: "ease-out"
+    };
+
+    // 看门狗：CDN 长时间无响应时强制显示内容
+    const watchdog = setTimeout(() => revealFallback(), 3000);
+
+    utils.js(`https://gcore.jsdelivr.net/npm/scrollreveal@4.0/dist/scrollreveal.min.js`, { defer: true })
+      .then(() => {
+        if (fallbackApplied) return;
+        if (typeof ScrollReveal !== 'function') {
+          revealFallback();
+          return;
+        }
+        try {
+          const sr = ScrollReveal();
+          if (targets.length > 0) {
+            sr.reveal(targets, { ...slideUp });
+          }
+          pinnedGroups.forEach((group, container) => {
+            sr.reveal(group, { ...slideUp, container: container });
+          });
+          clearTimeout(watchdog);
+        } catch (err) {
+          console.error('[Plugin scrollreveal] 初始化失败:', err);
+          revealFallback();
+        }
+      })
+      .catch((err) => {
+        console.error('[Plugin scrollreveal] 加载失败:', err);
+        revealFallback();
+      });
+  }, 'scrollreveal');
+</script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script defer type="text/javascript" src="https://gcore.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  utils.initPlugin(() => {
+    const els = document.querySelectorAll('.mermaid');
+    if (els.length > 0) {
+      utils.css(`/css/plugins/mermaid.css?v=1.41.0`);
+      const mermaid_config = {
+        startOnLoad: false,
+        theme:
+          "auto" == "auto" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "neutral",
+        logLevel: 3,
+        themeVariables: {
+          darkMode: true
+        },
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          curve: "linear"
+        },
+        gantt: {
+          axisFormat: "%Y/%m/%d"
+        },
+        sequence: {
+          actorMargin: 50
+        }
+      }
+      mermaid.initialize(mermaid_config);
+      mermaid.run();
+    }
+  }, 'mermaid');
+</script>
+<script>
+  utils.initPlugin(() => {
+    const codeElements = document.querySelectorAll('.code');
+    if (codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js', { defer: true }).then(() => {
+        if (typeof createCopyButtons === 'function') {
+          createCopyButtons(codeElements);
+        }
+      });
+    }
+  }, 'copycode');
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
