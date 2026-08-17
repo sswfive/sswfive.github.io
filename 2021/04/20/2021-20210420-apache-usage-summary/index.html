@@ -1,0 +1,1266 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.42.0" theme-name="Stellar" theme-version="1.42.0">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin><link rel="preconnect" href="https://unpkg.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Apache服务使用总结 - ssw5ive</title>
+
+  <meta name="description" content="一、Apache 概述与安装1. 介绍Apache HTTP Server（简称 Apache）是 Apache 软件基金会的一个开源的网页服务器，是世界使用排名第一的 Web 服务器软件。它可以运行在几乎所有广泛使用的计算机平台上，由于其跨平台和安全性被广泛使用，是最流行的 Web 服务器端软件之一。 Apache 的服务名称是 httpd。  Apache 官网 httpd 2.4 官方文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apache服务使用总结">
+<meta property="og:url" content="https://sswfive.xyz/2021/04/20/2021-20210420-apache-usage-summary/">
+<meta property="og:site_name" content="ssw5ive">
+<meta property="og:description" content="一、Apache 概述与安装1. 介绍Apache HTTP Server（简称 Apache）是 Apache 软件基金会的一个开源的网页服务器，是世界使用排名第一的 Web 服务器软件。它可以运行在几乎所有广泛使用的计算机平台上，由于其跨平台和安全性被广泛使用，是最流行的 Web 服务器端软件之一。 Apache 的服务名称是 httpd。  Apache 官网 httpd 2.4 官方文档">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-20T14:08:00.000Z">
+<meta property="article:modified_time" content="2026-08-17T17:36:23.000Z">
+<meta property="article:author" content="sswfive">
+<meta property="article:tag" content="Apache">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Web服务器">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="Apache服务使用总结">
+  
+  
+  <meta name="keywords" content="Apache,Linux,Web服务器">
+
+  <!-- feed -->
+  
+    
+
+    
+      
+        <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
+      
+    
+  
+
+  <link rel="preload" href="/css/main.css?v=1.42.0" as="style">
+  <link rel="stylesheet" href="/css/main.css?v=1.42.0">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2021-04-20T22:08:00+08:00","dateModified":"2026-08-18T01:36:23+08:00","datePublished":"2021-04-20T22:08:00+08:00","description":"一、Apache 概述与安装1. 介绍Apache HTTP Server（简称 Apache）是 Apache 软件基金会的一个开源的网页服务器，是世界使用排名第一的 Web 服务器软件。它可以运行在几乎所有广泛使用的计算机平台上，由于其跨平台和安全性被广泛使用，是最流行的 Web 服务器端软件之一。\nApache 的服务名称是 httpd。\n\nApache 官网\nhttpd 2.4 官方...","headline":"Apache服务使用总结","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2021/04/20/2021-20210420-apache-usage-summary/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2021/04/20/2021-20210420-apache-usage-summary/","keywords":"Apache, Linux, Web服务器","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <style>
+  /* 中文排版优化 */
+  .md-text {
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+  .md-text p {
+    margin-bottom: 1em;
+  }
+  /* 标题间距优化 */
+  .md-text h2 {
+    margin-top: 2em;
+    margin-bottom: 0.8em;
+  }
+  .md-text h3 {
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+  }
+  /* 代码块优化 */
+  .md-text pre {
+    border-radius: 8px;
+  }
+  /* 行内代码优化 */
+  .md-text code {
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+  }
+  /* 引用块优化 */
+  .md-text blockquote {
+    border-radius: 8px;
+  }
+  /* 社交图标居中优化 */
+  .social-wrap {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 0.25rem !important;
+  }
+  .social-wrap .social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+  }
+  .social-wrap .social svg,
+  .social-wrap .social img {
+    display: block;
+    margin: auto;
+    width: 1em;
+    height: 1em;
+  }
+</style>
+
+
+  <!-- icons.yml 驱动的 CSS 装饰图标 -->
+  
+  
+  <style>:root {
+  --icon-h3-left: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20Solar%20by%20480%20Design%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M17.75%2019a.75.75%200%200%201-1.32.488l-6-7a.75.75%200%200%201%200-.976l6-7A.75.75%200%200%201%2017.75%205z%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20fill%3D%22currentColor%22%20fill-rule%3D%22evenodd%22%20d%3D%22M13.488%2019.57a.75.75%200%200%200%20.081-1.058L7.988%2012l5.581-6.512a.75.75%200%201%200-1.138-.976l-6%207a.75.75%200%200%200%200%20.976l6%207a.75.75%200%200%200%201.057.082%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  --icon-h3-right: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20Solar%20by%20480%20Design%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M6.25%2019a.75.75%200%200%200%201.32.488l6-7a.75.75%200%200%200%200-.976l-6-7A.75.75%200%200%200%206.25%205z%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20fill%3D%22currentColor%22%20fill-rule%3D%22evenodd%22%20d%3D%22M10.512%2019.57a.75.75%200%200%201-.081-1.058L16.012%2012l-5.581-6.512a.75.75%200%201%201%201.139-.976l6%207a.75.75%200%200%201%200%20.976l-6%207a.75.75%200%200%201-1.058.082%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  --icon-quote-left: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20BoxIcons%20Solid%20by%20Atisa%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M3.691%206.292C5.094%204.771%207.217%204%2010%204h1v2.819l-.804.161c-1.37.274-2.323.813-2.833%201.604A2.9%202.9%200%200%200%206.925%2010H10a1%201%200%200%201%201%201v7c0%201.103-.897%202-2%202H3a1%201%200%200%201-1-1v-5l.003-2.919c-.009-.111-.199-2.741%201.688-4.789M20%2020h-6a1%201%200%200%201-1-1v-5l.003-2.919c-.009-.111-.199-2.741%201.688-4.789C16.094%204.771%2018.217%204%2021%204h1v2.819l-.804.161c-1.37.274-2.323.813-2.833%201.604A2.9%202.9%200%200%200%2017.925%2010H21a1%201%200%200%201%201%201v7c0%201.103-.897%202-2%202%22%2F%3E%3C%2Fsvg%3E");
+  --icon-quote-right: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20BoxIcons%20Solid%20by%20Atisa%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M20.309%2017.708C22.196%2015.66%2022.006%2013.03%2022%2013V5a1%201%200%200%200-1-1h-6c-1.103%200-2%20.897-2%202v7a1%201%200%200%200%201%201h3.078a2.9%202.9%200%200%201-.429%201.396c-.508.801-1.465%201.348-2.846%201.624l-.803.16V20h1c2.783%200%204.906-.771%206.309-2.292m-11.007%200C11.19%2015.66%2010.999%2013.03%2010.993%2013V5a1%201%200%200%200-1-1h-6c-1.103%200-2%20.897-2%202v7a1%201%200%200%200%201%201h3.078a2.9%202.9%200%200%201-.429%201.396c-.508.801-1.465%201.348-2.846%201.624l-.803.16V20h1c2.783%200%204.906-.771%206.309-2.292%22%2F%3E%3C%2Fsvg%3E");
+}</style>
+  
+</head>
+<body><div id="l_cover"></div><div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left leftbar-card"><div class="sidebg"></div><div class="leftbar-container">
+
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">ssw5ive</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 一念净心花开遍世界</div></a></div></header>
+
+
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<div class="widgets">
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="leftbar-active-icon-grad" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+<div class="nav-area">
+
+<nav class="menu dis-select"><a class="nav-item active themed" style="--item-grad:url(#menu-grad-post);--item-theme:#1BCDFC" title="文章" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg><span>文章</span><span class="active-dot"></span>
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-post" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+</a><a class="nav-item themed" style="--item-grad:url(#menu-grad-notes);--item-theme:#3DC550" title="资源" href="/ziliao/"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg><span>资源</span>
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-notes" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+</a><a class="nav-item themed" style="--item-grad:url(#menu-grad-friends);--item-theme:#FA6400" title="咖啡" href="/friends/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.25 11.88c-.01.177.015.39.065.818l.401 3.428A5.515 5.515 0 0 0 8.193 21h3.614a5.52 5.52 0 0 0 5.028-3.25H19a3.75 3.75 0 1 0 0-7.5h-2.279a2 2 0 0 0-.618-.22c-.174-.03-.39-.03-.82-.03H4.717c-.43 0-.645 0-.819.03a2 2 0 0 0-1.646 1.85m15.487-.13q.008.065.012.13c.01.177-.014.39-.064.818l-.401 3.428l-.016.124H19a2.25 2.25 0 0 0 0-4.5z"/><path d="M10.53 1.47a.75.75 0 0 1 0 1.06a.666.666 0 0 0 0 .94a2.164 2.164 0 0 1 0 3.06a.75.75 0 0 1-1.06-1.06c.26-.26.26-.68 0-.94a2.164 2.164 0 0 1 0-3.06a.75.75 0 0 1 1.06 0m-4.5 1.5a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.116.116A.75.75 0 0 1 4.47 6.97l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0m9.5 0a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.117.116a.75.75 0 1 1-1.06-1.06l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0" opacity=".5"/></g></svg><span>咖啡</span>
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-friends" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+</a></nav>
+</div>
+
+
+<widget class="widget-wrapper slide-up recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2021/04/20/2021-20210420-apache-usage-summary/"><span class="title">Apache服务使用总结</span></a><a class="item title" href="/2023/02/22/2023-20230222-restful-understanding/"><span class="title">关于RESTful的理解与应用</span></a><a class="item title" href="/2023/06/20/2023-20230620-capacity-governance/"><span class="title">容量治理</span></a><a class="item title" href="/2023/08/16/2023-20230816-machine-learning-basics/"><span class="title">机器学习基础</span></a><a class="item title" href="/2021/01/25/2021-20210125-numpy-data-analysis/"><span class="title">NumPy之数据分析</span></a><a class="item title" href="/2021/02/16/2021-20210216-pandas-data-analysis/"><span class="title">Pandas之数据分析</span></a><a class="item title" href="/2023/04/07/2023-20230407-oop-five-principles/"><span class="title">面向对象的五大基本原则</span></a><a class="item title" href="/2023/06/18/2023-20230618-docker-python-image-guide/"><span class="title">Docker构建Python镜像实践指南</span></a><a class="item title" href="/2025/12/23/2026-20251223-python-libraries-overview/"><span class="title">Python常用库汇总</span></a><a class="item title" href="/2021/04/26/2021-20210426-git-complete-guide/"><span class="title">Git使用完全指南：从基础到进阶</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg class="icon" data-icon="github:logo" aria-hidden="true"></svg></a><a class="social" href="https:&#x2F;&#x2F;x.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg class="icon" data-icon="x:logo" aria-hidden="true"></svg></a><a class="social" href="&#x2F;atom.xml" rel="noopener noreferrer"><svg class="icon" data-icon="default:rss" aria-hidden="true"></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg class="icon" data-icon="default:theme" aria-hidden="true"></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+
+<div class="article-banner-wrap slide-up"><div class="article banner top">
+  <div class="content">
+    
+    <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/%E8%BF%90%E7%BB%B4/">运维</a></div><div class="right"><span class="cap reading">3515 字 · 预计阅读 12 分钟</span></div></div><div class="meta-row">
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2021-04-20T14:08:00.000Z">2021-04-20</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-17T17:36:23.000Z">2026-08-18</time></span></div>
+</div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Apache服务使用总结</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div></div>
+<article class="md-text content slide-up"><h2 id="一、Apache-概述与安装"><a href="#一、Apache-概述与安装" class="headerlink" title="一、Apache 概述与安装"></a>一、Apache 概述与安装</h2><h3 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h3><p>Apache HTTP Server（简称 Apache）是 Apache 软件基金会的一个开源的网页服务器，是世界使用排名第一的 Web 服务器软件。它可以运行在几乎所有广泛使用的计算机平台上，由于其跨平台和安全性被广泛使用，是最流行的 Web 服务器端软件之一。</p>
+<p>Apache 的服务名称是 httpd。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://apache.org/">Apache 官网</a></li>
+<li><a target="_blank" rel="noopener" href="http://httpd.apache.org/docs/2.4/">httpd 2.4 官方文档</a></li>
+</ul>
+<h3 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h3><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install httpd</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="3-快速入门"><a href="#3-快速入门" class="headerlink" title="3. 快速入门"></a>3. 快速入门</h3><h4 id="3-1-Apache-基本管理"><a href="#3-1-Apache-基本管理" class="headerlink" title="3.1 Apache 基本管理"></a>3.1 Apache 基本管理</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Apache 状态管理</span></span><br><span class="line">systemctl start|stop|restart|reload|status httpd.service</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置 Apache 开机启动</span></span><br><span class="line">systemctl enable httpd.service</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置 Apache 开机不启动</span></span><br><span class="line">systemctl disable httpd.service</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="3-2-站点根目录"><a href="#3-2-站点根目录" class="headerlink" title="3.2 站点根目录"></a>3.2 站点根目录</h4><p>Apache 默认站点根目录：<code>/var/www/html</code></p>
+<h4 id="3-3-Apache-服务目录介绍"><a href="#3-3-Apache-服务目录介绍" class="headerlink" title="3.3 Apache 服务目录介绍"></a>3.3 Apache 服务目录介绍</h4><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/etc/httpd/</span><br><span class="line">├── conf                  # 主配置文件目录</span><br><span class="line">│   ├── httpd.conf</span><br><span class="line">│   └── magic</span><br><span class="line">├── conf.d                # 模块化配置文件目录（辅助配置文件目录）</span><br><span class="line">│   ├── autoindex.conf</span><br><span class="line">│   ├── README</span><br><span class="line">│   ├── userdir.conf</span><br><span class="line">│   └── welcome.conf</span><br><span class="line">├── conf.modules.d        # 模块配置文件目录</span><br><span class="line">│   ├── 00-base.conf</span><br><span class="line">│   ├── 00-dav.conf</span><br><span class="line">│   ├── 00-lua.conf</span><br><span class="line">│   ├── 00-mpm.conf</span><br><span class="line">│   ├── 00-proxy.conf</span><br><span class="line">│   ├── 00-systemd.conf</span><br><span class="line">│   └── 01-cgi.conf</span><br><span class="line">├── logs -&gt; /var/log/httpd         # 日志目录</span><br><span class="line">├── modules -&gt; /usr/lib64/httpd/modules  # 模块目录</span><br><span class="line">└── run -&gt; /run/httpd              # 运行时目录</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="3-4-Apache-用户"><a href="#3-4-Apache-用户" class="headerlink" title="3.4 Apache 用户"></a>3.4 Apache 用户</h4><p>Apache 在安装后会创建一个叫做 apache 的用户，Apache 的子进程就是用这个用户运行的。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tail -1 /etc/passwd</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="4-Apache-基本概念"><a href="#4-Apache-基本概念" class="headerlink" title="4. Apache 基本概念"></a>4. Apache 基本概念</h3><h4 id="4-1-Apache-进程"><a href="#4-1-Apache-进程" class="headerlink" title="4.1 Apache 进程"></a>4.1 Apache 进程</h4><ul>
+<li>Apache 默认监听 TCP 协议的 80 端口</li>
+<li>Apache 默认会启动一个主进程（控制进程）和多个子进程</li>
+</ul>
+<p>查看 Apache 相关进程：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep httpd</span><br></pre></td></tr></tbody></table></figure>
+
+<p>其中 root 运行的是主进程，apache 身份运行的是子进程，主进程的 ID 保存在 <code>/etc/httpd/run/httpd.pid</code> 文件内。真正用来处理 Web 请求的是子进程，主进程用来管理子进程。</p>
+<h4 id="4-2-Apache-模块"><a href="#4-2-Apache-模块" class="headerlink" title="4.2 Apache 模块"></a>4.2 Apache 模块</h4><ul>
+<li>Apache 是一个模块化设计的服务，核心只包含主要功能，扩展功能通过模块实现（可扩展性强，各功能依赖性低）</li>
+<li>不同模块可以被静态的编译进程序，也可以动态加载</li>
+<li>模块的动态加载通过 DSO（Dynamic Shared Object）实现</li>
+</ul>
+<p>查看模块：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">httpd -M</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="二、Apache-配置详解及实践"><a href="#二、Apache-配置详解及实践" class="headerlink" title="二、Apache 配置详解及实践"></a>二、Apache 配置详解及实践</h2><h3 id="1-配置文件说明"><a href="#1-配置文件说明" class="headerlink" title="1. 配置文件说明"></a>1. 配置文件说明</h3><h4 id="1-1-主配置文件位置"><a href="#1-1-主配置文件位置" class="headerlink" title="1.1 主配置文件位置"></a>1.1 主配置文件位置</h4><p><code>/etc/httpd/conf/httpd.conf</code></p>
+<h4 id="1-2-配置文件格式"><a href="#1-2-配置文件格式" class="headerlink" title="1.2 配置文件格式"></a>1.2 配置文件格式</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">directive（指令）    value（值）</span></span><br><span class="line">ServerRoot "/etc/httpd"</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="2-配置项详解"><a href="#2-配置项详解" class="headerlink" title="2. 配置项详解"></a>2. 配置项详解</h3><h4 id="2-1-ServerRoot"><a href="#2-1-ServerRoot" class="headerlink" title="2.1 ServerRoot"></a>2.1 ServerRoot</h4><p>服务所在目录的路径，不需要做修改。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerRoot "/etc/httpd"</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-2-Listen"><a href="#2-2-Listen" class="headerlink" title="2.2 Listen"></a>2.2 Listen</h4><p>监听端口。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Listen 80</span><br></pre></td></tr></tbody></table></figure>
+
+<p>配置语法：<code>Listen [IP-address:]portnumber [protocol]</code></p>
+<p>检查配置的语法是否正确：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">httpd -t</span><br></pre></td></tr></tbody></table></figure>
+
+<p>实践：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1. 修改端口号</span></span><br><span class="line">Listen 8080</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2. Listen 指令可重复出现多次</span></span><br><span class="line">Listen 8080</span><br><span class="line">Listen 80</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">注意：修改后必须重启服务才可生效</span></span><br><span class="line">systemctl restart httpd.service</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-3-Include"><a href="#2-3-Include" class="headerlink" title="2.3 Include"></a>2.3 Include</h4><p>导入配置文件。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Include conf.modules.d/*.conf</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-4-IncludeOptional"><a href="#2-4-IncludeOptional" class="headerlink" title="2.4 IncludeOptional"></a>2.4 IncludeOptional</h4><p>和 Include 功能相同，都是导入配置文件。区别是 IncludeOptional 导入的路径有问题时会被忽略，不会报错。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IncludeOptional conf.d/*.conf</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-5-User-和-Group"><a href="#2-5-User-和-Group" class="headerlink" title="2.5 User 和 Group"></a>2.5 User 和 Group</h4><p>httpd 服务子进程启动时的账号和组，不需要修改。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User apache</span><br><span class="line">Group apache</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-6-ServerAdmin"><a href="#2-6-ServerAdmin" class="headerlink" title="2.6 ServerAdmin"></a>2.6 ServerAdmin</h4><p>服务运行时的管理员邮箱地址。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerAdmin root@localhost</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-7-DocumentRoot"><a href="#2-7-DocumentRoot" class="headerlink" title="2.7 DocumentRoot"></a>2.7 DocumentRoot</h4><p>站点根目录。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DocumentRoot "/var/www/html"</span><br></pre></td></tr></tbody></table></figure>
+
+<p>实践：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改站点根目录</span></span><br><span class="line">DocumentRoot "/www"</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">同时需要修改 Directory 标签</span></span><br><span class="line">&lt;Directory "/www"&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-8-Directory"><a href="#2-8-Directory" class="headerlink" title="2.8 Directory"></a>2.8 Directory</h4><p>确定访问目录位置，标签配置。标签内是设置针对该目录的访问权限。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory "/var/www/html"&gt;</span><br><span class="line">    Options Indexes FollowSymLinks</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>Options</strong>：访问时展示形式</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Indexes</td>
+<td>当前目录下没有默认页面，就显示目录结构</td>
+</tr>
+<tr>
+<td>FollowSymLinks</td>
+<td>默认设置，允许访问符号链接</td>
+</tr>
+<tr>
+<td>None</td>
+<td>关闭所有选项</td>
+</tr>
+</tbody></table></div>
+<p><strong>AllowOverride</strong>：<code>.htaccess</code> 文件中允许的指令类型</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>All</td>
+<td>全部指令</td>
+</tr>
+<tr>
+<td>None</td>
+<td>默认值，不允许</td>
+</tr>
+<tr>
+<td>directive-type</td>
+<td>具体指令类型</td>
+</tr>
+</tbody></table></div>
+<p><strong>Require</strong>：访问权限设置</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Require all granted</td>
+<td>无条件允许访问</td>
+</tr>
+<tr>
+<td>Require all denied</td>
+<td>无条件拒绝访问</td>
+</tr>
+<tr>
+<td>Require method http-method</td>
+<td>仅允许给定的 HTTP 方法访问</td>
+</tr>
+<tr>
+<td>Require ip 10 172.20 192.168.2</td>
+<td>指定 IP 地址范围的客户端可以访问</td>
+</tr>
+</tbody></table></div>
+<p>实践：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1. 去掉 Indexes 查看效果</span></span><br><span class="line">&lt;Directory "/var/www/html"&gt;</span><br><span class="line">    Options FollowSymLinks</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2. 去掉 FollowSymLinks</span></span><br><span class="line">&lt;Directory "/var/www/html"&gt;</span><br><span class="line">    Options None</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3. 使用 Require</span></span><br><span class="line">&lt;Directory "/var/www/html"&gt;</span><br><span class="line">    Options None</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require all denied          # 无条件拒绝访问</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">&lt;Directory "/var/www/html"&gt;</span><br><span class="line">    Options None</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require method POST         # 仅允许 POST 请求</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-9-IfModule"><a href="#2-9-IfModule" class="headerlink" title="2.9 IfModule"></a>2.9 IfModule</h4><p>以特定模块存在与否为条件的处理指令。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule dir_module&gt;</span><br><span class="line">    DirectoryIndex index.html   # 站点默认展示页</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>语法：<code>DirectoryIndex disabled | local-url [local-url] …</code></p>
+<p>默认：<code>DirectoryIndex index.html</code></p>
+<h4 id="2-10-Files"><a href="#2-10-Files" class="headerlink" title="2.10 Files"></a>2.10 Files</h4><p>包含适用于匹配文件名的指令。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Files ".ht*"&gt;</span><br><span class="line">    Require all denied          # 以 .ht 开头的文件拒绝提供访问</span><br><span class="line">&lt;/Files&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-11-ErrorLog"><a href="#2-11-ErrorLog" class="headerlink" title="2.11 ErrorLog"></a>2.11 ErrorLog</h4><p>错误日志记录位置。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ErrorLog "logs/error_log"</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-12-LogLevel"><a href="#2-12-LogLevel" class="headerlink" title="2.12 LogLevel"></a>2.12 LogLevel</h4><p>错误日志记录级别。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LogLevel warn</span><br></pre></td></tr></tbody></table></figure>
+
+<p>错误级别选项：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>级别</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>emerg</td>
+<td>紧急情况，系统无法使用</td>
+</tr>
+<tr>
+<td>alert</td>
+<td>必须立即采取行动</td>
+</tr>
+<tr>
+<td>crit</td>
+<td>关键条件</td>
+</tr>
+<tr>
+<td>error</td>
+<td>错误条件</td>
+</tr>
+<tr>
+<td>warn</td>
+<td>警告条件</td>
+</tr>
+<tr>
+<td>notice</td>
+<td>正常但重要的情况</td>
+</tr>
+<tr>
+<td>info</td>
+<td>基本信息</td>
+</tr>
+<tr>
+<td>debug</td>
+<td>调试级消息</td>
+</tr>
+</tbody></table></div>
+<h4 id="2-13-IfModule-log-config-module"><a href="#2-13-IfModule-log-config-module" class="headerlink" title="2.13 IfModule log_config_module"></a>2.13 IfModule log_config_module</h4><p>访问日志配置模块。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule log_config_module&gt;</span><br><span class="line">    # 访问日志3种格式：combined、common、combinedio</span><br><span class="line">    LogFormat "%h %l %u %t \"%r\" %&gt;s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined</span><br><span class="line">    LogFormat "%h %l %u %t \"%r\" %&gt;s %b" common</span><br><span class="line"></span><br><span class="line">    &lt;IfModule logio_module&gt;</span><br><span class="line">      LogFormat "%h %l %u %t \"%r\" %&gt;s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio</span><br><span class="line">    &lt;/IfModule&gt;</span><br><span class="line"></span><br><span class="line">    # 确定访问日志位置和使用哪种日志格式</span><br><span class="line">    CustomLog "logs/access_log" combined</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>日志格式说明：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>标识</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%h</td>
+<td>客户端 IP</td>
+</tr>
+<tr>
+<td>%l</td>
+<td>Remote User，通常为一个减号</td>
+</tr>
+<tr>
+<td>%u</td>
+<td>Remote user（非登录访问时，其为一个减号）</td>
+</tr>
+<tr>
+<td>%t</td>
+<td>服务器收到请求时的时间</td>
+</tr>
+<tr>
+<td>%r</td>
+<td>请求报文的首行，记录了此次请求的方法、URL 以及协议版本</td>
+</tr>
+<tr>
+<td>%&gt;s</td>
+<td>响应状态码</td>
+</tr>
+<tr>
+<td>%b</td>
+<td>响应报文的大小（单位是字节），不包括响应报文的 HTTP 首部</td>
+</tr>
+<tr>
+<td>%{Referer}i</td>
+<td>请求报文中首部 Referer 的值，即从哪个页面跳转至当前页面</td>
+</tr>
+<tr>
+<td>%{User-Agent}i</td>
+<td>请求报文中首部 User-Agent 的值，即发出请求的应用程序</td>
+</tr>
+</tbody></table></div>
+<h4 id="2-14-IfModule-alias-module"><a href="#2-14-IfModule-alias-module" class="headerlink" title="2.14 IfModule alias_module"></a>2.14 IfModule alias_module</h4><p>文档映射。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule alias_module&gt;</span><br><span class="line">    # Redirect: 外部重定向</span><br><span class="line">    # Redirect permanent /foo http://www.example.com/bar</span><br><span class="line"></span><br><span class="line">    # Alias: 将 URL 映射到文件系统位置</span><br><span class="line">    # Alias /webpath /full/filesystem/path</span><br><span class="line"></span><br><span class="line">    # ScriptAlias: 将 URL 映射到 CGI 脚本</span><br><span class="line">    ScriptAlias /cgi-bin/ "/var/www/cgi-bin/"</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><strong>Redirect</strong>：外部重定向</li>
+<li><strong>Alias</strong>：将 URL 映射到文件系统位置</li>
+<li><strong>ScriptAlias</strong>：将 URL 映射到 CGI 脚本</li>
+</ul>
+<h4 id="2-15-AddDefaultCharset"><a href="#2-15-AddDefaultCharset" class="headerlink" title="2.15 AddDefaultCharset"></a>2.15 AddDefaultCharset</h4><p>响应内容的编码格式。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddDefaultCharset UTF-8</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="三、虚拟主机配置"><a href="#三、虚拟主机配置" class="headerlink" title="三、虚拟主机配置"></a>三、虚拟主机配置</h2><p>虚拟主机指的是在单一机器上运行多个网站。虚拟主机可以”基于 IP”（每个 IP 一个站点），或者”基于域名”（每个 IP 多个站点）。这些站点运行在同一物理服务器上。</p>
+<p>虚拟主机配置语法：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;VirtualHost addr[:port] [addr[:port]] ...&gt;</span><br><span class="line">    ServerName    ...</span><br><span class="line">    DocumentRoot  ...</span><br><span class="line">    ...</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="1-基于域名"><a href="#1-基于域名" class="headerlink" title="1. 基于域名"></a>1. 基于域名</h3><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置文件：/etc/httpd/conf.d/iplinux1.conf</span></span><br><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">  DocumentRoot "/var/www/iplinux1/"</span><br><span class="line">  ServerName www.iplinux1.org</span><br><span class="line">  ErrorLog "iplinux1-error_log"</span><br><span class="line">  TransferLog "iplinux1-access_log"</span><br><span class="line">  &lt;Directory "/var/www/iplinux1"&gt;</span><br><span class="line">    Options Indexes FollowSymLinks</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require all granted</span><br><span class="line">  &lt;/Directory&gt;</span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置文件：/etc/httpd/conf.d/iplinux2.conf</span></span><br><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">  DocumentRoot "/var/www/iplinux2/"</span><br><span class="line">  ServerName www.iplinux2.org</span><br><span class="line">  ErrorLog "iplinux2-error_log"</span><br><span class="line">  TransferLog "iplinux2-access_log"</span><br><span class="line">  &lt;Directory "/var/www/iplinux2"&gt;</span><br><span class="line">    Options Indexes FollowSymLinks</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require all granted</span><br><span class="line">  &lt;/Directory&gt;</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="2-基于-IP"><a href="#2-基于-IP" class="headerlink" title="2. 基于 IP"></a>2. 基于 IP</h3><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置文件：/etc/httpd/conf.d/iplinux1.conf</span></span><br><span class="line">&lt;VirtualHost 172.16.99.251&gt;</span><br><span class="line">  DocumentRoot "/var/www/iplinux1/"</span><br><span class="line">  ServerName www.iplinux1.org</span><br><span class="line">  ErrorLog "iplinux1-error_log"</span><br><span class="line">  TransferLog "iplinux1-access_log"</span><br><span class="line">  &lt;Directory "/var/www/iplinux1"&gt;</span><br><span class="line">    Options Indexes FollowSymLinks</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require all granted</span><br><span class="line">  &lt;/Directory&gt;</span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置文件：/etc/httpd/conf.d/iplinux2.conf</span></span><br><span class="line">&lt;VirtualHost 172.16.99.252&gt;</span><br><span class="line">  DocumentRoot "/var/www/iplinux2/"</span><br><span class="line">  ServerName www.iplinux2.org</span><br><span class="line">  ErrorLog "iplinux2-error_log"</span><br><span class="line">  TransferLog "iplinux2-access_log"</span><br><span class="line">  &lt;Directory "/var/www/iplinux2"&gt;</span><br><span class="line">    Options Indexes FollowSymLinks</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require all granted</span><br><span class="line">  &lt;/Directory&gt;</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="四、Rewrite-重写"><a href="#四、Rewrite-重写" class="headerlink" title="四、Rewrite 重写"></a>四、Rewrite 重写</h2><p><code>mod_rewrite</code> 提供了基于正则表达式规则动态修改传入的请求 URL 的方法，可以定义任意的 URL 映射到内部的站点文件中。</p>
+<h3 id="1-Rewrite-需求"><a href="#1-Rewrite-需求" class="headerlink" title="1. Rewrite 需求"></a>1. Rewrite 需求</h3><p>在使用 Apache 做 Web 服务器时，有时候出于 SEO 优化或者是 URL 路径的简洁，需要将输入的 URL 转换成更为友好的 URL，这时候就可以使用 Rewrite 重写功能。</p>
+<p>使用 Rewrite 功能首先需要开启 mod_rewrite 模块，yum 安装的 Apache 默认已经开启。</p>
+<h3 id="2-Rewrite-使用详解"><a href="#2-Rewrite-使用详解" class="headerlink" title="2. Rewrite 使用详解"></a>2. Rewrite 使用详解</h3><p>Rewrite 规则可以在 Directory 指令中进行配置。</p>
+<p>Rewrite 学习的三个核心是 <strong>RewriteEngine</strong>、<strong>RewriteCond</strong>、<strong>RewriteRule</strong>。</p>
+<h4 id="2-1-RewriteEngine"><a href="#2-1-RewriteEngine" class="headerlink" title="2.1 RewriteEngine"></a>2.1 RewriteEngine</h4><p>Rewrite 功能的总开关，用来开启 Rewrite 重写功能。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RewriteEngine on</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="2-2-RewriteCond"><a href="#2-2-RewriteCond" class="headerlink" title="2.2 RewriteCond"></a>2.2 RewriteCond</h4><p>RewriteCond 定义规则条件，当请求满足 RewriteCond 配置的条件时，执行后面的 RewriteRule 语句。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RewriteEngine on</span><br><span class="line">RewriteCond %{HTTP_USER_AGENT} ^Mozilla//5/.0.*</span><br><span class="line">RewriteRule index index.html</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上面的规则表示：如果匹配到 HTTP 请求中 HTTP_USER_AGENT 是 Mozilla//5/.0.* 开头的，访问 index 时会自动访问到 index.html。</p>
+<p>RewriteCond 和 RewriteRule 是上下对应的关系，可以有 1 个或多个 RewriteCond 来匹配一个 RewriteRule。</p>
+<p><strong>RewriteCond 常见的 HTTP 请求匹配方式：</strong></p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RewriteCond %{HTTP_REFERER} (www.mytest.com)</span><br><span class="line">RewriteCond %{HTTP_USER_AGENT} ^Mozilla//5/.0.*</span><br><span class="line">RewriteCond %{REQUEST_FILENAME} !-f</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>HTTP_REFERER</strong>：判断访问者的来源</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RewriteCond %{HTTP_REFERER} (www.mytest.com)</span><br><span class="line">RewriteRule (.*)$ mytest.html</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果访问的上一个页面是 www.mytest.com，无论当前访问的是哪个页面，都会跳转到 mytest.html</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>REQUEST_FILENAME</strong>：匹配当前访问的文件</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RewriteCond %{REQUEST_FILENAME} !-f</span><br><span class="line">RewriteCond %{REQUEST_FILENAME} !-d</span><br><span class="line">RewriteRule ^news/sports/(\d+)\.html web/index\.php?c=news&amp;a=sports&amp;num=$1 [QSA,NC,L]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">访问 news/sports/123.html，真实访问的是 web/index.php?c=news&amp;a=sports&amp;num=123</span></span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><code>-f</code>：是否是一个文件，判断是否不是一个文件：<code>!-f</code></li>
+<li><code>-d</code>：是否是一个目录，判断是否不是一个目录：<code>!-d</code></li>
+<li><code>$1</code>：表示第一个参数</li>
+</ul>
+<h4 id="2-3-RewriteRule"><a href="#2-3-RewriteRule" class="headerlink" title="2.3 RewriteRule"></a>2.3 RewriteRule</h4><p>RewriteRule 是配合 RewriteCond 一起使用的，是 RewriteCond 成功匹配后的具体执行过程。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RewriteRule Pattern Substitution [flags]</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><code>Pattern</code>：正则匹配</li>
+<li><code>Substitution</code>：匹配的替换内容</li>
+<li><code>[flags]</code>：参数限制</li>
+</ul>
+<p>常用 flags：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QSA</td>
+<td>qsappend（追加查询字符串），强制重写引擎在已有的替换字符串中追加一个查询字符串，而不是简单的替换</td>
+</tr>
+<tr>
+<td>NC</td>
+<td>nocase（忽略大小写），使 Pattern 忽略大小写</td>
+</tr>
+<tr>
+<td>R</td>
+<td>redirect（强制重定向），匹配 Pattern 后，Substitution 是一个 HTTP 地址 URL</td>
+</tr>
+<tr>
+<td>L</td>
+<td>last（结尾规则），已经匹配到了就立即停止，不再匹配下面的 Rule，类似于编程语言中的 break</td>
+</tr>
+</tbody></table></div>
+<h2 id="五、Apache-日志切割"><a href="#五、Apache-日志切割" class="headerlink" title="五、Apache 日志切割"></a>五、Apache 日志切割</h2><h3 id="1-为什么要进行日志切割"><a href="#1-为什么要进行日志切割" class="headerlink" title="1. 为什么要进行日志切割"></a>1. 为什么要进行日志切割</h3><p>随着网站访问量越来越大，Web 服务产生的日志文件也会越来越大，这个时候日志文件不仅占用了大量的服务器空间，而且日志分析也很麻烦。</p>
+<h3 id="2-日志切割两种方式"><a href="#2-日志切割两种方式" class="headerlink" title="2. 日志切割两种方式"></a>2. 日志切割两种方式</h3><h4 id="2-1-rotatelogs"><a href="#2-1-rotatelogs" class="headerlink" title="2.1 rotatelogs"></a>2.1 rotatelogs</h4><p>rotatelogs 是 Apache 自带的日志切割工具。</p>
+<p>使用 rotatelogs 每天记录一个日志文件：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编辑 httpd 主配置文件 /etc/httpd/conf/httpd.conf</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">注释下面两行</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">ErrorLog <span class="string">"logs/error_log"</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">CustomLog <span class="string">"logs/access_log"</span> combined</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加下面两行</span></span><br><span class="line">ErrorLog "|/usr/sbin/rotatelogs -l logs/error_%Y%m%d.log 86400"</span><br><span class="line">CustomLog "|/usr/sbin/rotatelogs -l logs/access_%Y%m%d.log 86400" combined</span><br></pre></td></tr></tbody></table></figure>
+
+<p>说明：86400 为轮转的时间，单位为秒（即一天）。</p>
+<h4 id="2-2-cronolog"><a href="#2-2-cronolog" class="headerlink" title="2.2 cronolog"></a>2.2 cronolog</h4><p>Cronolog 是一款日志轮循（rotation）工具，可以用它来把 Apache、Tomcat 等 Web 服务器上输出的日志切分成按日或月保存的文件。</p>
+<p>安装：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar zxf cronolog-1.6.2.tar.gz</span><br><span class="line">cd cronolog-1.6.2/</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用 cronolog 每天记录一个日志文件：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ErrorLog "|/usr/local/sbin/cronolog logs/error-%Y%m%d.log"</span><br><span class="line">CustomLog "|/usr/local/sbin/cronolog logs/access-%Y%m%d.log" combined</span><br></pre></td></tr></tbody></table></figure>
+
+<p>按小时轮询生成日志：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CustomLog "|/usr/local/sbin/cronolog logs/access_%Y%m%d%H.log" combined</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h3><p>推荐使用 cronolog，因为 cronolog 稳定性高且配置简单。</p>
+<h2 id="六、Apache-防盗链"><a href="#六、Apache-防盗链" class="headerlink" title="六、Apache 防盗链"></a>六、Apache 防盗链</h2><p>防盗链就是防止别人网站代码里调用我们服务器的图片、文件、视频等资源。如果别人盗用我们的资源，会增加服务器的带宽压力。</p>
+<p>通过防盗链的方式，可以设置限制第三方的站点通过引用的方式获取服务器上的图片，如果想要获取本站点的图片数据，只能通过本站点访问获取，这样也有效的减少了服务器的资源消耗。</p>
+<h3 id="1-Rewrite-实现防盗链"><a href="#1-Rewrite-实现防盗链" class="headerlink" title="1. Rewrite 实现防盗链"></a>1. Rewrite 实现防盗链</h3><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RewriteEngine On</span><br><span class="line">RewriteCond %{HTTP_REFERER} !^http://www.myitcast.com/.*$ [NC]</span><br><span class="line">RewriteCond %{HTTP_REFERER} !^http://www.myitcast.com$ [NC]</span><br><span class="line">RewriteCond %{HTTP_REFERER} !^http://myitcast.com/.*$ [NC]</span><br><span class="line">RewriteCond %{HTTP_REFERER} !^http://myitcast.com$ [NC]</span><br><span class="line">RewriteRule .*\.(gif|jpg|swf)$ http://www.myitcast.com/link.png [R,NC]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>第 1 条：开启 Rewrite 重写</li>
+<li>第 2~5 条：开启受信任的站点，能够访问站点的图片资源</li>
+<li>第 6 条：访问站点的 gif|jpg|swf 等类型资源时，跳转到指定图片</li>
+</ul>
+<h3 id="2-SetEnvIfNoCase"><a href="#2-SetEnvIfNoCase" class="headerlink" title="2. SetEnvIfNoCase"></a>2. SetEnvIfNoCase</h3><p>通过判断浏览器头信息来阻止盗链请求。</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SetEnvIfNoCase Referer "^$" local_ref</span><br><span class="line">SetEnvIfNoCase Referer "www.benet.com/.*$" local_ref</span><br><span class="line">SetEnvIfNoCase Referer "benet.com/.*$" local_ref</span><br><span class="line">&lt;Filesmatch "\.(mp3|mp4|zip|rar|jpg|gif)"&gt;</span><br><span class="line">    Require all denied</span><br><span class="line">    Require env local_ref</span><br><span class="line">&lt;/Filesmatch&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>说明：</p>
+<ul>
+<li><code>SetEnvIfNoCase</code>：当满足某个条件时，为变量赋值，即根据客户端请求属性设置环境变量</li>
+<li><code>Referer</code>：指明了请求当前资源原始资源的 URL</li>
+</ul>
+</article>
+
+<div class="article-tags slide-up"><a class="tag" href="/tags/Apache/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Apache</a><a class="tag" href="/tags/Linux/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Linux</a><a class="tag" href="/tags/Web%E6%9C%8D%E5%8A%A1%E5%99%A8/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Web服务器</a></div>
+
+<div class="article-footer slide-up">
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https:&#x2F;&#x2F;sswfive.xyz&#x2F;2021&#x2F;04&#x2F;20&#x2F;2021-20210420-apache-usage-summary&#x2F;" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https%3A%2F%2Fsswfive.xyz%2F2021%2F04%2F20%2F2021-20210420-apache-usage-summary%2F"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2021/04/26/2021-20210426-git-complete-guide/">Git使用完全指南：从基础到进阶</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2021/03/28/2021-20210328-dockerfile-alpine-install-failed/">Dockerfile中Alpine安装依赖包失败总结</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread with-fancybox"><svg class="icon" data-icon="default:loading" aria-hidden="true"></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.42.0">Stellar 1.42.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right"><div class="widgets">
+
+
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Apache-%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-text">一、Apache 概述与安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85"><span class="toc-text">2. 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="toc-text">3. 快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-Apache-%E5%9F%BA%E6%9C%AC%E7%AE%A1%E7%90%86"><span class="toc-text">3.1 Apache 基本管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E7%AB%99%E7%82%B9%E6%A0%B9%E7%9B%AE%E5%BD%95"><span class="toc-text">3.2 站点根目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-Apache-%E6%9C%8D%E5%8A%A1%E7%9B%AE%E5%BD%95%E4%BB%8B%E7%BB%8D"><span class="toc-text">3.3 Apache 服务目录介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-Apache-%E7%94%A8%E6%88%B7"><span class="toc-text">3.4 Apache 用户</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Apache-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">4. Apache 基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-Apache-%E8%BF%9B%E7%A8%8B"><span class="toc-text">4.1 Apache 进程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-Apache-%E6%A8%A1%E5%9D%97"><span class="toc-text">4.2 Apache 模块</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Apache-%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%AE%9E%E8%B7%B5"><span class="toc-text">二、Apache 配置详解及实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="toc-text">1. 配置文件说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E4%B8%BB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE"><span class="toc-text">1.1 主配置文件位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="toc-text">1.2 配置文件格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE%E9%A1%B9%E8%AF%A6%E8%A7%A3"><span class="toc-text">2. 配置项详解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-ServerRoot"><span class="toc-text">2.1 ServerRoot</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Listen"><span class="toc-text">2.2 Listen</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-Include"><span class="toc-text">2.3 Include</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-IncludeOptional"><span class="toc-text">2.4 IncludeOptional</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-User-%E5%92%8C-Group"><span class="toc-text">2.5 User 和 Group</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-6-ServerAdmin"><span class="toc-text">2.6 ServerAdmin</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-7-DocumentRoot"><span class="toc-text">2.7 DocumentRoot</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-8-Directory"><span class="toc-text">2.8 Directory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-9-IfModule"><span class="toc-text">2.9 IfModule</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-10-Files"><span class="toc-text">2.10 Files</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-11-ErrorLog"><span class="toc-text">2.11 ErrorLog</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-12-LogLevel"><span class="toc-text">2.12 LogLevel</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-13-IfModule-log-config-module"><span class="toc-text">2.13 IfModule log_config_module</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-14-IfModule-alias-module"><span class="toc-text">2.14 IfModule alias_module</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-15-AddDefaultCharset"><span class="toc-text">2.15 AddDefaultCharset</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE"><span class="toc-text">三、虚拟主机配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E4%BA%8E%E5%9F%9F%E5%90%8D"><span class="toc-text">1. 基于域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E-IP"><span class="toc-text">2. 基于 IP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Rewrite-%E9%87%8D%E5%86%99"><span class="toc-text">四、Rewrite 重写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Rewrite-%E9%9C%80%E6%B1%82"><span class="toc-text">1. Rewrite 需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Rewrite-%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3"><span class="toc-text">2. Rewrite 使用详解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-RewriteEngine"><span class="toc-text">2.1 RewriteEngine</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-RewriteCond"><span class="toc-text">2.2 RewriteCond</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-RewriteRule"><span class="toc-text">2.3 RewriteRule</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81Apache-%E6%97%A5%E5%BF%97%E5%88%87%E5%89%B2"><span class="toc-text">五、Apache 日志切割</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%9B%E8%A1%8C%E6%97%A5%E5%BF%97%E5%88%87%E5%89%B2"><span class="toc-text">1. 为什么要进行日志切割</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%97%A5%E5%BF%97%E5%88%87%E5%89%B2%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-text">2. 日志切割两种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-rotatelogs"><span class="toc-text">2.1 rotatelogs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-cronolog"><span class="toc-text">2.2 cronolog</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%80%BB%E7%BB%93"><span class="toc-text">3. 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81Apache-%E9%98%B2%E7%9B%97%E9%93%BE"><span class="toc-text">六、Apache 防盗链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Rewrite-%E5%AE%9E%E7%8E%B0%E9%98%B2%E7%9B%97%E9%93%BE"><span class="toc-text">1. Rewrite 实现防盗链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-SetEnvIfNoCase"><span class="toc-text">2. SetEnvIfNoCase</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M11.9426 1.25H12.0574C14.3658 1.24999 16.1748 1.24998 17.5863 1.43975C19.031 1.63399 20.1711 2.03933 21.0659 2.93414C21.9607 3.82895 22.366 4.96897 22.5603 6.41371C22.75 7.82519 22.75 9.63423 22.75 11.9426V12.0574C22.75 14.3658 22.75 16.1748 22.5603 17.5863C22.366 19.031 21.9607 20.1711 21.0659 21.0659C20.1711 21.9607 19.031 22.366 17.5863 22.5603C16.1748 22.75 14.3658 22.75 12.0574 22.75H11.9426C9.63423 22.75 7.82519 22.75 6.41371 22.5603C4.96897 22.366 3.82895 21.9607 2.93414 21.0659C2.03933 20.1711 1.63399 19.031 1.43975 17.5863C1.24998 16.1748 1.24999 14.3658 1.25 12.0574V11.9426C1.24999 9.63423 1.24998 7.82519 1.43975 6.41371C1.63399 4.96897 2.03933 3.82895 2.93414 2.93414C3.82895 2.03933 4.96897 1.63399 6.41371 1.43975C7.82519 1.24998 9.63423 1.24999 11.9426 1.25ZM6.61358 2.92637C5.33517 3.09825 4.56445 3.42514 3.9948 3.9948C3.42514 4.56445 3.09825 5.33517 2.92637 6.61358C2.75159 7.91356 2.75 9.62177 2.75 12C2.75 14.3782 2.75159 16.0864 2.92637 17.3864C3.09825 18.6648 3.42514 19.4355 3.9948 20.0052C4.56445 20.5749 5.33517 20.9018 6.61358 21.0736C7.91356 21.2484 9.62177 21.25 12 21.25C14.3782 21.25 16.0864 21.2484 17.3864 21.0736C18.6648 20.9018 19.4355 20.5749 20.0052 20.0052C20.5749 19.4355 20.9018 18.6648 21.0736 17.3864C21.2484 16.0864 21.25 14.3782 21.25 12C21.25 9.62177 21.2484 7.91356 21.0736 6.61358C20.9018 5.33517 20.5749 4.56445 20.0052 3.9948C19.4355 3.42514 18.6648 3.09825 17.3864 2.92637C16.0864 2.75159 14.3782 2.75 12 2.75C9.62177 2.75 7.91356 2.75159 6.61358 2.92637ZM12 9.56066L9.53033 12.0303C9.23744 12.3232 8.76256 12.3232 8.46967 12.0303C8.17678 11.7374 8.17678 11.2626 8.46967 10.9697L11.4697 7.96967C11.7626 7.67678 12.2374 7.67678 12.5303 7.96967L15.5303 10.9697C15.8232 11.2626 15.8232 11.7374 15.5303 12.0303C15.2374 12.3232 14.7626 12.3232 14.4697 12.0303L12 9.56066ZM12 13.5607L9.53033 16.0303C9.23744 16.3232 8.76256 16.3232 8.46967 16.0303C8.17678 15.7374 8.17678 15.2626 8.46967 14.9697L11.4697 11.9697C11.7626 11.6768 12.2374 11.6768 12.5303 11.9697L15.5303 14.9697C15.8232 15.2626 15.8232 15.7374 15.5303 16.0303C15.2374 16.3232 14.7626 16.3232 14.4697 16.0303L12 13.5607Z" clip-rule="evenodd"/></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M10.4606 1.25H13.5394C15.1427 1.24999 16.3997 1.24999 17.4039 1.34547C18.4274 1.44279 19.2655 1.64457 20.0044 2.09732C20.7781 2.57144 21.4286 3.22194 21.9027 3.99563C22.3554 4.73445 22.5572 5.57256 22.6545 6.59611C22.75 7.60029 22.75 8.85725 22.75 10.4606V11.5278C22.75 12.6691 22.75 13.564 22.7007 14.2868C22.6505 15.0223 22.5468 15.6344 22.3123 16.2004C21.7287 17.6093 20.6093 18.7287 19.2004 19.3123C18.3955 19.6457 17.4786 19.7197 16.2233 19.7413C15.7842 19.7489 15.5061 19.7545 15.2941 19.7779C15.096 19.7999 15.0192 19.832 14.9742 19.8582C14.9268 19.8857 14.8622 19.936 14.7501 20.0898C14.6287 20.2564 14.4916 20.4865 14.2742 20.8539L13.7321 21.7697C12.9585 23.0767 11.0415 23.0767 10.2679 21.7697L9.72579 20.8539C9.50835 20.4865 9.37122 20.2564 9.24985 20.0898C9.13772 19.936 9.07313 19.8857 9.02572 19.8582C8.98078 19.832 8.90399 19.7999 8.70588 19.7779C8.49387 19.7545 8.21575 19.7489 7.77666 19.7413C6.52138 19.7197 5.60454 19.6457 4.79957 19.3123C3.39066 18.7287 2.27128 17.6093 1.68769 16.2004C1.45323 15.6344 1.3495 15.0223 1.29932 14.2868C1.24999 13.564 1.25 12.6691 1.25 11.5278L1.25 10.4606C1.24999 8.85726 1.24999 7.60029 1.34547 6.59611C1.44279 5.57256 1.64457 4.73445 2.09732 3.99563C2.57144 3.22194 3.22194 2.57144 3.99563 2.09732C4.73445 1.64457 5.57256 1.44279 6.59611 1.34547C7.60029 1.24999 8.85726 1.24999 10.4606 1.25ZM6.73809 2.83873C5.82434 2.92561 5.24291 3.09223 4.77938 3.37628C4.20752 3.72672 3.72672 4.20752 3.37628 4.77938C3.09223 5.24291 2.92561 5.82434 2.83873 6.73809C2.75079 7.663 2.75 8.84876 2.75 10.5V11.5C2.75 12.6751 2.75041 13.5189 2.79584 14.1847C2.84081 14.8438 2.92737 15.2736 3.07351 15.6264C3.50486 16.6678 4.33223 17.4951 5.3736 17.9265C5.88923 18.1401 6.54706 18.2199 7.8025 18.2416L7.83432 18.2421C8.23232 18.249 8.58109 18.2549 8.87097 18.287C9.18246 18.3215 9.4871 18.3912 9.77986 18.5615C10.0702 18.7304 10.2795 18.9559 10.4621 19.2063C10.6307 19.4378 10.804 19.7306 11.0004 20.0623L11.5587 21.0057C11.7515 21.3313 12.2485 21.3313 12.4412 21.0057L12.9996 20.0623C13.1959 19.7306 13.3692 19.4378 13.5379 19.2063C13.7204 18.9559 13.9298 18.7304 14.2201 18.5615C14.5129 18.3912 14.8175 18.3215 15.129 18.287C15.4189 18.2549 15.7676 18.249 16.1656 18.2421L16.1975 18.2416C17.4529 18.2199 18.1108 18.1401 18.6264 17.9265C19.6678 17.4951 20.4951 16.6678 20.9265 15.6264C21.0726 15.2736 21.1592 14.8438 21.2042 14.1847C21.2496 13.5189 21.25 12.6751 21.25 11.5V10.5C21.25 8.84876 21.2492 7.663 21.1613 6.73809C21.0744 5.82434 20.9078 5.24291 20.6237 4.77938C20.2733 4.20752 19.7925 3.72672 19.2206 3.37628C18.7571 3.09223 18.1757 2.92561 17.2619 2.83873C16.337 2.75079 15.1512 2.75 13.5 2.75H10.5C8.84876 2.75 7.663 2.75079 6.73809 2.83873ZM7.25 9C7.25 8.58579 7.58579 8.25 8 8.25H16C16.4142 8.25 16.75 8.58579 16.75 9C16.75 9.41421 16.4142 9.75 16 9.75H8C7.58579 9.75 7.25 9.41421 7.25 9ZM7.25 12.5C7.25 12.0858 7.58579 11.75 8 11.75H13.5C13.9142 11.75 14.25 12.0858 14.25 12.5C14.25 12.9142 13.9142 13.25 13.5 13.25H8C7.58579 13.25 7.25 12.9142 7.25 12.5Z" clip-rule="evenodd"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  window.canonical["param"] = {"permalink":"https://sswfive.xyz/2021/04/20/2021-20210420-apache-usage-summary/","checklink":"/js/plugins/video.js"};
+  // Fix: Ensure page is at the correct top position on data load
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'auto';
+  }
+  (function() {
+    const scrollHandler = () => {
+      const wikiCover = document.querySelector('#l_cover .l_cover.wiki');
+      const startEl = document.getElementById('start');
+      // 存在有效锚点时，等待布局稳定后滚动到目标
+      // （浏览器原生锚点滚动发生在布局完成前，长文章的懒加载图片/异步组件会把目标顶偏）
+      const hash = window.location.hash;
+      if (hash.length > 1) {
+        let anchorId = hash.slice(1);
+        try {
+          anchorId = decodeURIComponent(anchorId);
+        } catch (e) {
+          // 片段含非法编码时按原样查找
+        }
+        const anchor = document.getElementById(anchorId);
+        if (anchor) {
+          // #start 锚点贴顶，不预留 offset；其余锚点与 TOC 点击滚动保持一致
+          const offset = anchorId === 'start' ? 0 : 32;
+          const targetY = () => anchor.getBoundingClientRect().top + window.scrollY - offset;
+          let timer = null;
+          let lastY = null;
+          let quiet = 0;
+          let attempts = 0;
+          // 记录最近一次资源加载完成时间，判断异步数据/图片是否仍在改变布局
+          let lastResourceTime = performance.now();
+          let observer = null;
+          try {
+            observer = new PerformanceObserver(function (list) {
+              lastResourceTime = performance.now();
+            });
+            observer.observe({ entryTypes: ['resource'] });
+          } catch (e) {}
+          // 统计进行中的 fetch/XHR 请求，异步组件（timeline 等）未完成前不判定布局稳定
+          let pendingRequests = 0;
+          const trackRequest = (fn) => {
+            pendingRequests++;
+            try {
+              const result = fn();
+              if (result && typeof result.finally === 'function') {
+                result.finally(function () {
+                  pendingRequests = Math.max(0, pendingRequests - 1);
+                });
+              } else {
+                pendingRequests = Math.max(0, pendingRequests - 1);
+              }
+              return result;
+            } catch (e) {
+              pendingRequests = Math.max(0, pendingRequests - 1);
+              throw e;
+            }
+          };
+          if (typeof window.fetch === 'function') {
+            const origFetch = window.fetch.bind(window);
+            window.fetch = function () {
+              const args = arguments;
+              return trackRequest(function () {
+                return origFetch.apply(window, args);
+              });
+            };
+          }
+          if (window.XMLHttpRequest) {
+            const origOpen = window.XMLHttpRequest.prototype.open;
+            const origSend = window.XMLHttpRequest.prototype.send;
+            window.XMLHttpRequest.prototype.open = function () {
+              this.__anchorTracked = true;
+              return origOpen.apply(this, arguments);
+            };
+            window.XMLHttpRequest.prototype.send = function () {
+              if (this.__anchorTracked) {
+                pendingRequests++;
+                const done = () => {
+                  if (this.__anchorTracked) {
+                    this.__anchorTracked = false;
+                    pendingRequests = Math.max(0, pendingRequests - 1);
+                  }
+                };
+                this.addEventListener('loadend', done);
+              }
+              return origSend.apply(this, arguments);
+            };
+          }
+          const cancel = () => {
+            if (timer !== null) {
+              clearInterval(timer);
+              timer = null;
+            }
+            if (observer !== null) {
+              try {
+                observer.disconnect();
+              } catch (e) {}
+            }
+          };
+          const adjust = () => {
+            const y = targetY();
+            const atTarget = Math.abs(window.scrollY - y) <= 2;
+            if (!atTarget || lastY === null || Math.abs(y - lastY) > 2) {
+              window.scrollTo({ top: y, behavior: 'instant' });
+              lastY = y;
+              quiet = 0;
+            } else {
+              quiet++;
+            }
+            attempts++;
+            const resourceQuiet = performance.now() - lastResourceTime > 3000;
+            // 位置连续 1.8 秒无变化、无进行中的请求且最近 3 秒无资源加载才视为稳定；最长等待 30 秒
+            if ((quiet >= 3 && pendingRequests === 0 && resourceQuiet) || attempts >= 50) {
+              cancel();
+            }
+          };
+          requestAnimationFrame(() => {
+            // 锚点链接打开时直接定位，不做动画；用户主动点击（如 TOC）仍走平滑滚动
+            window.scrollTo({ top: targetY(), behavior: 'instant' });
+            timer = setInterval(adjust, 600);
+          });
+          // 用户主动滚动时停止自动校正
+          window.addEventListener('wheel', cancel, { passive: true });
+          window.addEventListener('touchstart', cancel, { passive: true });
+          window.addEventListener('mousedown', cancel, { passive: true });
+          window.addEventListener('keydown', cancel, { passive: true });
+          return;
+        }
+      }
+      if (wikiCover && startEl) {
+        window.scrollTo(0, startEl.offsetTop);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+    if (document.readyState !== 'loading') scrollHandler();
+    else document.addEventListener('DOMContentLoaded', scrollHandler);
+  })();
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    },
+    // 图标由构建期生成的 /js/stellar-icons.js 填充（defer，早于 DOMContentLoaded 就绪）
+    icons: {},
+    services: {"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"},"rss":{"js":"/js/services/rss.js"}},
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"lazy_load":true,"cache_ttl":86400,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+    data_cache: {"enable":true,"default_ttl":3600,"ttl":{"giscus":600,"waline":600,"artalk":600,"memos":600,"memos-user":86400,"sites":86400,"friends":86400,"friends_and_posts":86400,"siteinfo":86400},"max_entries":200},
+  };
+  const deps = {
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js`
+  }
+
+  // 主题切换提示文案（供 /js/theme.js 使用）
+  window.__STELLAR_I18N__ = {
+    light: `切换到浅色模式`,
+    dark: `切换到深色模式`,
+    auto: `切换到跟随系统配色`,
+  };
+
+  // 搜索跳转高亮：URL 带 ?kw= 时按需加载，定位正文中的匹配词
+  (function () {
+    try {
+      if (!window.location.search) return;
+      if (!new URLSearchParams(window.location.search).has('kw')) return;
+      document.addEventListener('DOMContentLoaded', function () {
+        // utils 由 /js/utils.js 定义（同时暴露 window.utils）；
+        // 未就绪时由 bootstrap 队列兜底，此处按就绪状态判断
+        if (typeof utils === 'object' && typeof utils.js === 'function') {
+          utils.js('/js/search/highlight.js', { defer: true }).catch(function () {});
+        }
+      });
+    } catch (e) {}
+  })();
+</script>
+
+
+<script>
+  // 插件注册队列：utils.js 尚未就绪时先缓存注册请求，就绪后统一补跑，
+  // 保证解析期注册的插件不因加载时序丢失。
+  window.stellar = window.stellar || {};
+  window.stellar._pluginQueue = window.stellar._pluginQueue || [];
+  window.stellar.initPlugin = function (fn, name, options) {
+    if (typeof utils === 'object' && typeof utils.initPlugin === 'function') {
+      return utils.initPlugin(fn, name, options);
+    }
+    window.stellar._pluginQueue.push({ fn: fn, name: name, options: options || {} });
+  };
+  window.stellar._flushPlugins = function () {
+    var pending = window.stellar._pluginQueue.splice(0);
+    if (typeof utils !== 'object' || typeof utils.initPlugin !== 'function') return;
+    for (var i = 0; i < pending.length; i++) {
+      try {
+        utils.initPlugin(pending[i].fn, pending[i].name, pending[i].options);
+      } catch (e) {
+        console.error('[Stellar] 插件补注册失败:', e);
+      }
+    }
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof utils === 'object') return;
+    // utils 未就绪时补载；加载成功后由 utils.js 内部补跑插件队列
+    var s = document.createElement('script');
+    s.src = '/js/utils.js?v=1.42.0';
+    s.async = false;
+    s.onerror = function () {
+      console.error('[Stellar] 无法加载 /js/utils.js，已启用内容兜底显示（sr-fallback）');
+      document.documentElement.classList.add('sr-fallback');
+    };
+    document.head.appendChild(s);
+  });
+</script>
+
+
+<!-- core: utils 必须同步加载（页尾内联插件片段在解析期即调用 utils.initPlugin） -->
+<script src="/js/utils.js?v=1.42.0"></script>
+<script>
+  // 解析期检测 utils 是否已就绪；未就绪时同步补载，
+  // 保证「utils 先于页尾插件片段定义」的不变量。
+  if (typeof utils === 'undefined') {
+    document.write('<script src="/js/utils.js?v=1.42.0"><\/script>');
+  }
+</script>
+<script defer src="/js/stellar-icons.js?v=1.42.0"></script>
+<!-- 非首屏图标异步加载：占位符替换依赖构建期生成的 js/icons/{ns}.json -->
+<script defer src="/js/icons.js?v=1.42.0" data-version="1.42.0"></script>
+<script src="/js/main.js?v=1.42.0" defer></script>
+<script defer src="/js/theme.js?v=1.42.0"></script>
+
+
+
+<script>
+  // 先声明配置与初始化监听，再异步加载库：
+  // 保证库执行时 lazyLoadOptions 已就绪，避免 async 脚本抢先执行导致自初始化失败
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      // {% image %} 没有 .lazy-box 包裹，回退到父元素查找加载图标
+      const wrapper = el.closest('.lazy-box') || el.parentElement;
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // 监听初始化事件，获取 LazyLoad 实例
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  // 兜底：动态插入的 .lazy 元素（如站点自定义脚本在 update() 之后追加的图片）
+  // 不会被 vanilla-lazyload 自动扫描，未注册的 img.lazy 会被 CSS opacity:0 永久隐藏。
+  // MutationObserver 检测到新增 .lazy 元素后自动调用 update() 重新注册。
+  if (window.MutationObserver) {
+    window.lazyMutationObserver = new MutationObserver((mutations) => {
+      if (window.lazyMutationObserver._pending) return;
+      const hasLazy = mutations.some((m) =>
+        Array.prototype.some.call(m.addedNodes, (node) =>
+          node.nodeType === 1 &&
+          (node.matches?.('.lazy') || !!node.querySelector?.('.lazy'))
+        )
+      );
+      if (!hasLazy) return;
+      window.lazyMutationObserver._pending = requestAnimationFrame(() => {
+        window.lazyMutationObserver._pending = null;
+        window.lazyLoadInstance?.update();
+      });
+    });
+    window.lazyMutationObserver.observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+</script>
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  
+  function initWaline() {
+    const el = document.getElementById('waline_container');
+    if (!el) return;
+
+    function load_waline() {
+      utils.css('/css/comments/waline.css?v=1.42.0');
+      utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+      utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    }
+    
+    util.viewportLazyload(el, load_waline);
+  }
+  
+  // Initialize on page load
+  initWaline();
+</script>
+
+
+
+
+<script defer src="/js/services.js?v=1.42.0"></script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = Object.assign({}, ctx.search, {
+      path: `/search.json`,
+      local_search: {"field":"all","path":"/search.json","content":true,"lazy_load":true,"cache_ttl":86400,"skip_search":null,"sort":"-date"},
+    });
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script>
+<script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    mode: `auto`,
+    selector: `.timenode p>img, .md-text img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  // auto=按需：页面存在可弹窗图片才加载；global=全局：所有页面加载
+  const isGlobal = ctx.fancybox.mode === 'global';
+  // 评论区图片（artalk/twikoo/waline）显示较小，自动支持放大；
+  // 仅绑定各评论服务的评论内容区，编辑器、表情面板等非内容区图片不弹窗
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon]):not([class*="emo"]), .with-fancybox .tk-content img:not([atk-emoticon]):not([class*="emo"]), .with-fancybox .wl-content img:not([atk-emoticon]):not([class*="emo"])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = isGlobal;
+  if (!needFancybox) {
+    needFancybox = document.querySelectorAll(selector).length !== 0;
+    if (!needFancybox) {
+      // 图片型评论系统容器：评论区图片小图需要 fancybox
+      const withFancybox = document.getElementsByClassName('with-fancybox');
+      if (withFancybox != undefined && withFancybox.length > 0) {
+        needFancybox = true;
+      }
+    }
+    if (!needFancybox) {
+      // 动态数据服务：memos 渲染的图片需要 fancybox
+      const memos = document.getElementsByClassName('ds-memos');
+      if (memos != undefined && memos.length > 0) {
+        needFancybox = true;
+      }
+    }
+  }
+  if (needFancybox) {
+    utils.css(`/css/plugins/fancybox.css?v=1.42.0`);
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      if (isGlobal) {
+        // 全局模式：正文所有非内联图片均可弹窗
+        selector += ', .md-text img:not(.inline):not([atk-emoticon])';
+      }
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  stellar.initPlugin(() => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`/css/plugins/swiper.css?v=1.42.0`);
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  }, 'swiper');
+</script>
+<script>
+  (function () {
+    // 兜底看门狗独立于插件初始化：3 秒内未完成 reveal 时强制显示 .slide-up 内容
+    let fallbackApplied = false;
+    const revealFallback = () => {
+      if (fallbackApplied) return;
+      fallbackApplied = true;
+      document.documentElement.classList.add('sr-fallback');
+    };
+    const watchdog = setTimeout(() => revealFallback(), 3000);
+
+    stellar.initPlugin(() => {
+      const els = Array.prototype.slice.call(document.querySelectorAll('.slide-up'));
+      if (els.length === 0) {
+        clearTimeout(watchdog);
+        return;
+      }
+
+    // 吸顶/固定定位容器内的元素始终在视口内（或由容器控制显隐），
+    // 但 ScrollReveal 按文档坐标判断可见性，会误判这类元素为不可见，
+    // 导致带锚点/恢复滚动位置打开页面时组件一直不显示。
+    // 解决方式：以最近的吸顶/固定祖先作为该组元素的容器，
+    // 使可见性判断恒成立，入场动画保留且不再依赖主文档滚动。
+    const findPinnedContainer = (el) => {
+      let node = el;
+      while (node && node.nodeType === 1) {
+        const pos = window.getComputedStyle(node).position;
+        if (pos === 'sticky' || pos === 'fixed') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    // 最近的滚动容器（overflow-y: auto/scroll）
+    // 吸顶容器内可能存在内部滚动容器（如侧栏 .widgets），
+    // 若直接用吸顶容器做 reveal 容器，折叠区下方的元素永远不会进入视口，导致一直不显示。
+    const findScrollContainer = (el) => {
+      let node = el.parentElement;
+      while (node && node.nodeType === 1) {
+        const oy = window.getComputedStyle(node).overflowY;
+        if (oy === 'auto' || oy === 'scroll') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    const pinnedGroups = new Map(); // 容器 -> 元素列表
+    const targets = [];
+    els.forEach((el) => {
+      const pinned = findPinnedContainer(el);
+      if (pinned) {
+        // 优先使用最近的滚动容器，其次才用吸顶容器
+        const container = findScrollContainer(el) || pinned;
+        const group = pinnedGroups.get(container) || [];
+        group.push(el);
+        pinnedGroups.set(container, group);
+      } else {
+        targets.push(el);
+      }
+    });
+    if (pinnedGroups.size === 0 && targets.length === 0) {
+      clearTimeout(watchdog);
+      return;
+    }
+
+    const slideUp = {
+      distance: `8px`,
+      duration: `1000`,
+      interval: `100`,
+      scale: `1`,
+      opacity: 0,
+      easing: "ease-out"
+    };
+
+    utils.js(`https://gcore.jsdelivr.net/npm/scrollreveal@4.0/dist/scrollreveal.min.js`, { defer: true })
+      .then(() => {
+        if (fallbackApplied) return;
+        if (typeof ScrollReveal !== 'function') {
+          revealFallback();
+          return;
+        }
+        try {
+          const sr = ScrollReveal();
+          if (targets.length > 0) {
+            sr.reveal(targets, { ...slideUp });
+          }
+          pinnedGroups.forEach((group, container) => {
+            sr.reveal(group, { ...slideUp, container: container });
+          });
+          clearTimeout(watchdog);
+        } catch (err) {
+          console.error('[Plugin scrollreveal] 初始化失败:', err);
+          revealFallback();
+        }
+      })
+      .catch((err) => {
+        console.error('[Plugin scrollreveal] 加载失败:', err);
+        revealFallback();
+      });
+    }, 'scrollreveal');
+  })();
+</script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script defer type="text/javascript" src="https://gcore.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  stellar.initPlugin(() => {
+    const els = document.querySelectorAll('.mermaid');
+    if (els.length > 0) {
+      utils.css(`/css/plugins/mermaid.css?v=1.42.0`);
+      const mermaid_config = {
+        startOnLoad: false,
+        theme:
+          "auto" == "auto" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "neutral",
+        logLevel: 3,
+        themeVariables: {
+          darkMode: true
+        },
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          curve: "linear"
+        },
+        gantt: {
+          axisFormat: "%Y/%m/%d"
+        },
+        sequence: {
+          actorMargin: 50
+        }
+      }
+      mermaid.initialize(mermaid_config);
+      mermaid.run();
+    }
+  }, 'mermaid');
+</script>
+<script>
+  stellar.initPlugin(() => {
+    const codeElements = document.querySelectorAll('.code');
+    if (codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js', { defer: true }).then(() => {
+        if (typeof createCopyButtons === 'function') {
+          createCopyButtons(codeElements);
+        }
+      });
+    }
+  }, 'copycode');
+</script>
+<script>
+  stellar.initPlugin(() => {
+    const els = Array.prototype.slice.call(document.querySelectorAll('[data-text-adaptive]'));
+    if (els.length === 0) return;
+    utils.js('/js/color.js').then(() => utils.js('/js/plugins/adaptive-text.js')).then(() => {
+      if (typeof applyAdaptiveText === 'function') {
+        applyAdaptiveText(els);
+      }
+    });
+  }, 'adaptive-text');
+</script>
+
+
+
+<!-- inject -->
+
+</div></body></html>
