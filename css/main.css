@@ -8268,6 +8268,14 @@ details.toc[open] >div.body section .header+.doc_tree {
   grid-gap: 2px;
   grid-template-columns: repeat(auto-fill, calc((100% - 2 * 2px) / 3));
 }
+.widget-wrapper.ghrepo .repo .grid .flex-row {
+  min-width: 0;
+}
+.widget-wrapper.ghrepo .repo .grid .flex-row span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .widget-wrapper.user-card .widget-header+.widget-body {
   margin: 0.75rem 0;
 }

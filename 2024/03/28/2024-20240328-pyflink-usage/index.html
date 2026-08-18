@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.42.0" theme-name="Stellar" theme-version="1.42.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.42.1" theme-name="Stellar" theme-version="1.42.1">
   
   
   <meta name="generator" content="Hexo 8.1.1">
@@ -47,8 +47,8 @@
     
   
 
-  <link rel="preload" href="/css/main.css?v=1.42.0" as="style">
-  <link rel="stylesheet" href="/css/main.css?v=1.42.0">
+  <link rel="preload" href="/css/main.css?v=1.42.1" as="style">
+  <link rel="stylesheet" href="/css/main.css?v=1.42.1">
 
 
   
@@ -392,7 +392,7 @@
 
 
 
-<footer class="page-footer slide-up footnote"><hr><div class="text"><p>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.42.0">Stellar 1.42.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.42.1">Stellar 1.42.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 <p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </div></footer>
@@ -636,7 +636,9 @@
     if (typeof utils === 'object') return;
     // utils 未就绪时补载；加载成功后由 utils.js 内部补跑插件队列
     var s = document.createElement('script');
-    s.src = '/js/utils.js?v=1.42.0';
+    // 用 setAttribute 赋值 src，避免被基于 `s.src = "..."` 的正则
+    // （图片懒加载 / 脚本延迟优化器）误改写
+    s.setAttribute('src', '/js/utils.js?v=1.42.1');
     s.async = false;
     s.onerror = function () {
       console.error('[Stellar] 无法加载 /js/utils.js，已启用内容兜底显示（sr-fallback）');
@@ -648,19 +650,19 @@
 
 
 <!-- core: utils 必须同步加载（页尾内联插件片段在解析期即调用 utils.initPlugin） -->
-<script src="/js/utils.js?v=1.42.0"></script>
+<script src="/js/utils.js?v=1.42.1"></script>
 <script>
   // 解析期检测 utils 是否已就绪；未就绪时同步补载，
   // 保证「utils 先于页尾插件片段定义」的不变量。
   if (typeof utils === 'undefined') {
-    document.write('<script src="/js/utils.js?v=1.42.0"><\/script>');
+    document.write('<script src="/js/utils.js?v=1.42.1"><\/script>');
   }
 </script>
-<script defer src="/js/stellar-icons.js?v=1.42.0"></script>
+<script defer src="/js/stellar-icons.js?v=1.42.1"></script>
 <!-- 非首屏图标异步加载：占位符替换依赖构建期生成的 js/icons/{ns}.json -->
-<script defer src="/js/icons.js?v=1.42.0" data-version="1.42.0"></script>
-<script src="/js/main.js?v=1.42.0" defer></script>
-<script defer src="/js/theme.js?v=1.42.0"></script>
+<script defer src="/js/icons.js?v=1.42.1" data-version="1.42.1"></script>
+<script src="/js/main.js?v=1.42.1" defer></script>
+<script defer src="/js/theme.js?v=1.42.1"></script>
 
 
 
@@ -769,12 +771,12 @@
     if (!el) return;
 
     function load_waline() {
-      utils.css('/css/comments/waline.css?v=1.42.0');
+      utils.css('/css/comments/waline.css?v=1.42.1');
       utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
-      utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css');
+      utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline-meta.css');
 
       const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
-      const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+      const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
         el: '#waline_container',
         path: path,
         
@@ -791,7 +793,32 @@
 
 
 
-<script defer src="/js/services.js?v=1.42.0"></script>
+<script defer src="/js/services.js?v=1.42.1"></script>
+<script>
+  // 防御：bootstrap 被第三方优化器改写/移除导致 window.stellar.initPlugin 缺失时，
+  // 在此补一个等价注册点：utils 就绪时直接委托，未就绪时入队，utils 加载后自动补跑。
+  if (typeof window.stellar === 'undefined' || typeof window.stellar.initPlugin !== 'function') {
+    window.stellar = window.stellar || {};
+    window.stellar._pluginQueue = window.stellar._pluginQueue || [];
+    window.stellar.initPlugin = function (fn, name, options) {
+      if (typeof utils === 'object' && typeof utils.initPlugin === 'function') {
+        return utils.initPlugin(fn, name, options);
+      }
+      window.stellar._pluginQueue.push({ fn: fn, name: name, options: options || {} });
+    };
+    window.stellar._flushPlugins = function () {
+      var pending = window.stellar._pluginQueue.splice(0);
+      if (typeof utils !== 'object' || typeof utils.initPlugin !== 'function') return;
+      for (var i = 0; i < pending.length; i++) {
+        try {
+          utils.initPlugin(pending[i].fn, pending[i].name, pending[i].options);
+        } catch (e) {
+          console.error('[Stellar] 插件补注册失败:', e);
+        }
+      }
+    };
+  }
+</script>
 
 <script>
   window.addEventListener('DOMContentLoaded', (event) => {
@@ -844,7 +871,7 @@
     }
   }
   if (needFancybox) {
-    utils.css(`/css/plugins/fancybox.css?v=1.42.0`);
+    utils.css(`/css/plugins/fancybox.css?v=1.42.1`);
     utils.css(ctx.fancybox.css);
     utils.js(ctx.fancybox.js, { defer: true }).then(function () {
       if (isGlobal) {
@@ -867,7 +894,7 @@
   stellar.initPlugin(() => {
     const swiper_api = document.getElementById('swiper-api');
     if (swiper_api != undefined) {
-      utils.css(`/css/plugins/swiper.css?v=1.42.0`);
+      utils.css(`/css/plugins/swiper.css?v=1.42.1`);
       utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
       utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
         const effect = swiper_api.getAttribute('effect') || '';
@@ -1020,7 +1047,7 @@
   stellar.initPlugin(() => {
     const els = document.querySelectorAll('.mermaid');
     if (els.length > 0) {
-      utils.css(`/css/plugins/mermaid.css?v=1.42.0`);
+      utils.css(`/css/plugins/mermaid.css?v=1.42.1`);
       const mermaid_config = {
         startOnLoad: false,
         theme:
