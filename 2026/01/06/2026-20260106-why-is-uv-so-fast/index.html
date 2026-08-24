@@ -27,13 +27,15 @@
 <meta property="og:description" content="在众多Python包管理工具中，uv的热度近两年持续攀升，并受到越来越多的开发者的认可与采用。一个关键原因是，uv被公认为目前社区中依赖管理速度最快的工具。尽管许多人将其出色的性能归功于其采用Rust语言开发，但实际上，uv的性能表现更主要源于其开发团队的设计思路和工程决策。  设计选择比编程语言更能计策工具的性能上限。  一、Python打包标准的演进在早期，pip的缓慢并非实现问题，而是被历史">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-01-06T08:09:26.000Z">
-<meta property="article:modified_time" content="2026-08-16T15:59:29.000Z">
+<meta property="article:modified_time" content="2026-08-24T18:30:29.000Z">
 <meta property="article:author" content="sswfive">
+<meta property="article:tag" content="uv">
 <meta property="article:tag" content="包管理">
+<meta property="article:tag" content="底层原理">
 <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Python依赖管理利器：不止Rust，uv如此速度的背后真实原因">
   
   
-  <meta name="keywords" content="包管理">
+  <meta name="keywords" content="包管理,底层原理,uv">
 
   <!-- feed -->
   
@@ -56,7 +58,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2026-01-06T16:09:26+08:00","dateModified":"2026-08-16T23:59:29+08:00","datePublished":"2026-01-06T16:09:26+08:00","description":"在众多Python包管理工具中，uv的热度近两年持续攀升，并受到越来越多的开发者的认可与采用。一个关键原因是，uv被公认为目前社区中依赖管理速度最快的工具。尽管许多人将其出色的性能归功于其采用Rust语言开发，但实际上，uv的性能表现更主要源于其开发团队的设计思路和工程决策。\n\n设计选择比编程语言更能计策工具的性能上限。\n\n一、Python打包标准的演进在早期，pip的缓慢并非实现问题，而是...","headline":"Python依赖管理利器：不止Rust，uv如此速度的背后真实原因","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2026/01/06/2026-20260106-why-is-uv-so-fast/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2026/01/06/2026-20260106-why-is-uv-so-fast/","keywords":"包管理","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2026-01-06T16:09:26+08:00","dateModified":"2026-08-25T02:30:29+08:00","datePublished":"2026-01-06T16:09:26+08:00","description":"在众多Python包管理工具中，uv的热度近两年持续攀升，并受到越来越多的开发者的认可与采用。一个关键原因是，uv被公认为目前社区中依赖管理速度最快的工具。尽管许多人将其出色的性能归功于其采用Rust语言开发，但实际上，uv的性能表现更主要源于其开发团队的设计思路和工程决策。\n\n设计选择比编程语言更能计策工具的性能上限。\n\n一、Python打包标准的演进在早期，pip的缓慢并非实现问题，而是...","headline":"Python依赖管理利器：不止Rust，uv如此速度的背后真实原因","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2026/01/06/2026-20260106-why-is-uv-so-fast/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2026/01/06/2026-20260106-why-is-uv-so-fast/","keywords":"包管理, 底层原理, uv","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -217,78 +219,6 @@
   <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Apache服务使用总结</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/02/22/2023-20230222-restful-understanding/" title="关于RESTful的理解与应用">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">关于RESTful的理解与应用</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/20/2023-20230620-capacity-governance/" title="容量治理">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">容量治理</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/08/16/2023-20230816-machine-learning-basics/" title="机器学习基础">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">机器学习基础</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
 <a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/01/25/2021-20210125-numpy-data-analysis/" title="NumPy之数据分析">
   
   
@@ -325,13 +255,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/04/07/2023-20230407-oop-five-principles/" title="面向对象的五大基本原则">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/03/28/2021-20210328-dockerfile-alpine-install-failed/" title="Dockerfile中Alpine安装依赖包失败总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">面向对象的五大基本原则</span>
+      <span class="ui-collection__title">Dockerfile中Alpine安装依赖包失败总结</span>
       
       
     </span>
@@ -343,31 +273,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/18/2023-20230618-docker-python-image-guide/" title="Docker构建Python镜像实践指南">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Docker构建Python镜像实践指南</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2025/12/23/2026-20251223-python-libraries-overview/" title="Python常用库汇总">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Python常用库汇总</span>
+      <span class="ui-collection__title">Apache服务使用总结</span>
       
       
     </span>
@@ -386,6 +298,96 @@
     <span class="ui-collection__content">
       
       <span class="ui-collection__title">Git使用完全指南：从基础到进阶</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/06/29/2021-20210629-centos-yum-recovery/" title="CentOS的yum源被误删解决方法">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">CentOS的yum源被误删解决方法</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/12/21/2021-20211221-jupyterhub-offline-deploy/" title="JupyterHub离线部署踩坑总结">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">JupyterHub离线部署踩坑总结</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/08/2022-20220708-conda-env-rename-error/" title="Conda修改虚拟环境名导致异常">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Conda修改虚拟环境名导致异常</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/28/2022-20220728-cross-language-rsa/" title="跨语言之间的RSA加解密问题">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">跨语言之间的RSA加解密问题</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/08/30/2022-20220830-jupyter-asyncio-error/" title="Jupyter运行asyncio.run报错">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Jupyter运行asyncio.run报错</span>
       
       
     </span>
@@ -418,7 +420,7 @@
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a>
 </div><div class="right"><span class="cap reading">1164 字 · 预计阅读 4 分钟</span></div></div><div class="meta-row">
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-01-06T08:09:26.000Z">2026-01-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-16T15:59:29.000Z">2026-08-16</time></span></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-01-06T08:09:26.000Z">2026-01-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-24T18:30:29.000Z">2026-08-25</time></span></div>
 </div></div>
     
     <div class="bottom only-title">
@@ -545,7 +547,7 @@
 </blockquote>
 </article>
 
-<div class="article-tags slide-up"><a class="tag" href="/tags/%E5%8C%85%E7%AE%A1%E7%90%86/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>包管理</a></div>
+<div class="article-tags slide-up"><a class="tag" href="/tags/%E5%8C%85%E7%AE%A1%E7%90%86/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>包管理</a><a class="tag" href="/tags/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>底层原理</a><a class="tag" href="/tags/uv/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>uv</a></div>
 
 <div class="article-footer slide-up">
 
@@ -564,7 +566,7 @@
     </section>
     </div>
 
-<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/01/29/2026-20260129-agent-from-design-of-claude-code/">从Claude Code的架构设计浅析Agent</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/01/04/2026-20260104-py-performace-analysis-and-practice/">Python开发者必知的性能数据与实用技巧</a></div></section></div>
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/01/29/2026-20260129-agent-from-design-of-claude-code/">从Claude Code的架构设计浅析Agent</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/01/04/2026-20260104-py-performance-analysis-and-practice/">Python开发者必知的性能数据与实用技巧</a></div></section></div>
 
 
 

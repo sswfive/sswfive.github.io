@@ -27,15 +27,14 @@
 <meta property="og:description" content="1. 单一职责原则（SRP）核心思想：一个类，最好只做一件事，只有一个引起它变化的原因。 举个例子，职员类里包括了普通员工、经理、老板，那类中势必需要用 if else 来区分判断，而且无论是这三种职员中哪一种的需求发生变化，都会影响到整个职员类。 按照”单一职责原则”，将普通员工、经理、老板分别建一个类，既不用 if else 加以区分，也不会在修改某个职员类别的时候影响另一个。 2. 开放封闭">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-07T04:40:00.000Z">
-<meta property="article:modified_time" content="2026-08-17T09:34:44.000Z">
+<meta property="article:modified_time" content="2026-08-24T18:30:29.000Z">
 <meta property="article:author" content="sswfive">
-<meta property="article:tag" content="Python">
 <meta property="article:tag" content="设计模式">
 <meta property="article:tag" content="面向对象">
 <meta name="twitter:card" content="summary"><meta name="twitter:title" content="面向对象的五大基本原则">
   
   
-  <meta name="keywords" content="Python,面向对象,设计模式">
+  <meta name="keywords" content="面向对象,设计模式">
 
   <!-- feed -->
   
@@ -58,7 +57,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2023-04-07T12:40:00+08:00","dateModified":"2026-08-17T17:34:44+08:00","datePublished":"2023-04-07T12:40:00+08:00","description":"1. 单一职责原则（SRP）核心思想：一个类，最好只做一件事，只有一个引起它变化的原因。\n举个例子，职员类里包括了普通员工、经理、老板，那类中势必需要用 if else 来区分判断，而且无论是这三种职员中哪一种的需求发生变化，都会影响到整个职员类。\n按照”单一职责原则”，将普通员工、经理、老板分别建一个类，既不用 if else 加以区分，也不会在修改某个职员类别的时候影响另一个。\n2. 开...","headline":"面向对象的五大基本原则","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2023/04/07/2023-20230407-oop-five-principles/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2023/04/07/2023-20230407-oop-five-principles/","keywords":"Python, 面向对象, 设计模式","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2023-04-07T12:40:00+08:00","dateModified":"2026-08-25T02:30:29+08:00","datePublished":"2023-04-07T12:40:00+08:00","description":"1. 单一职责原则（SRP）核心思想：一个类，最好只做一件事，只有一个引起它变化的原因。\n举个例子，职员类里包括了普通员工、经理、老板，那类中势必需要用 if else 来区分判断，而且无论是这三种职员中哪一种的需求发生变化，都会影响到整个职员类。\n按照”单一职责原则”，将普通员工、经理、老板分别建一个类，既不用 if else 加以区分，也不会在修改某个职员类别的时候影响另一个。\n2. 开...","headline":"面向对象的五大基本原则","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2023/04/07/2023-20230407-oop-five-principles/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2023/04/07/2023-20230407-oop-five-principles/","keywords":"面向对象, 设计模式","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -219,78 +218,6 @@
   <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Apache服务使用总结</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/02/22/2023-20230222-restful-understanding/" title="关于RESTful的理解与应用">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">关于RESTful的理解与应用</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/20/2023-20230620-capacity-governance/" title="容量治理">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">容量治理</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/08/16/2023-20230816-machine-learning-basics/" title="机器学习基础">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">机器学习基础</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
 <a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/01/25/2021-20210125-numpy-data-analysis/" title="NumPy之数据分析">
   
   
@@ -327,13 +254,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/04/07/2023-20230407-oop-five-principles/" title="面向对象的五大基本原则">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/03/28/2021-20210328-dockerfile-alpine-install-failed/" title="Dockerfile中Alpine安装依赖包失败总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">面向对象的五大基本原则</span>
+      <span class="ui-collection__title">Dockerfile中Alpine安装依赖包失败总结</span>
       
       
     </span>
@@ -345,31 +272,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/18/2023-20230618-docker-python-image-guide/" title="Docker构建Python镜像实践指南">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Docker构建Python镜像实践指南</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2025/12/23/2026-20251223-python-libraries-overview/" title="Python常用库汇总">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Python常用库汇总</span>
+      <span class="ui-collection__title">Apache服务使用总结</span>
       
       
     </span>
@@ -388,6 +297,96 @@
     <span class="ui-collection__content">
       
       <span class="ui-collection__title">Git使用完全指南：从基础到进阶</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/06/29/2021-20210629-centos-yum-recovery/" title="CentOS的yum源被误删解决方法">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">CentOS的yum源被误删解决方法</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/12/21/2021-20211221-jupyterhub-offline-deploy/" title="JupyterHub离线部署踩坑总结">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">JupyterHub离线部署踩坑总结</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/08/2022-20220708-conda-env-rename-error/" title="Conda修改虚拟环境名导致异常">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Conda修改虚拟环境名导致异常</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/28/2022-20220728-cross-language-rsa/" title="跨语言之间的RSA加解密问题">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">跨语言之间的RSA加解密问题</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/08/30/2022-20220830-jupyter-asyncio-error/" title="Jupyter运行asyncio.run报错">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Jupyter运行asyncio.run报错</span>
       
       
     </span>
@@ -420,7 +419,7 @@
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a>
 </div><div class="right"><span class="cap reading">912 字 · 预计阅读 4 分钟</span></div></div><div class="meta-row">
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2023-04-07T04:40:00.000Z">2023-04-07</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-17T09:34:44.000Z">2026-08-17</time></span></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2023-04-07T04:40:00.000Z">2023-04-07</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-24T18:30:29.000Z">2026-08-25</time></span></div>
 </div></div>
     
     <div class="bottom only-title">
@@ -462,7 +461,7 @@
 </ul>
 </article>
 
-<div class="article-tags slide-up"><a class="tag" href="/tags/Python/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Python</a><a class="tag" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>面向对象</a><a class="tag" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>设计模式</a></div>
+<div class="article-tags slide-up"><a class="tag" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>面向对象</a><a class="tag" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>设计模式</a></div>
 
 <div class="article-footer slide-up">
 

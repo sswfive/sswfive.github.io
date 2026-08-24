@@ -27,13 +27,15 @@
 <meta property="og:description" content="为什么有FastStream在处理消息队列（Kafka、RabbitMQ、Redis）时，你是否厌倦了重复编写底层连接、订阅、序列化和消息异常处理的代码？比如说之前可能用过的kafka-python、pika、redis-py之类的库，虽然为业务的开发免去了重复造轮子，也具备了一定的灵活性，但我还是觉得缺乏现代开发所追求的开发效率和优雅性。恰巧最近在Github中无意看到了这个与消息处理相关的库-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-08-24T14:09:09.000Z">
-<meta property="article:modified_time" content="2026-08-16T15:59:29.000Z">
+<meta property="article:modified_time" content="2026-08-24T18:30:29.000Z">
 <meta property="article:author" content="sswfive">
-<meta property="article:tag" content="Python">
+<meta property="article:tag" content="FastStream">
+<meta property="article:tag" content="异步">
+<meta property="article:tag" content="消息队列">
 <meta name="twitter:card" content="summary"><meta name="twitter:title" content="FastStream：Python中的异步消息处理利器">
   
   
-  <meta name="keywords" content="Python">
+  <meta name="keywords" content="异步,FastStream,消息队列">
 
   <!-- feed -->
   
@@ -56,7 +58,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2025-08-24T22:09:09+08:00","dateModified":"2026-08-16T23:59:29+08:00","datePublished":"2025-08-24T22:09:09+08:00","description":"为什么有FastStream在处理消息队列（Kafka、RabbitMQ、Redis）时，你是否厌倦了重复编写底层连接、订阅、序列化和消息异常处理的代码？比如说之前可能用过的kafka-python、pika、redis-py之类的库，虽然为业务的开发免去了重复造轮子，也具备了一定的灵活性，但我还是觉得缺乏现代开发所追求的开发效率和优雅性。恰巧最近在Github中无意看到了这个与消息处理相关...","headline":"FastStream：Python中的异步消息处理利器","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2025/08/24/2025-20250824-pylib-faststream/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2025/08/24/2025-20250824-pylib-faststream/","keywords":"Python","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2025-08-24T22:09:09+08:00","dateModified":"2026-08-25T02:30:29+08:00","datePublished":"2025-08-24T22:09:09+08:00","description":"为什么有FastStream在处理消息队列（Kafka、RabbitMQ、Redis）时，你是否厌倦了重复编写底层连接、订阅、序列化和消息异常处理的代码？比如说之前可能用过的kafka-python、pika、redis-py之类的库，虽然为业务的开发免去了重复造轮子，也具备了一定的灵活性，但我还是觉得缺乏现代开发所追求的开发效率和优雅性。恰巧最近在Github中无意看到了这个与消息处理相关...","headline":"FastStream：Python中的异步消息处理利器","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2025/08/24/2025-20250824-pylib-faststream/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2025/08/24/2025-20250824-pylib-faststream/","keywords":"异步, FastStream, 消息队列","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -217,78 +219,6 @@
   <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Apache服务使用总结</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/02/22/2023-20230222-restful-understanding/" title="关于RESTful的理解与应用">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">关于RESTful的理解与应用</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/20/2023-20230620-capacity-governance/" title="容量治理">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">容量治理</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/08/16/2023-20230816-machine-learning-basics/" title="机器学习基础">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">机器学习基础</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
 <a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/01/25/2021-20210125-numpy-data-analysis/" title="NumPy之数据分析">
   
   
@@ -325,13 +255,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/04/07/2023-20230407-oop-five-principles/" title="面向对象的五大基本原则">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/03/28/2021-20210328-dockerfile-alpine-install-failed/" title="Dockerfile中Alpine安装依赖包失败总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">面向对象的五大基本原则</span>
+      <span class="ui-collection__title">Dockerfile中Alpine安装依赖包失败总结</span>
       
       
     </span>
@@ -343,31 +273,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/18/2023-20230618-docker-python-image-guide/" title="Docker构建Python镜像实践指南">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Docker构建Python镜像实践指南</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2025/12/23/2026-20251223-python-libraries-overview/" title="Python常用库汇总">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Python常用库汇总</span>
+      <span class="ui-collection__title">Apache服务使用总结</span>
       
       
     </span>
@@ -386,6 +298,96 @@
     <span class="ui-collection__content">
       
       <span class="ui-collection__title">Git使用完全指南：从基础到进阶</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/06/29/2021-20210629-centos-yum-recovery/" title="CentOS的yum源被误删解决方法">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">CentOS的yum源被误删解决方法</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/12/21/2021-20211221-jupyterhub-offline-deploy/" title="JupyterHub离线部署踩坑总结">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">JupyterHub离线部署踩坑总结</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/08/2022-20220708-conda-env-rename-error/" title="Conda修改虚拟环境名导致异常">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Conda修改虚拟环境名导致异常</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/28/2022-20220728-cross-language-rsa/" title="跨语言之间的RSA加解密问题">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">跨语言之间的RSA加解密问题</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/08/30/2022-20220830-jupyter-asyncio-error/" title="Jupyter运行asyncio.run报错">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Jupyter运行asyncio.run报错</span>
       
       
     </span>
@@ -418,7 +420,7 @@
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a>
 </div><div class="right"><span class="cap reading">1488 字 · 预计阅读 5 分钟</span></div></div><div class="meta-row">
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-08-24T14:09:09.000Z">2025-08-24</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-16T15:59:29.000Z">2026-08-16</time></span></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-08-24T14:09:09.000Z">2025-08-24</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-24T18:30:29.000Z">2026-08-25</time></span></div>
 </div></div>
     
     <div class="bottom only-title">
@@ -495,7 +497,7 @@
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>FastStream非常适合应用于：事件驱动架构（EDA）中的微服务、实时数据ETL管道、需要处理Kafka、RabbitMQ消息等场景中，它以简洁的语法（装饰器），严谨的类型系统（Pydantic)，自动化的工具链以及广泛的生态融合（FastAPI），为Python在流式处理、异步消息处理等场景中注入了新活力。</p>
 </article>
 
-<div class="article-tags slide-up"><a class="tag" href="/tags/Python/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Python</a></div>
+<div class="article-tags slide-up"><a class="tag" href="/tags/%E5%BC%82%E6%AD%A5/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>异步</a><a class="tag" href="/tags/FastStream/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>FastStream</a><a class="tag" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>消息队列</a></div>
 
 <div class="article-footer slide-up">
 

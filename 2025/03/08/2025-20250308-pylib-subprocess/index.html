@@ -28,15 +28,16 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&amp;clientId=u0bfed3c2-e7cc-4&amp;from=paste&amp;height=150&amp;id=u92fe8a26&amp;originHeight=150&amp;originWidth=850&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9909&amp;status=done&amp;style=none&amp;taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&amp;title=&amp;width=850">
 <meta property="article:published_time" content="2025-03-07T16:48:23.000Z">
-<meta property="article:modified_time" content="2026-08-16T15:59:29.000Z">
+<meta property="article:modified_time" content="2026-08-24T18:30:29.000Z">
 <meta property="article:author" content="sswfive">
-<meta property="article:tag" content="Python">
+<meta property="article:tag" content="subprocess">
+<meta property="article:tag" content="标准库">
 <meta property="article:tag" content="进程管理">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&amp;clientId=u0bfed3c2-e7cc-4&amp;from=paste&amp;height=150&amp;id=u92fe8a26&amp;originHeight=150&amp;originWidth=850&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9909&amp;status=done&amp;style=none&amp;taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&amp;title=&amp;width=850"><meta name="twitter:title" content="subprocess：Python中的子进程管理工具">
   
   
-  <meta name="keywords" content="Python,进程管理">
+  <meta name="keywords" content="subprocess,标准库,进程管理">
 
   <!-- feed -->
   
@@ -59,7 +60,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2025-03-08T00:48:23+08:00","dateModified":"2026-08-16T23:59:29+08:00","datePublished":"2025-03-08T00:48:23+08:00","description":"\nReference：官方文档\n\n模块概述介绍：subprocess是Python内置库中用于管理子进程的模块，支持在Windows、Linux、MacOS平台中使用； \n该模块通过创建启动一个子进程来执行系统级命令、调用其他的可执行文件或脚本、与其他进程进行交互等等；其主要通过管道技术连接进程间的输入/输出/错误管道，从而获得返回值。\n在subprocess模块发布后，官方建议使用该模块去...","headline":"subprocess：Python中的子进程管理工具","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2025/03/08/2025-20250308-pylib-subprocess/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2025/03/08/2025-20250308-pylib-subprocess/","keywords":"Python, 进程管理","thumbnailUrl":"https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&amp;clientId=u0bfed3c2-e7cc-4&amp;from=paste&amp;height=150&amp;id=u92fe8a26&amp;originHeight=150&amp;originWidth=850&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9909&amp;status=done&amp;style=none&amp;taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&amp;title=&amp;width=850","image":["https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&amp;clientId=u0bfed3c2-e7cc-4&amp;from=paste&amp;height=150&amp;id=u92fe8a26&amp;originHeight=150&amp;originWidth=850&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9909&amp;status=done&amp;style=none&amp;taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&amp;title=&amp;width=850"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2025-03-08T00:48:23+08:00","dateModified":"2026-08-25T02:30:29+08:00","datePublished":"2025-03-08T00:48:23+08:00","description":"\nReference：官方文档\n\n模块概述介绍：subprocess是Python内置库中用于管理子进程的模块，支持在Windows、Linux、MacOS平台中使用； \n该模块通过创建启动一个子进程来执行系统级命令、调用其他的可执行文件或脚本、与其他进程进行交互等等；其主要通过管道技术连接进程间的输入/输出/错误管道，从而获得返回值。\n在subprocess模块发布后，官方建议使用该模块去...","headline":"subprocess：Python中的子进程管理工具","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2025/03/08/2025-20250308-pylib-subprocess/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2025/03/08/2025-20250308-pylib-subprocess/","keywords":"subprocess, 标准库, 进程管理","thumbnailUrl":"https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&amp;clientId=u0bfed3c2-e7cc-4&amp;from=paste&amp;height=150&amp;id=u92fe8a26&amp;originHeight=150&amp;originWidth=850&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9909&amp;status=done&amp;style=none&amp;taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&amp;title=&amp;width=850","image":["https://cdn.nlark.com/yuque/0/2024/png/2130981/1705050956201-09e1da8f-a825-401c-ae20-e67a90f633e8.png#averageHue=%23474645&amp;clientId=u0bfed3c2-e7cc-4&amp;from=paste&amp;height=150&amp;id=u92fe8a26&amp;originHeight=150&amp;originWidth=850&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=9909&amp;status=done&amp;style=none&amp;taskId=ude3c6d9e-c5fa-4a36-b297-495f76a1fd4&amp;title=&amp;width=850"]}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -220,78 +221,6 @@
   <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Apache服务使用总结</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/02/22/2023-20230222-restful-understanding/" title="关于RESTful的理解与应用">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">关于RESTful的理解与应用</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/20/2023-20230620-capacity-governance/" title="容量治理">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">容量治理</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/08/16/2023-20230816-machine-learning-basics/" title="机器学习基础">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">机器学习基础</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
 <a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/01/25/2021-20210125-numpy-data-analysis/" title="NumPy之数据分析">
   
   
@@ -328,13 +257,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/04/07/2023-20230407-oop-five-principles/" title="面向对象的五大基本原则">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/03/28/2021-20210328-dockerfile-alpine-install-failed/" title="Dockerfile中Alpine安装依赖包失败总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">面向对象的五大基本原则</span>
+      <span class="ui-collection__title">Dockerfile中Alpine安装依赖包失败总结</span>
       
       
     </span>
@@ -346,31 +275,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/18/2023-20230618-docker-python-image-guide/" title="Docker构建Python镜像实践指南">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Docker构建Python镜像实践指南</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2025/12/23/2026-20251223-python-libraries-overview/" title="Python常用库汇总">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Python常用库汇总</span>
+      <span class="ui-collection__title">Apache服务使用总结</span>
       
       
     </span>
@@ -389,6 +300,96 @@
     <span class="ui-collection__content">
       
       <span class="ui-collection__title">Git使用完全指南：从基础到进阶</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/06/29/2021-20210629-centos-yum-recovery/" title="CentOS的yum源被误删解决方法">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">CentOS的yum源被误删解决方法</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/12/21/2021-20211221-jupyterhub-offline-deploy/" title="JupyterHub离线部署踩坑总结">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">JupyterHub离线部署踩坑总结</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/08/2022-20220708-conda-env-rename-error/" title="Conda修改虚拟环境名导致异常">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Conda修改虚拟环境名导致异常</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/28/2022-20220728-cross-language-rsa/" title="跨语言之间的RSA加解密问题">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">跨语言之间的RSA加解密问题</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/08/30/2022-20220830-jupyter-asyncio-error/" title="Jupyter运行asyncio.run报错">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Jupyter运行asyncio.run报错</span>
       
       
     </span>
@@ -421,7 +422,7 @@
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a>
 </div><div class="right"><span class="cap reading">4584 字 · 预计阅读 16 分钟</span></div></div><div class="meta-row">
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-03-07T16:48:23.000Z">2025-03-08</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-16T15:59:29.000Z">2026-08-16</time></span></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-03-07T16:48:23.000Z">2025-03-08</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-24T18:30:29.000Z">2026-08-25</time></span></div>
 </div></div>
     
     <div class="bottom only-title">
@@ -579,7 +580,7 @@
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> click</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UpgradeDependencies</span>:</span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_build_args</span>(<span class="params">cls, dependencies</span>):</span><br><span class="line">        <span class="comment"># 解析依赖项并构建参数</span></span><br><span class="line">        packs, specials = [], {}</span><br><span class="line">        <span class="keyword">for</span> dep <span class="keyword">in</span> dependencies:</span><br><span class="line">            <span class="keyword">if</span> <span class="string">":"</span> <span class="keyword">in</span> dep:</span><br><span class="line">                k, v = dep.split(<span class="string">":"</span>)</span><br><span class="line">                specials[k.strip()] = v.strip().split()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                packs.append(dep.strip())</span><br><span class="line">        <span class="keyword">return</span> packs, specials</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_parse_dependencies</span>(<span class="params">cls, text, title</span>):</span><br><span class="line">        <span class="comment"># 从文本中解析依赖项</span></span><br><span class="line">        main, dev = text.split(title)</span><br><span class="line">        devs = dev.split(<span class="string">"[tool."</span>)[<span class="number">0</span>].strip().splitlines()</span><br><span class="line">        mains = main.strip().splitlines()</span><br><span class="line">        prod_packs, specials = cls._build_args(mains)</span><br><span class="line">        dev_packs, specials = cls._build_args(devs)</span><br><span class="line">        <span class="keyword">return</span> prod_packs, dev_packs, specials</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_args</span>(<span class="params">cls</span>):</span><br><span class="line">        <span class="comment"># 获取依赖项参数</span></span><br><span class="line">        dev_title = <span class="string">"[tool.poetry.group.dev.dependencies]"</span></span><br><span class="line">        dev_flag = <span class="string">"--group dev"</span></span><br><span class="line">        main_args, dev_args, others = [], [], []</span><br><span class="line">        <span class="keyword">if</span> dev_title <span class="keyword">in</span> text:</span><br><span class="line">            main_title = <span class="string">"[tool.poetry.dependencies]"</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            dev_flag = <span class="string">"--group dev"</span></span><br><span class="line">            dev_title = <span class="string">"[tool.poetry.group.dev.dependencies]"</span></span><br><span class="line">        main_args, dev_args, others = cls._parse_dependencies(text, main_title, dev_title, dev_flag)</span><br><span class="line">        <span class="keyword">return</span> main_args, dev_args, others, dev_flag</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">gen_cmd</span>(<span class="params">cls</span>):</span><br><span class="line">        <span class="comment"># 生成升级依赖项的命令</span></span><br><span class="line">        main_args, dev_args, others, dev_flag = cls.get_args()</span><br><span class="line">        command = <span class="string">f"poetry add <span class="subst">{<span class="string">' '</span>.join(main_args)}</span> &amp;&amp; poetry add <span class="subst">{dev_flag}</span> <span class="subst">{<span class="string">' '</span>.join(dev_args)}</span>"</span></span><br><span class="line">        <span class="keyword">for</span> packages <span class="keyword">in</span> others:</span><br><span class="line">            command += <span class="string">f" &amp;&amp; poetry add <span class="subst">{<span class="string">' '</span>.join(packages)}</span>"</span></span><br><span class="line">        <span class="keyword">return</span> command</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">exit_if_run_failed</span>(<span class="params">cmd</span>):</span><br><span class="line">    <span class="comment"># 如果运行命令失败，则退出</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        subprocess.run(cmd, check=<span class="literal">True</span>, shell=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">except</span> subprocess.CalledProcessError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f"Error: <span class="subst">{e}</span>"</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update</span>():</span><br><span class="line">    <span class="string">"""升级所有依赖包到最新版"""</span></span><br><span class="line">    exit_if_run_failed(UpgradeDependencies.gen_cmd())</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lint</span>():</span><br><span class="line">    <span class="string">"""格式化加静态检查"""</span></span><br><span class="line">    remove_imports = <span class="string">"autoflake --in-place --remove-all-unused-imports"</span></span><br><span class="line">    cmd = <span class="string">""</span></span><br><span class="line">    paths = <span class="string">"."</span></span><br><span class="line">    <span class="keyword">if</span> args := sys.argv[<span class="number">1</span>:]:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"-r"</span> <span class="keyword">in</span> args:</span><br><span class="line">            args.remove(<span class="string">"-r"</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">all</span>(Path(i).is_file() <span class="keyword">for</span> i <span class="keyword">in</span> args):</span><br><span class="line">                cmd = <span class="string">f"<span class="subst">{remove_imports}</span> <span class="subst">{paths}</span> &amp;&amp; "</span> + cmd</span><br><span class="line">        paths = <span class="string">" "</span>.join(args)</span><br><span class="line">    tools = (<span class="string">"isort"</span>, <span class="string">"black"</span>, <span class="string">"ruff"</span>, <span class="string">"mypy"</span>)</span><br><span class="line">    cmd += <span class="string">f"poetry run <span class="subst">{tools[<span class="number">0</span>]}</span> <span class="subst">{paths}</span> &amp;&amp; poetry run <span class="subst">{tools[<span class="number">1</span>]}</span> <span class="subst">{paths}</span> &amp;&amp; poetry run <span class="subst">{tools[<span class="number">2</span>]}</span> <span class="subst">{paths}</span> &amp;&amp; poetry run <span class="subst">{tools[<span class="number">3</span>]}</span> <span class="subst">{paths}</span>"</span></span><br><span class="line">    exit_if_run_failed(cmd)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dev</span>():</span><br><span class="line">    <span class="string">"""启动服务：相当于django的runserver"""</span></span><br><span class="line">    cmd = <span class="string">"poetry run python main.py"</span></span><br><span class="line">    <span class="keyword">if</span> args := sys.argv[<span class="number">1</span>:]:</span><br><span class="line">        cmd += <span class="string">" "</span> + <span class="string">" "</span>.join(args)</span><br><span class="line">    exit_if_run_failed(cmd)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">makemigrations</span>():</span><br><span class="line">    <span class="string">"""生成数据库迁移文件，类似Django的./manage.py makemigrations"""</span></span><br><span class="line">    exit_if_run_failed(<span class="string">"aerich migrate"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">migrate</span>():</span><br><span class="line">    <span class="string">"""更新数据库表结构：相当于django的./manage.py migrate"""</span></span><br><span class="line">    exit_if_run_failed(<span class="string">"aerich upgrade"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    cli()  <span class="comment"># Assuming you have defined `cli` somewhere</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 </article>
 
-<div class="article-tags slide-up"><a class="tag" href="/tags/Python/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Python</a><a class="tag" href="/tags/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>进程管理</a></div>
+<div class="article-tags slide-up"><a class="tag" href="/tags/subprocess/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>subprocess</a><a class="tag" href="/tags/%E6%A0%87%E5%87%86%E5%BA%93/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>标准库</a><a class="tag" href="/tags/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>进程管理</a></div>
 
 <div class="article-footer slide-up">
 

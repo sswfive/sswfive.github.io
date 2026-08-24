@@ -27,15 +27,14 @@
 <meta property="og:description" content="Pandas 概述NumPy 能够帮助我们处理数值，但 Pandas 除了处理数值之外（基于 NumPy），还能够帮助我们处理其他类型的数据。 SeriesSeries 的创建1234567891011121314151617181920212223import string# 方法一：通过数组创建t &#x3D; pd.Series(np.arange(10), index&#x3D;list(string.asc">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-16T06:25:00.000Z">
-<meta property="article:modified_time" content="2026-08-17T09:34:44.000Z">
+<meta property="article:modified_time" content="2026-08-24T18:30:29.000Z">
 <meta property="article:author" content="sswfive">
 <meta property="article:tag" content="Pandas">
-<meta property="article:tag" content="Python">
 <meta property="article:tag" content="数据分析">
 <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Pandas之数据分析">
   
   
-  <meta name="keywords" content="Python,数据分析,Pandas">
+  <meta name="keywords" content="数据分析,Pandas">
 
   <!-- feed -->
   
@@ -58,7 +57,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2021-02-16T14:25:00+08:00","dateModified":"2026-08-17T17:34:44+08:00","datePublished":"2021-02-16T14:25:00+08:00","description":"Pandas 概述NumPy 能够帮助我们处理数值，但 Pandas 除了处理数值之外（基于 NumPy），还能够帮助我们处理其他类型的数据。\nSeriesSeries 的创建1234567891011121314151617181920212223import string# 方法一：通过数组创建t = pd.Series(np.arange(10), index=list(string....","headline":"Pandas之数据分析","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2021/02/16/2021-20210216-pandas-data-analysis/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2021/02/16/2021-20210216-pandas-data-analysis/","keywords":"Python, 数据分析, Pandas","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2021-02-16T14:25:00+08:00","dateModified":"2026-08-25T02:30:29+08:00","datePublished":"2021-02-16T14:25:00+08:00","description":"Pandas 概述NumPy 能够帮助我们处理数值，但 Pandas 除了处理数值之外（基于 NumPy），还能够帮助我们处理其他类型的数据。\nSeriesSeries 的创建1234567891011121314151617181920212223import string# 方法一：通过数组创建t = pd.Series(np.arange(10), index=list(string....","headline":"Pandas之数据分析","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2021/02/16/2021-20210216-pandas-data-analysis/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2021/02/16/2021-20210216-pandas-data-analysis/","keywords":"数据分析, Pandas","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -219,78 +218,6 @@
   <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Apache服务使用总结</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/02/22/2023-20230222-restful-understanding/" title="关于RESTful的理解与应用">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">关于RESTful的理解与应用</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/20/2023-20230620-capacity-governance/" title="容量治理">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">容量治理</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/08/16/2023-20230816-machine-learning-basics/" title="机器学习基础">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">机器学习基础</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
 <a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/01/25/2021-20210125-numpy-data-analysis/" title="NumPy之数据分析">
   
   
@@ -327,13 +254,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/04/07/2023-20230407-oop-five-principles/" title="面向对象的五大基本原则">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/03/28/2021-20210328-dockerfile-alpine-install-failed/" title="Dockerfile中Alpine安装依赖包失败总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">面向对象的五大基本原则</span>
+      <span class="ui-collection__title">Dockerfile中Alpine安装依赖包失败总结</span>
       
       
     </span>
@@ -345,31 +272,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2023/06/18/2023-20230618-docker-python-image-guide/" title="Docker构建Python镜像实践指南">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Docker构建Python镜像实践指南</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2025/12/23/2026-20251223-python-libraries-overview/" title="Python常用库汇总">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Python常用库汇总</span>
+      <span class="ui-collection__title">Apache服务使用总结</span>
       
       
     </span>
@@ -388,6 +297,96 @@
     <span class="ui-collection__content">
       
       <span class="ui-collection__title">Git使用完全指南：从基础到进阶</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/06/29/2021-20210629-centos-yum-recovery/" title="CentOS的yum源被误删解决方法">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">CentOS的yum源被误删解决方法</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/12/21/2021-20211221-jupyterhub-offline-deploy/" title="JupyterHub离线部署踩坑总结">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">JupyterHub离线部署踩坑总结</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/08/2022-20220708-conda-env-rename-error/" title="Conda修改虚拟环境名导致异常">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Conda修改虚拟环境名导致异常</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/28/2022-20220728-cross-language-rsa/" title="跨语言之间的RSA加解密问题">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">跨语言之间的RSA加解密问题</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/08/30/2022-20220830-jupyter-asyncio-error/" title="Jupyter运行asyncio.run报错">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Jupyter运行asyncio.run报错</span>
       
       
     </span>
@@ -418,9 +417,9 @@
   <div class="content">
     
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/">数据科学</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a>
 </div><div class="right"><span class="cap reading">2123 字 · 预计阅读 8 分钟</span></div></div><div class="meta-row">
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2021-02-16T06:25:00.000Z">2021-02-16</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-17T09:34:44.000Z">2026-08-17</time></span></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2021-02-16T06:25:00.000Z">2021-02-16</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-24T18:30:29.000Z">2026-08-25</time></span></div>
 </div></div>
     
     <div class="bottom only-title">
@@ -601,7 +600,7 @@
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">periods = pd.PeriodIndex(</span><br><span class="line">    year=data[<span class="string">"year"</span>],</span><br><span class="line">    month=data[<span class="string">"month"</span>],</span><br><span class="line">    day=data[<span class="string">"day"</span>],</span><br><span class="line">    hour=data[<span class="string">"hour"</span>],</span><br><span class="line">    freq=<span class="string">"H"</span></span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
 </article>
 
-<div class="article-tags slide-up"><a class="tag" href="/tags/Python/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Python</a><a class="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>数据分析</a><a class="tag" href="/tags/Pandas/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Pandas</a></div>
+<div class="article-tags slide-up"><a class="tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>数据分析</a><a class="tag" href="/tags/Pandas/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Pandas</a></div>
 
 <div class="article-footer slide-up">
 
