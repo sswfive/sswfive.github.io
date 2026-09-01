@@ -34,7 +34,7 @@
 <meta name="twitter:card" content="summary"><meta name="twitter:title" content="JupyterHub离线部署踩坑总结">
   
   
-  <meta name="keywords" content="运维,Jupyter">
+  <meta name="keywords" content="Jupyter,运维">
 
   <!-- feed -->
   
@@ -57,7 +57,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2021-12-21T21:18:00+08:00","dateModified":"2026-08-25T02:30:29+08:00","datePublished":"2021-12-21T21:18:00+08:00","description":"经验来源：客户内网服务器部署，只有特定端口8888，只有特定pip安装源\n总体流程\n安装python\n创建虚拟环境virtualenv，最好将安装virtualenv的文件夹的权限调整711以上，否则多用户会用权限问题（此处踩坑较长，除了重新部署以外，修改文件夹的对应可执行权限应该是工作量最小的做法。）\n激活虚拟环境，source / 或使用workon\n安装pip依赖包\n下载node源码，...","headline":"JupyterHub离线部署踩坑总结","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2021/12/21/2021-20211221-jupyterhub-offline-deploy/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2021/12/21/2021-20211221-jupyterhub-offline-deploy/","keywords":"运维, Jupyter","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2021-12-21T21:18:00+08:00","dateModified":"2026-08-25T02:30:29+08:00","datePublished":"2021-12-21T21:18:00+08:00","description":"经验来源：客户内网服务器部署，只有特定端口8888，只有特定pip安装源\n总体流程\n安装python\n创建虚拟环境virtualenv，最好将安装virtualenv的文件夹的权限调整711以上，否则多用户会用权限问题（此处踩坑较长，除了重新部署以外，修改文件夹的对应可执行权限应该是工作量最小的做法。）\n激活虚拟环境，source / 或使用workon\n安装pip依赖包\n下载node源码，...","headline":"JupyterHub离线部署踩坑总结","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2021/12/21/2021-20211221-jupyterhub-offline-deploy/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2021/12/21/2021-20211221-jupyterhub-offline-deploy/","keywords":"Jupyter, 运维","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -218,6 +218,42 @@
   <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
   
     
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/08/30/2024-20240830-k8s-terminating/" title="K8s资源一直Terminating的解决方法">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">K8s资源一直Terminating的解决方法</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/01/2026-20260901-agent-plan-replan-tao/" title="Agent系统开发手记（二）：规划、纠偏与执行循环">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（二）：规划、纠偏与执行循环</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
 <a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/08/25/2024-20240825-zsh-terminal-config-guide/" title="Mac 终端：zsh配置手记">
   
   
@@ -290,24 +326,6 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Apache服务使用总结</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
 <a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/26/2021-20210426-git-complete-guide/" title="Git使用完全指南：从基础到进阶">
   
   
@@ -315,24 +333,6 @@
     <span class="ui-collection__content">
       
       <span class="ui-collection__title">Git使用完全指南：从基础到进阶</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/08/2022-20220708-conda-env-rename-error/" title="Conda修改虚拟环境名导致异常">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">Conda修改虚拟环境名导致异常</span>
       
       
     </span>
@@ -362,13 +362,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/28/2022-20220728-cross-language-rsa/" title="跨语言之间的RSA加解密问题">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/06/29/2021-20210629-centos-yum-recovery/" title="CentOS的yum源被误删解决方法">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">跨语言之间的RSA加解密问题</span>
+      <span class="ui-collection__title">CentOS的yum源被误删解决方法</span>
       
       
     </span>
@@ -380,13 +380,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/08/30/2022-20220830-jupyter-asyncio-error/" title="Jupyter运行asyncio.run报错">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/08/2022-20220708-conda-env-rename-error/" title="Conda修改虚拟环境名导致异常">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Jupyter运行asyncio.run报错</span>
+      <span class="ui-collection__title">Conda修改虚拟环境名导致异常</span>
       
       
     </span>
@@ -450,7 +450,7 @@
 <figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在虚拟环境中执行</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">前台启动</span></span><br><span class="line">jupyterhub -f /etc/jupyterhub/config.py</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">后台启动</span></span><br><span class="line">nohup jupyterhub -f /etc/jupyterhub/config.py --no-ssl &amp;</span><br></pre></td></tr></tbody></table></figure>
 </article>
 
-<div class="article-tags slide-up"><a class="tag" href="/tags/%E8%BF%90%E7%BB%B4/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>运维</a><a class="tag" href="/tags/Jupyter/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Jupyter</a></div>
+<div class="article-tags slide-up"><a class="tag" href="/tags/Jupyter/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Jupyter</a><a class="tag" href="/tags/%E8%BF%90%E7%BB%B4/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>运维</a></div>
 
 <div class="article-footer slide-up">
 
