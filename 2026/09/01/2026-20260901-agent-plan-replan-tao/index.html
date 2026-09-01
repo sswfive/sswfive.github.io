@@ -19,15 +19,15 @@
   <meta name="theme-color" content="#f9fafb">
   <title>Agent系统开发手记（二）：规划、纠偏与执行循环 - ssw5ive</title>
 
-  <meta name="description" content="写在前面上一篇聊了意图识别——把用户想干嘛搞清楚。但搞清楚意图只是起点，真正让我头疼的是接下来这一步：Agent 到底怎么把一件事一步步做完。 说实话，刚开始做 Agent 的时候，我觉得执行能有多难？让大模型拆个步骤列表，然后照着跑不就行了。结果真正上线才发现，这玩意儿比意图识别还折磨人。用户的输入会变、工具会挂、中间结果会过期、长任务还会越跑越偏。你把执行理解成”跑步骤列表”，那你的 Agen">
+  <meta name="description" content="写在前面上一篇聊了意图识别——把用户想干嘛搞清楚。但搞清楚意图只是起点，接下来这一步更让我头疼：Agent 到底怎么把一件事一步步做完。 说实话，刚开始做 Agent 的时候，我觉得执行能有多难？让大模型拆个步骤列表，然后照着跑不就行了。结果真正上线才发现，这玩意儿比意图识别还折磨人。用户的输入会变、工具会挂、中间结果会过期、长任务还会越跑越偏。你把执行理解成”跑步骤列表”，那你的 Agent 大">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Agent系统开发手记（二）：规划、纠偏与执行循环">
 <meta property="og:url" content="https://sswfive.xyz/2026/09/01/2026-20260901-agent-plan-replan-tao/">
 <meta property="og:site_name" content="ssw5ive">
-<meta property="og:description" content="写在前面上一篇聊了意图识别——把用户想干嘛搞清楚。但搞清楚意图只是起点，真正让我头疼的是接下来这一步：Agent 到底怎么把一件事一步步做完。 说实话，刚开始做 Agent 的时候，我觉得执行能有多难？让大模型拆个步骤列表，然后照着跑不就行了。结果真正上线才发现，这玩意儿比意图识别还折磨人。用户的输入会变、工具会挂、中间结果会过期、长任务还会越跑越偏。你把执行理解成”跑步骤列表”，那你的 Agen">
+<meta property="og:description" content="写在前面上一篇聊了意图识别——把用户想干嘛搞清楚。但搞清楚意图只是起点，接下来这一步更让我头疼：Agent 到底怎么把一件事一步步做完。 说实话，刚开始做 Agent 的时候，我觉得执行能有多难？让大模型拆个步骤列表，然后照着跑不就行了。结果真正上线才发现，这玩意儿比意图识别还折磨人。用户的输入会变、工具会挂、中间结果会过期、长任务还会越跑越偏。你把执行理解成”跑步骤列表”，那你的 Agent 大">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-01T13:30:00.000Z">
-<meta property="article:modified_time" content="2026-09-01T06:34:09.000Z">
+<meta property="article:modified_time" content="2026-09-01T15:12:15.000Z">
 <meta property="article:author" content="sswfive">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="Agent">
@@ -57,7 +57,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2026-09-01T21:30:00+08:00","dateModified":"2026-09-01T14:34:09+08:00","datePublished":"2026-09-01T21:30:00+08:00","description":"写在前面上一篇聊了意图识别——把用户想干嘛搞清楚。但搞清楚意图只是起点，真正让我头疼的是接下来这一步：Agent 到底怎么把一件事一步步做完。\n说实话，刚开始做 Agent 的时候，我觉得执行能有多难？让大模型拆个步骤列表，然后照着跑不就行了。结果真正上线才发现，这玩意儿比意图识别还折磨人。用户的输入会变、工具会挂、中间结果会过期、长任务还会越跑越偏。你把执行理解成”跑步骤列表”，那你的 A...","headline":"Agent系统开发手记（二）：规划、纠偏与执行循环","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2026/09/01/2026-20260901-agent-plan-replan-tao/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2026/09/01/2026-20260901-agent-plan-replan-tao/","keywords":"AI, Agent","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2026-09-01T21:30:00+08:00","dateModified":"2026-09-01T23:12:15+08:00","datePublished":"2026-09-01T21:30:00+08:00","description":"写在前面上一篇聊了意图识别——把用户想干嘛搞清楚。但搞清楚意图只是起点，接下来这一步更让我头疼：Agent 到底怎么把一件事一步步做完。\n说实话，刚开始做 Agent 的时候，我觉得执行能有多难？让大模型拆个步骤列表，然后照着跑不就行了。结果真正上线才发现，这玩意儿比意图识别还折磨人。用户的输入会变、工具会挂、中间结果会过期、长任务还会越跑越偏。你把执行理解成”跑步骤列表”，那你的 Agen...","headline":"Agent系统开发手记（二）：规划、纠偏与执行循环","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2026/09/01/2026-20260901-agent-plan-replan-tao/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2026/09/01/2026-20260901-agent-plan-replan-tao/","keywords":"AI, Agent","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
   <style>
   /* 中文排版优化 */
   .md-text {
@@ -218,13 +218,13 @@
   <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/08/30/2024-20240830-k8s-terminating/" title="K8s资源一直Terminating的解决方法">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/01/2026-20260901-agent-plan-replan-tao/" title="Agent系统开发手记（二）：规划、纠偏与执行循环">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">K8s资源一直Terminating的解决方法</span>
+      <span class="ui-collection__title">Agent系统开发手记（二）：规划、纠偏与执行循环</span>
       
       
     </span>
@@ -236,13 +236,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/01/2026-20260901-agent-plan-replan-tao/" title="Agent系统开发手记（二）：规划、纠偏与执行循环">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/08/30/2024-20240830-k8s-terminating/" title="K8s资源一直Terminating的解决方法">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Agent系统开发手记（二）：规划、纠偏与执行循环</span>
+      <span class="ui-collection__title">K8s资源一直Terminating的解决方法</span>
       
       
     </span>
@@ -290,13 +290,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/02/16/2021-20210216-pandas-data-analysis/" title="Pandas之数据分析">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/03/28/2021-20210328-dockerfile-alpine-install-failed/" title="Dockerfile中Alpine安装依赖包失败总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Pandas之数据分析</span>
+      <span class="ui-collection__title">Dockerfile中Alpine安装依赖包失败总结</span>
       
       
     </span>
@@ -308,13 +308,13 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/03/28/2021-20210328-dockerfile-alpine-install-failed/" title="Dockerfile中Alpine安装依赖包失败总结">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/02/16/2021-20210216-pandas-data-analysis/" title="Pandas之数据分析">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Dockerfile中Alpine安装依赖包失败总结</span>
+      <span class="ui-collection__title">Pandas之数据分析</span>
       
       
     </span>
@@ -344,24 +344,6 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/12/21/2021-20211221-jupyterhub-offline-deploy/" title="JupyterHub离线部署踩坑总结">
-  
-  
-  
-    <span class="ui-collection__content">
-      
-      <span class="ui-collection__title">JupyterHub离线部署踩坑总结</span>
-      
-      
-    </span>
-  
-  
-  
-  
-</a>
-
-  
-    
 <a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/06/29/2021-20210629-centos-yum-recovery/" title="CentOS的yum源被误删解决方法">
   
   
@@ -380,13 +362,31 @@
 
   
     
-<a class="ui-collection__item card-hover card-hover--spotlight" href="/2022/07/08/2022-20220708-conda-env-rename-error/" title="Conda修改虚拟环境名导致异常">
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/12/21/2021-20211221-jupyterhub-offline-deploy/" title="JupyterHub离线部署踩坑总结">
   
   
   
     <span class="ui-collection__content">
       
-      <span class="ui-collection__title">Conda修改虚拟环境名导致异常</span>
+      <span class="ui-collection__title">JupyterHub离线部署踩坑总结</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2021/04/20/2021-20210420-apache-usage-summary/" title="Apache服务使用总结">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Apache服务使用总结</span>
       
       
     </span>
@@ -418,8 +418,8 @@
     
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/AI%E5%B7%A5%E7%A8%8B/">AI工程</a>
-</div><div class="right"><span class="cap reading">7686 字 · 预计阅读 26 分钟</span></div></div><div class="meta-row">
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-01T13:30:00.000Z">2026-09-01</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-01T06:34:09.000Z">2026-09-01</time></span></div>
+</div><div class="right"><span class="cap reading">8026 字 · 预计阅读 27 分钟</span></div></div><div class="meta-row">
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-01T13:30:00.000Z">2026-09-01</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-01T15:12:15.000Z">2026-09-01</time></span></div>
 </div></div>
     
     <div class="bottom only-title">
@@ -432,35 +432,33 @@
     
   </div>
   </div></div>
-<article class="md-text content slide-up"><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>上一篇聊了意图识别——把用户想干嘛搞清楚。但搞清楚意图只是起点，真正让我头疼的是接下来这一步：<strong>Agent 到底怎么把一件事一步步做完。</strong></p>
+<article class="md-text content slide-up"><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>上一篇聊了意图识别——把用户想干嘛搞清楚。但搞清楚意图只是起点，接下来这一步更让我头疼：<strong>Agent 到底怎么把一件事一步步做完。</strong></p>
 <p>说实话，刚开始做 Agent 的时候，我觉得执行能有多难？让大模型拆个步骤列表，然后照着跑不就行了。结果真正上线才发现，这玩意儿比意图识别还折磨人。用户的输入会变、工具会挂、中间结果会过期、长任务还会越跑越偏。你把执行理解成”跑步骤列表”，那你的 Agent 大概也就是 demo 能看看，真放到多轮、长任务里立马露馅。</p>
-<p>这篇文章是”AI Agent 系统设计”系列的第二篇，想把自己在规划、纠偏、执行循环上踩过的坑整理下来。涉及的东西有点多——Plan、Replan、失败回溯、TAO/ReAct、Action 选择——但它们其实是一条线上的事：<strong>怎么让 Agent 在充满不确定性的执行里，一步步受控地走到目标。</strong></p>
+<p>这篇文章是”AI Agent 系统设计”系列的第二篇，把自己在规划、纠偏、执行循环上踩过的坑整理下来。Plan、Replan、失败回溯、TAO、Action 选择——这些东西看起来零散，但其实是一条线：<strong>怎么让 Agent 在充满不确定性的执行里，一步步受控地走到目标。</strong></p>
 <hr>
-<h2 id="从一个让我头疼的场景说起"><a href="#从一个让我头疼的场景说起" class="headerlink" title="从一个让我头疼的场景说起"></a>从一个让我头疼的场景说起</h2><p>我做过一个帮人优化项目经历的 Agent——用户准备阿里 Java 后端面试，把项目丢给 Agent，让它把一段 CRUD 的经历改得有技术深度、能撑住面试官追问。</p>
-<p>我当时的第一版做法特别朴素：让大模型输出一串步骤——“分析需求 → 收集信息 → 改写经历 → 总结”，然后照着走。结果跑起来全是问题：</p>
+<h2 id="从一个让我头疼的场景说起"><a href="#从一个让我头疼的场景说起" class="headerlink" title="从一个让我头疼的场景说起"></a>从一个让我头疼的场景说起</h2><p>我做过一个帮团队做技术选型的 Agent——用户把业务背景和技术需求丢给它，它出一份缓存方案/消息队列/数据库选型方案。</p>
+<p>第一版做法特别朴素：让大模型输出一串步骤——“分析需求 → 收集现状 → 评估方案 → 输出推荐”，然后照着走。结果跑起来全是问题：</p>
 <ul>
-<li>用户中途补一句”B 接口不能改”，前面那套计划直接废了</li>
-<li>某个查项目事实的接口挂了，Agent 卡在那不知道怎么办</li>
-<li>Agent 生成的内容里混进了用户压根没做过的技术点，还一本正经地写进简历</li>
-<li>跑到第三轮，它已经忘了用户最初的目标是”面试”，开始闷头搜 Java 性能优化资料</li>
+<li>用户中途补一句”Redis Cluster 别推了，运维搞不定”，前面那套计划直接废了</li>
+<li>某个查线上服务性能的工具挂了，Agent 卡在那不知道怎么办</li>
+<li>Agent 推荐了一个运维团队完全没接触过的方案，还一本正经地说”建议引入 Kafka Connect”</li>
+<li>跑到第三轮，它已经忘了用户的核心约束是”运维能 hold 住”，开始闷头研究分布式缓存的一致性哈希算法</li>
 </ul>
 <p>每一个都是单独的小问题，但叠在一起，整个执行就崩了。</p>
 <blockquote>
 <p>我后来才想明白：执行的问题，根子上出在”计划”这两个字上。</p>
 </blockquote>
 <hr>
-<h2 id="Plan-不是步骤列表"><a href="#Plan-不是步骤列表" class="headerlink" title="Plan 不是步骤列表"></a>Plan 不是步骤列表</h2><p>我一开始对 Plan 的理解就是”步骤列表”。但做了一阵发现，这玩意儿根本回答不了几个关键问题：</p>
+<h2 id="Plan-不是步骤列表"><a href="#Plan-不是步骤列表" class="headerlink" title="Plan 不是步骤列表"></a>Plan 不是步骤列表</h2><p>我一开始对 Plan 的理解就是”步骤列表”。但做了一阵发现，这玩意儿回答不了几个关键问题：</p>
 <ul>
 <li>用户目标到底是什么？什么叫成功？</li>
 <li>当前已知什么、还缺什么？哪些是事实、哪些是推测？</li>
 <li>为什么步骤要这样安排？还有没有别的走法？</li>
 <li>执行中出问题了，怎么知道、怎么救？</li>
 </ul>
-<blockquote>
-<p>我总结出来一句话：<strong>Plan 不是步骤列表，而是一个可检查、可纠偏、可执行的运行时对象。</strong></p>
-</blockquote>
-<p>说白了，Plan 的本质是<strong>解决执行中的不确定性</strong>。没有 Plan，Agent 从 A 到 B 会跑出红蓝各种幺蛾子；有个 Plan，哪怕质量再烂，至少能在 A、B 之间划一条相对清晰的线。</p>
-<h3 id="五大不确定性"><a href="#五大不确定性" class="headerlink" title="五大不确定性"></a>五大不确定性</h3><p>我把自己踩过的坑归了五类：</p>
+<p>所以我自己总结了一个理解：<strong>Plan 不是步骤列表，而是一个可检查、可纠偏、可执行的运行时对象。</strong></p>
+<p>Plan 的本质是解决执行中的不确定性。没有 Plan，Agent 从 A 到 B 会跑出各种幺蛾子；有个 Plan，哪怕质量再烂，至少能在 A、B 之间划一条相对清晰的线。</p>
+<h3 id="五大不确定性"><a href="#五大不确定性" class="headerlink" title="五大不确定性"></a>五大不确定性</h3><p>我把踩过的坑归了五类：</p>
 <div class="md-table-scroll"><table>
 <thead>
 <tr>
@@ -482,7 +480,7 @@
 <tr>
 <td>路径</td>
 <td>有哪几条路？为什么选这条？</td>
-<td>生成机械步骤，没法根据情况实时制定</td>
+<td>生成机械步骤，没法根据情况调整</td>
 </tr>
 <tr>
 <td>过程</td>
@@ -495,10 +493,8 @@
 <td>出错即崩，没有恢复手段</td>
 </tr>
 </tbody></table></div>
-<blockquote>
-<p>这里有个点我特别想强调：<strong>“为什么选这条路径”比路径本身更重要。</strong> 排查问题的时候，极度依赖这个”为什么”。</p>
-</blockquote>
-<h3 id="G4C：好-Plan-的五要素"><a href="#G4C：好-Plan-的五要素" class="headerlink" title="G4C：好 Plan 的五要素"></a>G4C：好 Plan 的五要素</h3><p>我把一个好 Plan 要回答的问题归成五个，起了个名叫 G4C（Goal/Context/Choice/Checkpoint/Correction，其实叫啥都行，名字不重要）：</p>
+<p>这里有个点特别重要：<strong>“为什么选这条路径”比路径本身更重要。</strong> 排查问题的时候，极度依赖这个”为什么”。</p>
+<h3 id="好-Plan-的五要素"><a href="#好-Plan-的五要素" class="headerlink" title="好 Plan 的五要素"></a>好 Plan 的五要素</h3><p>我把一个好 Plan 要回答的问题归成五类（Goal / Context / Choice / Checkpoint / Correction，叫啥都行，名字不重要）：</p>
 <ul>
 <li><strong>Goal</strong>：要去哪？什么叫成功？</li>
 <li><strong>Context</strong>：现在啥情况？还缺啥？</li>
@@ -506,16 +502,13 @@
 <li><strong>Checkpoint</strong>：怎么知道走偏了？</li>
 <li><strong>Correction</strong>：走偏了怎么拉回来？</li>
 </ul>
-<p>一句话记忆：Goal 解决去哪，Context 解决现在啥情况，Choice 解决怎么走，Checkpoint 解决怎么知道走偏了，Correction 解决走偏后怎么拉回来。</p>
-<p>举我那个项目经历 Agent 的例子，Goal 大概长这样：</p>
-<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"goal"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"user_goal"</span><span class="punctuation">:</span> <span class="string">"优化项目经历，使其适合阿里 Java 后端面试"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"success_criteria"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">"体现技术复杂度"</span><span class="punctuation">,</span> <span class="string">"体现个人贡献"</span><span class="punctuation">,</span> <span class="string">"体现业务价值"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">"能撑住面试官追问"</span><span class="punctuation">,</span> <span class="string">"不能虚构用户没做过的内容"</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+<p>举我那个技术选型 Agent 的例子，Goal 大概长这样：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"goal"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"user_goal"</span><span class="punctuation">:</span> <span class="string">"为订单服务选型缓存方案"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"success_criteria"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">"P99 &lt; 10ms"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">"运维团队能独立运维"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">"成本在预算范围内"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">"不推荐用户明确排除的方案"</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
 
-<blockquote>
-<p>这里有个我反复栽过的坑：<strong>很多形容词都是幻觉的来源。</strong> 什么叫”高级工程师”？多复杂才算”复杂”？Agent 输出不稳定，很多时候就栽在这些没定义清楚的主观词上。我的做法是把这些标准尽量写具体，或者丢进知识库让模型检索后再定义。</p>
-</blockquote>
-<p><strong>约束要分硬约束和软约束，独立维护。</strong> 这点上一篇意图识别也提过，这里一样适用。硬约束必须满足（”不能虚构项目事实”），软约束尽量满足、不满足要告知用户。我把它们放在 System Prompt 里，保证不被长上下文削弱。还有一条铁律：<strong>除非用户主动输入新约束，Agent 自己不能改约束</strong>——每次改都得有用户输入作证据。</p>
-<h3 id="Checkpoint-最容易被忽略"><a href="#Checkpoint-最容易被忽略" class="headerlink" title="Checkpoint 最容易被忽略"></a>Checkpoint 最容易被忽略</h3><p>G4C 里我最想单独拎出来说的是 Checkpoint。它两个作用：执行中防偏离，以及给后面的纠偏留路标。</p>
-<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"checkpoint"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">{</span> <span class="attr">"step_id"</span><span class="punctuation">:</span> <span class="string">"rewrite_project_experience"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"checks"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"是否存在虚构"</span><span class="punctuation">,</span> <span class="string">"是否体现技术复杂度"</span><span class="punctuation">,</span> <span class="string">"是否有量化结果"</span><span class="punctuation">,</span> <span class="string">"是否适配岗位"</span><span class="punctuation">]</span> <span class="punctuation">}</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+<p>这里有个我反复栽过的坑：<strong>很多形容词都是幻觉的来源。</strong> “高可用”是多可用？”性能好”好到什么程度？”运维能 hold 住”怎么定义？Agent 输出不稳定，很多时候就栽在这些没定义清楚的主观词上。我的做法是把这些标准尽量量化——“P99 &lt; 10ms”比”性能好”靠谱一百倍。实在没法量化的，就丢进知识库让模型检索后再定义。</p>
+<p><strong>约束要分硬约束和软约束，独立维护。</strong> 上一篇意图识别也提过，这里一样适用。硬约束必须满足（”不能推荐运维不支持的技术栈”），软约束尽量满足、不满足要告知用户（”最好是开源的”）。我把它们放在 System Prompt 里，保证不被长上下文削弱。还有一条铁律：<strong>除非用户主动输入新约束，Agent 自己不能改约束</strong>——每次改都得有用户输入作证据。</p>
+<h3 id="Checkpoint-最容易被忽略"><a href="#Checkpoint-最容易被忽略" class="headerlink" title="Checkpoint 最容易被忽略"></a>Checkpoint 最容易被忽略</h3><p>五要素里我最想单独拎出来说的是 Checkpoint。它两个作用：执行中防偏离，以及给后面的纠偏留路标。</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"checkpoint"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">{</span> <span class="attr">"step_id"</span><span class="punctuation">:</span> <span class="string">"recommend_solution"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"checks"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"方案是否匹配实际 QPS 需求"</span><span class="punctuation">,</span> <span class="string">"运维团队是否有能力运维"</span><span class="punctuation">,</span> <span class="string">"是否排除了用户禁用方案"</span><span class="punctuation">,</span> <span class="string">"成本是否超预算"</span><span class="punctuation">]</span> <span class="punctuation">}</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>Checkpoint 的粒度我一般这么把握：业务逻辑到了新状态（里程碑）、关键中间步骤完成、易出错步骤之后。不能每步都查，太贵；也不能隔太久，查了也白查。</p>
 <h3 id="Correction：出错了还能不能挣扎一下"><a href="#Correction：出错了还能不能挣扎一下" class="headerlink" title="Correction：出错了还能不能挣扎一下"></a>Correction：出错了还能不能挣扎一下</h3><p>发现偏差后，我给了五种手段：</p>
@@ -547,31 +540,36 @@
 <td>不可挽回，交给用户</td>
 </tr>
 </tbody></table></div>
-<p>有意思的是，这里埋了条线：Correction 里的 action，其实就是后面要讲的 TAO 循环里的 Action。先按下不表。</p>
+<p>这里埋了条线：Correction 里的 action，其实就是后面要讲的 TAO 循环里的 Action，后面会串起来。</p>
+<h3 id="高级方案：让-Plan-更靠谱"><a href="#高级方案：让-Plan-更靠谱" class="headerlink" title="高级方案：让 Plan 更靠谱"></a>高级方案：让 Plan 更靠谱</h3><p>前面是基础形态。如果想让 Plan 更稳，我试过两个进阶做法。</p>
+<p><strong>一是迭代式 Plan 生成。</strong> Plan 生成后别急着执行，先过一道”审查”——我引入了一个 Plan Verifier，对生成的 Plan 打分、挑毛病，类似代码写完做 Code Review。它会指出 Context 漏了啥、Choice 有没有虚构风险、Checkpoint 缺哪类检查、Correction 没覆盖什么场景，然后让大模型据此修正，改完再审，过线了才执行。</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"score"</span><span class="punctuation">:</span> <span class="number">0.78</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"context_issues"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"没有采集用户当前线上架构信息"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"choice_issues"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"直接推荐具体方案存在虚构风险，应先确认运维能力边界"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"checkpoint_issues"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"缺少运维可行性检查"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"suggestions"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"先追问运维团队技术栈和规模"</span><span class="punctuation">,</span> <span class="string">"增加运维可行性检查点"</span><span class="punctuation">,</span> <span class="string">"增加 Replan 触发条件"</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>我会监控”平均循环次数”——这个数越高，说明 Plan 生成机制本身越有问题，该回头修生成 Prompt 了。</p>
+<p><strong>二是 DAG 式 Plan。</strong> 不把 Plan 当线性步骤列表，而是组织成有向无环图，显式标注每个步骤依赖哪些前置步骤——既能识别依赖关系，也方便并行执行。</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"nodes"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"evaluate_solution"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"depends_on"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"query_metrics"</span><span class="punctuation">,</span> <span class="string">"query_team_capability"</span><span class="punctuation">]</span> <span class="punctuation">}</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>Prompt 里补上依赖识别规则和反常规例子，但大模型识别循环依赖又慢又容易错，最终一定要用代码再检查一遍。这个还能叠加微调——把真实正确的 Plan 数据导出来微调生成模型，效果再上一层。</p>
 <hr>
 <h2 id="计划赶不上变化：Replan"><a href="#计划赶不上变化：Replan" class="headerlink" title="计划赶不上变化：Replan"></a>计划赶不上变化：Replan</h2><p>Plan 再好，执行中也一定会变。用户会补充信息、工具会挂、假设会失效。这时候就需要 Replan。</p>
 <p>我最早的 Replan 特别粗暴——失败 → 把上下文丢给大模型重生成 → 从头跑。有用吗？有一点点。但缺点太明显：已完成步骤、已验证事实全丢了（浪费）；重生成时引入新目标新路径，越改越偏（漂移）；明明只错了一步却重生成整份计划，杀鸡用牛刀（不可控）。</p>
-<blockquote>
-<p>后来我把 Replan 重新定义了一下：<strong>Replan 是在执行过程中，基于新的 Goal、Context、Choice、Checkpoint 结果，对原计划进行受控修正。</strong> 三个关键词：执行中、新信息、受控修正。</p>
-</blockquote>
-<p>它其实是 G4C 里 Correction 的一种实现，和 Retry、Clarify、Rollback 并列。</p>
+<p>后来我把 Replan 重新理解为：<strong>在执行过程中，基于新的 Goal、Context、Choice、Checkpoint 结果，对原计划进行受控修正。</strong> 三个关键词：执行中、新信息、受控修正。</p>
+<p>它其实是前面 Correction 的一种实现，和 Retry、Clarify、Rollback 并列。</p>
 <h3 id="触发时机和粒度"><a href="#触发时机和粒度" class="headerlink" title="触发时机和粒度"></a>触发时机和粒度</h3><p>什么时候触发 Replan？工具失败、上下文变化（多轮里用户补了约束）、违反假设。但要注意：<strong>工具成功、各步没问题，也不代表 Plan 能继续</strong>——可能数据/状态不对导致推不动。</p>
 <p>还有个实践细节：从”发现要 Replan”到”执行 Replan”至少分两步，别在一次调用里同时判定和执行，混在一起表现会变差。</p>
-<p>Replan 的粒度我分三种：当前步骤 / 局部 / 全局。好实践是追求<strong>最小化范围 + 尽可能复用已有结果</strong>。但代价是——太强调复用，大模型会扭曲已有结果去适配错误结论。</p>
+<p>Replan 的粒度我分三种：当前步骤 / 局部 / 全局。好的做法是追求最小化范围 + 尽可能复用已有结果。但代价是——太强调复用，大模型会扭曲已有结果去适配错误结论。</p>
 <h3 id="双重判定-Prompt-要点"><a href="#双重判定-Prompt-要点" class="headerlink" title="双重判定 + Prompt 要点"></a>双重判定 + Prompt 要点</h3><p>触发时机不等于必然 Replan（偶发超时直接重试就行）。我中间加了个判定：代码判定（过滤掉可重试、不需要 Replan 的）+ 大模型判定，再执行。代码判定稳定、快、省 token，基本就是一堆 if-else。</p>
 <p>Replan 的 Prompt 我踩过不少坑，后来总结了几个要点：</p>
 <ul>
-<li><strong>带上 G4C</strong>：原目标、目标有没有变；新增/变化了啥；哪个 Checkpoint 没过 + 证据</li>
+<li><strong>带上五要素</strong>：原目标、目标有没有变；新增/变化了啥；哪个 Checkpoint 没过 + 证据</li>
 <li><strong>再次强调约束</strong>：硬/软约束丢 System Prompt，防偶发违背</li>
 <li><strong>分类输出 + 全部带证据</strong>：保留哪些、改了哪些、取消哪些，各自理由</li>
 </ul>
-<blockquote>
-<p>这一条我必须单独强调：<strong>evidence-based 是大模型幻觉最严厉的父亲。</strong> 我在 Prompt 里加过一句”所有 Replan 判断必须基于 evidence，没有 evidence 不允许声称 Goal/Context/硬约束改变”，效果立竿见影。这个思路在 Plan 阶段、回溯阶段、Action 选择阶段全都管用。</p>
-</blockquote>
+<p>这条我必须单独说：<strong>每条 Replan 判断必须基于证据，没有证据不允许声称 Goal/Context/硬约束改变。</strong> 我在 Prompt 里加了这句话之后，幻觉问题改善非常明显。这个思路在 Plan 阶段、回溯阶段、Action 选择阶段全都管用。</p>
 <p>什么时候问用户我也写在 Prompt 里兜底：涉及强约束必问、参数缺失会致失败就问默认值、关键工具失败无替代就问、权限敏感操作用前先征同意。再加个控制信息防失控：</p>
 <figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span> <span class="attr">"replan_info"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"max_replan_total"</span><span class="punctuation">:</span> <span class="number">3</span><span class="punctuation">,</span> <span class="attr">"used_replan_total"</span><span class="punctuation">:</span> <span class="number">2</span> <span class="punctuation">}</span> <span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="TCC：借鉴分布式事务的高级方案"><a href="#TCC：借鉴分布式事务的高级方案" class="headerlink" title="TCC：借鉴分布式事务的高级方案"></a>TCC：借鉴分布式事务的高级方案</h3><p>我还试过借鉴分布式事务 TCC 的思路（Try/Confirm/Cancel），但先说清楚——这玩意儿局限性强，高失败成本、高外部依赖、高副作用风险才上，普通 Replan 不必搞。</p>
+<h3 id="TCC：借鉴分布式事务的进阶做法"><a href="#TCC：借鉴分布式事务的进阶做法" class="headerlink" title="TCC：借鉴分布式事务的进阶做法"></a>TCC：借鉴分布式事务的进阶做法</h3><p>我还试过借鉴分布式事务 TCC（Try/Confirm/Cancel）的思路——先说清楚，这玩意儿局限性强，高失败成本、高外部依赖、高副作用风险才上，普通 Replan 不必搞。</p>
 <p>核心想法是：一个看起来合理的 Plan 不一定能执行下去，所以新 Plan 出来后先试运行。</p>
 <div class="md-table-scroll"><table>
 <thead>
@@ -593,10 +591,10 @@
 <td>回滚 Try 临时状态 + 标记失败假设/不可用工具 + 再 Replan 或中断</td>
 </tr>
 </tbody></table></div>
-<p>判定还能不能 Replan，就看<strong>还有没有替代的可行方案</strong>——路都走完了就无路可走。Try 优先验证”单点故障”——DAG 里被多个后续节点依赖的那个节点。</p>
+<p>判定还能不能 Replan，就看还有没有替代的可行方案——路都走完了就无路可走。Try 优先验证”单点故障”——DAG 里被多个后续节点依赖的那个节点。</p>
 <hr>
 <h2 id="失败点不等于根因点：回溯"><a href="#失败点不等于根因点：回溯" class="headerlink" title="失败点不等于根因点：回溯"></a>失败点不等于根因点：回溯</h2><p>Replan 说着说着就会碰到一个更要命的问题：<strong>你定位的”出错的地方”，往往不是真正出错的地方。</strong></p>
-<p>这是我自己琢磨比较多的一块。四个概念先理清：</p>
+<p>这是我琢磨比较多的一块。四个概念先理清：</p>
 <div class="md-table-scroll"><table>
 <thead>
 <tr>
@@ -621,19 +619,16 @@
 <td>新 Plan 从哪个节点重新生成——可和回滚点重合，也可更早</td>
 </tr>
 </tbody></table></div>
-<blockquote>
 <p><strong>失败点不等于根因点。</strong> 把两者等同，Replan 就会持续失败——你对着表象下刀，只治表症。</p>
-</blockquote>
-<h3 id="一个让我记忆犹新的快照坑"><a href="#一个让我记忆犹新的快照坑" class="headerlink" title="一个让我记忆犹新的快照坑"></a>一个让我记忆犹新的快照坑</h3><p>举个客服退款的例子。用户说”这单不想要了退款”，Agent 的 A 步查订单状态发现”未发货”，判断可以走”未发货极速退款”。结果执行中物流变了，订单已出库。B 步查到”已出库”，但系统没记 A 当时看到的快照，也没把 A 的”可极速退款”中间判断标失效。C 步沿用旧判断直接退款，被售后系统拒了。</p>
-<p>这时候你只看当前状态，会误判 C 步参数错了。但真正的根因是：<strong>A 步基于旧状态产出的结果已经失效，却没被识别出来。</strong></p>
-<blockquote>
+<h3 id="一个让我记忆犹新的快照坑"><a href="#一个让我记忆犹新的快照坑" class="headerlink" title="一个让我记忆犹新的快照坑"></a>一个让我记忆犹新的快照坑</h3><p>举个缓存选型的例子。用户说”帮我看看订单服务用什么缓存”，Agent 的 A 步查线上服务性能数据，拿到”峰值 QPS 5 万，P99 RT 200ms”，标 Available，基于此判断 Redis 单机方案够用。B 步查当前架构，发现还在用本地缓存。C 步沿用 A 步的 QPS 数据做容量规划，推荐了 3 节点哨兵方案。</p>
+<p>结果用户说：”上周刚上线了个活动，QPS 飙到 15 万了。”C 步的容量规划差了 3 倍。</p>
+<p>这时候你只看当前步骤，会误判 C 步的容量计算逻辑错了。但真正的根因是：<strong>A 步基于旧状态产出的 QPS 数据已经过期，却没被识别出来。</strong></p>
 <p>快照的价值就在这——告诉我们每步决策当时看到的状态，从而判断到底是当前步错了，还是上游基于旧状态的结果失效了。</p>
-</blockquote>
 <h3 id="给中间结果标记可信状态"><a href="#给中间结果标记可信状态" class="headerlink" title="给中间结果标记可信状态"></a>给中间结果标记可信状态</h3><p>我给每个中间结果标了可信状态：Verified（已验证可信）/ Available（孤证可暂用）/ Suspicious（可能有问题）/ Invalid（确认错误）/ Dirty（自己未必错，但依赖了 Invalid）。实践里简化成三个就够：Verified / Available / Invalid。</p>
-<p>配合 evidence-based：每条推理都同步输出证据。一旦某个事实切到 Invalid，大模型能顺着证据链找到根因。</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">highest_qps: 10万，Available</span><br><span class="line">项目亮点：</span><br><span class="line">- 高并发：10万，需设计符合 10万并发的方案。Based：highest_qps</span><br></pre></td></tr></tbody></table></figure>
+<p>配合证据链：每条推理都同步输出证据。一旦某个事实切到 Invalid，大模型能顺着证据链找到根因。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">peak_qps: 5万，Available</span><br><span class="line">缓存方案推荐：</span><br><span class="line">- 推荐 Redis 哨兵模式，3 节点，Based：peak_qps（5 万 QPS 单机够用）</span><br><span class="line">- 预估内存需求 16GB，Based：peak_qps + 数据集大小估算</span><br></pre></td></tr></tbody></table></figure>
 
-<p>一旦 highest_qps 切到 Invalid，大模型能从结构里找到根因。</p>
+<p>一旦 peak_qps 切到 Invalid，大模型能从结构里找到根因。</p>
 <h3 id="反向排查-候选路径"><a href="#反向排查-候选路径" class="headerlink" title="反向排查 + 候选路径"></a>反向排查 + 候选路径</h3><p>从失败点反向排查，我整理了个检查清单（可以在迭代里不断补）：</p>
 <ul>
 <li><input disabled="" type="checkbox"> 当前步骤本身是否执行错误？</li>
@@ -644,33 +639,26 @@
 <li><input disabled="" type="checkbox"> 用户目标和约束是否变化？</li>
 </ul>
 <p>还有一个我觉得特别有用的做法：<strong>保留候选路径</strong>。不必等失败才重想，把候选路径记下来，失败后回到岔路口换条路。但必须记失败路径，否则 A 失败 → 再选 A → 失败 → 无限循环。</p>
-<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"decision_id"</span><span class="punctuation">:</span> <span class="string">"get_product_data"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"selected"</span><span class="punctuation">:</span> <span class="string">"product_service"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"candidates"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">{</span> <span class="attr">"path"</span><span class="punctuation">:</span> <span class="string">"product_service"</span><span class="punctuation">,</span> <span class="attr">"status"</span><span class="punctuation">:</span> <span class="string">"failed"</span><span class="punctuation">,</span> <span class="attr">"reason"</span><span class="punctuation">:</span> <span class="string">"接口不可用"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">{</span> <span class="attr">"path"</span><span class="punctuation">:</span> <span class="string">"elasticsearch"</span><span class="punctuation">,</span>  <span class="attr">"status"</span><span class="punctuation">:</span> <span class="string">"available"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">{</span> <span class="attr">"path"</span><span class="punctuation">:</span> <span class="string">"database"</span><span class="punctuation">,</span>        <span class="attr">"status"</span><span class="punctuation">:</span> <span class="string">"available"</span> <span class="punctuation">}</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"decision_id"</span><span class="punctuation">:</span> <span class="string">"cache_product_data"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"selected"</span><span class="punctuation">:</span> <span class="string">"redis_sentinel"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"candidates"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">{</span> <span class="attr">"path"</span><span class="punctuation">:</span> <span class="string">"redis_cluster"</span><span class="punctuation">,</span>  <span class="attr">"status"</span><span class="punctuation">:</span> <span class="string">"failed"</span><span class="punctuation">,</span> <span class="attr">"reason"</span><span class="punctuation">:</span> <span class="string">"运维不支持 Cluster 运维"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">{</span> <span class="attr">"path"</span><span class="punctuation">:</span> <span class="string">"redis_sentinel"</span><span class="punctuation">,</span> <span class="attr">"status"</span><span class="punctuation">:</span> <span class="string">"available"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">{</span> <span class="attr">"path"</span><span class="punctuation">:</span> <span class="string">"memcached"</span><span class="punctuation">,</span>      <span class="attr">"status"</span><span class="punctuation">:</span> <span class="string">"available"</span> <span class="punctuation">}</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
 
-<blockquote>
 <p>例外：失败原因已修复时，可重选失败路径——所以要存失败原因 + 运行中检测有没有修好。</p>
-</blockquote>
-<h3 id="代码和大模型怎么分工"><a href="#代码和大模型怎么分工" class="headerlink" title="代码和大模型怎么分工"></a>代码和大模型怎么分工</h3><p>这里我有条原则：<strong>能用代码就别用大模型。</strong> 代码稳定性和性能都更好。</p>
+<h3 id="代码和大模型怎么分工"><a href="#代码和大模型怎么分工" class="headerlink" title="代码和大模型怎么分工"></a>代码和大模型怎么分工</h3><p>我有条原则：<strong>能用代码就别用大模型。</strong> 代码稳定性和性能都更好。</p>
 <p>代码干确定性的：遍历 DAG、查上下游、标记 Invalid/Dirty、找最近 Checkpoint、检查循环依赖、控制次数、执行回滚。大模型干语义的：错误现象对应哪类业务根因、用户目标有没有变、新约束影响哪些步骤、中间结果能不能复用、生成候选路径、解释为啥选某 Replan 点。</p>
 <p>进阶我做了两件事：</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">渐进式扩大回溯（像异常处理，先便宜后扩大）</span><br><span class="line"> Replan(根因级) ──失败──→ 回溯一个 Checkpoint ──失败──→ 再扩大 ...（每次配合 TCC 判可行性）</span><br><span class="line"></span><br><span class="line">跳跃式哈希回溯（线性变哈希）</span><br><span class="line"> { 问题类型(key) → 回溯位置/新计划(value) }  靠离线分析/向量库积累规律</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">渐进式扩大回溯（像异常处理，先便宜后扩大）</span><br><span class="line"> Replan(根因级) ──失败──→ 回溯一个 Checkpoint ──失败──→ 再扩大 ...（每次配合 TCC 判可行性）</span><br><span class="line"></span><br><span class="line">跳跃式回溯（从线性变检索）</span><br><span class="line"> { 问题类型(key) → 回溯位置/新计划(value) }  靠离线分析/向量库积累规律</span><br></pre></td></tr></tbody></table></figure>
 
-<blockquote>
 <p>后者这思路和上一篇意图识别的向量兜底同构——都是把已知案例/方案放进向量库，后续检索出来给大模型参考。</p>
-</blockquote>
-<h3 id="回溯怎么评估"><a href="#回溯怎么评估" class="headerlink" title="回溯怎么评估"></a>回溯怎么评估</h3><p>这块我也理了几个指标：根因定位准确率、Replan 起点准确率、已有结果复用率、Replan 恢复成功率、Replan 振荡率。振荡率听着高级其实技术含量低——就是 Agent 在几个相似计划间反复横跳，基本是上下文管理没做好（没记失败路径/原因/控制信息）。</p>
-<blockquote>
-<p>一个实践感受：把成功 Replan 结果拿去微调，效果不明显；但把<strong>原 Plan + 成功 Replan 当 few-shot 塞进 Plan Prompt</strong>，能显著提升特定场景的 Plan 质量。</p>
-</blockquote>
+<h3 id="回溯怎么评估"><a href="#回溯怎么评估" class="headerlink" title="回溯怎么评估"></a>回溯怎么评估</h3><p>这块我也理了几个指标：根因定位准确率、Replan 起点准确率、已有结果复用率、Replan 恢复成功率、Replan 振荡率。振荡率听着高级其实就是——Agent 在几个相似计划间反复横跳，基本是上下文管理没做好（没记失败路径/原因/控制信息）。</p>
+<p>一个实践感受：把成功 Replan 结果拿去微调，效果不明显；但把原 Plan + 成功 Replan 当 few-shot 塞进 Plan Prompt，能显著提升特定场景的 Plan 质量。</p>
 <hr>
-<h2 id="走一步看一步，但不是瞎走：TAO"><a href="#走一步看一步，但不是瞎走：TAO" class="headerlink" title="走一步看一步，但不是瞎走：TAO"></a>走一步看一步，但不是瞎走：TAO</h2><p>前面讲的 Plan 和 Replan，解决的是”整体怎么走”和”路不通怎么改”。但还有个绕不开的范式：ReAct，或者说 TAO（Think/Action/Observation）。它解决的是”眼前这一步怎么走”。</p>
-<p>ReAct 就是推理和行动交替：输入 → 思考 → 执行动作 → 看结果 → 再思考 → 再执行 → …… → 输出。TAO 和 ReAct 基本是一回事，关系有点像两阶段提交和 XA。</p>
-<h3 id="和-Plan-的关系"><a href="#和-Plan-的关系" class="headerlink" title="和 Plan 的关系"></a>和 Plan 的关系</h3><p>Plan 和 TAO 不是二选一。我最常用的搭配是：<strong>Plan 定大方向，TAO 定眼前这一步。</strong> Plan 里有一步”收集项目事实”，但具体怎么收集——从当前输入抽？从历史召回？查简历？调知识库？问用户？——这些是 TAO 要决定的。</p>
+<h2 id="走一步看一步，但不是瞎走：TAO"><a href="#走一步看一步，但不是瞎走：TAO" class="headerlink" title="走一步看一步，但不是瞎走：TAO"></a>走一步看一步，但不是瞎走：TAO</h2><p>前面讲的 Plan 和 Replan，解决的是”整体怎么走”和”路不通怎么改”。但还有个绕不开的范式：TAO（Think / Action / Observation），本质上就是 ReAct 换了个名字。它解决的是”眼前这一步怎么走”。</p>
+<h3 id="和-Plan-的关系"><a href="#和-Plan-的关系" class="headerlink" title="和 Plan 的关系"></a>和 Plan 的关系</h3><p>Plan 和 TAO 不是二选一。我最常用的搭配是：<strong>Plan 定大方向，TAO 定眼前这一步。</strong> Plan 里有一步”收集线上服务现状”，但具体怎么收集——从监控系统取？从上次对话召回？查架构文档？问用户补充？——这些是 TAO 要决定的。</p>
 <p>反过来说，只有 TAO 没 Plan 也有问题：做着做着忘了目标、在局部细节打转、短视合理长期不合理、重复查询、越走越偏。这基本都是长任务的坑。</p>
-<p>而且 TAO 和 G4C 能对上：</p>
+<p>而且 TAO 和 Plan 的五要素能对上：</p>
 <div class="md-table-scroll"><table>
 <thead>
 <tr>
-<th>G4C</th>
+<th>五要素</th>
 <th>在 TAO 中的体现</th>
 </tr>
 </thead>
@@ -695,70 +683,59 @@
 <td>Think 决定 Retry/Clarify/Rollback/Replan/Interrupt</td>
 </tr>
 </tbody></table></div>
-<blockquote>
-<p>这就是为什么我一直强调 Plan 是”可检查、可纠偏、可执行的运行时对象”——TAO 正好和它适配。</p>
-</blockquote>
-<h3 id="核心是状态循环"><a href="#核心是状态循环" class="headerlink" title="核心是状态循环"></a>核心是状态循环</h3><p>做 TAO 最容易跑偏的地方，是去抠 T 的 Prompt 怎么写、A 怎么设计、O 怎么实现。但我说句实在话：</p>
-<blockquote>
+<h3 id="核心是状态循环"><a href="#核心是状态循环" class="headerlink" title="核心是状态循环"></a>核心是状态循环</h3><p>做 TAO 最容易跑偏的地方，是去抠 T 的 Prompt 怎么写、A 怎么设计、O 怎么实现。但我的体会是：</p>
 <p><strong>TAO 的核心不是 T/A/O 各自怎么搞，而是你怎么维护一个 TAO 的状态循环。</strong></p>
-</blockquote>
 <p>TAO 本质是个不断推进的状态机，引擎是大模型（普通状态机用代码推，TAO 用大模型推）。所以问题就变成：一轮 TAO 要维护哪些状态？</p>
 <p>我维护这么几个：Goal（防目标偏移，是锚点）、Action（做过啥）、Observation（不是原始返回值，是解读结果）、Fact（最重要，单独拎出来）。</p>
 <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">读取当前状态 → Think → 选 Action → 执行 Action → 生成 Observation → 更新状态 → 判断下一步</span><br></pre></td></tr></tbody></table></figure>
 
-<p>Goal 是锚——没有它，大模型很容易陷局部最优，比如搜到一堆 Java 性能资料就沉迷继续搜，忘了用户要的是改简历。每轮 Think 都得重新检查：当前 Action 能不能推进目标、和目标差啥、成功标准满足没、能不能停。</p>
-<p><strong>Fact State 我必须单独强调。</strong> 缺少结构化维护，大模型就会把推测当事实、忘用户强调的东西（”别改某文件”结果改了）。尤其长任务，关键事实不能只靠摘要——摘要会压缩，压缩就丢细节。我的做法是关键事实单独提取、单独存储，Prompt 里单独一块。</p>
-<blockquote>
-<p>你就这么理解：Agent 像跟你同住的健忘的妈，你得每天耳提面命规则，不然她就忘。</p>
-</blockquote>
+<p>Goal 是锚——没有它，大模型很容易陷局部最优。比如搜到一堆 Redis Cluster 性能对比资料就沉迷继续搜，忘了用户的核心约束是”运维能 hold 住”。每轮 Think 都得重新检查：当前 Action 能不能推进目标、和目标差啥、成功标准满足没、能不能停。</p>
+<p><strong>Fact State 我必须单独强调。</strong> 缺少结构化维护，大模型就会把推测当事实、忘用户强调的东西（”别推 Redis Cluster”结果推了）。尤其长任务，关键事实不能只靠上下文摘要——摘要会压缩，压缩就丢细节。我的做法是关键事实单独提取、单独存储，Prompt 里单独一块。</p>
+<p>你就这么理解：Agent 的长期记忆能力很差，你得在每一轮都把关键事实显式喂给它，不然它就忘。</p>
 <h3 id="Think-Action-Observation"><a href="#Think-Action-Observation" class="headerlink" title="Think / Action / Observation"></a>Think / Action / Observation</h3><p><strong>Think</strong> 要做四类判断：</p>
 <ul>
-<li><strong>目标判断</strong>：逼近哪个目标（”方向错了，知识越多越反动”）</li>
+<li><strong>目标判断</strong>：逼近哪个目标（方向不对，搜到再多技术资料也是白费）</li>
 <li><strong>状态判断</strong>：已知什么、缺什么——简化成”缺啥补啥”</li>
 <li><strong>路径判断</strong>：有哪些候选 Action、用哪个</li>
-<li><strong>停止判断</strong>：信息够不够回答——防两个极端：停太早 vs 停不下来</li>
+<li><strong>停止判断</strong>：信息够不够做判断——防两个极端：停太早 vs 停不下来</li>
 </ul>
-<p><strong>Action</strong> 我有个比较抽象的看法：万物皆 Action。工具 ≠ Action，接口更 ≠ Action——Action 是二次封装产物，可封装外部工具、内部接口，也能聚合多个。用户交互也是 Action（比如政务 Agent 让用户把身份证放好到读卡处）。</p>
+<p><strong>Action</strong> 我有个比较抽象的看法：万物皆 Action。工具 ≠ Action，接口更 ≠ Action——Action 是二次封装产物，可封装外部工具、内部接口，也能聚合多个。用户交互也是 Action（比如让用户补充压测数据或者确认业务高峰期时间窗口）。</p>
 <p><strong>Observation</strong> 我想强调一句：<strong>解释数据比存储数据重要得多。</strong> Action 执行后不能把原始结果直接塞回大模型，得先整理成结构化 Observation：真成功没？获得哪些新事实（带证据）？符合预期不？还缺啥？有无异常/违约？推翻原假设没？取得实际进展没？</p>
-<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"action_id"</span><span class="punctuation">:</span> <span class="string">"action_28"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"execution_status"</span><span class="punctuation">:</span> <span class="string">"partial_success"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"new_facts"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"找到了项目峰值订单量"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"missing_information"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"没找到优化前后响应时间"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"state_changes"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"业务规模信息已补齐"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"suggested_next_action"</span><span class="punctuation">:</span> <span class="string">"ask_user"</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"action_id"</span><span class="punctuation">:</span> <span class="string">"query_service_metrics"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"execution_status"</span><span class="punctuation">:</span> <span class="string">"success"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"new_facts"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"订单服务峰值 QPS: 5 万"</span><span class="punctuation">,</span> <span class="string">"P99 RT: 150ms"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"missing_information"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"大促期间峰值 QPS 未知"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"state_changes"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"性能需求已初步量化"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"suggested_next_action"</span><span class="punctuation">:</span> <span class="string">"query_current_architecture"</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>最难的是判定”实际进展”——我引入了 Slot Filling，每个槽位被填 = 新进展。连续多次搜索都没新内容，就该记录 <code>{ "progress": false, "information_gain": "low" }</code>，然后换路径/问用户/Replan。</p>
 <h3 id="六个出口-双层循环"><a href="#六个出口-双层循环" class="headerlink" title="六个出口 + 双层循环"></a>六个出口 + 双层循环</h3><p>一轮 TAO 结束有六个出口：Continue（还能推进）、Finish（成功标准满足）、Clarify（缺关键信息）、Retry（偶发失败）、Replan（路径本身有问题）、Error/Interrupt（兜底，防一直思考）。</p>
 <p>长任务我用了<strong>双层 TAO 循环</strong>：内层管”下一步怎么走”，外层管”走得还对不对”（监督 Goal 漂移、约束违反）。外层可以异步，也可以每 N 轮或到 Checkpoint 同步跑一次。这玩意儿实现不难，但特别治长任务漂移——长任务最大的问题不是某步偶错，而是小错误不断累积，第 1 轮漏约束 → 第 2 轮基于错状态选动作 → 第 3 轮基于错结果更新状态，最后每步看着都合理，整体偏到十万八千里。</p>
 <blockquote>
-<p>一句话总结：TAO 循环的本质 = 不断缩小当前状态和目标状态之间的差距。ReAct 是”走一步看一步”，但不是瞎看，也不是瞎走。</p>
+<p>一句话总结：TAO 循环的本质 = 不断缩小当前状态和目标状态之间的差距。走一步看一步，但不是瞎看，也不是瞎走。</p>
 </blockquote>
 <hr>
 <h2 id="选对-Action-比选多-Action-更重要"><a href="#选对-Action-比选多-Action-更重要" class="headerlink" title="选对 Action 比选多 Action 更重要"></a>选对 Action 比选多 Action 更重要</h2><p>TAO 里如果说什么最重要，我认为是<strong>选对 Action</strong>，没有之一。</p>
 <h3 id="粒度、可用性、权限"><a href="#粒度、可用性、权限" class="headerlink" title="粒度、可用性、权限"></a>粒度、可用性、权限</h3><p>Action 的粒度标准：<strong>一个业务上完整的操作。</strong> 内部可调一个工具、多个工具，甚至启动子 Agent，但业务上是一个独立完整的步骤。子 Agent 作 Action 是我特别爱用的——主 Agent 把上下文完整传过去，子 Agent 自决用哪部分。</p>
-<p>尽量保持 Action 正交（职责边界清晰不重合）。但实践里没法完全正交：退货并退款 vs 仅退款都含”退款”职责重合，容易选错。所以”尽量正交”——<strong>边界清晰比数量少更重要</strong>。</p>
+<p>尽量保持 Action 正交（职责边界清晰不重合）。但实践里没法完全正交：查服务性能指标 vs 查服务依赖拓扑都涉及”查服务信息”，职责有重合，容易选错。所以”尽量正交”——<strong>边界清晰比数量少更重要</strong>。</p>
 <p>可用性上我的原则是：<strong>提供者自保高可用，别寄望 Agent 容错。</strong> Action 内部把能处理的错误自己处理掉（重试/降级/互为替代封装），降低大模型负担。</p>
-<p>权限控制是面试热点，但其实不复杂：判断有无权限 + 记录授权信息（含时限）+ 审计。两种做法——封装（每 Action 自己管，可控但重复）和通用 AOP/装饰器（统一管理，扩展性稍差）。Action 看作资源、执行 Action 看作操作，纳入传统 RBAC/ABAC 就行，没啥特殊的。</p>
+<p>权限控制其实不复杂：判断有无权限 + 记录授权信息（含时限）+ 审计。两种做法——封装（每 Action 自己管，可控但重复）和通用 AOP 装饰器（统一管理，扩展性稍差）。Action 看作资源、执行 Action 看作操作，纳入传统 RBAC/ABAC 就行。</p>
 <h3 id="Action-怎么描述-怎么选"><a href="#Action-怎么描述-怎么选" class="headerlink" title="Action 怎么描述 + 怎么选"></a>Action 怎么描述 + 怎么选</h3><p>每个 Action 我让它带这些：name、description、applicable_scenarios、inapplicable_scenarios（正反定义边界）、required_params（参数越少越好、默认值最好内部解决）、返回值最小化（别拿到啥暴露啥）。</p>
 <p>选择规则我总结了五条：</p>
 <ol>
 <li><strong>只能选候选 Action</strong>：名字定义成枚举 + 代码检查。容易错的点是——本轮没提供 Action1，大模型从上下文得知有它就选了，所以检查不能只查”存不存在”，要查”是不是本轮候选”</li>
 <li><strong>前置检查用代码</strong>：结合权限/候选/参数合法性，极端上规则引擎</li>
 <li><strong>结合 Replan 排除错误选项</strong>：记录已试 Action，重试时排除结果不好的（网络/数据同步类的例外，之前不好用的可能突然好用了）</li>
-<li><strong>输出决策理由 + 证据</strong>：evidence-based 经典应用——减幻觉 + 排查依据 + 沉淀正反例拿去微调</li>
+<li><strong>输出决策理由 + 证据</strong>：减幻觉 + 排查依据 + 沉淀正反例拿去微调</li>
 <li><strong>结合 few-shot 正反案例</strong>：Action 名作 key，例子作 value</li>
 </ol>
 <h3 id="海量-Action-怎么办"><a href="#海量-Action-怎么办" class="headerlink" title="海量 Action 怎么办"></a>海量 Action 怎么办</h3><p>Action 一多就头大。我的思路是把”选出最终 Action”看成一条<strong>流水线</strong>，最后一环基本是大模型筛选，前面每环要么代码要么大模型：</p>
 <ul>
 <li>基于意图 / 基于标签（意图关联或打标签筛选）</li>
-<li>规则引擎（上下文描述作规则，比如没加载用户画像就放入加载画像的 Action）</li>
+<li>规则引擎（上下文描述作规则，比如没加载用户当前架构就不放”方案评估”的 Action）</li>
 <li>大模型多次粗筛（海量 Action + 少量上下文[目标+缺失数据] 粗筛，不用太准）</li>
 <li>向量召回（Action 描述/时机/正反例入向量库）</li>
-<li>前置条件过滤（没订单 ID 就不把查订单 Action 放候选）</li>
+<li>前置条件过滤（没有当前服务 QPS 数据就不放”容量规划”的 Action）</li>
 <li>权限过滤、历史成功率过滤</li>
 </ul>
-<p>这些不互斥，自由组合——组合起来还听上去挺独特，面试加分。</p>
-<blockquote>
-<p>还有个听着高端其实就是改 Prompt 的：<strong>基于信息增益/不确定性下降的筛选</strong>。从”选最可能完成任务的 Action”改成”选能最大程度降低不确定性的 Action”。两者大多一致，但部分不一致——优先选能补足信息的 Action，防止信息缺失就直接做最终决策。</p>
-</blockquote>
-<blockquote>
-<p>候选数量上，面试标准答案是 3–5 个（Anthropic 的建议）；实践里只要筛选准确度可接受就随便放，正交的多放无妨，边界模糊的少放也掉准确率。</p>
-</blockquote>
+<p>这些不互斥，自由组合。</p>
+<p>还有一个改 Prompt 的思路：从”选最可能完成任务的 Action”改成”选能最大程度降低不确定性的 Action”。两者大多一致，但部分不一致——优先选能补足信息的 Action，防止信息缺失就直接做最终决策。</p>
+<p>候选数量上，行业里通常建议 3-5 个，但我的实践是只要筛选准确度够高，多放几个也没问题。正交的多放无妨，边界模糊的少放也掉准确率。</p>
 <hr>
 <h2 id="怎么评估效果"><a href="#怎么评估效果" class="headerlink" title="怎么评估效果"></a>怎么评估效果</h2><p>做 Agent 不能只做不评。这一套下来我主要看几类指标：</p>
 <p><strong>Plan / Replan 相关：</strong></p>
@@ -773,51 +750,49 @@
 <li>Observation：事实提取准确率、证据绑定准确率、工具结果误读率</li>
 <li>整体：最终任务成功率、平均 TAO 轮数、平均工具调用次数、平均 Token 消耗、任务平均延迟</li>
 </ul>
-<blockquote>
-<p>大多数指标离不开 LLM as Judge，只有少数能代码直接采集。但<strong>能讲清”怎么评估 + 怎么采集”本身就是加分项</strong>——你拿出指标，就和大部分候选人拉开差距了。</p>
-</blockquote>
+<p>大多数指标离不开 LLM as Judge，只有少数能代码直接采集。但<strong>能把这套评估体系讲清楚，说明你真的在做 Agent 而不是 demo。</strong></p>
 <hr>
-<h2 id="示例展示"><a href="#示例展示" class="headerlink" title="示例展示"></a>示例展示</h2><p>说了这么多，还是用我那个项目经历优化 Agent 走一遍，把这些串起来。</p>
+<h2 id="示例展示"><a href="#示例展示" class="headerlink" title="示例展示"></a>示例展示</h2><p>说了这么多，还是用我那个技术选型 Agent 走一遍，把这些串起来。</p>
 <h3 id="第一轮：生成-Plan-开始执行"><a href="#第一轮：生成-Plan-开始执行" class="headerlink" title="第一轮：生成 Plan + 开始执行"></a>第一轮：生成 Plan + 开始执行</h3><p>用户输入：</p>
 <blockquote>
-<p>“帮我把这段项目经历改一下，准备阿里 Java 后端面试，不能瞎编”</p>
+<p>“帮我看下订单服务用什么缓存方案好，运维人手不多，不能瞎推荐”</p>
 </blockquote>
-<p>Agent 先做意图识别（上一篇聊过），进入规划。生成的 Plan（G4C）节选：</p>
-<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"goal"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"user_goal"</span><span class="punctuation">:</span> <span class="string">"优化项目经历适配阿里 Java 面试"</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">"success_criteria"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"体现技术复杂度"</span><span class="punctuation">,</span><span class="string">"不虚构"</span><span class="punctuation">,</span><span class="string">"能撑住追问"</span><span class="punctuation">]</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"context"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"known_facts"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"项目偏 CRUD"</span><span class="punctuation">,</span><span class="string">"目标岗位 Java 后端"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">               <span class="attr">"missing_info"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"项目背景"</span><span class="punctuation">,</span><span class="string">"技术栈"</span><span class="punctuation">,</span><span class="string">"性能数据"</span><span class="punctuation">]</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"choice"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"selected_path"</span><span class="punctuation">:</span> <span class="string">"抽取事实→追问缺失→生成亮点→改写→生成追问"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"steps"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"extract_facts"</span><span class="punctuation">,</span> <span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"抽取已有项目事实"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"ask_missing"</span><span class="punctuation">,</span>   <span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"追问缺失关键信息"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"gen_highlights"</span><span class="punctuation">,</span><span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"生成项目亮点"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"rewrite"</span><span class="punctuation">,</span>       <span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"改写项目经历"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"gen_q"</span><span class="punctuation">,</span>         <span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"基于亮点生成面试追问"</span> <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">]</span> <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+<p>Agent 先做意图识别（上一篇聊过），进入规划。生成的 Plan（五要素）节选：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"goal"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"user_goal"</span><span class="punctuation">:</span> <span class="string">"为订单服务选型缓存方案"</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">"success_criteria"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"运维团队能独立运维"</span><span class="punctuation">,</span><span class="string">"满足性能要求"</span><span class="punctuation">,</span><span class="string">"不推荐用户排除的方案"</span><span class="punctuation">]</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"context"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"known_facts"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"订单服务"</span><span class="punctuation">,</span><span class="string">"运维团队人手有限"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">               <span class="attr">"missing_info"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"当前 QPS"</span><span class="punctuation">,</span><span class="string">"当前架构"</span><span class="punctuation">,</span><span class="string">"运维技术栈"</span><span class="punctuation">,</span><span class="string">"预算"</span><span class="punctuation">]</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"choice"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"selected_path"</span><span class="punctuation">:</span> <span class="string">"采集现状→追问缺失→评估方案→输出推荐"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"steps"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"query_metrics"</span><span class="punctuation">,</span>       <span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"查询线上服务性能数据"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"query_architecture"</span><span class="punctuation">,</span>  <span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"查询当前架构和技术栈"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"ask_missing"</span><span class="punctuation">,</span>         <span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"追问缺失关键信息"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"evaluate"</span><span class="punctuation">,</span>            <span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"评估候选方案"</span> <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">{</span> <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"recommend"</span><span class="punctuation">,</span>           <span class="attr">"objective"</span><span class="punctuation">:</span> <span class="string">"输出最终推荐"</span> <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">]</span> <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>进入 TAO 循环，第一步 Think：目标=抽取事实，缺=项目背景/技术栈/性能数据，候选 Action=查简历工具/查知识库/问用户。选了”查简历工具”。执行后 Observation：<code>{ "execution_status": "partial_success", "new_facts": ["找到了订单峰值"], "missing_information": ["没找到优化前后响应时间"], "progress": true }</code>。Fact State 里订单峰值标 Available。</p>
+<p>进入 TAO 循环，第一步 Think：目标=查询服务现状，缺=QPS/架构/运维能力，候选 Action=查监控工具/查架构文档/问用户。选了”查监控工具”。执行后 Observation：<code>{ "execution_status": "success", "new_facts": ["峰值 QPS 5 万", "P99 RT 150ms"], "missing_information": ["大促期间峰值 QPS"], "progress": true }</code>。Fact State 里峰值 QPS 标 Available。</p>
 <h3 id="第二轮：用户补约束-→-触发-Replan"><a href="#第二轮：用户补约束-→-触发-Replan" class="headerlink" title="第二轮：用户补约束 → 触发 Replan"></a>第二轮：用户补约束 → 触发 Replan</h3><p>用户补了一句：</p>
 <blockquote>
-<p>“对了，B 接口那段不能改，我组长不让动”</p>
+<p>“对了，Redis Cluster 别推了，运维那边搞不定”</p>
 </blockquote>
 <p>这是上下文变化（新增硬约束）。触发时机命中，但先过双重判定：代码判定这是”用户新增约束”非偶发错误 → 大模型判定需要局部 Replan。Replan 输出（带证据）：</p>
-<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span> <span class="attr">"replan"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"kept"</span><span class="punctuation">:</span>    <span class="punctuation">[</span><span class="punctuation">{</span> <span class="attr">"step"</span><span class="punctuation">:</span> <span class="string">"extract_facts"</span><span class="punctuation">,</span> <span class="attr">"reason"</span><span class="punctuation">:</span> <span class="string">"事实仍可信"</span> <span class="punctuation">}</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"modified"</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">{</span> <span class="attr">"step"</span><span class="punctuation">:</span> <span class="string">"rewrite"</span><span class="punctuation">,</span> <span class="attr">"change"</span><span class="punctuation">:</span> <span class="string">"排除涉及 B 接口的改写"</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">"reason"</span><span class="punctuation">:</span> <span class="string">"用户新增硬约束：B 接口不可改"</span> <span class="punctuation">}</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"cancelled"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span><span class="punctuation">,</span> <span class="attr">"replan_info"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"max_replan_total"</span><span class="punctuation">:</span> <span class="number">3</span><span class="punctuation">,</span> <span class="attr">"used_replan_total"</span><span class="punctuation">:</span> <span class="number">1</span> <span class="punctuation">}</span> <span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span> <span class="attr">"replan"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"kept"</span><span class="punctuation">:</span>    <span class="punctuation">[</span><span class="punctuation">{</span> <span class="attr">"step"</span><span class="punctuation">:</span> <span class="string">"query_metrics"</span><span class="punctuation">,</span> <span class="attr">"reason"</span><span class="punctuation">:</span> <span class="string">"性能数据已验证"</span> <span class="punctuation">}</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"modified"</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">{</span> <span class="attr">"step"</span><span class="punctuation">:</span> <span class="string">"evaluate"</span><span class="punctuation">,</span> <span class="attr">"change"</span><span class="punctuation">:</span> <span class="string">"排除 Redis Cluster 方案"</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">"reason"</span><span class="punctuation">:</span> <span class="string">"用户新增硬约束：运维不支持 Cluster"</span> <span class="punctuation">}</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"cancelled"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span><span class="punctuation">,</span> <span class="attr">"replan_info"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"max_replan_total"</span><span class="punctuation">:</span> <span class="number">3</span><span class="punctuation">,</span> <span class="attr">"used_replan_total"</span><span class="punctuation">:</span> <span class="number">1</span> <span class="punctuation">}</span> <span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>约束再次强调进 System Prompt，继续执行。</p>
-<h3 id="第三轮：工具失败-→-回溯找根因"><a href="#第三轮：工具失败-→-回溯找根因" class="headerlink" title="第三轮：工具失败 → 回溯找根因"></a>第三轮：工具失败 → 回溯找根因</h3><p>执行到”生成亮点”时，调用性能数据查询工具失败。<strong>失败点在这。</strong> 但我不急着 Replan——先反向排查。</p>
-<p>记的快照显示：A 步（抽取事实）当时基于”订单峰值 10万”生成了一些中间判断，标 Available。继续排查发现，工具失败是因为它需要”优化前后响应时间”这个参数，而这个参数从未被采集到——<strong>根因点其实在”追问缺失信息”那步漏问了响应时间。</strong></p>
+<h3 id="第三轮：工具失败-→-回溯找根因"><a href="#第三轮：工具失败-→-回溯找根因" class="headerlink" title="第三轮：工具失败 → 回溯找根因"></a>第三轮：工具失败 → 回溯找根因</h3><p>执行到”评估方案”时，调用容量计算工具失败。<strong>失败点在这。</strong> 但我不急着 Replan——先反向排查。</p>
+<p>记的快照显示：A 步（查询性能）当时基于”峰值 QPS 5 万”生成了一些中间判断，标 Available。继续排查发现，容量计算工具需要”大促期间峰值 QPS”这个参数，而这个参数从未被采集到——<strong>根因点其实在”追问缺失信息”那步漏问了大促峰值。</strong></p>
 <blockquote>
-<p>失败点（生成亮点时工具失败）≠ 根因点（追问步骤漏了响应时间）。</p>
+<p>失败点（评估方案时工具失败）≠ 根因点（追问步骤漏了大促峰值）。</p>
 </blockquote>
-<p>回滚到 ask_missing 步，复用 extract_facts 的可信结果（标 Verified 的保留），局部 Replan：补一个”追问响应时间”的动作。候选路径表里记下性能查询工具 failed（原因：缺参数），等参数补齐后可重选。</p>
-<h3 id="第四轮：Action-选择-纠偏"><a href="#第四轮：Action-选择-纠偏" class="headerlink" title="第四轮：Action 选择 + 纠偏"></a>第四轮：Action 选择 + 纠偏</h3><p>参数补齐后，Think 重新选 Action。候选 Action 有：性能查询工具、项目知识库检索、问用户补充。这次代码前置检查发现性能查询工具的失败原因（缺参数）已修复，允许重选。大模型输出决策理由 + 证据：</p>
+<p>回滚到 ask_missing 步，复用 query_metrics 的可信结果（标 Verified 的保留），局部 Replan：补一个”追问大促峰值 QPS”的动作。候选路径表里记下容量计算工具 failed（原因：缺参数），等参数补齐后可重选。</p>
+<h3 id="第四轮：Action-选择-纠偏"><a href="#第四轮：Action-选择-纠偏" class="headerlink" title="第四轮：Action 选择 + 纠偏"></a>第四轮：Action 选择 + 纠偏</h3><p>参数补齐后，Think 重新选 Action。候选 Action 有：容量计算工具、方案知识库检索、问用户补充。这次代码前置检查发现容量计算工具的失败原因（缺参数）已修复，允许重选。大模型输出决策理由 + 证据：</p>
 <blockquote>
-<p>选性能查询工具。理由：参数已补齐，且该工具能直接拿到优化前后响应时间，信息增益最大。证据：ask_missing 已采集到响应时间数据（Verified）。</p>
+<p>选容量计算工具。理由：参数已补齐，且该工具能直接基于实际 QPS 计算所需节点数，信息增益最大。证据：ask_missing 已采集到大促峰值 QPS 数据（Available）。</p>
 </blockquote>
-<p>执行成功，Observation 标注取得实际进展，Fact State 里响应时间从 missing 切到 Verified。</p>
-<p>到 Checkpoint（rewrite 步之前）校验：是否存在虚构？否。是否体现技术复杂度？是。是否适配岗位？是。通过，继续。</p>
+<p>执行成功，Observation 标注取得实际进展，Fact State 里大促峰值从 missing 切到 Verified。</p>
+<p>到 Checkpoint（recommend 步之前）校验：方案是否匹配实际 QPS？是。运维能否独立运维？是。是否排除了 Redis Cluster？是。通过，继续。</p>
 <h3 id="示例小结"><a href="#示例小结" class="headerlink" title="示例小结"></a>示例小结</h3><p>走下来能看到这一整套是怎么咬合的：</p>
 <ol>
-<li><strong>Plan（G4C）</strong> 给了整体路径和检查点</li>
+<li><strong>Plan（五要素）</strong> 给了整体路径和检查点</li>
 <li><strong>TAO 状态循环</strong> 推进每一步，Fact State 单独维护防幻觉</li>
 <li><strong>Replan</strong> 在用户补约束时做受控局部修正，而非推倒重来</li>
-<li><strong>回溯</strong> 在工具失败时找到真正的根因（漏问参数），而不是对着失败点瞎改</li>
+<li><strong>回溯</strong> 在工具失败时找到真正的根因（漏问大促峰值），而不是对着失败点瞎改</li>
 <li><strong>Action 选择</strong> 用候选路径 + 证据 + 信息增益，选对了推进状态的下一步</li>
 <li><strong>evidence-based</strong> 贯穿全程——Checkpoint 带证据、Replan 分类输出带理由、Action 选择输出依据</li>
 </ol>
 <hr>
 <h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>规划、纠偏、执行循环这事，说简单也简单——让大模型拆个步骤列表就能跑起来；说难也难——要扛住多轮、长任务、工具失败、用户变卦，得在 Plan、Replan、回溯、TAO、Action 上下不少功夫。</p>
-<p>核心就两句话：<strong>状态管理是 Action 选择的基石，Action 选择准确是推动状态前进的抓手；而 evidence-based，是大模型幻觉最严厉的父亲。</strong></p>
+<p>核心就两句话：<strong>状态管理是 Action 选择的基石，Action 选择准确是推动状态前进的抓手；而证据约束，是防止大模型幻觉最有效的手段。</strong></p>
 <p>说到底，Agent 执行得好不好，不在于模型多强，而在于你能不能把”当前状态”和”目标状态”之间的差距，一步步受控地缩小。</p>
 <p>如果你也在做 Agent，我的建议和上一篇一样：先跑起来，再逐步优化。先有效果，再谈效率。状态管理和证据约束这两件事，值得从第一天就埋进去。</p>
 </article>
@@ -877,7 +852,7 @@
       <a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a>
     </div>
   
-  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E8%AE%A9%E6%88%91%E5%A4%B4%E7%96%BC%E7%9A%84%E5%9C%BA%E6%99%AF%E8%AF%B4%E8%B5%B7"><span class="toc-text">从一个让我头疼的场景说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Plan-%E4%B8%8D%E6%98%AF%E6%AD%A5%E9%AA%A4%E5%88%97%E8%A1%A8"><span class="toc-text">Plan 不是步骤列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E5%A4%A7%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">五大不确定性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G4C%EF%BC%9A%E5%A5%BD-Plan-%E7%9A%84%E4%BA%94%E8%A6%81%E7%B4%A0"><span class="toc-text">G4C：好 Plan 的五要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Checkpoint-%E6%9C%80%E5%AE%B9%E6%98%93%E8%A2%AB%E5%BF%BD%E7%95%A5"><span class="toc-text">Checkpoint 最容易被忽略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Correction%EF%BC%9A%E5%87%BA%E9%94%99%E4%BA%86%E8%BF%98%E8%83%BD%E4%B8%8D%E8%83%BD%E6%8C%A3%E6%89%8E%E4%B8%80%E4%B8%8B"><span class="toc-text">Correction：出错了还能不能挣扎一下</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E5%88%92%E8%B5%B6%E4%B8%8D%E4%B8%8A%E5%8F%98%E5%8C%96%EF%BC%9AReplan"><span class="toc-text">计划赶不上变化：Replan</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91%E6%97%B6%E6%9C%BA%E5%92%8C%E7%B2%92%E5%BA%A6"><span class="toc-text">触发时机和粒度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E9%87%8D%E5%88%A4%E5%AE%9A-Prompt-%E8%A6%81%E7%82%B9"><span class="toc-text">双重判定 + Prompt 要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCC%EF%BC%9A%E5%80%9F%E9%89%B4%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%AB%98%E7%BA%A7%E6%96%B9%E6%A1%88"><span class="toc-text">TCC：借鉴分布式事务的高级方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%B1%E8%B4%A5%E7%82%B9%E4%B8%8D%E7%AD%89%E4%BA%8E%E6%A0%B9%E5%9B%A0%E7%82%B9%EF%BC%9A%E5%9B%9E%E6%BA%AF"><span class="toc-text">失败点不等于根因点：回溯</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E8%AE%A9%E6%88%91%E8%AE%B0%E5%BF%86%E7%8A%B9%E6%96%B0%E7%9A%84%E5%BF%AB%E7%85%A7%E5%9D%91"><span class="toc-text">一个让我记忆犹新的快照坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E4%B8%AD%E9%97%B4%E7%BB%93%E6%9E%9C%E6%A0%87%E8%AE%B0%E5%8F%AF%E4%BF%A1%E7%8A%B6%E6%80%81"><span class="toc-text">给中间结果标记可信状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E6%8E%92%E6%9F%A5-%E5%80%99%E9%80%89%E8%B7%AF%E5%BE%84"><span class="toc-text">反向排查 + 候选路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%92%8C%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%80%8E%E4%B9%88%E5%88%86%E5%B7%A5"><span class="toc-text">代码和大模型怎么分工</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF%E6%80%8E%E4%B9%88%E8%AF%84%E4%BC%B0"><span class="toc-text">回溯怎么评估</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%B0%E4%B8%80%E6%AD%A5%E7%9C%8B%E4%B8%80%E6%AD%A5%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E7%9E%8E%E8%B5%B0%EF%BC%9ATAO"><span class="toc-text">走一步看一步，但不是瞎走：TAO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8C-Plan-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">和 Plan 的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%98%AF%E7%8A%B6%E6%80%81%E5%BE%AA%E7%8E%AF"><span class="toc-text">核心是状态循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Think-Action-Observation"><span class="toc-text">Think &#x2F; Action &#x2F; Observation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E4%B8%AA%E5%87%BA%E5%8F%A3-%E5%8F%8C%E5%B1%82%E5%BE%AA%E7%8E%AF"><span class="toc-text">六个出口 + 双层循环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E5%AF%B9-Action-%E6%AF%94%E9%80%89%E5%A4%9A-Action-%E6%9B%B4%E9%87%8D%E8%A6%81"><span class="toc-text">选对 Action 比选多 Action 更重要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%92%E5%BA%A6%E3%80%81%E5%8F%AF%E7%94%A8%E6%80%A7%E3%80%81%E6%9D%83%E9%99%90"><span class="toc-text">粒度、可用性、权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Action-%E6%80%8E%E4%B9%88%E6%8F%8F%E8%BF%B0-%E6%80%8E%E4%B9%88%E9%80%89"><span class="toc-text">Action 怎么描述 + 怎么选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%B7%E9%87%8F-Action-%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">海量 Action 怎么办</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%AF%84%E4%BC%B0%E6%95%88%E6%9E%9C"><span class="toc-text">怎么评估效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E5%B1%95%E7%A4%BA"><span class="toc-text">示例展示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%BD%AE%EF%BC%9A%E7%94%9F%E6%88%90-Plan-%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C"><span class="toc-text">第一轮：生成 Plan + 开始执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E8%BD%AE%EF%BC%9A%E7%94%A8%E6%88%B7%E8%A1%A5%E7%BA%A6%E6%9D%9F-%E2%86%92-%E8%A7%A6%E5%8F%91-Replan"><span class="toc-text">第二轮：用户补约束 → 触发 Replan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E8%BD%AE%EF%BC%9A%E5%B7%A5%E5%85%B7%E5%A4%B1%E8%B4%A5-%E2%86%92-%E5%9B%9E%E6%BA%AF%E6%89%BE%E6%A0%B9%E5%9B%A0"><span class="toc-text">第三轮：工具失败 → 回溯找根因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E8%BD%AE%EF%BC%9AAction-%E9%80%89%E6%8B%A9-%E7%BA%A0%E5%81%8F"><span class="toc-text">第四轮：Action 选择 + 纠偏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E5%B0%8F%E7%BB%93"><span class="toc-text">示例小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-text">写在最后</span></a></li></ol></div>
+  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E8%AE%A9%E6%88%91%E5%A4%B4%E7%96%BC%E7%9A%84%E5%9C%BA%E6%99%AF%E8%AF%B4%E8%B5%B7"><span class="toc-text">从一个让我头疼的场景说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Plan-%E4%B8%8D%E6%98%AF%E6%AD%A5%E9%AA%A4%E5%88%97%E8%A1%A8"><span class="toc-text">Plan 不是步骤列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E5%A4%A7%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">五大不确定性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%BD-Plan-%E7%9A%84%E4%BA%94%E8%A6%81%E7%B4%A0"><span class="toc-text">好 Plan 的五要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Checkpoint-%E6%9C%80%E5%AE%B9%E6%98%93%E8%A2%AB%E5%BF%BD%E7%95%A5"><span class="toc-text">Checkpoint 最容易被忽略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Correction%EF%BC%9A%E5%87%BA%E9%94%99%E4%BA%86%E8%BF%98%E8%83%BD%E4%B8%8D%E8%83%BD%E6%8C%A3%E6%89%8E%E4%B8%80%E4%B8%8B"><span class="toc-text">Correction：出错了还能不能挣扎一下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E6%96%B9%E6%A1%88%EF%BC%9A%E8%AE%A9-Plan-%E6%9B%B4%E9%9D%A0%E8%B0%B1"><span class="toc-text">高级方案：让 Plan 更靠谱</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E5%88%92%E8%B5%B6%E4%B8%8D%E4%B8%8A%E5%8F%98%E5%8C%96%EF%BC%9AReplan"><span class="toc-text">计划赶不上变化：Replan</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91%E6%97%B6%E6%9C%BA%E5%92%8C%E7%B2%92%E5%BA%A6"><span class="toc-text">触发时机和粒度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E9%87%8D%E5%88%A4%E5%AE%9A-Prompt-%E8%A6%81%E7%82%B9"><span class="toc-text">双重判定 + Prompt 要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCC%EF%BC%9A%E5%80%9F%E9%89%B4%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%9A%84%E8%BF%9B%E9%98%B6%E5%81%9A%E6%B3%95"><span class="toc-text">TCC：借鉴分布式事务的进阶做法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%B1%E8%B4%A5%E7%82%B9%E4%B8%8D%E7%AD%89%E4%BA%8E%E6%A0%B9%E5%9B%A0%E7%82%B9%EF%BC%9A%E5%9B%9E%E6%BA%AF"><span class="toc-text">失败点不等于根因点：回溯</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E8%AE%A9%E6%88%91%E8%AE%B0%E5%BF%86%E7%8A%B9%E6%96%B0%E7%9A%84%E5%BF%AB%E7%85%A7%E5%9D%91"><span class="toc-text">一个让我记忆犹新的快照坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E4%B8%AD%E9%97%B4%E7%BB%93%E6%9E%9C%E6%A0%87%E8%AE%B0%E5%8F%AF%E4%BF%A1%E7%8A%B6%E6%80%81"><span class="toc-text">给中间结果标记可信状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E6%8E%92%E6%9F%A5-%E5%80%99%E9%80%89%E8%B7%AF%E5%BE%84"><span class="toc-text">反向排查 + 候选路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%92%8C%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%80%8E%E4%B9%88%E5%88%86%E5%B7%A5"><span class="toc-text">代码和大模型怎么分工</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF%E6%80%8E%E4%B9%88%E8%AF%84%E4%BC%B0"><span class="toc-text">回溯怎么评估</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%B0%E4%B8%80%E6%AD%A5%E7%9C%8B%E4%B8%80%E6%AD%A5%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E7%9E%8E%E8%B5%B0%EF%BC%9ATAO"><span class="toc-text">走一步看一步，但不是瞎走：TAO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8C-Plan-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">和 Plan 的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%98%AF%E7%8A%B6%E6%80%81%E5%BE%AA%E7%8E%AF"><span class="toc-text">核心是状态循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Think-Action-Observation"><span class="toc-text">Think &#x2F; Action &#x2F; Observation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E4%B8%AA%E5%87%BA%E5%8F%A3-%E5%8F%8C%E5%B1%82%E5%BE%AA%E7%8E%AF"><span class="toc-text">六个出口 + 双层循环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E5%AF%B9-Action-%E6%AF%94%E9%80%89%E5%A4%9A-Action-%E6%9B%B4%E9%87%8D%E8%A6%81"><span class="toc-text">选对 Action 比选多 Action 更重要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%92%E5%BA%A6%E3%80%81%E5%8F%AF%E7%94%A8%E6%80%A7%E3%80%81%E6%9D%83%E9%99%90"><span class="toc-text">粒度、可用性、权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Action-%E6%80%8E%E4%B9%88%E6%8F%8F%E8%BF%B0-%E6%80%8E%E4%B9%88%E9%80%89"><span class="toc-text">Action 怎么描述 + 怎么选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%B7%E9%87%8F-Action-%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">海量 Action 怎么办</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%AF%84%E4%BC%B0%E6%95%88%E6%9E%9C"><span class="toc-text">怎么评估效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E5%B1%95%E7%A4%BA"><span class="toc-text">示例展示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%BD%AE%EF%BC%9A%E7%94%9F%E6%88%90-Plan-%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C"><span class="toc-text">第一轮：生成 Plan + 开始执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E8%BD%AE%EF%BC%9A%E7%94%A8%E6%88%B7%E8%A1%A5%E7%BA%A6%E6%9D%9F-%E2%86%92-%E8%A7%A6%E5%8F%91-Replan"><span class="toc-text">第二轮：用户补约束 → 触发 Replan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E8%BD%AE%EF%BC%9A%E5%B7%A5%E5%85%B7%E5%A4%B1%E8%B4%A5-%E2%86%92-%E5%9B%9E%E6%BA%AF%E6%89%BE%E6%A0%B9%E5%9B%A0"><span class="toc-text">第三轮：工具失败 → 回溯找根因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E8%BD%AE%EF%BC%9AAction-%E9%80%89%E6%8B%A9-%E7%BA%A0%E5%81%8F"><span class="toc-text">第四轮：Action 选择 + 纠偏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E5%B0%8F%E7%BB%93"><span class="toc-text">示例小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-text">写在最后</span></a></li></ol></div>
   <div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M11.9426 1.25H12.0574C14.3658 1.24999 16.1748 1.24998 17.5863 1.43975C19.031 1.63399 20.1711 2.03933 21.0659 2.93414C21.9607 3.82895 22.366 4.96897 22.5603 6.41371C22.75 7.82519 22.75 9.63423 22.75 11.9426V12.0574C22.75 14.3658 22.75 16.1748 22.5603 17.5863C22.366 19.031 21.9607 20.1711 21.0659 21.0659C20.1711 21.9607 19.031 22.366 17.5863 22.5603C16.1748 22.75 14.3658 22.75 12.0574 22.75H11.9426C9.63423 22.75 7.82519 22.75 6.41371 22.5603C4.96897 22.366 3.82895 21.9607 2.93414 21.0659C2.03933 20.1711 1.63399 19.031 1.43975 17.5863C1.24998 16.1748 1.24999 14.3658 1.25 12.0574V11.9426C1.24999 9.63423 1.24998 7.82519 1.43975 6.41371C1.63399 4.96897 2.03933 3.82895 2.93414 2.93414C3.82895 2.03933 4.96897 1.63399 6.41371 1.43975C7.82519 1.24998 9.63423 1.24999 11.9426 1.25ZM6.61358 2.92637C5.33517 3.09825 4.56445 3.42514 3.9948 3.9948C3.42514 4.56445 3.09825 5.33517 2.92637 6.61358C2.75159 7.91356 2.75 9.62177 2.75 12C2.75 14.3782 2.75159 16.0864 2.92637 17.3864C3.09825 18.6648 3.42514 19.4355 3.9948 20.0052C4.56445 20.5749 5.33517 20.9018 6.61358 21.0736C7.91356 21.2484 9.62177 21.25 12 21.25C14.3782 21.25 16.0864 21.2484 17.3864 21.0736C18.6648 20.9018 19.4355 20.5749 20.0052 20.0052C20.5749 19.4355 20.9018 18.6648 21.0736 17.3864C21.2484 16.0864 21.25 14.3782 21.25 12C21.25 9.62177 21.2484 7.91356 21.0736 6.61358C20.9018 5.33517 20.5749 4.56445 20.0052 3.9948C19.4355 3.42514 18.6648 3.09825 17.3864 2.92637C16.0864 2.75159 14.3782 2.75 12 2.75C9.62177 2.75 7.91356 2.75159 6.61358 2.92637ZM12 9.56066L9.53033 12.0303C9.23744 12.3232 8.76256 12.3232 8.46967 12.0303C8.17678 11.7374 8.17678 11.2626 8.46967 10.9697L11.4697 7.96967C11.7626 7.67678 12.2374 7.67678 12.5303 7.96967L15.5303 10.9697C15.8232 11.2626 15.8232 11.7374 15.5303 12.0303C15.2374 12.3232 14.7626 12.3232 14.4697 12.0303L12 9.56066ZM12 13.5607L9.53033 16.0303C9.23744 16.3232 8.76256 16.3232 8.46967 16.0303C8.17678 15.7374 8.17678 15.2626 8.46967 14.9697L11.4697 11.9697C11.7626 11.6768 12.2374 11.6768 12.5303 11.9697L15.5303 14.9697C15.8232 15.2626 15.8232 15.7374 15.5303 16.0303C15.2374 16.3232 14.7626 16.3232 14.4697 16.0303L12 13.5607Z" clip-rule="evenodd"/></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M10.4606 1.25H13.5394C15.1427 1.24999 16.3997 1.24999 17.4039 1.34547C18.4274 1.44279 19.2655 1.64457 20.0044 2.09732C20.7781 2.57144 21.4286 3.22194 21.9027 3.99563C22.3554 4.73445 22.5572 5.57256 22.6545 6.59611C22.75 7.60029 22.75 8.85725 22.75 10.4606V11.5278C22.75 12.6691 22.75 13.564 22.7007 14.2868C22.6505 15.0223 22.5468 15.6344 22.3123 16.2004C21.7287 17.6093 20.6093 18.7287 19.2004 19.3123C18.3955 19.6457 17.4786 19.7197 16.2233 19.7413C15.7842 19.7489 15.5061 19.7545 15.2941 19.7779C15.096 19.7999 15.0192 19.832 14.9742 19.8582C14.9268 19.8857 14.8622 19.936 14.7501 20.0898C14.6287 20.2564 14.4916 20.4865 14.2742 20.8539L13.7321 21.7697C12.9585 23.0767 11.0415 23.0767 10.2679 21.7697L9.72579 20.8539C9.50835 20.4865 9.37122 20.2564 9.24985 20.0898C9.13772 19.936 9.07313 19.8857 9.02572 19.8582C8.98078 19.832 8.90399 19.7999 8.70588 19.7779C8.49387 19.7545 8.21575 19.7489 7.77666 19.7413C6.52138 19.7197 5.60454 19.6457 4.79957 19.3123C3.39066 18.7287 2.27128 17.6093 1.68769 16.2004C1.45323 15.6344 1.3495 15.0223 1.29932 14.2868C1.24999 13.564 1.25 12.6691 1.25 11.5278L1.25 10.4606C1.24999 8.85726 1.24999 7.60029 1.34547 6.59611C1.44279 5.57256 1.64457 4.73445 2.09732 3.99563C2.57144 3.22194 3.22194 2.57144 3.99563 2.09732C4.73445 1.64457 5.57256 1.44279 6.59611 1.34547C7.60029 1.24999 8.85726 1.24999 10.4606 1.25ZM6.73809 2.83873C5.82434 2.92561 5.24291 3.09223 4.77938 3.37628C4.20752 3.72672 3.72672 4.20752 3.37628 4.77938C3.09223 5.24291 2.92561 5.82434 2.83873 6.73809C2.75079 7.663 2.75 8.84876 2.75 10.5V11.5C2.75 12.6751 2.75041 13.5189 2.79584 14.1847C2.84081 14.8438 2.92737 15.2736 3.07351 15.6264C3.50486 16.6678 4.33223 17.4951 5.3736 17.9265C5.88923 18.1401 6.54706 18.2199 7.8025 18.2416L7.83432 18.2421C8.23232 18.249 8.58109 18.2549 8.87097 18.287C9.18246 18.3215 9.4871 18.3912 9.77986 18.5615C10.0702 18.7304 10.2795 18.9559 10.4621 19.2063C10.6307 19.4378 10.804 19.7306 11.0004 20.0623L11.5587 21.0057C11.7515 21.3313 12.2485 21.3313 12.4412 21.0057L12.9996 20.0623C13.1959 19.7306 13.3692 19.4378 13.5379 19.2063C13.7204 18.9559 13.9298 18.7304 14.2201 18.5615C14.5129 18.3912 14.8175 18.3215 15.129 18.287C15.4189 18.2549 15.7676 18.249 16.1656 18.2421L16.1975 18.2416C17.4529 18.2199 18.1108 18.1401 18.6264 17.9265C19.6678 17.4951 20.4951 16.6678 20.9265 15.6264C21.0726 15.2736 21.1592 14.8438 21.2042 14.1847C21.2496 13.5189 21.25 12.6751 21.25 11.5V10.5C21.25 8.84876 21.2492 7.663 21.1613 6.73809C21.0744 5.82434 20.9078 5.24291 20.6237 4.77938C20.2733 4.20752 19.7925 3.72672 19.2206 3.37628C18.7571 3.09223 18.1757 2.92561 17.2619 2.83873C16.337 2.75079 15.1512 2.75 13.5 2.75H10.5C8.84876 2.75 7.663 2.75079 6.73809 2.83873ZM7.25 9C7.25 8.58579 7.58579 8.25 8 8.25H16C16.4142 8.25 16.75 8.58579 16.75 9C16.75 9.41421 16.4142 9.75 16 9.75H8C7.58579 9.75 7.25 9.41421 7.25 9ZM7.25 12.5C7.25 12.0858 7.58579 11.75 8 11.75H13.5C13.9142 11.75 14.25 12.0858 14.25 12.5C14.25 12.9142 13.9142 13.25 13.5 13.25H8C7.58579 13.25 7.25 12.9142 7.25 12.5Z" clip-rule="evenodd"/></svg><span>参与讨论</span></a></div>
 </widget>
 
