@@ -1,0 +1,2162 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.44.0" theme-name="Stellar" theme-version="1.44.0">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin><link rel="preconnect" href="https://unpkg.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>AI Agent上下文管理学习笔记 - ssw5ive</title>
+
+  <meta name="description" content="本文是对 AI Agent 上下文管理相关知识的学习整理，涵盖 Context 抽象、窗口编排、摘要压缩、细节召回、用户画像、长任务处理等核心主题。   一、核心概念：Context 与 Context Window1.1 Context：Agent 的全部信息空间Context 指 Agent 当前可获得的全部信息空间，不等于已经塞进 Prompt 的内容。 数据来源分为四块：    来源 说">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Agent上下文管理学习笔记">
+<meta property="og:url" content="https://sswfive.xyz/2026/09/06/agent-context-notes/">
+<meta property="og:site_name" content="ssw5ive">
+<meta property="og:description" content="本文是对 AI Agent 上下文管理相关知识的学习整理，涵盖 Context 抽象、窗口编排、摘要压缩、细节召回、用户画像、长任务处理等核心主题。   一、核心概念：Context 与 Context Window1.1 Context：Agent 的全部信息空间Context 指 Agent 当前可获得的全部信息空间，不等于已经塞进 Prompt 的内容。 数据来源分为四块：    来源 说">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-06T15:30:00.000Z">
+<meta property="article:modified_time" content="2026-09-12T16:30:52.000Z">
+<meta property="article:author" content="sswfive">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="上下文管理">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="智能体">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="AI Agent上下文管理学习笔记">
+  
+  
+  <meta name="keywords" content="AI,智能体,上下文管理,学习笔记">
+
+  <!-- feed -->
+  
+    
+
+    
+      
+        <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
+      
+    
+  
+
+  <link rel="preload" href="/css/main.css?v=1.44.0" as="style">
+  <link rel="stylesheet" href="/css/main.css?v=1.44.0">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2026-09-06T23:30:00+08:00","dateModified":"2026-09-13T00:30:52+08:00","datePublished":"2026-09-06T23:30:00+08:00","description":"\n本文是对 AI Agent 上下文管理相关知识的学习整理，涵盖 Context 抽象、窗口编排、摘要压缩、细节召回、用户画像、长任务处理等核心主题。\n\n\n一、核心概念：Context 与 Context Window1.1 Context：Agent 的全部信息空间Context 指 Agent 当前可获得的全部信息空间，不等于已经塞进 Prompt 的内容。\n数据来源分为四块：\n\n\n\n来...","headline":"AI Agent上下文管理学习笔记","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2026/09/06/agent-context-notes/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2026/09/06/agent-context-notes/","keywords":"AI, 智能体, 上下文管理, 学习笔记","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <style>
+  /* 中文排版优化 */
+  .md-text {
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+  .md-text p {
+    margin-bottom: 1em;
+  }
+  /* 标题间距优化 */
+  .md-text h2 {
+    margin-top: 2em;
+    margin-bottom: 0.8em;
+  }
+  .md-text h3 {
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+  }
+  /* 代码块优化 */
+  .md-text pre {
+    border-radius: 8px;
+  }
+  /* 行内代码优化 */
+  .md-text code {
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+  }
+  /* 引用块优化 */
+  .md-text blockquote {
+    border-radius: 8px;
+  }
+  /* 社交图标居中优化 */
+  .social-wrap {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 0.25rem !important;
+  }
+  .social-wrap .social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+  }
+  .social-wrap .social svg,
+  .social-wrap .social img {
+    display: block;
+    margin: auto;
+    width: 1em;
+    height: 1em;
+  }
+</style>
+
+
+  <!-- icons.yml 驱动的 CSS 装饰图标 -->
+  
+  
+  <style>:root {
+  --icon-h3-left: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20Solar%20by%20480%20Design%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M17.75%2019a.75.75%200%200%201-1.32.488l-6-7a.75.75%200%200%201%200-.976l6-7A.75.75%200%200%201%2017.75%205z%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20fill%3D%22currentColor%22%20fill-rule%3D%22evenodd%22%20d%3D%22M13.488%2019.57a.75.75%200%200%200%20.081-1.058L7.988%2012l5.581-6.512a.75.75%200%201%200-1.138-.976l-6%207a.75.75%200%200%200%200%20.976l6%207a.75.75%200%200%200%201.057.082%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  --icon-h3-right: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20Solar%20by%20480%20Design%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M6.25%2019a.75.75%200%200%200%201.32.488l6-7a.75.75%200%200%200%200-.976l-6-7A.75.75%200%200%200%206.25%205z%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20fill%3D%22currentColor%22%20fill-rule%3D%22evenodd%22%20d%3D%22M10.512%2019.57a.75.75%200%200%201-.081-1.058L16.012%2012l-5.581-6.512a.75.75%200%201%201%201.139-.976l6%207a.75.75%200%200%201%200%20.976l-6%207a.75.75%200%200%201-1.058.082%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  --icon-quote-left: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20BoxIcons%20Solid%20by%20Atisa%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M3.691%206.292C5.094%204.771%207.217%204%2010%204h1v2.819l-.804.161c-1.37.274-2.323.813-2.833%201.604A2.9%202.9%200%200%200%206.925%2010H10a1%201%200%200%201%201%201v7c0%201.103-.897%202-2%202H3a1%201%200%200%201-1-1v-5l.003-2.919c-.009-.111-.199-2.741%201.688-4.789M20%2020h-6a1%201%200%200%201-1-1v-5l.003-2.919c-.009-.111-.199-2.741%201.688-4.789C16.094%204.771%2018.217%204%2021%204h1v2.819l-.804.161c-1.37.274-2.323.813-2.833%201.604A2.9%202.9%200%200%200%2017.925%2010H21a1%201%200%200%201%201%201v7c0%201.103-.897%202-2%202%22%2F%3E%3C%2Fsvg%3E");
+  --icon-quote-right: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20BoxIcons%20Solid%20by%20Atisa%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M20.309%2017.708C22.196%2015.66%2022.006%2013.03%2022%2013V5a1%201%200%200%200-1-1h-6c-1.103%200-2%20.897-2%202v7a1%201%200%200%200%201%201h3.078a2.9%202.9%200%200%201-.429%201.396c-.508.801-1.465%201.348-2.846%201.624l-.803.16V20h1c2.783%200%204.906-.771%206.309-2.292m-11.007%200C11.19%2015.66%2010.999%2013.03%2010.993%2013V5a1%201%200%200%200-1-1h-6c-1.103%200-2%20.897-2%202v7a1%201%200%200%200%201%201h3.078a2.9%202.9%200%200%201-.429%201.396c-.508.801-1.465%201.348-2.846%201.624l-.803.16V20h1c2.783%200%204.906-.771%206.309-2.292%22%2F%3E%3C%2Fsvg%3E");
+  --icon-loading: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221em%22%20height%3D%221em%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2212%22%20r%3D%220%22%20fill%3D%22currentColor%22%3E%3Canimate%20attributeName%3D%22r%22%20begin%3D%22.67%22%20calcMode%3D%22spline%22%20dur%3D%221.5s%22%20keySplines%3D%220.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%22%20repeatCount%3D%22indefinite%22%20values%3D%220%3B2%3B0%3B0%22%2F%3E%3C%2Fcircle%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%220%22%20fill%3D%22currentColor%22%3E%3Canimate%20attributeName%3D%22r%22%20begin%3D%22.33%22%20calcMode%3D%22spline%22%20dur%3D%221.5s%22%20keySplines%3D%220.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%22%20repeatCount%3D%22indefinite%22%20values%3D%220%3B2%3B0%3B0%22%2F%3E%3C%2Fcircle%3E%3Ccircle%20cx%3D%226%22%20cy%3D%2212%22%20r%3D%220%22%20fill%3D%22currentColor%22%3E%3Canimate%20attributeName%3D%22r%22%20begin%3D%220%22%20calcMode%3D%22spline%22%20dur%3D%221.5s%22%20keySplines%3D%220.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%22%20repeatCount%3D%22indefinite%22%20values%3D%220%3B2%3B0%3B0%22%2F%3E%3C%2Fcircle%3E%3C%2Fsvg%3E");
+}</style>
+  
+</head>
+<body><div id="l_cover"></div><div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left leftbar-card" data-ui-surface="card"><div class="sidebg"></div><div class="leftbar-container">
+
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">ssw5ive</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 一念净心花开遍世界</div></a></div></header>
+
+
+<div class="search-wrapper" id="search-wrapper"><div class="search-form" role="search"><label class="search-button" for="search-input" aria-hidden="true"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></label><input type="search" class="search-input" id="search-input" aria-label="站内搜索" placeholder="站内搜索"></div><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<div class="widgets">
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="leftbar-active-icon-grad" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+<div class="nav-area">
+
+<nav class="menu dis-select">
+<div class="ui-collection" data-layout="list" data-variant="nav" data-density="auto">
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight is-active is-themed" href="/" title="文章" aria-current="page" style="--item-theme:#1BCDFC;--item-grad:url(#menu-grad-post);">
+  
+  <span class="ui-collection__leading"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">文章</span>
+      
+      
+    </span>
+  
+  
+  <span class="ui-collection__indicator"></span>
+  
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-post" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight is-themed" href="/ziliao/" title="资源" style="--item-theme:#3DC550;--item-grad:url(#menu-grad-notes);">
+  
+  <span class="ui-collection__leading"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">资源</span>
+      
+      
+    </span>
+  
+  
+  
+  
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-notes" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight is-themed" href="/friends/" title="咖啡" style="--item-theme:#FA6400;--item-grad:url(#menu-grad-friends);">
+  
+  <span class="ui-collection__leading"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.25 11.88c-.01.177.015.39.065.818l.401 3.428A5.515 5.515 0 0 0 8.193 21h3.614a5.52 5.52 0 0 0 5.028-3.25H19a3.75 3.75 0 1 0 0-7.5h-2.279a2 2 0 0 0-.618-.22c-.174-.03-.39-.03-.82-.03H4.717c-.43 0-.645 0-.819.03a2 2 0 0 0-1.646 1.85m15.487-.13q.008.065.012.13c.01.177-.014.39-.064.818l-.401 3.428l-.016.124H19a2.25 2.25 0 0 0 0-4.5z"/><path d="M10.53 1.47a.75.75 0 0 1 0 1.06a.666.666 0 0 0 0 .94a2.164 2.164 0 0 1 0 3.06a.75.75 0 0 1-1.06-1.06c.26-.26.26-.68 0-.94a2.164 2.164 0 0 1 0-3.06a.75.75 0 0 1 1.06 0m-4.5 1.5a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.116.116A.75.75 0 0 1 4.47 6.97l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0m9.5 0a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.117.116a.75.75 0 1 1-1.06-1.06l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0" opacity=".5"/></g></svg></span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">咖啡</span>
+      
+      
+    </span>
+  
+  
+  
+  
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-friends" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+
+</a>
+
+  
+</div>
+
+</nav>
+</div>
+
+
+
+<widget class="widget-wrapper slide-up recent-widget">
+  
+    <div class="widget-header dis-select">
+      <span class="name">最近更新</span>
+      
+    </div>
+  
+  <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-context-management/" title="Agent系统开发手记（三）：上下文管理">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（三）：上下文管理</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-context-notes/" title="AI Agent上下文管理学习笔记">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">AI Agent上下文管理学习笔记</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-evaluation-notes/" title="AI Agent评估与反馈学习笔记">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">AI Agent评估与反馈学习笔记</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-evaluation/" title="Agent系统开发手记（五）：评估与反馈">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（五）：评估与反馈</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-rag-notes/" title="AI Agent智能检索RAG学习笔记">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">AI Agent智能检索RAG学习笔记</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-rag/" title="Agent系统开发手记（四）：智能检索与RAG">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（四）：智能检索与RAG</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/05/28/2024-20240528-fastapi-resources/" title="FastAPI工程化实践：模板选型、生态扩展与项目结构">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">FastAPI工程化实践：模板选型、生态扩展与项目结构</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/01/2026-20260901-agent-plan-replan-tao/" title="Agent系统开发手记（二）：规划、纠偏与执行循环">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（二）：规划、纠偏与执行循环</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/08/30/2024-20240830-k8s-terminating/" title="K8s资源一直Terminating的解决方法">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">K8s资源一直Terminating的解决方法</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/08/25/2024-20240825-zsh-terminal-config-guide/" title="Mac 终端：zsh配置手记">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Mac 终端：zsh配置手记</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+</div></div>
+  
+</widget>
+
+
+</div>
+<footer class="footer dis-select"><div class="social-wrap" style="--item-grad:url(#footer-social-icon-grad)">
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="footer-social-icon-grad" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+<a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg class="icon" data-icon="github:logo" aria-hidden="true"></svg></a><a class="social" href="https:&#x2F;&#x2F;x.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg class="icon" data-icon="x:logo" aria-hidden="true"></svg></a><a class="social" href="&#x2F;atom.xml" rel="noopener noreferrer"><svg class="icon" data-icon="default:rss" aria-hidden="true"></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg class="icon" data-icon="default:theme" aria-hidden="true"></svg></a></div></footer>
+</div></aside><div class="l_main" id="main" data-ui-surface="content">
+
+
+
+
+
+
+<div class="article-banner-wrap slide-up"><div class="article banner top">
+  <div class="content">
+    
+    <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/LLM%E4%B8%8EAI%E5%BA%94%E7%94%A8/">LLM与AI应用</a>
+</div><div class="right"><span class="cap reading">7612 字 · 预计阅读 26 分钟</span></div></div><div class="meta-row">
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-06T15:30:00.000Z">2026-09-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-12T16:30:52.000Z">2026-09-13</time></span></div>
+</div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>AI Agent上下文管理学习笔记</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div></div>
+<article class="md-text content slide-up"><blockquote>
+<p>本文是对 AI Agent 上下文管理相关知识的学习整理，涵盖 Context 抽象、窗口编排、摘要压缩、细节召回、用户画像、长任务处理等核心主题。</p>
+</blockquote>
+<hr>
+<h2 id="一、核心概念：Context-与-Context-Window"><a href="#一、核心概念：Context-与-Context-Window" class="headerlink" title="一、核心概念：Context 与 Context Window"></a>一、核心概念：Context 与 Context Window</h2><h3 id="1-1-Context：Agent-的全部信息空间"><a href="#1-1-Context：Agent-的全部信息空间" class="headerlink" title="1.1 Context：Agent 的全部信息空间"></a>1.1 Context：Agent 的全部信息空间</h3><p>Context 指 Agent 当前可获得的<strong>全部信息空间</strong>，不等于已经塞进 Prompt 的内容。</p>
+<p>数据来源分为四块：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>来源</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户输入数据</td>
+<td>用户直接提供的各种数据</td>
+<td>Excel、PDF、文本输入</td>
+</tr>
+<tr>
+<td>Agent 自身产生</td>
+<td>提示词、大模型输入输出、中间结果</td>
+<td>对话历史、Plan 状态</td>
+</tr>
+<tr>
+<td>内部数据</td>
+<td>来自业务系统的数据</td>
+<td>通过接口或直接访问 MySQL/ES</td>
+</tr>
+<tr>
+<td>外部数据</td>
+<td>与外部系统交互获得的数据</td>
+<td>外部 API、MCP 工具调用</td>
+</tr>
+</tbody></table></div>
+<p>从存储角度：同一份数据可能在内存、缓存、数据库中各存一份。比如用户画像，MySQL 中一份，Redis 中缓存一份。</p>
+<p>从时效角度：有只作用于当前轮对话的 Context，也有作用于整个多轮对话的 Context，还有像缓存一样有效期不同的 Context。</p>
+<p><strong>核心观点</strong>：万物皆 Context。Memory 只是部分 Context 的别名，是一种拟人化描述，针对大模型没有状态这个问题。不要过度神化 Memory 概念。</p>
+<h3 id="1-2-Context-Window：当前调用的工作集"><a href="#1-2-Context-Window：当前调用的工作集" class="headerlink" title="1.2 Context Window：当前调用的工作集"></a>1.2 Context Window：当前调用的工作集</h3><p>Context Window 是从全部 Context 中经过筛选、压缩、排序后得到的<strong>模型可见内容</strong>。</p>
+<p>类比：Context 是仓库，Context Window 是当前工作台。</p>
+<p>核心公式：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Context Window = f(Context)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>最复杂的 f 描述：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Window = Inject(Order(Compress(Select(Retrieve(Context)))))</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><strong>Retrieve</strong>：找出可能相关的 Context</li>
+<li><strong>Select</strong>：选择当前真正需要的内容</li>
+<li><strong>Compress</strong>：压缩到合适的粒度</li>
+<li><strong>Order</strong>：决定内容的排列顺序</li>
+<li><strong>Inject</strong>：以合适的结构注入大模型</li>
+</ul>
+<h3 id="1-3-Context-分类（面试参考）"><a href="#1-3-Context-分类（面试参考）" class="headerlink" title="1.3 Context 分类（面试参考）"></a>1.3 Context 分类（面试参考）</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>分类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Instruction Context</td>
+<td>指令上下文，System Prompt、业务 Spec、行业标准</td>
+</tr>
+<tr>
+<td>Goal Context</td>
+<td>目标上下文，用户最终目标、当前子目标</td>
+</tr>
+<tr>
+<td>User Context</td>
+<td>用户上下文，用户画像、历史决策</td>
+</tr>
+<tr>
+<td>Task Context</td>
+<td>任务上下文，当前任务、执行步骤</td>
+</tr>
+<tr>
+<td>Tool Context</td>
+<td>工具上下文，工具输入、输出</td>
+</tr>
+<tr>
+<td>Constraint Context</td>
+<td>约束上下文，硬约束、软约束</td>
+</tr>
+</tbody></table></div>
+<h3 id="1-4-Context-Item-统一抽象"><a href="#1-4-Context-Item-统一抽象" class="headerlink" title="1.4 Context Item 统一抽象"></a>1.4 Context Item 统一抽象</h3><p>每个 Context Item 可以用以下结构描述：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"ctx_001"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"type"</span><span class="punctuation">:</span> <span class="string">"constraint"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"content"</span><span class="punctuation">:</span> <span class="string">"不能修改 A 接口"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"source"</span><span class="punctuation">:</span> <span class="string">"user"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"scope"</span><span class="punctuation">:</span> <span class="string">"current_task"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"authority"</span><span class="punctuation">:</span> <span class="string">"high"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"confidence"</span><span class="punctuation">:</span> <span class="number">1.0</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"created_at"</span><span class="punctuation">:</span> <span class="string">"..."</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"expires_at"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">null</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"priority"</span><span class="punctuation">:</span> <span class="number">100</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"token_cost"</span><span class="punctuation">:</span> <span class="number">8</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"version"</span><span class="punctuation">:</span> <span class="number">2</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>关键字段说明：</p>
+<ul>
+<li><strong>source</strong>：信息从哪里来（用户、系统、工具、模型推测）</li>
+<li><strong>scope</strong>：有效范围（当前步骤、当前任务、当前会话、全局等）</li>
+<li><strong>authority</strong>：权威程度，用于冲突仲裁。参考：系统规则 &gt; 用户明确输入 &gt; 工具事实 &gt; 已确认摘要 &gt; 模型推测</li>
+<li><strong>confidence</strong>：可信度，小型 Agent 中可与 authority 合并使用</li>
+<li><strong>expires_at</strong>：过期时间。用户偏好有效期长，天气信息有效期短</li>
+<li><strong>token_cost</strong>：注入成本，用于评估窗口占用</li>
+</ul>
+<p>关于 authority 的补充：要区分<strong>观点</strong>和<strong>事实</strong>。用户描述的观点要尊重并给予重要权重，无须分辨对错；用户描述的事实可以在 Replan 阶段尝试验证。</p>
+<h3 id="1-5-每个-Context-Item-要考虑的问题"><a href="#1-5-每个-Context-Item-要考虑的问题" class="headerlink" title="1.5 每个 Context Item 要考虑的问题"></a>1.5 每个 Context Item 要考虑的问题</h3><ul>
+<li><strong>怎么获得</strong>：用户画像怎么获得？硬约束怎么获得？</li>
+<li><strong>怎么存储</strong>：要不要持久化？要不要缓存到 Redis？</li>
+<li><strong>怎么查询</strong>：怎么从存储的地方检索出来？（与”获得”做区分）</li>
+</ul>
+<hr>
+<h2 id="二、滑动窗口算法"><a href="#二、滑动窗口算法" class="headerlink" title="二、滑动窗口算法"></a>二、滑动窗口算法</h2><h3 id="2-1-基础滑动窗口"><a href="#2-1-基础滑动窗口" class="headerlink" title="2.1 基础滑动窗口"></a>2.1 基础滑动窗口</h3><p>窗口只保留最近一段上下文，旧的上下文随着对话推进逐渐被挤出去。</p>
+<p>优点：</p>
+<ul>
+<li>实现简单</li>
+<li>性能稳定</li>
+<li>不需要复杂检索</li>
+<li>近期上下文通常最相关</li>
+<li>容易控制 Token 成本</li>
+</ul>
+<p>两种计量方式：</p>
+<ul>
+<li><strong>按轮次</strong>：窗口放 N 轮对话</li>
+<li><strong>按 Token</strong>：如 64K 窗口</li>
+</ul>
+<p>注意事项：</p>
+<ul>
+<li>每轮要限制用户最大输入 X 和模型最大输出 Y，N 轮就是 N × (X+Y)</li>
+<li>窗口不要占满整个窗口，要给其他内容留出空间（如 128K 总窗口，滑动窗口限制在 32K）</li>
+<li>窗口内不一定要放纯对话，关键点、中间产物也可以放进去</li>
+<li><strong>致命问题</strong>：最近的上下文不一定是最重要的，也不一定是最相关的</li>
+</ul>
+<h3 id="2-2-变种滑动窗口"><a href="#2-2-变种滑动窗口" class="headerlink" title="2.2 变种滑动窗口"></a>2.2 变种滑动窗口</h3><p>窗口内放两大块：</p>
+<ul>
+<li>近 N 轮对话：直接放原文</li>
+<li>近 [N+1, N+M] 轮对话：用户输入放原文，模型输出放摘要</li>
+</ul>
+<p>核心洞察：用户输入通常很短，模型输出一般很长。</p>
+<p>需要考虑的边界情况：</p>
+<ul>
+<li>用户输入很长（如粘贴堆栈）→ 也需要摘要</li>
+<li>模型输出很短 → 可以直接放原文</li>
+</ul>
+<p>进阶：N 和 M 可以动态调整——剩余窗口大则大，剩余窗口小则小。</p>
+<h3 id="2-3-摘要生成时机"><a href="#2-3-摘要生成时机" class="headerlink" title="2.3 摘要生成时机"></a>2.3 摘要生成时机</h3><p>不在窗口内的对话内容靠摘要和细节召回处理。</p>
+<p>摘要生成时机：</p>
+<ul>
+<li><strong>即时生成</strong>：第 K×N 轮结束时立刻生成</li>
+<li><strong>延迟生成</strong>：等到第 K×N+1 轮开始时再回过头来生成</li>
+</ul>
+<p>摘要如何生成：调用大模型，提供摘要规则（什么保留、什么不保留）。</p>
+<hr>
+<h2 id="三、分层上下文"><a href="#三、分层上下文" class="headerlink" title="三、分层上下文"></a>三、分层上下文</h2><h3 id="3-1-统一抽象"><a href="#3-1-统一抽象" class="headerlink" title="3.1 统一抽象"></a>3.1 统一抽象</h3><p>分层的核心思想是<strong>分而治之</strong>。不同层次之间通过映射函数 f1、f2 连接：按照一定规则从下一层挑选出上一层的内容。</p>
+<h3 id="3-2-按生命周期分层"><a href="#3-2-按生命周期分层" class="headerlink" title="3.2 按生命周期分层"></a>3.2 按生命周期分层</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>主要内容</th>
+<th>生命周期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>工作上下文</td>
+<td>当前输入、当前步骤、工具结果</td>
+<td>一次或几次模型调用</td>
+</tr>
+<tr>
+<td>会话上下文</td>
+<td>当前对话目标、最近历史</td>
+<td>当前会话</td>
+</tr>
+<tr>
+<td>长期上下文</td>
+<td>用户画像、长期偏好</td>
+<td>跨会话</td>
+</tr>
+<tr>
+<td>归档上下文</td>
+<td>完整历史、原始记录</td>
+<td>长期保存，按需召回</td>
+</tr>
+</tbody></table></div>
+<h3 id="3-3-按作用范围分层"><a href="#3-3-按作用范围分层" class="headerlink" title="3.3 按作用范围分层"></a>3.3 按作用范围分层</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>主要内容</th>
+<th>作用范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>步骤级</td>
+<td>当前工具调用参数、搜索 Query</td>
+<td>只对当前步骤有效</td>
+</tr>
+<tr>
+<td>阶段级</td>
+<td>信息收集阶段收集到的内容</td>
+<td>一组相关步骤内有效</td>
+</tr>
+<tr>
+<td>任务级</td>
+<td>任务目标、成功标准、任务约束</td>
+<td>整个任务执行期间有效</td>
+</tr>
+<tr>
+<td>会话级</td>
+<td>最近讨论的话题、语言风格</td>
+<td>当前对话中有效</td>
+</tr>
+<tr>
+<td>用户级</td>
+<td>用户长期画像、稳定偏好</td>
+<td>跨多个任务、多个会话复用</td>
+</tr>
+<tr>
+<td>系统级</td>
+<td>业务规范、全局工具说明、权限策略</td>
+<td>对所有用户、所有任务有效</td>
+</tr>
+</tbody></table></div>
+<h3 id="3-4-按信息形态分层"><a href="#3-4-按信息形态分层" class="headerlink" title="3.4 按信息形态分层"></a>3.4 按信息形态分层</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>主要内容</th>
+<th>信息形态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原始层</td>
+<td>完整用户输入、完整对话消息</td>
+<td>保存完整原始内容</td>
+</tr>
+<tr>
+<td>结构化事实层</td>
+<td>稳定事实</td>
+<td>从原始内容中抽取</td>
+</tr>
+<tr>
+<td>摘要层</td>
+<td>摘要</td>
+<td>保留整体语义和过程</td>
+</tr>
+<tr>
+<td>索引层</td>
+<td>索引（如哈希结构）</td>
+<td>不保存具体内容，只保存”去哪里找”</td>
+</tr>
+</tbody></table></div>
+<h3 id="3-5-按权威性分层"><a href="#3-5-按权威性分层" class="headerlink" title="3.5 按权威性分层"></a>3.5 按权威性分层</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>主要内容</th>
+<th>使用策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>强规则层</td>
+<td>系统规则、安全规则、权限限制</td>
+<td>不允许被低层覆盖</td>
+</tr>
+<tr>
+<td>已确认事实层</td>
+<td>用户确认、权威系统查询结果</td>
+<td>可作为决策依据</td>
+</tr>
+<tr>
+<td>有证据推断层</td>
+<td>基于多个证据推导的结论</td>
+<td>可使用，但需保留证据</td>
+</tr>
+<tr>
+<td>待确认假设层</td>
+<td>模型推测、临时假设</td>
+<td>不得当成事实</td>
+</tr>
+<tr>
+<td>已否定层</td>
+<td>用户否认、验证失败的信息</td>
+<td>禁止继续使用</td>
+</tr>
+</tbody></table></div>
+<h3 id="3-6-按冷热程度分层"><a href="#3-6-按冷热程度分层" class="headerlink" title="3.6 按冷热程度分层"></a>3.6 按冷热程度分层</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>主要内容</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>热 Context</td>
+<td>当前任务状态、当前 Goal</td>
+<td>频繁使用，放内存/Redis</td>
+</tr>
+<tr>
+<td>温 Context</td>
+<td>当前会话早期内容</td>
+<td>偶尔使用，需要检索</td>
+</tr>
+<tr>
+<td>冷 Context</td>
+<td>完整历史消息、过期工具结果</td>
+<td>低频使用，主要用于归档</td>
+</tr>
+</tbody></table></div>
+<p><strong>实践建议</strong>：可以混用多种分层方式。比如先按冷热分，在热 Context 里面再按权威性分。结合业务特点找有特色的分层方式。</p>
+<hr>
+<h2 id="四、上下文窗口动态编排"><a href="#四、上下文窗口动态编排" class="headerlink" title="四、上下文窗口动态编排"></a>四、上下文窗口动态编排</h2><h3 id="4-1-Prompt-Prefix-Cache"><a href="#4-1-Prompt-Prefix-Cache" class="headerlink" title="4.1 Prompt Prefix Cache"></a>4.1 Prompt Prefix Cache</h3><p>如果 Prompt 的前缀部分相同，可以利用之前推理的缓存快速推理。类比 SQL 的前缀索引。</p>
+<p>在设计上下文顺序时要考虑缓存友好性。</p>
+<h3 id="4-2-Context-Compiler"><a href="#4-2-Context-Compiler" class="headerlink" title="4.2 Context Compiler"></a>4.2 Context Compiler</h3><p>整体抽象：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Window_t = Inject(Order(Compress(Select(AllContext_t, TaskState_t), TokenBudget_t)))</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><strong>AllContext_t</strong>：系统里所有可用的 Context</li>
+<li><strong>TaskState_t</strong>：当前任务状态</li>
+<li><strong>TokenBudget_t</strong>：当前可用的 Token 预算</li>
+</ul>
+<h3 id="4-3-筛选（Select）"><a href="#4-3-筛选（Select）" class="headerlink" title="4.3 筛选（Select）"></a>4.3 筛选（Select）</h3><p>核心思路：每个阶段、每个步骤需要的内容不同，”弱水三千，只取一瓢”。</p>
+<p>三种筛选机制：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>机制</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>强规则筛选</td>
+<td>Prompt 模板/代码层面直接决定</td>
+<td>确定性高的场景</td>
+</tr>
+<tr>
+<td>检索召回</td>
+<td>向量数据库/ES 查找相关内容</td>
+<td>参考 RAG 机制</td>
+</tr>
+<tr>
+<td>模型筛选</td>
+<td>先调用轻量模型判断需要什么</td>
+<td>成本较高，不太常用</td>
+</tr>
+</tbody></table></div>
+<p>Prompt 模板示例（Go 模板语法）：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">{{ .UserProfile }}</span><br><span class="line">{{ .Input }}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>代码直接写死的做法（对 LLMAction 二次封装，内部决定从 Context 获取哪些字段）在实践中很好用。</p>
+<h3 id="4-4-压缩（Compress）"><a href="#4-4-压缩（Compress）" class="headerlink" title="4.4 压缩（Compress）"></a>4.4 压缩（Compress）</h3><p>压缩取决于：</p>
+<ul>
+<li>Context 内容的<strong>重要性</strong></li>
+<li><strong>剩余窗口大小</strong></li>
+<li><strong>当前任务目标</strong></li>
+</ul>
+<p>核心原则：越重要的内容越不能压缩；剩余窗口越大越不需要压缩。</p>
+<p><strong>多版本预压缩策略</strong>：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L0</td>
+<td>一句话摘要</td>
+<td>窗口几乎放满</td>
+</tr>
+<tr>
+<td>L1</td>
+<td>关键结论摘要</td>
+<td>窗口比较满</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>结构化事实</td>
+<td>窗口放了一些内容</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>详细摘要</td>
+<td>窗口还挺大</td>
+</tr>
+<tr>
+<td>L4</td>
+<td>完整原文</td>
+<td>窗口非常充足</td>
+</tr>
+</tbody></table></div>
+<p>好处：提前压缩好，运行时无额外开销。</p>
+<p><strong>级联考虑</strong>：</p>
+<ul>
+<li>两个强相关的 Context Item → 保持同一压缩级别</li>
+<li>两个有信息重合的 Item → 一个极度压缩，另一个尽量原文</li>
+</ul>
+<p><strong>兜底机制</strong>：在 Prompt 中增加兜底条款——如果发现某个内容压缩程度太高，可以召回更详细的内容。</p>
+<h3 id="4-5-排序（Order）"><a href="#4-5-排序（Order）" class="headerlink" title="4.5 排序（Order）"></a>4.5 排序（Order）</h3><p>大模型对内容顺序敏感，同样的内容排序不同输出也不同。</p>
+<p>参考排序：</p>
+<ol>
+<li>System / Spec</li>
+<li>当前 Goal</li>
+<li>硬约束</li>
+<li>当前任务状态 / Plan 节点</li>
+<li>已确认关键事实</li>
+<li>当前步骤需要的 Evidence</li>
+<li>工具 Observation</li>
+<li>候选 Action / Tool</li>
+<li>动态 few-shot</li>
+<li>历史摘要</li>
+<li>补充背景</li>
+</ol>
+<p>排序要考虑两个因素：</p>
+<ul>
+<li><strong>重要性</strong>：越重要越靠前</li>
+<li><strong>缓存友好性</strong>：不常变动的内容可以往后放以命中 Prefix Cache</li>
+</ul>
+<h3 id="4-6-基于剩余窗口大小的动态策略"><a href="#4-6-基于剩余窗口大小的动态策略" class="headerlink" title="4.6 基于剩余窗口大小的动态策略"></a>4.6 基于剩余窗口大小的动态策略</h3><p>把窗口看成预算池。核心问题：哪些原样放、哪些压缩、哪些只放索引、哪些不放？</p>
+<p><strong>必须原样放的内容</strong>：</p>
+<ul>
+<li>最新用户输入</li>
+<li>硬约束</li>
+<li>已确定关键事实</li>
+<li>Plan 和执行状态</li>
+</ul>
+<p><strong>动态压缩的档位设计</strong>：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>档位</th>
+<th>剩余窗口</th>
+<th>策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full Mode</td>
+<td>80%-100%</td>
+<td>基本不压缩</td>
+</tr>
+<tr>
+<td>Balanced Mode</td>
+<td>20%-80%</td>
+<td>部分压缩，Agent 应主要在此阶段运行</td>
+</tr>
+<tr>
+<td>Compact Mode</td>
+<td>5%-20%</td>
+<td>大部分压缩</td>
+</tr>
+<tr>
+<td>Minimal Mode</td>
+<td>0%-5%</td>
+<td>极度紧张，应尽快解决窗口问题</td>
+</tr>
+</tbody></table></div>
+<p><strong>更多动态因素</strong>：</p>
+<ul>
+<li><strong>当前步骤</strong>：不同步骤需要的 Context Item 不同</li>
+<li><strong>任务风险等级</strong>：高风险任务应尽量用大窗口模型</li>
+<li><strong>信息可恢复性</strong>：可恢复的先不放，不可恢复的优先放</li>
+<li><strong>信息可信度</strong>：优先保留高可信信息</li>
+<li><strong>信息新鲜度</strong>：新旧冲突时新信息通常更重要（但用户画像等老信息可能是例外）</li>
+<li><strong>工具调用需求</strong>：需要选工具就放工具描述</li>
+<li><strong>few-shot 动态策略</strong>：窗口充足放 3-5 个，紧张就不放</li>
+</ul>
+<h3 id="4-7-动态编排决策表（参考）"><a href="#4-7-动态编排决策表（参考）" class="headerlink" title="4.7 动态编排决策表（参考）"></a>4.7 动态编排决策表（参考）</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>Context 类型</th>
+<th>窗口充足</th>
+<th>窗口中等</th>
+<th>窗口紧张</th>
+<th>极度紧张</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>当前用户输入</td>
+<td>原文</td>
+<td>原文</td>
+<td>原文</td>
+<td>原文</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>完整结构化</td>
+<td>完整结构化</td>
+<td>简化结构化</td>
+<td>一句话</td>
+</tr>
+<tr>
+<td>硬约束</td>
+<td>完整原样</td>
+<td>完整原样</td>
+<td>完整原样</td>
+<td>完整原样</td>
+</tr>
+<tr>
+<td>当前 Plan</td>
+<td>完整 Plan</td>
+<td>当前节点+依赖</td>
+<td>当前节点</td>
+<td>当前节点一句话</td>
+</tr>
+<tr>
+<td>关键事实</td>
+<td>完整</td>
+<td>完整</td>
+<td>Top-K</td>
+<td>Top-3</td>
+</tr>
+<tr>
+<td>历史对话</td>
+<td>详细摘要</td>
+<td>结构化摘要</td>
+<td>一句话+索引</td>
+<td>只放索引</td>
+</tr>
+<tr>
+<td>用户画像</td>
+<td>相关画像完整</td>
+<td>任务相关画像</td>
+<td>关键画像</td>
+<td>默认不放</td>
+</tr>
+<tr>
+<td>工具结果</td>
+<td>结构化+原文片段</td>
+<td>核心字段</td>
+<td>必要字段</td>
+<td>最小字段</td>
+</tr>
+<tr>
+<td>检索结果</td>
+<td>Top-K 片段</td>
+<td>Top-3</td>
+<td>Top-1</td>
+<td>只放证据索引</td>
+</tr>
+<tr>
+<td>few-shot</td>
+<td>3-5 个</td>
+<td>1-2 个</td>
+<td>默认不放</td>
+<td>不放</td>
+</tr>
+<tr>
+<td>工具描述</td>
+<td>完整描述</td>
+<td>核心描述</td>
+<td>名称+边界</td>
+<td>名称+一句话</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h2 id="五、摘要与细节召回"><a href="#五、摘要与细节召回" class="headerlink" title="五、摘要与细节召回"></a>五、摘要与细节召回</h2><h3 id="5-1-摘要类型"><a href="#5-1-摘要类型" class="headerlink" title="5.1 摘要类型"></a>5.1 摘要类型</h3><h4 id="对话整体摘要"><a href="#对话整体摘要" class="headerlink" title="对话整体摘要"></a>对话整体摘要</h4><p>总结整个多轮对话的内容。应总结的内容：</p>
+<ul>
+<li>大模型和用户已达成一致的内容</li>
+<li>讨论进度、里程碑</li>
+<li>用户相关信息（用户画像的一部分）</li>
+</ul>
+<p>注意：摘要不是一段话，实践中的摘要会有很多字段。</p>
+<p>如果对话中用户切换过多个不相关意图，应在摘要里<strong>分意图存储</strong>。</p>
+<p><strong>建议长期保存，不要归档</strong>。</p>
+<h4 id="对话章节摘要"><a href="#对话章节摘要" class="headerlink" title="对话章节摘要"></a>对话章节摘要</h4><p>在长对话中引入章节概念，每 N 轮一个章节，每个章节独立生成摘要。</p>
+<p>两种用法：</p>
+<ul>
+<li>整体摘要 + 最近 N 个章节摘要（N=2,3）</li>
+<li>完全抛弃整体摘要，放入全部章节摘要（细节丰富但占窗口多）</li>
+</ul>
+<h4 id="大模型输出摘要"><a href="#大模型输出摘要" class="headerlink" title="大模型输出摘要"></a>大模型输出摘要</h4><p>大模型面向用户输出的内容充满了对模型来说”无意义”的内容（铺垫、转场、情绪表达）。后续在窗口内携带时，传入摘要而非原文，可大幅节省 Token。</p>
+<h4 id="关键事实"><a href="#关键事实" class="headerlink" title="关键事实"></a>关键事实</h4><p><strong>定义</strong>：会影响后续决策、工具调用、上下文组织、最终输出、约束校验的信息。</p>
+<p>关键事实的分类：</p>
+<ol>
+<li><strong>目标类事实</strong>：用户在多轮对话期间修改自己的意图</li>
+<li><strong>硬约束</strong>：一旦丢失，Agent 容易输出让用户情绪爆炸的内容</li>
+<li><strong>软偏好</strong>：不是必须满足，但会影响用户体验，不能长期多次违反</li>
+<li><strong>用户确认过的事实</strong>：正面肯定和反面否定都要保存</li>
+<li><strong>决策类事实</strong>：做了什么决策以及为什么</li>
+<li><strong>实体信息</strong>：项目、商品、方案、人、公司等，建议组织成实体表</li>
+</ol>
+<h4 id="中间结果保存"><a href="#中间结果保存" class="headerlink" title="中间结果保存"></a>中间结果保存</h4><p>部分工具输出结果在后续步骤中会反复用到，要考虑准备摘要和细节召回。注意时效性，大部分实时查询结果只能用于当轮对话。</p>
+<h3 id="5-2-什么细节值得召回？"><a href="#5-2-什么细节值得召回？" class="headerlink" title="5.2 什么细节值得召回？"></a>5.2 什么细节值得召回？</h3><p>判定标准：<strong>细节是否会影响当前决策</strong>。</p>
+<p>具体类型：</p>
+<ul>
+<li>影响目标的细节</li>
+<li>影响约束的细节</li>
+<li>影响路径选择的细节（如方案 A 已失败）</li>
+<li>影响工具调用的细节（如某工具之前调用失败）</li>
+<li>影响最终表达的细节（如用户说”简单点”）</li>
+</ul>
+<p><strong>猜想</strong>：在关键事实提取做得好的情况下，大部分时候不需要召回细节。</p>
+<h3 id="5-3-摘要生成方案"><a href="#5-3-摘要生成方案" class="headerlink" title="5.3 摘要生成方案"></a>5.3 摘要生成方案</h3><p><strong>时机</strong>：</p>
+<ul>
+<li>同步：使用前生成，如滑动窗口算法中 N%10=0 时生成</li>
+<li>异步：对话结束时、下一轮开始时、定时扫描触发</li>
+</ul>
+<p><strong>异步的注意事项</strong>：可能在需要摘要时还没生成，需要等待机制（轮询或并发控制如 WaitGroup/Semaphore）。</p>
+<p><strong>建议</strong>：面试中推荐使用异步生成策略。</p>
+<h3 id="5-4-细节召回方案"><a href="#5-4-细节召回方案" class="headerlink" title="5.4 细节召回方案"></a>5.4 细节召回方案</h3><p><strong>基础架构</strong>：数据同步 + 数据检索，建议做成独立服务/模块/子 Agent。</p>
+<p><strong>数据延迟解决方案</strong>：当轮对话的细节不走召回，当轮对话之前数据已完成同步。可扩展到”当前 K 轮对话的细节不走召回，直接原文传递”。</p>
+<h3 id="5-5-细节冲突裁决"><a href="#5-5-细节冲突裁决" class="headerlink" title="5.5 细节冲突裁决"></a>5.5 细节冲突裁决</h3><ul>
+<li><strong>last win</strong>：最新的为主</li>
+<li><strong>权威优先</strong>：优先级更高的为准</li>
+<li><strong>区分”冲突”还是”强化”</strong>：大部分大模型难以处理，需要在 Prompt 中给出规则</li>
+</ul>
+<h3 id="5-6-模型可读摘要"><a href="#5-6-模型可读摘要" class="headerlink" title="5.6 模型可读摘要"></a>5.6 模型可读摘要</h3><p><strong>核心思想</strong>：压缩后的内容不是给人看的，而是给模型看的。去掉低信息密度的表达，只保留目标、实体、事实、约束、决策和状态。</p>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>原文：”这是一个很好的问题。你其实已经意识到了上下文压缩里面最关键的一点……”</li>
+<li>压缩后：”上下文压缩目标：降 token + 保留关键事实；必须保留：目标/约束/用户确认事实/中间产物”</li>
+</ul>
+<p><strong>原理</strong>：大模型具备很强的语义补全能力，只要保留关键实体和关系，它就能继续推理。</p>
+<p><strong>注意</strong>：不是简单删除停用词。”不能”、”必须”、”不超过”、”大概”、”可能”这些词承载约束或不确定性，不能随便删。</p>
+<p><strong>Prompt 参考要求</strong>：</p>
+<ol>
+<li>删除礼貌表达、转场句、口语填充词、重复解释、情绪价值表达</li>
+<li>保留目标、实体、关键事实、硬约束、软偏好、用户确认、用户否认、数字、时间、决策、理由、风险、缺失信息、证据来源</li>
+<li>可以使用短句、列表、键值对，不要求自然语言流畅</li>
+<li>不得改变原意</li>
+<li>不得把不确定信息改成确定事实</li>
+<li>不得把建议改成已执行决策</li>
+<li>不得把 Assistant 推测改成用户确认事实</li>
+<li>硬约束和用户否认内容必须显式保留</li>
+</ol>
+<h3 id="5-7-迭代式细节召回"><a href="#5-7-迭代式细节召回" class="headerlink" title="5.7 迭代式细节召回"></a>5.7 迭代式细节召回</h3><p><strong>基础思路</strong>：先传递内容的索引给大模型，大模型判断需要哪些细节，通过 Action 召回。召回后再次调用大模型，判断是否需要更多细节。循环直到满足或达到最大迭代次数。</p>
+<p><strong>窗口放不下的处理</strong>：</p>
+<ul>
+<li>执行压缩，或要求大模型告诉你可以忽略什么细节</li>
+<li>报错</li>
+</ul>
+<p><strong>实践慎用，面试大胆用。</strong></p>
+<h3 id="5-8-核心结论"><a href="#5-8-核心结论" class="headerlink" title="5.8 核心结论"></a>5.8 核心结论</h3><p>只要上下文窗口有限，细节就不可能 100% 不丢。成熟的 Agent 不是幻想记住一切，而是通过关键事实提取、细节召回、冲突裁决、模型可读摘要等机制，保证真正影响决策的细节尽量不丢。</p>
+<hr>
+<h2 id="六、用户画像"><a href="#六、用户画像" class="headerlink" title="六、用户画像"></a>六、用户画像</h2><h3 id="6-1-为什么用户画像重要"><a href="#6-1-为什么用户画像重要" class="headerlink" title="6.1 为什么用户画像重要"></a>6.1 为什么用户画像重要</h3><p>模型能力大家都能调用，拉不开差距。用户画像才是私有资产，是 Agent 胜出的杀手锏。</p>
+<p>用户对 Agent 的期望是”像真人”，传统标签式画像（男/28岁/一线城市）远远不够。</p>
+<h3 id="6-2-反面案例"><a href="#6-2-反面案例" class="headerlink" title="6.2 反面案例"></a>6.2 反面案例</h3><ul>
+<li>永远在重复询问用户已经说过的事情</li>
+<li>明知道用户不喜欢，还是反复推荐</li>
+<li>看起来回答正确，实际上牛头不对马嘴</li>
+<li>输出风格和用户完全不匹配</li>
+<li>错误画像瞎指导（偶然行为被当成稳定偏好）</li>
+</ul>
+<h3 id="6-3-用户画像维度"><a href="#6-3-用户画像维度" class="headerlink" title="6.3 用户画像维度"></a>6.3 用户画像维度</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>说明</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>目标画像</td>
+<td>用户想达成什么</td>
+<td>指导内容生成方向</td>
+</tr>
+<tr>
+<td>能力画像</td>
+<td>用户理解能力如何</td>
+<td>决定输出深度和语言</td>
+</tr>
+<tr>
+<td>偏好画像</td>
+<td>喜欢什么、不喜欢什么</td>
+<td>不喜欢什么比喜欢什么更重要</td>
+</tr>
+<tr>
+<td>决策画像</td>
+<td>用户怎么做选择</td>
+<td>指定候选方案排序和解释方式</td>
+</tr>
+<tr>
+<td>关系画像</td>
+<td>用户讨论的人之间什么关系</td>
+<td>影响语气、权限、信息透露</td>
+</tr>
+</tbody></table></div>
+<h3 id="6-4-用户画像的影响范围"><a href="#6-4-用户画像的影响范围" class="headerlink" title="6.4 用户画像的影响范围"></a>6.4 用户画像的影响范围</h3><p>几乎可以影响 Agent 的任何环节：</p>
+<ul>
+<li>用户输入理解（如”性价比”对不同用户含义不同）</li>
+<li>意图识别和 Slot Filling</li>
+<li>上下文选择（不同步骤需要不同画像）</li>
+<li>Plan 和路径选择</li>
+<li>最终输出（如写作风格）</li>
+</ul>
+<h3 id="6-5-用户画像来源"><a href="#6-5-用户画像来源" class="headerlink" title="6.5 用户画像来源"></a>6.5 用户画像来源</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>来源</th>
+<th>说明</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户明确表达</td>
+<td>置信度最高</td>
+<td>区分长期偏好和当前状态</td>
+</tr>
+<tr>
+<td>行为推断</td>
+<td>从用户行为中推断</td>
+<td>做了 ≠ 喜欢（买低价可能是买给父母）</td>
+</tr>
+<tr>
+<td>多轮对话提取</td>
+<td>分析对话过程</td>
+<td>重点看”为什么”而不只是”做了什么”</td>
+</tr>
+<tr>
+<td>外部业务系统</td>
+<td>接入已有画像</td>
+<td>可能需要中间转换</td>
+</tr>
+</tbody></table></div>
+<p><strong>核心</strong>：所有画像都只是一定程度上可信，并非完全可信。</p>
+<h3 id="6-6-提取时机"><a href="#6-6-提取时机" class="headerlink" title="6.6 提取时机"></a>6.6 提取时机</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>时机</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>实时提取</td>
+<td>每轮对话结束后立即判断</td>
+<td>生成当前画像，不适合修改长期画像</td>
+</tr>
+<tr>
+<td>对话结束后提取</td>
+<td>一次对话/任务结束后统一提取</td>
+<td>可以看到完整对话过程</td>
+</tr>
+<tr>
+<td>离线提取</td>
+<td>定期分析近期行为和对话</td>
+<td>发现趋势、合并重复、判断稳定性</td>
+</tr>
+</tbody></table></div>
+<p><strong>最佳实践</strong>：实时 + 离线的混合方式。实时保证及时性，离线保证准确性。</p>
+<h3 id="6-7-层级用户画像"><a href="#6-7-层级用户画像" class="headerlink" title="6.7 层级用户画像"></a>6.7 层级用户画像</h3><p>三层设计：</p>
+<ul>
+<li><strong>当前画像</strong>：本次对话中的即时偏好</li>
+<li><strong>候选画像</strong>（中期/不稳定/待确定）：有待验证的新信号</li>
+<li><strong>长期画像</strong>：沉淀的稳定用户特征</li>
+</ul>
+<p>覆盖关系：后者可以覆盖前者。长期偏好一般是候选画像慢慢升级上来的。</p>
+<h3 id="6-8-生命周期控制"><a href="#6-8-生命周期控制" class="headerlink" title="6.8 生命周期控制"></a>6.8 生命周期控制</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>状态</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>激活</td>
+<td>活跃状态，经过多次验证</td>
+</tr>
+<tr>
+<td>弱化</td>
+<td>长期无新证据或出现相反行为</td>
+</tr>
+<tr>
+<td>过期</td>
+<td>超过有效期，默认不再使用</td>
+</tr>
+</tbody></table></div>
+<p>每三个月没有新证据则降级可信度。</p>
+<h3 id="6-9-画像冲突裁决原则"><a href="#6-9-画像冲突裁决原则" class="headerlink" title="6.9 画像冲突裁决原则"></a>6.9 画像冲突裁决原则</h3><ol>
+<li>当前明确表达优先于历史推断</li>
+<li>用户明确表达优先于行为推断</li>
+<li>用户纠正优先</li>
+<li>领域画像优先于全局画像</li>
+</ol>
+<h3 id="6-10-4C-稳定性评分模型"><a href="#6-10-4C-稳定性评分模型" class="headerlink" title="6.10 4C 稳定性评分模型"></a>6.10 4C 稳定性评分模型</h3><p>用于判断用户偏好是否为一时兴起。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stability_score = w0 × Count + w1 × Continuity + w2 × Cross-context + w3 × Confirmation</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>Count（出现次数）</strong>：跨独立对话的反复验证。公式：<code>count_score = 25 × (1 - e^(-n/3))</code>，效果递减。</p>
+<p><strong>Continuity（持续时间）</strong>：区分一时兴起和稳定偏好的关键。公式：<code>continuity_score = 25 × min(1, ln(1+d)/ln(1+H))</code>，H 取 180 天（心理学理论：激情保持约 90 天）。</p>
+<p><strong>Cross-context（跨场景一致性）</strong>：不同场景下是否表现一致。公式：<code>cross_score = 25 × min(1, max(0, s-1)/4)</code>，s 为独立会话数。</p>
+<p><strong>Confirmation（用户确认）</strong>：最可靠的方式。评分参考：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>确认方式</th>
+<th>得分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>没有确认</td>
+<td>0</td>
+</tr>
+<tr>
+<td>没有反对也没有承认</td>
+<td>0-5</td>
+</tr>
+<tr>
+<td>“对，差不多”（有所怀疑）</td>
+<td>10</td>
+</tr>
+<tr>
+<td>明确确认某一场景下成立</td>
+<td>20</td>
+</tr>
+<tr>
+<td>明确确认长期成立</td>
+<td>25</td>
+</tr>
+</tbody></table></div>
+<p><strong>使用标准</strong>：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>分数</th>
+<th>状态</th>
+<th>使用方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0-29</td>
+<td>candidate</td>
+<td>仅保留，不影响结果</td>
+</tr>
+<tr>
+<td>30-49</td>
+<td>weak/short-term</td>
+<td>只能用于排序参考</td>
+</tr>
+<tr>
+<td>50-69</td>
+<td>active</td>
+<td>可影响推荐，不能作为硬过滤</td>
+</tr>
+<tr>
+<td>70-84</td>
+<td>stable</td>
+<td>可作为默认偏好</td>
+</tr>
+<tr>
+<td>85-100</td>
+<td>confirmed stable</td>
+<td>稳定使用，但仍服从用户当前输入</td>
+</tr>
+</tbody></table></div>
+<h3 id="6-11-电商用户画像设计"><a href="#6-11-电商用户画像设计" class="headerlink" title="6.11 电商用户画像设计"></a>6.11 电商用户画像设计</h3><p>建议分成三层：</p>
+<ul>
+<li><strong>全局画像</strong>：跨品类的用户特征</li>
+<li><strong>品类画像</strong>：最重要，用户在不同品类下偏好可能完全不同</li>
+<li><strong>当前购物画像</strong>：当前任务的即时偏好</li>
+</ul>
+<p><strong>价格偏好高级设计</strong>：</p>
+<ul>
+<li>建立品类级别的价格偏好（用户在不同品类价格偏好不同）</li>
+<li>通过离线计算：遍历订单，计算购买时价格的百分位数</li>
+<li>叠加相似类目价格参考（没买过裤子，参考上衣的价格偏好）</li>
+</ul>
+<p><strong>注意事项</strong>：</p>
+<ul>
+<li>购买者和使用者可能不是同一个人</li>
+<li>浏览记录和购物车不等于满意（要分析为什么不满意）</li>
+<li>广告商品可以轻微违反用户需求说明，但不能太过</li>
+</ul>
+<hr>
+<h2 id="七、长任务处理"><a href="#七、长任务处理" class="headerlink" title="七、长任务处理"></a>七、长任务处理</h2><h3 id="7-1-长任务的核心难点"><a href="#7-1-长任务的核心难点" class="headerlink" title="7.1 长任务的核心难点"></a>7.1 长任务的核心难点</h3><p>不是步骤多、工具调用多，而是<strong>不断产生新信息</strong>，且信息之间的依赖关系复杂。</p>
+<p>信息多且依赖复杂是长任务出错的关键原因。大模型自身能力不足也会影响，但这不是开发者能直接改变的。</p>
+<p><strong>核心结论</strong>：长任务问题，本质上就是上下文管理问题。</p>
+<h3 id="7-2-长任务中的漂移"><a href="#7-2-长任务中的漂移" class="headerlink" title="7.2 长任务中的漂移"></a>7.2 长任务中的漂移</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>漂移类型</th>
+<th>原因</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>目标漂移</td>
+<td>Goal Context 管理不善</td>
+<td>让修空指针，结果重构了几十个文件</td>
+</tr>
+<tr>
+<td>约束漂移</td>
+<td>Constraint Context 管理不善</td>
+<td>说不能虚构，结果擅自补上”千万级用户”</td>
+</tr>
+<tr>
+<td>状态漂移</td>
+<td>Task State Context 管理不善</td>
+<td>工具返回失败，Agent 标记为成功</td>
+</tr>
+<tr>
+<td>证据漂移</td>
+<td>Evidence Context 管理不善</td>
+<td>根据两年前文档得出”不支持”</td>
+</tr>
+<tr>
+<td>细节丢失</td>
+<td>上下文压缩不当</td>
+<td>“预算 5000”摘要后变成”预算有限”</td>
+</tr>
+<tr>
+<td>错误累积</td>
+<td>Observation Context 管理不善</td>
+<td>“累计用户数”看成”日活用户数”，后续全错</td>
+</tr>
+</tbody></table></div>
+<h3 id="7-3-基础解决方案"><a href="#7-3-基础解决方案" class="headerlink" title="7.3 基础解决方案"></a>7.3 基础解决方案</h3><p>核心思路：<strong>不要让 Agent 一口气跑到最后，在执行过程中不断停下来检查</strong>。</p>
+<h4 id="Plan-模式：Checkpoint"><a href="#Plan-模式：Checkpoint" class="headerlink" title="Plan 模式：Checkpoint"></a>Plan 模式：Checkpoint</h4><p>在关键节点完成后暂停执行并检查：</p>
+<ul>
+<li>原始目标有没有发生漂移</li>
+<li>用户硬约束有没有被违反</li>
+<li>当前任务状态是否准确</li>
+<li>中间结果和证据是否可信</li>
+<li>原计划是否仍然适用</li>
+<li>是否需要 Retry、Rollback 或 Replan</li>
+</ul>
+<p>设置位置：业务阶段结束、关键中间产物生成、高风险工具调用后、被大量后续步骤依赖的节点后。</p>
+<h4 id="ReAct-模式：每轮检查"><a href="#ReAct-模式：每轮检查" class="headerlink" title="ReAct 模式：每轮检查"></a>ReAct 模式：每轮检查</h4><p>每一轮循环开始或结束时检查：</p>
+<ul>
+<li>目标判断：当前要逼近的最终目标是什么？</li>
+<li>状态判断：哪些已完成，哪些未完成？</li>
+<li>约束判断：当前 Action 是否违反硬约束？</li>
+<li>差距判断：距离目标还缺少什么？（最重要）</li>
+<li>证据判断：上一轮 Observation 能否支持当前结论？</li>
+</ul>
+<p><strong>关键点</strong>：不只是总结”我得到了什么”，更要判断”还缺什么”。</p>
+<h3 id="7-4-高级解决方案"><a href="#7-4-高级解决方案" class="headerlink" title="7.4 高级解决方案"></a>7.4 高级解决方案</h3><h4 id="上下文健康检查与漂移检测"><a href="#上下文健康检查与漂移检测" class="headerlink" title="上下文健康检查与漂移检测"></a>上下文健康检查与漂移检测</h4><p>引入独立的 Context Verifier，定期检查上下文是否漂移。可以理解为 Checkpoint 的异步化。</p>
+<p>检查内容：Goal 是否偏离、硬约束是否丢失、Task State 是否一致、关键结论是否有 Evidence 支持等。</p>
+<p>检测到问题后：输出漂移类型、影响范围和修复建议，交给大模型决定修复方式。</p>
+<p>触发时机：阶段结束、上下文占用达到阈值、Replan 前后、出现异常信号。</p>
+<h4 id="事件溯源与可信快照"><a href="#事件溯源与可信快照" class="headerlink" title="事件溯源与可信快照"></a>事件溯源与可信快照</h4><p>不只维护一份不断被覆盖的当前状态，而是记录关键事件（用户新增约束、Agent 完成步骤、工具返回结果等）。</p>
+<p>关键节点生成可信快照。当前状态可通过”最近一次快照 + 后续事件”重新构建。</p>
+<p>最大价值：<strong>可追溯</strong>。发现跑偏时可以定位是哪一次状态更新引入了错误。</p>
+<p>恢复方式：回到最近一个可信快照，丢弃后续被污染的状态，重新执行受影响的步骤。</p>
+<h4 id="分阶段执行与上下文交接"><a href="#分阶段执行与上下文交接" class="headerlink" title="分阶段执行与上下文交接"></a>分阶段执行与上下文交接</h4><p>将长任务拆成多个阶段，每个阶段只使用与自己相关的局部上下文。</p>
+<p>阶段结束后生成结构化的上下文交接信息：</p>
+<ul>
+<li>当前总目标</li>
+<li>已完成的工作</li>
+<li>已确认的事实</li>
+<li>仍然有效的硬约束</li>
+<li>关键证据及其索引</li>
+<li>未解决的问题</li>
+<li>下一阶段需要的输入</li>
+</ul>
+<p>大量临时 Observation、失败尝试和局部推理过程留在原阶段，需要时再检索召回。</p>
+<p>难点：交接粒度——太少会丢失关键太多又退化成全量传递。</p>
+<p><strong>三个方案可以组合使用</strong>：分阶段控制上下文规模 + 事件溯源保存完整执行历史 + Context Verifier 定期检查漂移。</p>
+<hr>
+<h2 id="八、面试策略"><a href="#八、面试策略" class="headerlink" title="八、面试策略"></a>八、面试策略</h2><h3 id="8-1-基础面试策略"><a href="#8-1-基础面试策略" class="headerlink" title="8.1 基础面试策略"></a>8.1 基础面试策略</h3><p>围绕五个问题展开：</p>
+<ol>
+<li><strong>有什么上下文</strong>：结合业务挑出核心几类（不只是聊天记录）</li>
+<li><strong>怎么存</strong>：根据结构和生命周期，使用不同存储方式</li>
+<li><strong>怎么找</strong>：根据不同内容使用不同查询方式</li>
+<li><strong>太长了怎么办</strong>：区分普通上下文和关键上下文，不能一刀切</li>
+<li><strong>压缩后怎么找回细节</strong>：保留原始数据和索引，摘要不足时可重新召回</li>
+</ol>
+<h3 id="8-2-高级面试策略"><a href="#8-2-高级面试策略" class="headerlink" title="8.2 高级面试策略"></a>8.2 高级面试策略</h3><p>不要只谈长期记忆、短期记忆、滑动窗口——这些已没有竞争力。</p>
+<p>找一个具体的业务难题，围绕它把 2-3 个机制组合起来。</p>
+<p><strong>推荐问题</strong>：在有限上下文窗口中，如何既保留稳定的用户偏好，又适应用户临时变化，同时避免压缩后丢失关键细节？</p>
+<p>这个问题可以自然串联：用户画像（个性化信息）→ 分层上下文（组织信息）→ 动态编排（本轮放什么）→ 差异化压缩（解决窗口不足）→ 细节召回（找回丢失内容）。</p>
+<h3 id="8-3-话术参考"><a href="#8-3-话术参考" class="headerlink" title="8.3 话术参考"></a>8.3 话术参考</h3><blockquote>
+<p>我们不会简单地把所有历史对话都放进 Prompt，而是先将上下文拆成用户信息、目标和约束、任务状态、历史对话、知识内容以及工具结果等几类。根据数据结构和生命周期，分别存放在运行时状态、Redis、MySQL、ES、向量数据库和对象存储中。</p>
+<p>每次调用大模型之前，根据当前意图和执行步骤，通过结构化查询、关键词检索和向量检索找出候选上下文，只选择当前任务真正需要的内容进入窗口。</p>
+<p>窗口不足时，普通历史对话会摘要，工具结果会抽取关键字段，但目标、硬约束和关键任务状态会独立保留。</p>
+<p>摘要和压缩不会删除原始数据。当当前摘要不足以完成指代消解、事实判断或错误定位时，会重新召回原始对话、工具结果和中间产物。</p>
+</blockquote>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上下文管理的核心就是：<strong>Context Window = f(Context)</strong>。</p>
+<p>Memory 是 Context 的子集，不要过度神化。分层是分而治之思想的体现。摘要和细节召回是双生子。用户画像才是 Agent 的杀手锏。长任务问题本质上是上下文管理问题。</p>
+<p>真正的区别不是”上下文存在哪里”，而是”什么内容，应该在什么时间，以什么形式、什么粒度和什么顺序，进入当前的大模型窗口”。</p>
+</article>
+
+<div class="article-tags slide-up"><a class="tag" href="/tags/AI/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>AI</a><a class="tag" href="/tags/%E6%99%BA%E8%83%BD%E4%BD%93/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>智能体</a><a class="tag" href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>上下文管理</a><a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>学习笔记</a></div>
+
+<div class="article-footer slide-up">
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https:&#x2F;&#x2F;sswfive.xyz&#x2F;2026&#x2F;09&#x2F;06&#x2F;agent-context-notes&#x2F;" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https%3A%2F%2Fsswfive.xyz%2F2026%2F09%2F06%2Fagent-context-notes%2F"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/09/06/agent-evaluation-notes/">AI Agent评估与反馈学习笔记</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread with-fancybox"><div class="lazy-icon"></div></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.44.0">Stellar 1.44.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right" data-ui-surface="sidebar"><div class="widgets">
+
+
+
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false">
+  
+    <div class="widget-header dis-select">
+      <span class="name">本文目录</span>
+      <a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a>
+    </div>
+  
+  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%EF%BC%9AContext-%E4%B8%8E-Context-Window"><span class="toc-text">一、核心概念：Context 与 Context Window</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Context%EF%BC%9AAgent-%E7%9A%84%E5%85%A8%E9%83%A8%E4%BF%A1%E6%81%AF%E7%A9%BA%E9%97%B4"><span class="toc-text">1.1 Context：Agent 的全部信息空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Context-Window%EF%BC%9A%E5%BD%93%E5%89%8D%E8%B0%83%E7%94%A8%E7%9A%84%E5%B7%A5%E4%BD%9C%E9%9B%86"><span class="toc-text">1.2 Context Window：当前调用的工作集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Context-%E5%88%86%E7%B1%BB%EF%BC%88%E9%9D%A2%E8%AF%95%E5%8F%82%E8%80%83%EF%BC%89"><span class="toc-text">1.3 Context 分类（面试参考）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-Context-Item-%E7%BB%9F%E4%B8%80%E6%8A%BD%E8%B1%A1"><span class="toc-text">1.4 Context Item 统一抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E6%AF%8F%E4%B8%AA-Context-Item-%E8%A6%81%E8%80%83%E8%99%91%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">1.5 每个 Context Item 要考虑的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%AE%97%E6%B3%95"><span class="toc-text">二、滑动窗口算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%9F%BA%E7%A1%80%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-text">2.1 基础滑动窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%8F%98%E7%A7%8D%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-text">2.2 变种滑动窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%91%98%E8%A6%81%E7%94%9F%E6%88%90%E6%97%B6%E6%9C%BA"><span class="toc-text">2.3 摘要生成时机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%88%86%E5%B1%82%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-text">三、分层上下文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%BB%9F%E4%B8%80%E6%8A%BD%E8%B1%A1"><span class="toc-text">3.1 统一抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%8C%89%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%88%86%E5%B1%82"><span class="toc-text">3.2 按生命周期分层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E6%8C%89%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4%E5%88%86%E5%B1%82"><span class="toc-text">3.3 按作用范围分层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%8C%89%E4%BF%A1%E6%81%AF%E5%BD%A2%E6%80%81%E5%88%86%E5%B1%82"><span class="toc-text">3.4 按信息形态分层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E6%8C%89%E6%9D%83%E5%A8%81%E6%80%A7%E5%88%86%E5%B1%82"><span class="toc-text">3.5 按权威性分层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-%E6%8C%89%E5%86%B7%E7%83%AD%E7%A8%8B%E5%BA%A6%E5%88%86%E5%B1%82"><span class="toc-text">3.6 按冷热程度分层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AA%97%E5%8F%A3%E5%8A%A8%E6%80%81%E7%BC%96%E6%8E%92"><span class="toc-text">四、上下文窗口动态编排</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Prompt-Prefix-Cache"><span class="toc-text">4.1 Prompt Prefix Cache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Context-Compiler"><span class="toc-text">4.2 Context Compiler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E7%AD%9B%E9%80%89%EF%BC%88Select%EF%BC%89"><span class="toc-text">4.3 筛选（Select）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%8E%8B%E7%BC%A9%EF%BC%88Compress%EF%BC%89"><span class="toc-text">4.4 压缩（Compress）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E6%8E%92%E5%BA%8F%EF%BC%88Order%EF%BC%89"><span class="toc-text">4.5 排序（Order）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-%E5%9F%BA%E4%BA%8E%E5%89%A9%E4%BD%99%E7%AA%97%E5%8F%A3%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%8A%A8%E6%80%81%E7%AD%96%E7%95%A5"><span class="toc-text">4.6 基于剩余窗口大小的动态策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7-%E5%8A%A8%E6%80%81%E7%BC%96%E6%8E%92%E5%86%B3%E7%AD%96%E8%A1%A8%EF%BC%88%E5%8F%82%E8%80%83%EF%BC%89"><span class="toc-text">4.7 动态编排决策表（参考）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%91%98%E8%A6%81%E4%B8%8E%E7%BB%86%E8%8A%82%E5%8F%AC%E5%9B%9E"><span class="toc-text">五、摘要与细节召回</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%91%98%E8%A6%81%E7%B1%BB%E5%9E%8B"><span class="toc-text">5.1 摘要类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E8%AF%9D%E6%95%B4%E4%BD%93%E6%91%98%E8%A6%81"><span class="toc-text">对话整体摘要</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E8%AF%9D%E7%AB%A0%E8%8A%82%E6%91%98%E8%A6%81"><span class="toc-text">对话章节摘要</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%BE%93%E5%87%BA%E6%91%98%E8%A6%81"><span class="toc-text">大模型输出摘要</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E4%BA%8B%E5%AE%9E"><span class="toc-text">关键事实</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E7%BB%93%E6%9E%9C%E4%BF%9D%E5%AD%98"><span class="toc-text">中间结果保存</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%BB%80%E4%B9%88%E7%BB%86%E8%8A%82%E5%80%BC%E5%BE%97%E5%8F%AC%E5%9B%9E%EF%BC%9F"><span class="toc-text">5.2 什么细节值得召回？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%91%98%E8%A6%81%E7%94%9F%E6%88%90%E6%96%B9%E6%A1%88"><span class="toc-text">5.3 摘要生成方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E7%BB%86%E8%8A%82%E5%8F%AC%E5%9B%9E%E6%96%B9%E6%A1%88"><span class="toc-text">5.4 细节召回方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E7%BB%86%E8%8A%82%E5%86%B2%E7%AA%81%E8%A3%81%E5%86%B3"><span class="toc-text">5.5 细节冲突裁决</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-%E6%A8%A1%E5%9E%8B%E5%8F%AF%E8%AF%BB%E6%91%98%E8%A6%81"><span class="toc-text">5.6 模型可读摘要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-7-%E8%BF%AD%E4%BB%A3%E5%BC%8F%E7%BB%86%E8%8A%82%E5%8F%AC%E5%9B%9E"><span class="toc-text">5.7 迭代式细节召回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-8-%E6%A0%B8%E5%BF%83%E7%BB%93%E8%AE%BA"><span class="toc-text">5.8 核心结论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F"><span class="toc-text">六、用户画像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F%E9%87%8D%E8%A6%81"><span class="toc-text">6.1 为什么用户画像重要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%8F%8D%E9%9D%A2%E6%A1%88%E4%BE%8B"><span class="toc-text">6.2 反面案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F%E7%BB%B4%E5%BA%A6"><span class="toc-text">6.3 用户画像维度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F%E7%9A%84%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4"><span class="toc-text">6.4 用户画像的影响范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-5-%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F%E6%9D%A5%E6%BA%90"><span class="toc-text">6.5 用户画像来源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-6-%E6%8F%90%E5%8F%96%E6%97%B6%E6%9C%BA"><span class="toc-text">6.6 提取时机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-7-%E5%B1%82%E7%BA%A7%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F"><span class="toc-text">6.7 层级用户画像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-8-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%8E%A7%E5%88%B6"><span class="toc-text">6.8 生命周期控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-9-%E7%94%BB%E5%83%8F%E5%86%B2%E7%AA%81%E8%A3%81%E5%86%B3%E5%8E%9F%E5%88%99"><span class="toc-text">6.9 画像冲突裁决原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-10-4C-%E7%A8%B3%E5%AE%9A%E6%80%A7%E8%AF%84%E5%88%86%E6%A8%A1%E5%9E%8B"><span class="toc-text">6.10 4C 稳定性评分模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-11-%E7%94%B5%E5%95%86%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F%E8%AE%BE%E8%AE%A1"><span class="toc-text">6.11 电商用户画像设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E9%95%BF%E4%BB%BB%E5%8A%A1%E5%A4%84%E7%90%86"><span class="toc-text">七、长任务处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E9%95%BF%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%A0%B8%E5%BF%83%E9%9A%BE%E7%82%B9"><span class="toc-text">7.1 长任务的核心难点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E9%95%BF%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%9A%84%E6%BC%82%E7%A7%BB"><span class="toc-text">7.2 长任务中的漂移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E5%9F%BA%E7%A1%80%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">7.3 基础解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Plan-%E6%A8%A1%E5%BC%8F%EF%BC%9ACheckpoint"><span class="toc-text">Plan 模式：Checkpoint</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ReAct-%E6%A8%A1%E5%BC%8F%EF%BC%9A%E6%AF%8F%E8%BD%AE%E6%A3%80%E6%9F%A5"><span class="toc-text">ReAct 模式：每轮检查</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E9%AB%98%E7%BA%A7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">7.4 高级解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E4%B8%8E%E6%BC%82%E7%A7%BB%E6%A3%80%E6%B5%8B"><span class="toc-text">上下文健康检查与漂移检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E6%BA%AF%E6%BA%90%E4%B8%8E%E5%8F%AF%E4%BF%A1%E5%BF%AB%E7%85%A7"><span class="toc-text">事件溯源与可信快照</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E9%98%B6%E6%AE%B5%E6%89%A7%E8%A1%8C%E4%B8%8E%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BA%A4%E6%8E%A5"><span class="toc-text">分阶段执行与上下文交接</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E9%9D%A2%E8%AF%95%E7%AD%96%E7%95%A5"><span class="toc-text">八、面试策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E7%AD%96%E7%95%A5"><span class="toc-text">8.1 基础面试策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E9%AB%98%E7%BA%A7%E9%9D%A2%E8%AF%95%E7%AD%96%E7%95%A5"><span class="toc-text">8.2 高级面试策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E8%AF%9D%E6%9C%AF%E5%8F%82%E8%80%83"><span class="toc-text">8.3 话术参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div>
+  <div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M11.9426 1.25H12.0574C14.3658 1.24999 16.1748 1.24998 17.5863 1.43975C19.031 1.63399 20.1711 2.03933 21.0659 2.93414C21.9607 3.82895 22.366 4.96897 22.5603 6.41371C22.75 7.82519 22.75 9.63423 22.75 11.9426V12.0574C22.75 14.3658 22.75 16.1748 22.5603 17.5863C22.366 19.031 21.9607 20.1711 21.0659 21.0659C20.1711 21.9607 19.031 22.366 17.5863 22.5603C16.1748 22.75 14.3658 22.75 12.0574 22.75H11.9426C9.63423 22.75 7.82519 22.75 6.41371 22.5603C4.96897 22.366 3.82895 21.9607 2.93414 21.0659C2.03933 20.1711 1.63399 19.031 1.43975 17.5863C1.24998 16.1748 1.24999 14.3658 1.25 12.0574V11.9426C1.24999 9.63423 1.24998 7.82519 1.43975 6.41371C1.63399 4.96897 2.03933 3.82895 2.93414 2.93414C3.82895 2.03933 4.96897 1.63399 6.41371 1.43975C7.82519 1.24998 9.63423 1.24999 11.9426 1.25ZM6.61358 2.92637C5.33517 3.09825 4.56445 3.42514 3.9948 3.9948C3.42514 4.56445 3.09825 5.33517 2.92637 6.61358C2.75159 7.91356 2.75 9.62177 2.75 12C2.75 14.3782 2.75159 16.0864 2.92637 17.3864C3.09825 18.6648 3.42514 19.4355 3.9948 20.0052C4.56445 20.5749 5.33517 20.9018 6.61358 21.0736C7.91356 21.2484 9.62177 21.25 12 21.25C14.3782 21.25 16.0864 21.2484 17.3864 21.0736C18.6648 20.9018 19.4355 20.5749 20.0052 20.0052C20.5749 19.4355 20.9018 18.6648 21.0736 17.3864C21.2484 16.0864 21.25 14.3782 21.25 12C21.25 9.62177 21.2484 7.91356 21.0736 6.61358C20.9018 5.33517 20.5749 4.56445 20.0052 3.9948C19.4355 3.42514 18.6648 3.09825 17.3864 2.92637C16.0864 2.75159 14.3782 2.75 12 2.75C9.62177 2.75 7.91356 2.75159 6.61358 2.92637ZM12 9.56066L9.53033 12.0303C9.23744 12.3232 8.76256 12.3232 8.46967 12.0303C8.17678 11.7374 8.17678 11.2626 8.46967 10.9697L11.4697 7.96967C11.7626 7.67678 12.2374 7.67678 12.5303 7.96967L15.5303 10.9697C15.8232 11.2626 15.8232 11.7374 15.5303 12.0303C15.2374 12.3232 14.7626 12.3232 14.4697 12.0303L12 9.56066ZM12 13.5607L9.53033 16.0303C9.23744 16.3232 8.76256 16.3232 8.46967 16.0303C8.17678 15.7374 8.17678 15.2626 8.46967 14.9697L11.4697 11.9697C11.7626 11.6768 12.2374 11.6768 12.5303 11.9697L15.5303 14.9697C15.8232 15.2626 15.8232 15.7374 15.5303 16.0303C15.2374 16.3232 14.7626 16.3232 14.4697 16.0303L12 13.5607Z" clip-rule="evenodd"/></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M10.4606 1.25H13.5394C15.1427 1.24999 16.3997 1.24999 17.4039 1.34547C18.4274 1.44279 19.2655 1.64457 20.0044 2.09732C20.7781 2.57144 21.4286 3.22194 21.9027 3.99563C22.3554 4.73445 22.5572 5.57256 22.6545 6.59611C22.75 7.60029 22.75 8.85725 22.75 10.4606V11.5278C22.75 12.6691 22.75 13.564 22.7007 14.2868C22.6505 15.0223 22.5468 15.6344 22.3123 16.2004C21.7287 17.6093 20.6093 18.7287 19.2004 19.3123C18.3955 19.6457 17.4786 19.7197 16.2233 19.7413C15.7842 19.7489 15.5061 19.7545 15.2941 19.7779C15.096 19.7999 15.0192 19.832 14.9742 19.8582C14.9268 19.8857 14.8622 19.936 14.7501 20.0898C14.6287 20.2564 14.4916 20.4865 14.2742 20.8539L13.7321 21.7697C12.9585 23.0767 11.0415 23.0767 10.2679 21.7697L9.72579 20.8539C9.50835 20.4865 9.37122 20.2564 9.24985 20.0898C9.13772 19.936 9.07313 19.8857 9.02572 19.8582C8.98078 19.832 8.90399 19.7999 8.70588 19.7779C8.49387 19.7545 8.21575 19.7489 7.77666 19.7413C6.52138 19.7197 5.60454 19.6457 4.79957 19.3123C3.39066 18.7287 2.27128 17.6093 1.68769 16.2004C1.45323 15.6344 1.3495 15.0223 1.29932 14.2868C1.24999 13.564 1.25 12.6691 1.25 11.5278L1.25 10.4606C1.24999 8.85726 1.24999 7.60029 1.34547 6.59611C1.44279 5.57256 1.64457 4.73445 2.09732 3.99563C2.57144 3.22194 3.22194 2.57144 3.99563 2.09732C4.73445 1.64457 5.57256 1.44279 6.59611 1.34547C7.60029 1.24999 8.85726 1.24999 10.4606 1.25ZM6.73809 2.83873C5.82434 2.92561 5.24291 3.09223 4.77938 3.37628C4.20752 3.72672 3.72672 4.20752 3.37628 4.77938C3.09223 5.24291 2.92561 5.82434 2.83873 6.73809C2.75079 7.663 2.75 8.84876 2.75 10.5V11.5C2.75 12.6751 2.75041 13.5189 2.79584 14.1847C2.84081 14.8438 2.92737 15.2736 3.07351 15.6264C3.50486 16.6678 4.33223 17.4951 5.3736 17.9265C5.88923 18.1401 6.54706 18.2199 7.8025 18.2416L7.83432 18.2421C8.23232 18.249 8.58109 18.2549 8.87097 18.287C9.18246 18.3215 9.4871 18.3912 9.77986 18.5615C10.0702 18.7304 10.2795 18.9559 10.4621 19.2063C10.6307 19.4378 10.804 19.7306 11.0004 20.0623L11.5587 21.0057C11.7515 21.3313 12.2485 21.3313 12.4412 21.0057L12.9996 20.0623C13.1959 19.7306 13.3692 19.4378 13.5379 19.2063C13.7204 18.9559 13.9298 18.7304 14.2201 18.5615C14.5129 18.3912 14.8175 18.3215 15.129 18.287C15.4189 18.2549 15.7676 18.249 16.1656 18.2421L16.1975 18.2416C17.4529 18.2199 18.1108 18.1401 18.6264 17.9265C19.6678 17.4951 20.4951 16.6678 20.9265 15.6264C21.0726 15.2736 21.1592 14.8438 21.2042 14.1847C21.2496 13.5189 21.25 12.6751 21.25 11.5V10.5C21.25 8.84876 21.2492 7.663 21.1613 6.73809C21.0744 5.82434 20.9078 5.24291 20.6237 4.77938C20.2733 4.20752 19.7925 3.72672 19.2206 3.37628C18.7571 3.09223 18.1757 2.92561 17.2619 2.83873C16.337 2.75079 15.1512 2.75 13.5 2.75H10.5C8.84876 2.75 7.663 2.75079 6.73809 2.83873ZM7.25 9C7.25 8.58579 7.58579 8.25 8 8.25H16C16.4142 8.25 16.75 8.58579 16.75 9C16.75 9.41421 16.4142 9.75 16 9.75H8C7.58579 9.75 7.25 9.41421 7.25 9ZM7.25 12.5C7.25 12.0858 7.58579 11.75 8 11.75H13.5C13.9142 11.75 14.25 12.0858 14.25 12.5C14.25 12.9142 13.9142 13.25 13.5 13.25H8C7.58579 13.25 7.25 12.9142 7.25 12.5Z" clip-rule="evenodd"/></svg><span>参与讨论</span></a></div>
+</widget>
+
+
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  window.canonical["param"] = {"permalink":"https://sswfive.xyz/2026/09/06/agent-context-notes/","checklink":"/js/plugins/video.js"};
+  // Fix: Ensure page is at the correct top position on data load
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'auto';
+  }
+  (function() {
+    const scrollHandler = () => {
+      // 存在有效锚点时，等待布局稳定后滚动到目标
+      // （浏览器原生锚点滚动发生在布局完成前，长文章的懒加载图片/异步组件会把目标顶偏）
+      const hash = window.location.hash;
+      if (hash.length > 1) {
+        let anchorId = hash.slice(1);
+        try {
+          anchorId = decodeURIComponent(anchorId);
+        } catch (e) {
+          // 片段含非法编码时按原样查找
+        }
+        const anchor = document.getElementById(anchorId);
+        if (anchor) {
+          // #start 锚点贴顶，不预留 offset；其余锚点与 TOC 点击滚动保持一致
+          const offset = anchorId === 'start' ? 0 : 32;
+          const targetY = () => anchor.getBoundingClientRect().top + window.scrollY - offset;
+          let timer = null;
+          let lastY = null;
+          let quiet = 0;
+          let attempts = 0;
+          // 记录最近一次资源加载完成时间，判断异步数据/图片是否仍在改变布局
+          let lastResourceTime = performance.now();
+          let observer = null;
+          try {
+            observer = new PerformanceObserver(function (list) {
+              lastResourceTime = performance.now();
+            });
+            observer.observe({ entryTypes: ['resource'] });
+          } catch (e) {}
+          // 统计进行中的 fetch/XHR 请求，异步组件（timeline 等）未完成前不判定布局稳定
+          let pendingRequests = 0;
+          const trackRequest = (fn) => {
+            pendingRequests++;
+            try {
+              const result = fn();
+              if (result && typeof result.finally === 'function') {
+                result.finally(function () {
+                  pendingRequests = Math.max(0, pendingRequests - 1);
+                });
+              } else {
+                pendingRequests = Math.max(0, pendingRequests - 1);
+              }
+              return result;
+            } catch (e) {
+              pendingRequests = Math.max(0, pendingRequests - 1);
+              throw e;
+            }
+          };
+          if (typeof window.fetch === 'function') {
+            const origFetch = window.fetch.bind(window);
+            window.fetch = function () {
+              const args = arguments;
+              return trackRequest(function () {
+                return origFetch.apply(window, args);
+              });
+            };
+          }
+          if (window.XMLHttpRequest) {
+            const origOpen = window.XMLHttpRequest.prototype.open;
+            const origSend = window.XMLHttpRequest.prototype.send;
+            window.XMLHttpRequest.prototype.open = function () {
+              this.__anchorTracked = true;
+              return origOpen.apply(this, arguments);
+            };
+            window.XMLHttpRequest.prototype.send = function () {
+              if (this.__anchorTracked) {
+                pendingRequests++;
+                const done = () => {
+                  if (this.__anchorTracked) {
+                    this.__anchorTracked = false;
+                    pendingRequests = Math.max(0, pendingRequests - 1);
+                  }
+                };
+                this.addEventListener('loadend', done);
+              }
+              return origSend.apply(this, arguments);
+            };
+          }
+          const cancel = () => {
+            if (timer !== null) {
+              clearInterval(timer);
+              timer = null;
+            }
+            if (observer !== null) {
+              try {
+                observer.disconnect();
+              } catch (e) {}
+            }
+          };
+          const adjust = () => {
+            const y = targetY();
+            const atTarget = Math.abs(window.scrollY - y) <= 2;
+            if (!atTarget || lastY === null || Math.abs(y - lastY) > 2) {
+              window.scrollTo({ top: y, behavior: 'instant' });
+              lastY = y;
+              quiet = 0;
+            } else {
+              quiet++;
+            }
+            attempts++;
+            const resourceQuiet = performance.now() - lastResourceTime > 3000;
+            // 位置连续 1.8 秒无变化、无进行中的请求且最近 3 秒无资源加载才视为稳定；最长等待 30 秒
+            if ((quiet >= 3 && pendingRequests === 0 && resourceQuiet) || attempts >= 50) {
+              cancel();
+            }
+          };
+          requestAnimationFrame(() => {
+            // 锚点链接打开时直接定位，不做动画；用户主动点击（如 TOC）仍走平滑滚动
+            window.scrollTo({ top: targetY(), behavior: 'instant' });
+            timer = setInterval(adjust, 600);
+          });
+          // 用户主动滚动时停止自动校正
+          window.addEventListener('wheel', cancel, { passive: true });
+          window.addEventListener('touchstart', cancel, { passive: true });
+          window.addEventListener('mousedown', cancel, { passive: true });
+          window.addEventListener('keydown', cancel, { passive: true });
+          return;
+        }
+      }
+      // 没有锚点时始终保持页面顶部；Wiki Hero 只在用户显式访问 #start 时定位正文。
+      window.scrollTo(0, 0);
+    };
+    if (document.readyState !== 'loading') scrollHandler();
+    else document.addEventListener('DOMContentLoaded', scrollHandler);
+  })();
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    },
+    // 图标由构建期生成的 /js/stellar-icons.js 填充（defer，早于 DOMContentLoaded 就绪）
+    icons: {},
+    services: {"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"},"rss":{"js":"/js/services/rss.js"}},
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"lazy_load":true,"cache_ttl":86400,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    data_cache: {"enable":true,"default_ttl":3600,"ttl":{"giscus":600,"waline":600,"artalk":600,"memos":600,"memos-user":86400,"sites":86400,"friends":86400,"friends_and_posts":86400,"siteinfo":86400},"max_entries":200},
+  };
+  const deps = {
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js`
+  }
+
+  // 主题切换提示文案（供 /js/theme.js 使用）
+  window.__STELLAR_I18N__ = {
+    light: `切换到浅色模式`,
+    dark: `切换到深色模式`,
+    auto: `切换到跟随系统配色`,
+  };
+
+  // 搜索跳转高亮：URL 带 ?kw= 时按需加载，定位正文中的匹配词
+  (function () {
+    try {
+      if (!window.location.search) return;
+      if (!new URLSearchParams(window.location.search).has('kw')) return;
+      document.addEventListener('DOMContentLoaded', function () {
+        // utils 由 /js/utils.js 定义（同时暴露 window.utils）；
+        // 未就绪时由 bootstrap 队列兜底，此处按就绪状态判断
+        if (typeof utils === 'object' && typeof utils.js === 'function') {
+          utils.js('/js/search/highlight.js', { defer: true }).catch(function () {});
+        }
+      });
+    } catch (e) {}
+  })();
+</script>
+
+
+<script>
+  // 插件注册队列：utils.js 尚未就绪时先缓存注册请求，就绪后统一补跑，
+  // 保证解析期注册的插件不因加载时序丢失。
+  window.stellar = window.stellar || {};
+  window.stellar._pluginQueue = window.stellar._pluginQueue || [];
+  window.stellar.initPlugin = function (fn, name, options) {
+    if (typeof utils === 'object' && typeof utils.initPlugin === 'function') {
+      return utils.initPlugin(fn, name, options);
+    }
+    window.stellar._pluginQueue.push({ fn: fn, name: name, options: options || {} });
+  };
+  window.stellar._flushPlugins = function () {
+    var pending = window.stellar._pluginQueue.splice(0);
+    if (typeof utils !== 'object' || typeof utils.initPlugin !== 'function') return;
+    for (var i = 0; i < pending.length; i++) {
+      try {
+        utils.initPlugin(pending[i].fn, pending[i].name, pending[i].options);
+      } catch (e) {
+        console.error('[Stellar] 插件补注册失败:', e);
+      }
+    }
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof utils === 'object') return;
+    // utils 未就绪时补载；加载成功后由 utils.js 内部补跑插件队列
+    var s = document.createElement('script');
+    // 用 setAttribute 赋值 src，避免被基于 `s.src = "..."` 的正则
+    // （图片懒加载 / 脚本延迟优化器）误改写
+    s.setAttribute('src', '/js/utils.js?v=1.44.0');
+    s.async = false;
+    s.onerror = function () {
+      console.error('[Stellar] 无法加载 /js/utils.js，已启用内容兜底显示（sr-fallback）');
+      document.documentElement.classList.add('sr-fallback');
+    };
+    document.head.appendChild(s);
+  });
+</script>
+
+
+<!-- core: utils 必须同步加载（页尾内联插件片段在解析期即调用 utils.initPlugin） -->
+<script src="/js/utils.js?v=1.44.0"></script>
+<script>
+  // 解析期检测 utils 是否已就绪；未就绪时同步补载，
+  // 保证「utils 先于页尾插件片段定义」的不变量。
+  if (typeof utils === 'undefined') {
+    document.write('<script src="/js/utils.js?v=1.44.0"><\/script>');
+  }
+</script>
+<script defer src="/js/stellar-icons.js?v=1.44.0"></script>
+<!-- 非首屏图标异步加载：占位符替换依赖构建期生成的 js/icons/{ns}.json -->
+<script defer src="/js/icons.js?v=1.44.0" data-version="1.44.0"></script>
+<script defer src="/js/plugins/dropdown.js?v=1.44.0"></script>
+<script src="/js/main.js?v=1.44.0" defer></script>
+<script defer src="/js/theme.js?v=1.44.0"></script>
+
+
+
+<script>
+  // 先声明配置与初始化监听，再异步加载库：
+  // 保证库执行时 lazyLoadOptions 已就绪，避免 async 脚本抢先执行导致自初始化失败
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      // {% image %} 没有 .lazy-box 包裹，回退到父元素查找加载图标
+      const wrapper = el.closest('.lazy-box') || el.parentElement;
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // 监听初始化事件，获取 LazyLoad 实例
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  // 兜底：动态插入的 .lazy 元素（如站点自定义脚本在 update() 之后追加的图片）
+  // 不会被 vanilla-lazyload 自动扫描，未注册的 img.lazy 会被 CSS opacity:0 永久隐藏。
+  // MutationObserver 检测到新增 .lazy 元素后自动调用 update() 重新注册。
+  if (window.MutationObserver) {
+    window.lazyMutationObserver = new MutationObserver((mutations) => {
+      if (window.lazyMutationObserver._pending) return;
+      const hasLazy = mutations.some((m) =>
+        Array.prototype.some.call(m.addedNodes, (node) =>
+          node.nodeType === 1 &&
+          (node.matches?.('.lazy') || !!node.querySelector?.('.lazy'))
+        )
+      );
+      if (!hasLazy) return;
+      window.lazyMutationObserver._pending = requestAnimationFrame(() => {
+        window.lazyMutationObserver._pending = null;
+        window.lazyLoadInstance?.update();
+      });
+    });
+    window.lazyMutationObserver.observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+</script>
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  
+  function initWaline() {
+    const el = document.getElementById('waline_container');
+    if (!el) return;
+
+    function load_waline() {
+      utils.css('/css/comments/waline.css?v=1.44.0');
+      utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+      utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline-meta.css');
+
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    }
+    
+    util.viewportLazyload(el, load_waline);
+  }
+  
+  // Initialize on page load
+  initWaline();
+</script>
+
+
+
+
+<script defer src="/js/services.js?v=1.44.0"></script>
+<script>
+  // 防御：bootstrap 被第三方优化器改写/移除导致 window.stellar.initPlugin 缺失时，
+  // 在此补一个等价注册点：utils 就绪时直接委托，未就绪时入队，utils 加载后自动补跑。
+  if (typeof window.stellar === 'undefined' || typeof window.stellar.initPlugin !== 'function') {
+    window.stellar = window.stellar || {};
+    window.stellar._pluginQueue = window.stellar._pluginQueue || [];
+    window.stellar.initPlugin = function (fn, name, options) {
+      if (typeof utils === 'object' && typeof utils.initPlugin === 'function') {
+        return utils.initPlugin(fn, name, options);
+      }
+      window.stellar._pluginQueue.push({ fn: fn, name: name, options: options || {} });
+    };
+    window.stellar._flushPlugins = function () {
+      var pending = window.stellar._pluginQueue.splice(0);
+      if (typeof utils !== 'object' || typeof utils.initPlugin !== 'function') return;
+      for (var i = 0; i < pending.length; i++) {
+        try {
+          utils.initPlugin(pending[i].fn, pending[i].name, pending[i].options);
+        } catch (e) {
+          console.error('[Stellar] 插件补注册失败:', e);
+        }
+      }
+    };
+  }
+</script>
+
+<script>window.addEventListener('DOMContentLoaded', function () { utils.js('/js/search/shortcut.js', { defer: true }); });</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = Object.assign({}, ctx.search, {
+      path: `/search.json`,
+      local_search: {"field":"all","path":"/search.json","content":true,"lazy_load":true,"cache_ttl":86400,"skip_search":null,"sort":"-date"},
+    });
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script>
+<script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    mode: `auto`,
+    selector: `.timenode p>img, .md-text img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  // auto=按需：页面存在可弹窗图片才加载；global=全局：所有页面加载
+  const isGlobal = ctx.fancybox.mode === 'global';
+  // 评论区图片（artalk/twikoo/waline）显示较小，自动支持放大；
+  // 仅绑定各评论服务的评论内容区，编辑器、表情面板等非内容区图片不弹窗
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon]):not([class*="emo"]), .with-fancybox .tk-content img:not([atk-emoticon]):not([class*="emo"]), .with-fancybox .wl-content img:not([atk-emoticon]):not([class*="emo"])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = isGlobal;
+  if (!needFancybox) {
+    needFancybox = document.querySelectorAll(selector).length !== 0;
+    if (!needFancybox) {
+      // 图片型评论系统容器：评论区图片小图需要 fancybox
+      const withFancybox = document.getElementsByClassName('with-fancybox');
+      if (withFancybox != undefined && withFancybox.length > 0) {
+        needFancybox = true;
+      }
+    }
+    if (!needFancybox) {
+      // 动态数据服务：memos 渲染的图片需要 fancybox
+      const memos = document.getElementsByClassName('ds-memos');
+      if (memos != undefined && memos.length > 0) {
+        needFancybox = true;
+      }
+    }
+  }
+  if (needFancybox) {
+    utils.css(`/css/plugins/fancybox.css?v=1.44.0`);
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      if (isGlobal) {
+        // 全局模式：正文所有非内联图片均可弹窗
+        selector += ', .md-text img:not(.inline):not([atk-emoticon])';
+      }
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  stellar.initPlugin(() => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`/css/plugins/swiper.css?v=1.44.0`);
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  }, 'swiper');
+</script>
+<script>
+  (function () {
+    // 兜底看门狗独立于插件初始化：3 秒内未完成 reveal 时强制显示 .slide-up 内容
+    let fallbackApplied = false;
+    const revealFallback = () => {
+      if (fallbackApplied) return;
+      fallbackApplied = true;
+      document.documentElement.classList.add('sr-fallback');
+    };
+    const watchdog = setTimeout(() => revealFallback(), 3000);
+
+    stellar.initPlugin(() => {
+      const els = Array.prototype.slice.call(document.querySelectorAll('.slide-up'));
+      if (els.length === 0) {
+        clearTimeout(watchdog);
+        return;
+      }
+
+    // 吸顶/固定定位容器内的元素始终在视口内（或由容器控制显隐），
+    // 但 ScrollReveal 按文档坐标判断可见性，会误判这类元素为不可见，
+    // 导致带锚点/恢复滚动位置打开页面时组件一直不显示。
+    // 解决方式：以最近的吸顶/固定祖先作为该组元素的容器，
+    // 使可见性判断恒成立，入场动画保留且不再依赖主文档滚动。
+    const findPinnedContainer = (el) => {
+      let node = el;
+      while (node && node.nodeType === 1) {
+        const pos = window.getComputedStyle(node).position;
+        if (pos === 'sticky' || pos === 'fixed') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    // 最近的滚动容器（overflow-y: auto/scroll）
+    // 吸顶容器内可能存在内部滚动容器（如侧栏 .widgets），
+    // 若直接用吸顶容器做 reveal 容器，折叠区下方的元素永远不会进入视口，导致一直不显示。
+    const findScrollContainer = (el) => {
+      let node = el.parentElement;
+      while (node && node.nodeType === 1) {
+        const oy = window.getComputedStyle(node).overflowY;
+        if (oy === 'auto' || oy === 'scroll') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    const pinnedGroups = new Map(); // 容器 -> 元素列表
+    const targets = [];
+    els.forEach((el) => {
+      const pinned = findPinnedContainer(el);
+      if (pinned) {
+        // 优先使用最近的滚动容器，其次才用吸顶容器
+        const container = findScrollContainer(el) || pinned;
+        const group = pinnedGroups.get(container) || [];
+        group.push(el);
+        pinnedGroups.set(container, group);
+      } else {
+        targets.push(el);
+      }
+    });
+    if (pinnedGroups.size === 0 && targets.length === 0) {
+      clearTimeout(watchdog);
+      return;
+    }
+
+    const slideUp = {
+      distance: `8px`,
+      duration: `1000`,
+      interval: `100`,
+      scale: `1`,
+      opacity: 0,
+      easing: "ease-out"
+    };
+
+    utils.js(`https://gcore.jsdelivr.net/npm/scrollreveal@4.0/dist/scrollreveal.min.js`, { defer: true })
+      .then(() => {
+        if (fallbackApplied) return;
+        if (typeof ScrollReveal !== 'function') {
+          revealFallback();
+          return;
+        }
+        try {
+          const sr = ScrollReveal();
+          if (targets.length > 0) {
+            sr.reveal(targets, { ...slideUp });
+          }
+          pinnedGroups.forEach((group, container) => {
+            sr.reveal(group, { ...slideUp, container: container });
+          });
+          clearTimeout(watchdog);
+        } catch (err) {
+          console.error('[Plugin scrollreveal] 初始化失败:', err);
+          revealFallback();
+        }
+      })
+      .catch((err) => {
+        console.error('[Plugin scrollreveal] 加载失败:', err);
+        revealFallback();
+      });
+    }, 'scrollreveal');
+  })();
+</script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script defer type="text/javascript" src="https://gcore.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  stellar.initPlugin(() => {
+    const els = document.querySelectorAll('.mermaid');
+    if (els.length > 0) {
+      if (false) {
+        utils.css(`/css/plugins/mermaid.css?v=1.44.0`);
+      }
+      const mermaid_config = {
+        startOnLoad: false,
+        theme:
+          "auto" == "auto" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "neutral",
+        logLevel: 3,
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          curve: "linear"
+        },
+        gantt: {
+          axisFormat: "%Y/%m/%d"
+        },
+        sequence: {
+          actorMargin: 50
+        }
+      }
+      mermaid.initialize(mermaid_config);
+      mermaid.run();
+    }
+  }, 'mermaid');
+</script>
+<script>
+  stellar.initPlugin(() => {
+    const codeElements = document.querySelectorAll('.code');
+    if (codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js', { defer: true }).then(() => {
+        if (typeof createCopyButtons === 'function') {
+          createCopyButtons(codeElements);
+        }
+      });
+    }
+  }, 'copycode');
+</script>
+<script>
+  stellar.initPlugin(() => {
+    const els = Array.prototype.slice.call(document.querySelectorAll('[data-text-adaptive]'));
+    if (els.length === 0) return;
+    utils.js('/js/color.js').then(() => utils.js('/js/plugins/adaptive-text.js')).then(() => {
+      if (typeof applyAdaptiveText === 'function') {
+        applyAdaptiveText(els);
+      }
+    });
+  }, 'adaptive-text');
+</script>
+
+
+
+<!-- inject -->
+
+</div></body></html>

@@ -1,0 +1,1956 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.44.0" theme-name="Stellar" theme-version="1.44.0">
+  
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin><link rel="preconnect" href="https://unpkg.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>Agent系统开发手记（三）：上下文管理 - ssw5ive</title>
+
+  <meta name="description" content="写在前面第一篇聊了意图识别——把用户想干嘛搞清楚，第二篇聊了规划、纠偏与执行循环——通过 Plan 五要素、TAO 状态循环和 Replan 机制让 Agent 一步步受控地走到目标。但做了一段时间后我发现，这两件事再做好，如果上下文管理没跟上，Agent 照样会翻车。 说实话，刚开始做 Agent 的时候，我对上下文的理解就是”把历史对话塞进 Prompt”。结果真正上线才发现，这想法跟”把 S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent系统开发手记（三）：上下文管理">
+<meta property="og:url" content="https://sswfive.xyz/2026/09/06/agent-context-management/">
+<meta property="og:site_name" content="ssw5ive">
+<meta property="og:description" content="写在前面第一篇聊了意图识别——把用户想干嘛搞清楚，第二篇聊了规划、纠偏与执行循环——通过 Plan 五要素、TAO 状态循环和 Replan 机制让 Agent 一步步受控地走到目标。但做了一段时间后我发现，这两件事再做好，如果上下文管理没跟上，Agent 照样会翻车。 说实话，刚开始做 Agent 的时候，我对上下文的理解就是”把历史对话塞进 Prompt”。结果真正上线才发现，这想法跟”把 S">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-06T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-12T16:30:52.000Z">
+<meta property="article:author" content="sswfive">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="Agent系统开发手记（三）：上下文管理">
+  
+  
+  <meta name="keywords" content="AI,Agent">
+
+  <!-- feed -->
+  
+    
+
+    
+      
+        <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
+      
+    
+  
+
+  <link rel="preload" href="/css/main.css?v=1.44.0" as="style">
+  <link rel="stylesheet" href="/css/main.css?v=1.44.0">
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":[]},"dateCreated":"2026-09-06T23:00:00+08:00","dateModified":"2026-09-13T00:30:52+08:00","datePublished":"2026-09-06T23:00:00+08:00","description":"写在前面第一篇聊了意图识别——把用户想干嘛搞清楚，第二篇聊了规划、纠偏与执行循环——通过 Plan 五要素、TAO 状态循环和 Replan 机制让 Agent 一步步受控地走到目标。但做了一段时间后我发现，这两件事再做好，如果上下文管理没跟上，Agent 照样会翻车。\n说实话，刚开始做 Agent 的时候，我对上下文的理解就是”把历史对话塞进 Prompt”。结果真正上线才发现，这想法跟”...","headline":"Agent系统开发手记（三）：上下文管理","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2026/09/06/agent-context-management/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":[]},"url":"https://sswfive.xyz/2026/09/06/agent-context-management/","keywords":"AI, Agent","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"]}</script>
+  <style>
+  /* 中文排版优化 */
+  .md-text {
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+  .md-text p {
+    margin-bottom: 1em;
+  }
+  /* 标题间距优化 */
+  .md-text h2 {
+    margin-top: 2em;
+    margin-bottom: 0.8em;
+  }
+  .md-text h3 {
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+  }
+  /* 代码块优化 */
+  .md-text pre {
+    border-radius: 8px;
+  }
+  /* 行内代码优化 */
+  .md-text code {
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+  }
+  /* 引用块优化 */
+  .md-text blockquote {
+    border-radius: 8px;
+  }
+  /* 社交图标居中优化 */
+  .social-wrap {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 0.25rem !important;
+  }
+  .social-wrap .social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+  }
+  .social-wrap .social svg,
+  .social-wrap .social img {
+    display: block;
+    margin: auto;
+    width: 1em;
+    height: 1em;
+  }
+</style>
+
+
+  <!-- icons.yml 驱动的 CSS 装饰图标 -->
+  
+  
+  <style>:root {
+  --icon-h3-left: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20Solar%20by%20480%20Design%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M17.75%2019a.75.75%200%200%201-1.32.488l-6-7a.75.75%200%200%201%200-.976l6-7A.75.75%200%200%201%2017.75%205z%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20fill%3D%22currentColor%22%20fill-rule%3D%22evenodd%22%20d%3D%22M13.488%2019.57a.75.75%200%200%200%20.081-1.058L7.988%2012l5.581-6.512a.75.75%200%201%200-1.138-.976l-6%207a.75.75%200%200%200%200%20.976l6%207a.75.75%200%200%200%201.057.082%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  --icon-h3-right: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20Solar%20by%20480%20Design%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M6.25%2019a.75.75%200%200%200%201.32.488l6-7a.75.75%200%200%200%200-.976l-6-7A.75.75%200%200%200%206.25%205z%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20fill%3D%22currentColor%22%20fill-rule%3D%22evenodd%22%20d%3D%22M10.512%2019.57a.75.75%200%200%201-.081-1.058L16.012%2012l-5.581-6.512a.75.75%200%201%201%201.139-.976l6%207a.75.75%200%200%201%200%20.976l-6%207a.75.75%200%200%201-1.058.082%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  --icon-quote-left: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20BoxIcons%20Solid%20by%20Atisa%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M3.691%206.292C5.094%204.771%207.217%204%2010%204h1v2.819l-.804.161c-1.37.274-2.323.813-2.833%201.604A2.9%202.9%200%200%200%206.925%2010H10a1%201%200%200%201%201%201v7c0%201.103-.897%202-2%202H3a1%201%200%200%201-1-1v-5l.003-2.919c-.009-.111-.199-2.741%201.688-4.789M20%2020h-6a1%201%200%200%201-1-1v-5l.003-2.919c-.009-.111-.199-2.741%201.688-4.789C16.094%204.771%2018.217%204%2021%204h1v2.819l-.804.161c-1.37.274-2.323.813-2.833%201.604A2.9%202.9%200%200%200%2017.925%2010H21a1%201%200%200%201%201%201v7c0%201.103-.897%202-2%202%22%2F%3E%3C%2Fsvg%3E");
+  --icon-quote-right: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2024%2024%22%3E%3C!--%20Icon%20from%20BoxIcons%20Solid%20by%20Atisa%20-%20https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F4.0%2F%20--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M20.309%2017.708C22.196%2015.66%2022.006%2013.03%2022%2013V5a1%201%200%200%200-1-1h-6c-1.103%200-2%20.897-2%202v7a1%201%200%200%200%201%201h3.078a2.9%202.9%200%200%201-.429%201.396c-.508.801-1.465%201.348-2.846%201.624l-.803.16V20h1c2.783%200%204.906-.771%206.309-2.292m-11.007%200C11.19%2015.66%2010.999%2013.03%2010.993%2013V5a1%201%200%200%200-1-1h-6c-1.103%200-2%20.897-2%202v7a1%201%200%200%200%201%201h3.078a2.9%202.9%200%200%201-.429%201.396c-.508.801-1.465%201.348-2.846%201.624l-.803.16V20h1c2.783%200%204.906-.771%206.309-2.292%22%2F%3E%3C%2Fsvg%3E");
+  --icon-loading: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221em%22%20height%3D%221em%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2212%22%20r%3D%220%22%20fill%3D%22currentColor%22%3E%3Canimate%20attributeName%3D%22r%22%20begin%3D%22.67%22%20calcMode%3D%22spline%22%20dur%3D%221.5s%22%20keySplines%3D%220.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%22%20repeatCount%3D%22indefinite%22%20values%3D%220%3B2%3B0%3B0%22%2F%3E%3C%2Fcircle%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%220%22%20fill%3D%22currentColor%22%3E%3Canimate%20attributeName%3D%22r%22%20begin%3D%22.33%22%20calcMode%3D%22spline%22%20dur%3D%221.5s%22%20keySplines%3D%220.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%22%20repeatCount%3D%22indefinite%22%20values%3D%220%3B2%3B0%3B0%22%2F%3E%3C%2Fcircle%3E%3Ccircle%20cx%3D%226%22%20cy%3D%2212%22%20r%3D%220%22%20fill%3D%22currentColor%22%3E%3Canimate%20attributeName%3D%22r%22%20begin%3D%220%22%20calcMode%3D%22spline%22%20dur%3D%221.5s%22%20keySplines%3D%220.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%3B0.2%200.2%200.4%200.8%22%20repeatCount%3D%22indefinite%22%20values%3D%220%3B2%3B0%3B0%22%2F%3E%3C%2Fcircle%3E%3C%2Fsvg%3E");
+}</style>
+  
+</head>
+<body><div id="l_cover"></div><div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left leftbar-card" data-ui-surface="card"><div class="sidebg"></div><div class="leftbar-container">
+
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg"></div><img no-lazy class="avatar" src="/images/logo.JPG" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">ssw5ive</div><div class="sub normal cap">循此苦旅 以达星辰...</div><div class="sub hover cap" style="opacity:0"> 一念净心花开遍世界</div></a></div></header>
+
+
+<div class="search-wrapper" id="search-wrapper"><div class="search-form" role="search"><label class="search-button" for="search-input" aria-hidden="true"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></label><input type="search" class="search-input" id="search-input" aria-label="站内搜索" placeholder="站内搜索"></div><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+<div class="widgets">
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="leftbar-active-icon-grad" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+<div class="nav-area">
+
+<nav class="menu dis-select">
+<div class="ui-collection" data-layout="list" data-variant="nav" data-density="auto">
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight is-active is-themed" href="/" title="文章" aria-current="page" style="--item-theme:#1BCDFC;--item-grad:url(#menu-grad-post);">
+  
+  <span class="ui-collection__leading"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">文章</span>
+      
+      
+    </span>
+  
+  
+  <span class="ui-collection__indicator"></span>
+  
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-post" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight is-themed" href="/ziliao/" title="资源" style="--item-theme:#3DC550;--item-grad:url(#menu-grad-notes);">
+  
+  <span class="ui-collection__leading"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">资源</span>
+      
+      
+    </span>
+  
+  
+  
+  
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-notes" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight is-themed" href="/friends/" title="咖啡" style="--item-theme:#FA6400;--item-grad:url(#menu-grad-friends);">
+  
+  <span class="ui-collection__leading"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.25 11.88c-.01.177.015.39.065.818l.401 3.428A5.515 5.515 0 0 0 8.193 21h3.614a5.52 5.52 0 0 0 5.028-3.25H19a3.75 3.75 0 1 0 0-7.5h-2.279a2 2 0 0 0-.618-.22c-.174-.03-.39-.03-.82-.03H4.717c-.43 0-.645 0-.819.03a2 2 0 0 0-1.646 1.85m15.487-.13q.008.065.012.13c.01.177-.014.39-.064.818l-.401 3.428l-.016.124H19a2.25 2.25 0 0 0 0-4.5z"/><path d="M10.53 1.47a.75.75 0 0 1 0 1.06a.666.666 0 0 0 0 .94a2.164 2.164 0 0 1 0 3.06a.75.75 0 0 1-1.06-1.06c.26-.26.26-.68 0-.94a2.164 2.164 0 0 1 0-3.06a.75.75 0 0 1 1.06 0m-4.5 1.5a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.116.116A.75.75 0 0 1 4.47 6.97l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0m9.5 0a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.117.116a.75.75 0 1 1-1.06-1.06l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0" opacity=".5"/></g></svg></span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">咖啡</span>
+      
+      
+    </span>
+  
+  
+  
+  
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="menu-grad-friends" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+
+</a>
+
+  
+</div>
+
+</nav>
+</div>
+
+
+
+<widget class="widget-wrapper slide-up recent-widget">
+  
+    <div class="widget-header dis-select">
+      <span class="name">最近更新</span>
+      
+    </div>
+  
+  <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-context-management/" title="Agent系统开发手记（三）：上下文管理">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（三）：上下文管理</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-context-notes/" title="AI Agent上下文管理学习笔记">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">AI Agent上下文管理学习笔记</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-evaluation-notes/" title="AI Agent评估与反馈学习笔记">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">AI Agent评估与反馈学习笔记</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-evaluation/" title="Agent系统开发手记（五）：评估与反馈">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（五）：评估与反馈</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-rag-notes/" title="AI Agent智能检索RAG学习笔记">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">AI Agent智能检索RAG学习笔记</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/06/agent-rag/" title="Agent系统开发手记（四）：智能检索与RAG">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（四）：智能检索与RAG</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/05/28/2024-20240528-fastapi-resources/" title="FastAPI工程化实践：模板选型、生态扩展与项目结构">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">FastAPI工程化实践：模板选型、生态扩展与项目结构</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2026/09/01/2026-20260901-agent-plan-replan-tao/" title="Agent系统开发手记（二）：规划、纠偏与执行循环">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（二）：规划、纠偏与执行循环</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/08/30/2024-20240830-k8s-terminating/" title="K8s资源一直Terminating的解决方法">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">K8s资源一直Terminating的解决方法</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item card-hover card-hover--spotlight" href="/2024/08/25/2024-20240825-zsh-terminal-config-guide/" title="Mac 终端：zsh配置手记">
+  
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Mac 终端：zsh配置手记</span>
+      
+      
+    </span>
+  
+  
+  
+  
+</a>
+
+  
+</div></div>
+  
+</widget>
+
+
+</div>
+<footer class="footer dis-select"><div class="social-wrap" style="--item-grad:url(#footer-social-icon-grad)">
+<svg class="grad-def" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="footer-social-icon-grad" x1="75%" y1="6.7%" x2="6.7%" y2="125%"><stop offset="20%" style="stop-color:var(--item-theme-light)"/><stop offset="60%" style="stop-color:var(--item-theme)"/></linearGradient></defs></svg>
+<a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg class="icon" data-icon="github:logo" aria-hidden="true"></svg></a><a class="social" href="https:&#x2F;&#x2F;x.com&#x2F;sswfive" target="_blank" rel="external nofollow noopener noreferrer"><svg class="icon" data-icon="x:logo" aria-hidden="true"></svg></a><a class="social" href="&#x2F;atom.xml" rel="noopener noreferrer"><svg class="icon" data-icon="default:rss" aria-hidden="true"></svg></a><a class="social" href="javascript:switchTheme()" rel="noopener noreferrer"><svg class="icon" data-icon="default:theme" aria-hidden="true"></svg></a></div></footer>
+</div></aside><div class="l_main" id="main" data-ui-surface="content">
+
+
+
+
+
+
+<div class="article-banner-wrap slide-up"><div class="article banner top">
+  <div class="content">
+    
+    <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/AI%E5%B7%A5%E7%A8%8B/">AI工程</a>
+</div><div class="right"><span class="cap reading">10910 字 · 预计阅读 37 分钟</span></div></div><div class="meta-row">
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-06T15:00:00.000Z">2026-09-06</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-12T16:30:52.000Z">2026-09-13</time></span></div>
+</div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Agent系统开发手记（三）：上下文管理</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div></div>
+<article class="md-text content slide-up"><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>第一篇聊了意图识别——把用户想干嘛搞清楚，第二篇聊了规划、纠偏与执行循环——通过 Plan 五要素、TAO 状态循环和 Replan 机制让 Agent 一步步受控地走到目标。但做了一段时间后我发现，这两件事再做好，如果<strong>上下文管理</strong>没跟上，Agent 照样会翻车。</p>
+<p>说实话，刚开始做 Agent 的时候，我对上下文的理解就是”把历史对话塞进 Prompt”。结果真正上线才发现，这想法跟”把 SQL 写在 Controller 里”一样天真。用户的硬约束被摘要丢了、工具返回的中间结果过期了还在用、长任务跑到第十轮已经忘了第一轮的目标——这些问题表面上各不相同，但根子上都是同一件事：<strong>上下文管理没做好。</strong></p>
+<p>第一篇里我提过，意图识别决定了”往上下文窗口里塞什么内容”——不同意图需要的上下文不一样。但当时只是一笔带过，真正做的时候才发现，”塞什么”这个问题远比我想象的复杂。这篇文章是”AI Agent 系统设计”系列的第三篇，把自己在上下文管理上踩过的坑整理下来。Context 抽象、窗口编排、摘要压缩、细节召回、用户画像、长任务漂移——这些东西看起来零散，但其实是一条线：<strong>怎么在有限的窗口里，让模型看到它真正需要的信息。</strong></p>
+<hr>
+<h2 id="从一个让我头疼的场景说起"><a href="#从一个让我头疼的场景说起" class="headerlink" title="从一个让我头疼的场景说起"></a>从一个让我头疼的场景说起</h2><p>我那个技术选型 Agent 跑了一段时间之后，遇到了一个特别诡异的问题。</p>
+<p>用户在第一轮说”运维人手不多，别推荐运维搞不定的方案”，Agent 记住了，推荐了 Redis Sentinel，用户很满意。然后到了第五轮，用户问”还有没有其他选择”，Agent 推荐了 Redis Cluster。</p>
+<p>用户当场就炸了：”我第一轮就说了运维搞不定 Cluster，你又推？”</p>
+<p>我去查了一下原因，发现第一轮的对话内容已经被滑动窗口挤出去了，摘要里只保留了”用户关注运维成本”，但”不能推荐 Redis Cluster”这个硬约束在摘要过程中被压缩成了软约束级别的描述。</p>
+<p>更坑的是，这还不是个例。我还遇到过：</p>
+<ul>
+<li>工具返回的 QPS 数据是三分钟前查的，但 Agent 在第十轮还在用，实际上流量已经翻倍了</li>
+<li>用户在第三轮确认了”就用方案 A”，到第七轮 Agent 又开始推荐方案 B，因为”方案 A”这个关键事实只存在对话历史里，被摘要丢了</li>
+<li>长任务跑到一半，Agent 已经忘了用户的预算是 5000 块，推荐了一个 8000 的方案</li>
+</ul>
+<blockquote>
+<p>这些问题表面上各不相同，但本质上都是同一件事：Agent 没有持续、准确地维护执行所需的上下文。第二篇里我聊的 TAO 状态循环，核心就是靠 Fact State 单独维护关键事实来防幻觉——但 Fact State 本身也是 Context 的一部分，如果 Fact State 的管理策略不对（比如该标的 Available 没标、过期的数据还在用），TAO 循环照样会出问题。</p>
+</blockquote>
+<hr>
+<h2 id="先搞清楚两个概念"><a href="#先搞清楚两个概念" class="headerlink" title="先搞清楚两个概念"></a>先搞清楚两个概念</h2><p>刚开始做 Agent 的时候，我把”上下文”当成了一个笼统的概念。后来才发现，<strong>Context</strong> 和 <strong>Context Window</strong> 是两个完全不同的东西。</p>
+<p><strong>Context</strong> 是 Agent 当前可获得的<strong>全部信息空间</strong>。数据来源分四块：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>来源</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户输入</td>
+<td>用户直接提供的数据</td>
+<td>文本输入、上传的文件</td>
+</tr>
+<tr>
+<td>Agent 自身产生</td>
+<td>提示词、大模型输入输出、中间结果</td>
+<td>对话历史、Plan 状态</td>
+</tr>
+<tr>
+<td>内部数据</td>
+<td>来自业务系统的数据</td>
+<td>通过接口或直接访问 MySQL/ES</td>
+</tr>
+<tr>
+<td>外部数据</td>
+<td>与外部系统交互获得的数据</td>
+<td>外部 API、MCP 工具调用</td>
+</tr>
+</tbody></table></div>
+<p>同一份数据可能在多个地方存着——用户画像 MySQL 里一份，Redis 里缓存一份。从时效角度，有只作用于当前轮的，也有作用于整个多轮对话的。</p>
+<p><strong>Context Window</strong> 是从全部 Context 中经过筛选、压缩、排序之后，<strong>真正交给模型的工作集</strong>。Context 是仓库，Context Window 是当前工作台。</p>
+<p>用公式表达就是 <code>Context Window = f(Context)</code>。这个 <code>f</code> 就是 Agent 工程的核心——找准内容，放进窗口，传递给大模型。</p>
+<p>把 <code>f</code> 展开来看，其实是五步流水线：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Window = Inject(Order(Compress(Select(Retrieve(Context)))))</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><strong>Retrieve</strong>：从全部 Context 中找出可能相关的内容</li>
+<li><strong>Select</strong>：选择当前真正需要的</li>
+<li><strong>Compress</strong>：压缩到合适的粒度</li>
+<li><strong>Order</strong>：决定排列顺序</li>
+<li><strong>Inject</strong>：以合适的结构注入 Prompt</li>
+</ul>
+<p>这五步的每一步都可能出问题，后面会逐一展开。</p>
+<p>从功能角度，Context 还可以分成六类：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>分类</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Instruction Context</td>
+<td>指令上下文</td>
+<td>System Prompt、业务 Spec、行业标准</td>
+</tr>
+<tr>
+<td>Goal Context</td>
+<td>目标上下文</td>
+<td>用户最终目标、当前子目标</td>
+</tr>
+<tr>
+<td>User Context</td>
+<td>用户上下文</td>
+<td>用户画像、历史决策</td>
+</tr>
+<tr>
+<td>Task Context</td>
+<td>任务上下文</td>
+<td>当前任务、执行步骤</td>
+</tr>
+<tr>
+<td>Tool Context</td>
+<td>工具上下文</td>
+<td>工具输入、输出</td>
+</tr>
+<tr>
+<td>Constraint Context</td>
+<td>约束上下文</td>
+<td>硬约束、软约束</td>
+</tr>
+</tbody></table></div>
+<p>这个分类在设计 Context Item 的存储和检索策略时很有用——不同类别的上下文，生命周期、更新频率、权威性都不一样。</p>
+<p>另外一个我觉得比较重要的认知：<strong>Memory 只是 Context 的一个子集</strong>。所谓的”短期记忆”、”长期记忆”，本质上就是 Agent 运行过程中产生的数据，被拟人化地包装了一下。从工程角度看，所有东西都是 Context，区别只在于来源、生命周期和存储方式。搞清楚这一点，后面的设计思路会清晰很多。</p>
+<h3 id="Context-Item：一种统一抽象"><a href="#Context-Item：一种统一抽象" class="headerlink" title="Context Item：一种统一抽象"></a>Context Item：一种统一抽象</h3><p>我在实践中给每个 Context Item 做了一个统一的结构：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"id"</span><span class="punctuation">:</span> <span class="string">"ctx_001"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"type"</span><span class="punctuation">:</span> <span class="string">"constraint"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"content"</span><span class="punctuation">:</span> <span class="string">"不能推荐 Redis Cluster"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"source"</span><span class="punctuation">:</span> <span class="string">"user"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"scope"</span><span class="punctuation">:</span> <span class="string">"current_task"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"authority"</span><span class="punctuation">:</span> <span class="string">"high"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"confidence"</span><span class="punctuation">:</span> <span class="number">1.0</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"expires_at"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">null</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"token_cost"</span><span class="punctuation">:</span> <span class="number">8</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>几个关键字段：</p>
+<ul>
+<li><strong>source</strong>：信息从哪来（用户、系统、工具、模型推测）</li>
+<li><strong>scope</strong>：有效范围（当前步骤、当前任务、当前会话、全局）</li>
+<li><strong>authority</strong>：权威程度，用于冲突仲裁。参考排序：系统规则 &gt; 用户明确输入 &gt; 工具事实 &gt; 已确认摘要 &gt; 模型推测</li>
+<li><strong>confidence</strong>：可信度</li>
+<li><strong>expires_at</strong>：过期时间。用户偏好有效期长，工具查询的 QPS 数据有效期短</li>
+</ul>
+<p>这里有个细节：要区分<strong>观点</strong>和<strong>事实</strong>。用户说”Redis Cluster 太复杂了”，这是观点，要尊重并给予重要权重，无须分辨对错。用户说”我们的 QPS 是 5 万”，这是事实，可以在后续阶段尝试验证。</p>
+<p>设计每个 Context Item 的时候，我都会问自己三个问题：</p>
+<ol>
+<li><strong>怎么获得</strong>：这个信息从哪来？用户画像怎么提取？硬约束怎么识别？</li>
+<li><strong>怎么存储</strong>：要不要持久化？放 Redis 还是 MySQL？生命周期多长？</li>
+<li><strong>怎么查询</strong>：用的时候怎么找回来？关键词检索还是向量召回？</li>
+</ol>
+<p>这三个问题看着简单，但很多 Agent 项目只考虑了”怎么获得”，存储和查询随便搞搞，后面维护起来就是噩梦。</p>
+<hr>
+<h2 id="最朴素也最实用的：滑动窗口"><a href="#最朴素也最实用的：滑动窗口" class="headerlink" title="最朴素也最实用的：滑动窗口"></a>最朴素也最实用的：滑动窗口</h2><p>说到上下文管理，最基础的方案就是<strong>滑动窗口</strong>——窗口只保留最近 N 轮对话，旧的逐渐被挤出去。</p>
+<p>优点太多了：实现简单、性能稳定、近期上下文通常最相关、容易控制 Token 成本。在实践中我一般无脑先用滑动窗口，后面再根据效果迭代。</p>
+<p>但基础滑动窗口有几个问题：</p>
+<p><strong>问题一：最近的上下文不一定是最重要的。</strong> 用户在第 3 轮说了一个关键约束，到第 50 轮早就被挤出去了。我上面那个”Redis Cluster”的坑就是这么来的。</p>
+<p><strong>问题二：按轮次还是按 Token？</strong> 我倾向于按 Token 控制，因为每轮对话长度差异很大——用户可能粘贴了一大段日志，也可能只打了一句话。不管哪种方式，都要<strong>限制每轮用户最大输入和模型最大输出</strong>——N 轮就是 N × (X+Y)，不然一个用户粘贴了一篇论文进来，窗口直接爆了。</p>
+<p><strong>问题三：窗口内不一定要放纯对话。</strong> 关键点、中间产物、工具返回的核心字段也可以放进去。滑动窗口只是”保留最近内容”的策略，具体内容可以灵活组织。</p>
+<p><strong>问题四：窗口不要占满。</strong> 我的习惯是总窗口 128K 的话，滑动窗口限制在 32K，剩下的留给摘要、提示词、输出。</p>
+<h3 id="变种：混合策略"><a href="#变种：混合策略" class="headerlink" title="变种：混合策略"></a>变种：混合策略</h3><p>一个变种思路是把窗口分成两块：</p>
+<ul>
+<li>近 N 轮对话：放原文</li>
+<li>更早的对话：用户输入放原文，模型输出放摘要</li>
+</ul>
+<p>核心洞察是<strong>用户输入通常很短，模型输出一般很长</strong>。保留用户输入原文成本不高，但模型输出做摘要可以省下大量 Token。</p>
+<p>不过如果用户粘贴了一大段堆栈，那用户输入也不能原文保留了——要灵活处理。</p>
+<hr>
+<h2 id="分层上下文：把复杂问题拆开"><a href="#分层上下文：把复杂问题拆开" class="headerlink" title="分层上下文：把复杂问题拆开"></a>分层上下文：把复杂问题拆开</h2><p>滑动窗口在复杂 Agent 里很快力不从心。这时候需要<strong>分层上下文</strong>，核心思想是分而治之。</p>
+<p>我在实践中用过的几种分层方式：</p>
+<h3 id="按生命周期分"><a href="#按生命周期分" class="headerlink" title="按生命周期分"></a>按生命周期分</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>主要内容</th>
+<th>生命周期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>工作上下文</td>
+<td>当前输入、当前步骤、工具结果</td>
+<td>一次或几次模型调用</td>
+</tr>
+<tr>
+<td>会话上下文</td>
+<td>当前对话目标、最近历史</td>
+<td>当前会话</td>
+</tr>
+<tr>
+<td>长期上下文</td>
+<td>用户画像、长期偏好</td>
+<td>跨会话</td>
+</tr>
+<tr>
+<td>归档上下文</td>
+<td>完整历史、原始记录</td>
+<td>长期保存，按需召回</td>
+</tr>
+</tbody></table></div>
+<h3 id="按权威性分"><a href="#按权威性分" class="headerlink" title="按权威性分"></a>按权威性分</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>使用策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>强规则层</td>
+<td>系统规则、安全约束，不允许被低层覆盖</td>
+</tr>
+<tr>
+<td>已确认事实层</td>
+<td>用户确认、权威系统查询结果，可作为决策依据</td>
+</tr>
+<tr>
+<td>有证据推断层</td>
+<td>基于多个证据推导的结论，需保留证据</td>
+</tr>
+<tr>
+<td>待确认假设层</td>
+<td>模型推测、临时假设，不得当成事实</td>
+</tr>
+<tr>
+<td>已否定层</td>
+<td>用户否认、验证失败的信息，禁止继续使用</td>
+</tr>
+</tbody></table></div>
+<p>这个分层方式我觉得特别实用——能有效避免模型把推测当事实、把已否定的信息继续拿来用。第一篇里聊的硬约束/软约束分层，第二篇里聊的 Fact State 状态标注（Available/Verified/Missing），其实都是这个思路的具体体现。</p>
+<h3 id="按冷热程度分"><a href="#按冷热程度分" class="headerlink" title="按冷热程度分"></a>按冷热程度分</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>热 Context</td>
+<td>当前任务状态、当前 Goal，频繁使用，放内存/Redis</td>
+</tr>
+<tr>
+<td>温 Context</td>
+<td>当前会话早期内容，偶尔使用，需要检索</td>
+</tr>
+<tr>
+<td>冷 Context</td>
+<td>完整历史消息，低频使用，主要用于归档</td>
+</tr>
+</tbody></table></div>
+<p>这些分层方式可以混用。比如先按冷热分，然后在热 Context 里再按权威性分。关键是<strong>结合自己的业务特点</strong>来设计。</p>
+<p>还有两种分层方式值得了解：</p>
+<p><strong>按作用范围分</strong>：步骤级（当前工具调用参数）→ 阶段级（信息收集阶段收集到的内容）→ 任务级（任务目标、成功标准）→ 会话级（最近讨论的话题）→ 用户级（长期画像）→ 系统级（全局规范、权限策略）。这种分层方式在设计 Context 的存储位置时很有用——步骤级放内存，用户级放 Redis，系统级可能直接硬编码在 Prompt 里。</p>
+<p><strong>按信息形态分</strong>：原始层（完整原文）→ 结构化事实层（抽取后的稳定事实）→ 摘要层（保留整体语义）→ 索引层（只保存”去哪里找”）。这种分层方式和压缩策略直接对应——窗口充足用原始层，紧张了就逐层降级。</p>
+<hr>
+<h2 id="窗口动态编排：每次放什么、放多少"><a href="#窗口动态编排：每次放什么、放多少" class="headerlink" title="窗口动态编排：每次放什么、放多少"></a>窗口动态编排：每次放什么、放多少</h2><p>分层之后，下一个问题是：每次调用大模型的时候，各层的内容怎么放？</p>
+<h3 id="筛选"><a href="#筛选" class="headerlink" title="筛选"></a>筛选</h3><p><strong>不是所有 Context 都需要每次放进去</strong>。不同步骤需要的内容不同，全部丢过去既浪费 Token 又影响效果。”弱水三千，只取一瓢。”</p>
+<p>三种筛选机制：</p>
+<ol>
+<li><strong>强规则筛选</strong>：Prompt 模板/代码层面直接决定。比如我在 Go 里用模板渲染 Prompt，<code>{{ .UserProfile }}</code> <code>{{ .Input }}</code> 这种，代码层面就决定了放什么。</li>
+<li><strong>检索召回</strong>：向量数据库/ES 查找相关内容，参考 RAG 机制。</li>
+<li><strong>模型筛选</strong>：先调用轻量模型判断需要什么，再发起真正调用。成本高，不太常用。</li>
+</ol>
+<h3 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h3><p>压缩不是静态机制，而是<strong>根据实时情况动态调整</strong>的。核心原则：越重要的内容越不能压缩，剩余窗口越大越不需要压缩。</p>
+<p>我用过一种<strong>多版本预压缩</strong>策略：同一份信息提前准备好多个版本，运行时按需加载：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>内容</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L0</td>
+<td>一句话摘要</td>
+<td>窗口几乎放满</td>
+</tr>
+<tr>
+<td>L1</td>
+<td>关键结论摘要</td>
+<td>窗口比较满</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>结构化事实</td>
+<td>窗口放了一些内容</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>详细摘要</td>
+<td>窗口还挺大</td>
+</tr>
+<tr>
+<td>L4</td>
+<td>完整原文</td>
+<td>窗口非常充足</td>
+</tr>
+</tbody></table></div>
+<p>好处是运行时没有额外压缩开销。</p>
+<p>还有两个细节值得注意：</p>
+<p><strong>级联压缩</strong>：两个强相关的 Context Item（比如用户输入和对应的工具返回）要保持同一压缩级别——一个压到 L0 另一个还是 L4，信息就对不上了。反过来，两个有信息重合的 Item（比如对话历史和关键事实），可以让一个极度压缩，另一个尽量原文，避免重复占用窗口。</p>
+<p><strong>兜底机制</strong>：在 Prompt 里加一句兜底条款——“如果发现某个内容压缩程度太高，导致无法完成当前任务，可以调用工具召回更详细的版本”。这样即使压缩过头了，模型也有自救的能力。</p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p>大模型对内容顺序敏感——同样的内容，排序不同，输出也会不同。我的排序原则是越重要越靠前：</p>
+<ol>
+<li>System Prompt / 业务 Spec</li>
+<li>当前 Goal</li>
+<li>硬约束</li>
+<li>当前任务状态 / Plan 节点</li>
+<li>已确认关键事实</li>
+<li>当前步骤需要的证据</li>
+<li>工具返回结果</li>
+<li>候选 Action / Tool</li>
+<li>动态 few-shot</li>
+<li>历史摘要</li>
+<li>补充背景</li>
+</ol>
+<p>但要注意<strong>缓存友好性</strong>——不常变动的内容可以往后放，更容易命中 Prompt Prefix Cache。这里解释一下：很多推理服务（比如 OpenAI、Anthropic）支持 Prompt 前缀缓存——如果连续两次调用的 Prompt 前缀部分相同，第二次可以直接复用第一次的计算结果，省掉大量推理开销。类比 MySQL 的前缀索引，排序的时候把不常变的内容（System Prompt、用户画像）放前面，经常变的内容（当前步骤、工具结果）放后面，可以大幅提高缓存命中率。</p>
+<h3 id="档位设计"><a href="#档位设计" class="headerlink" title="档位设计"></a>档位设计</h3><p>不管窗口多紧张，有几类内容是<strong>必须原样放的</strong>：</p>
+<ul>
+<li>最新用户输入（不然模型不知道用户这次要什么）</li>
+<li>硬约束（丢了就踩雷）</li>
+<li>已确认关键事实（决策依据）</li>
+<li>Plan 和执行状态（不然不知道跑到哪了）</li>
+</ul>
+<p>这几类不管怎么压缩都不能动，其他的才可以根据档位做不同程度的压缩。</p>
+<p>我在实践中总结了一个基于剩余窗口大小的档位设计：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>档位</th>
+<th>剩余窗口</th>
+<th>策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full Mode</td>
+<td>80%-100%</td>
+<td>基本不压缩，原文直接放</td>
+</tr>
+<tr>
+<td>Balanced Mode</td>
+<td>20%-80%</td>
+<td>部分压缩，Agent 应主要在此运行</td>
+</tr>
+<tr>
+<td>Compact Mode</td>
+<td>5%-20%</td>
+<td>大部分压缩，只保留关键原文</td>
+</tr>
+<tr>
+<td>Minimal Mode</td>
+<td>0%-5%</td>
+<td>极度紧张，应尽快解决</td>
+</tr>
+</tbody></table></div>
+<p>运行时根据窗口占用情况自动切换档位，比每次都硬算每个 Item 该压缩到什么程度要高效得多。而且 Balanced Mode 应该是 Agent 长时间运行的主状态——如果经常掉到 Compact Mode，说明窗口太小或者上下文管理策略有问题。</p>
+<h3 id="还可以结合更多因素"><a href="#还可以结合更多因素" class="headerlink" title="还可以结合更多因素"></a>还可以结合更多因素</h3><p>不只是剩余窗口大小，还可以结合：</p>
+<ul>
+<li><strong>当前步骤</strong>：不同步骤需要的 Context Item 不同</li>
+<li><strong>任务风险等级</strong>：高风险任务应尽量用大窗口模型，避免压缩带来的信息损耗</li>
+<li><strong>信息可恢复性</strong>：可恢复的先不放索引就行，不可恢复的优先放原文</li>
+<li><strong>信息可信度</strong>：优先保留高可信信息，压缩或丢弃低可信信息</li>
+<li><strong>信息新鲜度</strong>：新旧冲突时新信息通常更重要（但用户画像这种老信息可能是例外）</li>
+<li><strong>工具调用需求</strong>：需要选工具就放工具描述，但工具描述压缩要慎用——我体感压缩会严重影响工具选择准确率</li>
+</ul>
+<p>把这些因素综合起来，我整理了一张决策表，实际开发中经常参考：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>Context 类型</th>
+<th>窗口充足</th>
+<th>窗口中等</th>
+<th>窗口紧张</th>
+<th>极度紧张</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>当前用户输入</td>
+<td>原文</td>
+<td>原文</td>
+<td>原文</td>
+<td>原文</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>完整结构化</td>
+<td>完整结构化</td>
+<td>简化结构化</td>
+<td>一句话</td>
+</tr>
+<tr>
+<td>硬约束</td>
+<td>完整原样</td>
+<td>完整原样</td>
+<td>完整原样</td>
+<td>完整原样</td>
+</tr>
+<tr>
+<td>当前 Plan</td>
+<td>完整 Plan</td>
+<td>当前节点+依赖</td>
+<td>当前节点</td>
+<td>当前节点一句话</td>
+</tr>
+<tr>
+<td>关键事实</td>
+<td>完整</td>
+<td>完整</td>
+<td>Top-K</td>
+<td>Top-3</td>
+</tr>
+<tr>
+<td>历史对话</td>
+<td>详细摘要</td>
+<td>结构化摘要</td>
+<td>一句话+索引</td>
+<td>只放索引</td>
+</tr>
+<tr>
+<td>用户画像</td>
+<td>相关画像完整</td>
+<td>任务相关画像</td>
+<td>关键画像</td>
+<td>默认不放</td>
+</tr>
+<tr>
+<td>工具结果</td>
+<td>结构化+原文片段</td>
+<td>核心字段</td>
+<td>必要字段</td>
+<td>最小字段</td>
+</tr>
+<tr>
+<td>检索结果</td>
+<td>Top-K 片段</td>
+<td>Top-3</td>
+<td>Top-1</td>
+<td>只放证据索引</td>
+</tr>
+<tr>
+<td>few-shot</td>
+<td>3-5 个</td>
+<td>1-2 个</td>
+<td>默认不放</td>
+<td>不放</td>
+</tr>
+<tr>
+<td>工具描述</td>
+<td>完整描述</td>
+<td>核心描述</td>
+<td>名称+边界</td>
+<td>名称+一句话</td>
+</tr>
+</tbody></table></div>
+<p>注意看<strong>硬约束那一行</strong>——不管窗口多紧张，硬约束都是完整原样。这是我踩坑之后定的铁律。</p>
+<hr>
+<h2 id="摘要与细节召回：一对双生子"><a href="#摘要与细节召回：一对双生子" class="headerlink" title="摘要与细节召回：一对双生子"></a>摘要与细节召回：一对双生子</h2><p>你只要做了摘要，就一定有信息损失，后续就需要能把关键细节找回来的机制。这两个东西是绑定在一起的。</p>
+<h3 id="摘要的几种类型"><a href="#摘要的几种类型" class="headerlink" title="摘要的几种类型"></a>摘要的几种类型</h3><p>我在实践中主要针对这几种场景做摘要：</p>
+<p><strong>对话整体摘要</strong>：总结已达成一致的结论、讨论进度、用户信息。建议<strong>长期保存，不要归档</strong>。如果对话中用户切换过多个不相关意图，应在摘要里分意图存储。</p>
+<p><strong>章节摘要</strong>：长对话中，整体摘要太精简、原文太长。每 N 轮生成一个章节摘要是折中方案——比整体摘要细节多，比完整对话占窗口少。</p>
+<p><strong>模型输出摘要</strong>：大模型回复里充满了对模型来说”无意义”的铺垫和转场。把这些去掉，只保留高信息密度的内容，可以大幅节省 Token。</p>
+<p><strong>关键事实</strong>：会影响后续决策、约束校验的信息。这是最重要的一类，必须结构化保存，不能只靠摘要。关键事实包括目标类（用户改了意图）、硬约束、软偏好、用户确认过的事实、决策类（做了什么决策以及为什么）、实体信息。第二篇里我聊的 Fact State 就是关键事实的结构化存储——每个事实标 Available/Missing/Verified，有来源、有置信度。但当时只说了”怎么用”，这篇补上”怎么管”。</p>
+<p><strong>中间结果保存</strong>：部分工具输出在后续步骤中会反复用到——比如查了一次数据库拿到的用户订单列表，后面分析、推荐、总结都要用。这种要考虑提前准备好摘要版本和细节召回索引。但要注意时效性，大部分实时查询结果只能用于当轮对话。</p>
+<h3 id="摘要什么时候生成？"><a href="#摘要什么时候生成？" class="headerlink" title="摘要什么时候生成？"></a>摘要什么时候生成？</h3><p>摘要生成有两种时机：</p>
+<ul>
+<li><strong>同步生成</strong>：对话进行到第 K×N 轮时立刻生成。优点是确定性高，缺点是增加当轮延迟</li>
+<li><strong>异步生成</strong>：对话结束后、下一轮开始前、或者定时扫描触发。优点是不影响当轮延迟，缺点是可能在需要时还没生成好</li>
+</ul>
+<p>我的建议是用<strong>异步</strong>——延迟对用户体验影响更大，而且异步可以用 WaitGroup 或 Semaphore 做并发控制，确保需要时已经生成完毕。</p>
+<blockquote>
+<p>我有一个猜想：在关键事实提取做得好的情况下，大部分时候不需要召回细节。保守点说，至少关键的细节都在你提取出来的内容里面。</p>
+</blockquote>
+<h3 id="模型可读摘要"><a href="#模型可读摘要" class="headerlink" title="模型可读摘要"></a>模型可读摘要</h3><p>这个技巧是我摸索出来的：<strong>压缩后的内容不是给人看的，而是给模型看的</strong>。</p>
+<p>比如大模型输出了一段”这是一个很好的问题。你其实已经意识到了上下文压缩最关键的一点……”，压缩后变成：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">上下文压缩目标：降 token + 保留关键事实；必须保留：目标/约束/用户确认事实/中间产物</span><br></pre></td></tr></tbody></table></figure>
+
+<p>读起来不像人话，但大模型完全能理解——它有很强的语义补全能力，只要保留关键实体和关系就能继续推理。就好比老外说中文颠三倒四，但关键字在你就能脑补。</p>
+<p>不过要注意，”不能”、”必须”、”不超过”、”大概”、”可能”这些承载约束或不确定性的词，<strong>绝对不能随便删</strong>。我参考的 Prompt 要求：</p>
+<ol>
+<li>删除礼貌表达、转场句、口语填充词、重复解释、情绪价值表达</li>
+<li>保留目标、实体、关键事实、硬约束、软偏好、用户确认/否认、数字、时间、决策、理由、风险、缺失信息、证据来源</li>
+<li>可以用短句、列表、键值对，不要求自然语言流畅</li>
+<li>不得改变原意，不得把不确定信息改成确定事实</li>
+<li>不得把建议改成已执行决策，不得把模型推测改成用户确认事实</li>
+<li>硬约束和用户否认内容必须显式保留</li>
+</ol>
+<h3 id="细节召回"><a href="#细节召回" class="headerlink" title="细节召回"></a>细节召回</h3><p>什么样的细节值得召回？判定标准就一个：<strong>这个细节是否会影响当前决策</strong>。</p>
+<p>具体来说：</p>
+<ul>
+<li>影响目标的细节（用户到底要优化什么？）</li>
+<li>影响路径选择的细节（方案 A 已经失败过了，不能再用）</li>
+<li>影响工具调用的细节（某个工具之前调用失败了）</li>
+<li>影响最终表达的细节（用户说”简单点”）</li>
+</ul>
+<p>技术方案基础做法是用 ES 或向量数据库。一个关键原则是：<strong>当前 K 轮对话的细节不走召回，直接原文传递</strong>。K 轮之前的内容才走检索，规避数据同步延迟。比如 K=10，最近 10 轮原文保留，10 轮之前的内容即便每轮花 10 秒同步，查询时都已经过去 100 秒了，足够完成入库。</p>
+<p>还有一种<strong>迭代式细节召回</strong>的思路：先只传递内容的索引给大模型，模型判断需要哪些细节，通过工具召回。召回后再次调用模型，判断是否需要更多细节。循环直到满足或达到最大迭代次数。这个方案在实践中要慎用（延迟和成本都高），但面试的时候大胆用——它展示了你对细节召回的深入理解。</p>
+<h3 id="冲突裁决"><a href="#冲突裁决" class="headerlink" title="冲突裁决"></a>冲突裁决</h3><p>召回的细节可能有冲突。我的裁决套路：</p>
+<ul>
+<li><strong>last win</strong>：最新的为主。召回了 500 块和 300 块两条预算，500 比较新，取 500。</li>
+<li><strong>权威优先</strong>：系统规则 &gt; 用户明确输入 &gt; 工具事实。</li>
+<li><strong>区分”冲突”还是”强化”</strong>：部门规定每周一次周会，你们小组每周两次，这不叫冲突叫强化。大模型很难处理好这个问题，只能在 Prompt 里尽可能给出区分规则。</li>
+</ul>
+<h3 id="一个暴论"><a href="#一个暴论" class="headerlink" title="一个暴论"></a>一个暴论</h3><p><strong>只要上下文窗口有限，细节就不可能 100% 不丢。</strong> 摘要的本质是筛选，筛选就意味着信息损失。成熟的 Agent 不是幻想记住一切，而是通过关键事实提取、细节召回、冲突裁决这些机制，确保真正影响决策的细节尽量不丢。</p>
+<hr>
+<h2 id="用户画像：Agent-的杀手锏"><a href="#用户画像：Agent-的杀手锏" class="headerlink" title="用户画像：Agent 的杀手锏"></a>用户画像：Agent 的杀手锏</h2><p>如果要我选一个 Agent 最容易做不好、但又最能拉开差距的部分，我会选<strong>用户画像</strong>。</p>
+<p>大模型的能力大家都能调用，拉不开差距。但只有你的 Agent 知道这个用户究竟想要什么、讨厌什么、能理解什么。这就是私有资产。</p>
+<h3 id="传统画像远远不够"><a href="#传统画像远远不够" class="headerlink" title="传统画像远远不够"></a>传统画像远远不够</h3><p>很多人提到用户画像想到的还是”男、28岁、一线城市”。这种画像做推荐勉强能用，但在 Agent 里远远不够——用户对 Agent 的期望是”像真人”。</p>
+<p>我来举几个反例，都是我日常用各种 Agent 遇到的：</p>
+<ul>
+<li><strong>永远在重复问</strong>：今天告诉了 Agent 我的偏好，明天它又忘了，还得再说一遍</li>
+<li><strong>明知道不喜欢还推</strong>：明确说了不要某个品牌，下次还是推</li>
+<li><strong>看起来正确实际驴唇不对马嘴</strong>：用户是实习生，Agent 改简历改成了高级工程师的样子</li>
+<li><strong>输出风格完全不匹配</strong>：用户是理性风格，Agent 写得花里胡哨</li>
+<li><strong>偶然行为当稳定偏好</strong>：看了一次折叠屏手机，就被标记为折叠屏爱好者</li>
+</ul>
+<h3 id="应该建模的维度"><a href="#应该建模的维度" class="headerlink" title="应该建模的维度"></a>应该建模的维度</h3><p><strong>目标画像</strong>：用户想达成什么。学英语的目标是雅思 7.5 还是日常交流，训练计划完全不同。</p>
+<p><strong>能力画像</strong>：决定了 Agent 讲多深、用什么语言。用户在计算机上是大师，金融上是小白，那技术内容可以深入，理财内容要简单入门。</p>
+<p><strong>偏好画像</strong>：<strong>不喜欢什么比喜欢什么更重要</strong>。用户不喜欢的品牌你反复推荐，比喜欢的品牌你没推荐，更容易让用户反感。而且”不喜欢”和硬约束有强相关性——用户多次表达不喜欢某个品牌，其实隐含了一个硬约束。</p>
+<p><strong>决策画像</strong>：用户怎么做选择。有人先看价格，超出预算直接排除；有人先看品牌，不熟悉的直接不看。Agent 只会罗列优缺点而不知道用户怎么权衡，就无法帮用户做真正的决策。</p>
+<p><strong>关系画像</strong>：在社交、客服、企业协作类 Agent 里尤其重要。给上司写邮件和给同事写邮件，语气完全不同。</p>
+<h3 id="画像从哪来？"><a href="#画像从哪来？" class="headerlink" title="画像从哪来？"></a>画像从哪来？</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>来源</th>
+<th>说明</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户明确表达</td>
+<td>置信度最高</td>
+<td>区分长期偏好和当前状态。用户说”回答简单点”可能只是当前着急</td>
+</tr>
+<tr>
+<td>行为推断</td>
+<td>从用户行为中推断</td>
+<td>做了 ≠ 喜欢。买低价手机可能是买给父母的</td>
+</tr>
+<tr>
+<td>多轮对话提取</td>
+<td>分析对话过程</td>
+<td>重点看”为什么”而不只是”做了什么”</td>
+</tr>
+<tr>
+<td>外部系统接入</td>
+<td>接入已有画像</td>
+<td>可能需要中间转换</td>
+</tr>
+</tbody></table></div>
+<p><strong>核心</strong>：所有画像都只是一定程度上可信，并非完全可信。</p>
+<h3 id="画像影响-Agent-的哪些环节？"><a href="#画像影响-Agent-的哪些环节？" class="headerlink" title="画像影响 Agent 的哪些环节？"></a>画像影响 Agent 的哪些环节？</h3><p>用户画像不是只影响最终输出，它可以影响 Agent 的<strong>任何环节</strong>：</p>
+<ul>
+<li><strong>用户输入理解</strong>：同一个词对不同用户含义不同。”性价比”对价格敏感型用户是”便宜”，对品质导向型用户是”物有所值”</li>
+<li><strong>意图识别和 Slot Filling</strong>：上一篇聊过的，用户画像能帮助模型更准确地理解意图</li>
+<li><strong>上下文选择</strong>：不同步骤需要不同的画像信息</li>
+<li><strong>Plan 和路径选择</strong>：不同画像的用户，最优路径可能完全不同</li>
+<li><strong>最终输出</strong>：写作风格、详细程度、专业深度</li>
+</ul>
+<h3 id="提取时机也很关键"><a href="#提取时机也很关键" class="headerlink" title="提取时机也很关键"></a>提取时机也很关键</h3><div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>时机</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>实时提取</td>
+<td>每轮对话结束后立即判断</td>
+<td>生成当前画像，不适合修改长期画像</td>
+</tr>
+<tr>
+<td>对话结束后提取</td>
+<td>一次对话/任务结束后统一提取</td>
+<td>可以看到完整对话过程</td>
+</tr>
+<tr>
+<td>离线提取</td>
+<td>定期分析近期行为和对话</td>
+<td>发现趋势、合并重复、判断稳定性</td>
+</tr>
+</tbody></table></div>
+<p>最佳实践是<strong>实时 + 离线混合</strong>：实时保证及时性，离线保证准确性。实时提取的画像先进候选层，离线分析确认后再升级到长期画像。</p>
+<h3 id="画像冲突怎么裁决？"><a href="#画像冲突怎么裁决？" class="headerlink" title="画像冲突怎么裁决？"></a>画像冲突怎么裁决？</h3><p>画像之间也会冲突。我的裁决原则：</p>
+<ol>
+<li><strong>当前明确表达 &gt; 历史推断</strong>：用户这次明确说了，比你推断的历史偏好更优先</li>
+<li><strong>用户明确表达 &gt; 行为推断</strong>：用户说”我不喜欢”，比你从购买记录推断的更可信</li>
+<li><strong>用户纠正优先</strong>：用户说”你理解错了”，立即修正，不要争辩</li>
+<li><strong>领域画像 &gt; 全局画像</strong>：用户在数码产品上是专家，在金融上是小白，不能用全局画像一刀切</li>
+</ol>
+<h3 id="层级设计"><a href="#层级设计" class="headerlink" title="层级设计"></a>层级设计</h3><p>我维护三层用户画像：</p>
+<ul>
+<li><strong>当前画像</strong>：本次对话中的即时偏好（用户这次说喜欢小米）</li>
+<li><strong>候选画像</strong>：有待验证的新信号（用户最近三次都提到小米）</li>
+<li><strong>长期画像</strong>：沉淀的稳定用户特征（用户长期偏好苹果生态）</li>
+</ul>
+<p>三者是覆盖关系，后者覆盖前者。长期偏好一般是候选画像慢慢升级上来的。</p>
+<h3 id="怎么判断不是一时兴起？"><a href="#怎么判断不是一时兴起？" class="headerlink" title="怎么判断不是一时兴起？"></a>怎么判断不是一时兴起？</h3><p>这是最难的问题。用户今天说喜欢折叠屏手机，你能不能写入长期画像？</p>
+<p>我总结了一个 <strong>4C 模型</strong>：</p>
+<ul>
+<li><strong>Count（出现次数）</strong>：跨独立对话的反复验证才有意义。同一轮说五次不等于五次独立对话</li>
+<li><strong>Continuity（持续时间）</strong>：跨 3 个月比同一天出现 5 次更可信。我参考心理学理论——激情保持约 90 天，超过 90 天还喜欢就是真喜欢</li>
+<li><strong>Cross-context（跨场景一致性）</strong>：买手机看重轻便、买电脑也看重轻便，才是真的喜欢轻便</li>
+<li><strong>Confirmation（用户确认）</strong>：直接问用户最可靠。”我注意到你最近几次选设备都重视便携性，以后默认优先考虑轻便？”</li>
+</ul>
+<p>四个维度加权求和，得分越高越稳定。我在实践中还给用户确认加了更高权重——用户明确说出来的，就是比推断的更可信。</p>
+<p>具体怎么用这个分数？我参考了一个分级标准：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>分数</th>
+<th>状态</th>
+<th>使用方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0-29</td>
+<td>candidate</td>
+<td>仅保留，不影响推荐结果</td>
+</tr>
+<tr>
+<td>30-50</td>
+<td>weak</td>
+<td>只能用于排序参考，不能作为过滤条件</td>
+</tr>
+<tr>
+<td>50-70</td>
+<td>active</td>
+<td>可影响推荐，但不能作为硬过滤</td>
+</tr>
+<tr>
+<td>70-85</td>
+<td>stable</td>
+<td>可作为默认偏好</td>
+</tr>
+<tr>
+<td>85+</td>
+<td>confirmed</td>
+<td>稳定使用，但仍服从用户当前输入</td>
+</tr>
+</tbody></table></div>
+<p>举个例子：用户最近三次都提到小米（Count=3, Continuity=2 周, Cross-context=1），没有明确确认——大概 35 分，candidate 级别，可以作为排序参考但不能默认推荐小米。如果用户明确说”以后默认小米”，直接跳到 confirmed。</p>
+<h3 id="生命周期控制"><a href="#生命周期控制" class="headerlink" title="生命周期控制"></a>生命周期控制</h3><p>画像不是提取了就一成不变：</p>
+<ul>
+<li><strong>激活</strong>：经过多次验证，可作为默认偏好</li>
+<li><strong>弱化</strong>：长期无新证据或出现相反行为（用户原本喜欢苹果，最近开始看小米）</li>
+<li><strong>过期</strong>：超过有效期，默认不再使用</li>
+</ul>
+<p>每三个月没有新证据则降级可信度。淘汰不是淘汰整个画像——用户画像分理财和写代码两部分，如果很长时间没咨询理财，只淘汰理财部分。</p>
+<h3 id="一个实战案例：电商场景"><a href="#一个实战案例：电商场景" class="headerlink" title="一个实战案例：电商场景"></a>一个实战案例：电商场景</h3><p>如果做电商 Agent，用户画像建议分三层：</p>
+<ul>
+<li><strong>全局画像</strong>：跨品类的用户特征（价格敏感度、品牌忠诚度）</li>
+<li><strong>品类画像</strong>：最重要的一层。用户买手机看重拍照，买电脑看重轻便，不同品类偏好完全不同</li>
+<li><strong>当前购物画像</strong>：当前任务的即时偏好（这次想买什么价位的）</li>
+</ul>
+<p>价格偏好有个高级设计：通过离线计算，遍历用户历史订单，计算购买时价格在该品类的百分位数。没买过的品类，可以叠加相似类目参考（没买过裤子，参考上衣的价格偏好）。</p>
+<p>还有两个坑要注意：<strong>购买者和使用者可能不是同一个人</strong>——买低价手机可能是买给父母的，不能据此判断用户偏好低价。<strong>浏览记录和购物车不等于满意</strong>——用户加了购物车但没买，可能是因为价格太贵，要分析”为什么不满意”。</p>
+<hr>
+<h2 id="长任务：上下文管理的终极考验"><a href="#长任务：上下文管理的终极考验" class="headerlink" title="长任务：上下文管理的终极考验"></a>长任务：上下文管理的终极考验</h2><p>任务越长，Agent 越容易忘记目标、忽略约束、混淆状态。长任务表面上考验 Plan 和工具调用，<strong>实际上考验的是上下文管理</strong>。</p>
+<p>这里有个认知我觉得很重要：长任务的核心难点<strong>不是步骤多</strong>，而是<strong>不断产生新信息，且信息之间的依赖关系复杂</strong>。第 5 步的结论可能依赖第 2 步的工具返回，第 8 步的约束可能推翻第 3 步的假设。信息越多、依赖越复杂，Agent 越容易出错。而大模型自身能力不足也会影响，但这不是我们开发者能直接改变的——我们能做的，就是把上下文管理做好。</p>
+<h3 id="六种漂移"><a href="#六种漂移" class="headerlink" title="六种漂移"></a>六种漂移</h3><p>我在实践中遇到的典型问题：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>漂移类型</th>
+<th>原因</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>目标漂移</td>
+<td>Goal Context 管理不善</td>
+<td>让修空指针，结果重构了几十个文件</td>
+</tr>
+<tr>
+<td>约束漂移</td>
+<td>Constraint Context 管理不善</td>
+<td>说不能虚构，结果擅自补上”千万级用户”</td>
+</tr>
+<tr>
+<td>状态漂移</td>
+<td>Task State Context 管理不善</td>
+<td>工具返回失败，Agent 标记为成功</td>
+</tr>
+<tr>
+<td>证据漂移</td>
+<td>Evidence Context 管理不善</td>
+<td>根据两年前文档得出”不支持”</td>
+</tr>
+<tr>
+<td>细节丢失</td>
+<td>上下文压缩不当</td>
+<td>“预算 5000”摘要后变成”预算有限”</td>
+</tr>
+<tr>
+<td>错误累积</td>
+<td>Observation Context 管理不善</td>
+<td>“累计用户数”看成”日活用户数”，后续全错</td>
+</tr>
+</tbody></table></div>
+<p>这些问题表面上各不相同，但本质上都是同一件事：Agent 没有持续、准确地维护执行所需的上下文。</p>
+<h3 id="基础方案：走一步检查一步"><a href="#基础方案：走一步检查一步" class="headerlink" title="基础方案：走一步检查一步"></a>基础方案：走一步检查一步</h3><p>核心思路：<strong>不要让 Agent 一口气跑到最后，在执行过程中不断停下来检查。</strong></p>
+<p>在 Plan 模式中，通过 <strong>Checkpoint</strong> 定期校准——第二篇里我聊过 Checkpoint 是 Plan 五要素里最容易被忽略的，当时主要从”防偏离”角度讲的。但从上下文管理的角度看，Checkpoint 还有一个更重要的作用：<strong>在关键节点强制刷新上下文</strong>——检查目标有没有漂移、约束有没有被违反、状态是否准确、是否需要 Replan。Checkpoint 放在业务阶段结束、关键中间产物生成、高风险工具调用后。</p>
+<p>在 ReAct 模式中，每一轮都要重新回答**”我还差什么”**——拿到结果后不只是总结”我得到了什么”，更要判断”还缺什么”。具体来说，每一轮要回答五个问题：</p>
+<ol>
+<li><strong>目标判断</strong>：当前要逼近的最终目标是什么？（防止目标漂移）</li>
+<li><strong>状态判断</strong>：哪些已完成，哪些未完成？</li>
+<li><strong>约束判断</strong>：当前 Action 是否违反硬约束？</li>
+<li><strong>差距判断</strong>：距离目标还缺少什么？（最重要）</li>
+<li><strong>证据判断</strong>：上一轮 Observation 能否支持当前结论？</li>
+</ol>
+<p>举个例子：Agent 要分析某家公司营收下滑的原因。第一轮查到营收下降了 20%。比较差的 ReAct 会想”已经获取到营收数据，接下来分析原因”。更合理的 ReAct 应该想”当前只确认了营收确实下降，但还无法确定原因，还需要查看销量、价格、成本等数据”。</p>
+<p>前者只是在跟随 Observation，后者始终围绕 Goal 检查信息缺口。</p>
+<h3 id="高级方案：异步检查-事件溯源"><a href="#高级方案：异步检查-事件溯源" class="headerlink" title="高级方案：异步检查 + 事件溯源"></a>高级方案：异步检查 + 事件溯源</h3><p><strong>Context Verifier</strong>：引入一个独立的检查器，异步检查当前上下文是否发生漂移。主 Agent 负责推进任务，Verifier 负责检查它有没有在不知不觉中跑偏。可以理解为 Checkpoint 的异步化。</p>
+<p>检查内容：Goal 是否偏离、硬约束是否丢失、Task State 是否一致、关键结论是否有 Evidence 支持、窗口是否混入过期或冲突的信息。</p>
+<p>触发时机：阶段结束、上下文占用达到阈值、Replan 前后、出现异常信号。检查太频繁 Token 和延迟会增加，太少又可能等到错误扩散才发现。</p>
+<p><strong>事件溯源</strong>：不只维护一份不断被覆盖的当前状态，而是记录关键事件——用户新增约束、Agent 完成步骤、工具返回结果、某个事实被确认或推翻。关键节点生成可信快照。</p>
+<p>最大价值是<strong>可追溯</strong>。发现跑偏时可以定位是哪一次状态更新引入了错误，而不是面对一份已经被污染的当前上下文猜测原因。恢复时回到最近一个可信快照，丢弃后续被污染的状态，重新执行受影响的步骤。</p>
+<p><strong>分阶段执行</strong>：将长任务拆成多个阶段，每个阶段只使用与自己相关的局部上下文。阶段结束后生成结构化的交接信息（总目标、已完成工作、已确认事实、硬约束、关键证据索引、未解决问题、下一阶段输入）。大量临时 Observation 和失败尝试留在原阶段，需要时再召回。</p>
+<p>三个方案可以组合使用：分阶段控制上下文规模 + 事件溯源保存完整执行历史 + Context Verifier 定期检查漂移。</p>
+<hr>
+<h2 id="怎么评估效果"><a href="#怎么评估效果" class="headerlink" title="怎么评估效果"></a>怎么评估效果</h2><p>做 Agent 不能只做不评。上下文管理这块我主要看几类指标：</p>
+<p><strong>窗口编排相关：</strong></p>
+<ul>
+<li>窗口利用率（实际使用 / 总窗口）</li>
+<li>关键信息保留率（硬约束、关键事实是否在窗口内）</li>
+<li>缓存命中率（Prompt Cache 命中比例）</li>
+</ul>
+<p><strong>摘要与召回相关：</strong></p>
+<ul>
+<li>摘要信息损失率（关键事实是否在摘要中丢失）</li>
+<li>细节召回准确率（召回的细节是否是当前需要的）</li>
+<li>细节召回覆盖率（需要的细节是否被召回）</li>
+</ul>
+<p><strong>用户画像相关：</strong></p>
+<ul>
+<li>画像准确率（画像是否反映用户真实偏好）</li>
+<li>画像更新及时性（用户偏好变化后多久被识别）</li>
+<li>误判率（一时兴起被当成稳定偏好的比例）</li>
+</ul>
+<p><strong>长任务相关：</strong></p>
+<ul>
+<li>目标漂移率（长任务中目标偏离原始目标的比例）</li>
+<li>约束违反率（硬约束被违反的比例）</li>
+<li>漂移检测率（漂移发生后被检测到的比例）</li>
+<li>恢复成功率（检测到漂移后成功恢复的比例）</li>
+</ul>
+<hr>
+<h2 id="示例展示"><a href="#示例展示" class="headerlink" title="示例展示"></a>示例展示</h2><p>用我那个技术选型 Agent 走一遍，看看上下文管理在实际对话中怎么运作。</p>
+<h3 id="第一轮"><a href="#第一轮" class="headerlink" title="第一轮"></a>第一轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“帮我看下订单服务用什么缓存方案好，运维人手不多”</p>
+</blockquote>
+<p>Agent 生成 Plan，进入 TAO 循环。此时上下文窗口状态：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"window_content"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"system_prompt"</span><span class="punctuation">:</span> <span class="string">"技术选型 Agent 规范（4K）"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"goal"</span><span class="punctuation">:</span> <span class="string">"为订单服务选型缓存方案"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"hard_constraints"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"运维团队人手有限"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"plan"</span><span class="punctuation">:</span> <span class="string">"采集现状→追问缺失→评估方案→输出推荐"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"current_step"</span><span class="punctuation">:</span> <span class="string">"query_metrics"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"token_used"</span><span class="punctuation">:</span> <span class="string">"8K / 32K"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"mode"</span><span class="punctuation">:</span> <span class="string">"Full Mode"</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>窗口充足，Full Mode，所有内容原文放。执行查监控工具，拿到”峰值 QPS 5 万，P99 RT 150ms”，标 Available，写入 Fact State。</p>
+<h3 id="第二轮"><a href="#第二轮" class="headerlink" title="第二轮"></a>第二轮</h3><p>用户补了一句：</p>
+<blockquote>
+<p>“对了，Redis Cluster 别推了，运维搞不定”</p>
+</blockquote>
+<p>新增硬约束。上下文窗口更新：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"hard_constraints"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"运维团队人手有限"</span><span class="punctuation">,</span> <span class="string">"不能推荐 Redis Cluster"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"fact_state"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"peak_qps"</span><span class="punctuation">:</span> <span class="punctuation">{</span> <span class="attr">"value"</span><span class="punctuation">:</span> <span class="string">"5万"</span><span class="punctuation">,</span> <span class="attr">"status"</span><span class="punctuation">:</span> <span class="string">"Available"</span><span class="punctuation">,</span> <span class="attr">"source"</span><span class="punctuation">:</span> <span class="string">"monitoring_tool"</span> <span class="punctuation">}</span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>硬约束写入 Fact State，标 Verified，authority=high。同时在 System Prompt 里再次强调，防长上下文削弱。</p>
+<h3 id="第三轮到第五轮"><a href="#第三轮到第五轮" class="headerlink" title="第三轮到第五轮"></a>第三轮到第五轮</h3><p>Agent 继续执行，查询架构、追问信息、评估方案。每一轮的 Fact State 都在更新，关键事实独立维护。</p>
+<p>到第五轮，窗口状态：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"token_used"</span><span class="punctuation">:</span> <span class="string">"22K / 32K"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"mode"</span><span class="punctuation">:</span> <span class="string">"Balanced Mode"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"compression"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"history_dialogue"</span><span class="punctuation">:</span> <span class="string">"结构化摘要（L2）"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"tool_results"</span><span class="punctuation">:</span> <span class="string">"核心字段（L2）"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"hard_constraints"</span><span class="punctuation">:</span> <span class="string">"原文保留"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"fact_state"</span><span class="punctuation">:</span> <span class="string">"原文保留"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"user_profile"</span><span class="punctuation">:</span> <span class="string">"任务相关画像"</span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>进入 Balanced Mode，普通历史对话做了摘要，但<strong>硬约束和 Fact State 始终原文保留</strong>。这正是我之前踩坑后改的——之前只用滑动窗口，硬约束被挤出去了。</p>
+<h3 id="第六轮"><a href="#第六轮" class="headerlink" title="第六轮"></a>第六轮</h3><p>用户说：</p>
+<blockquote>
+<p>“还有没有其他选择？”</p>
+</blockquote>
+<p>Agent 从 Fact State 里读取硬约束”不能推荐 Redis Cluster”，从候选路径表里排除已失败的方案，推荐了 Memcached 方案。</p>
+<p>Checkpoint 校验：是否排除了 Redis Cluster？是。运维能否独立运维？是。通过。</p>
+<h3 id="示例小结"><a href="#示例小结" class="headerlink" title="示例小结"></a>示例小结</h3><p>走下来能看到上下文管理是怎么运作的：</p>
+<ol>
+<li><strong>分层上下文</strong>：硬约束、Fact State、历史对话、工具结果分层管理</li>
+<li><strong>动态编排</strong>：窗口从 Full Mode 逐渐切换到 Balanced Mode，不同内容不同压缩策略</li>
+<li><strong>关键信息保留</strong>：硬约束和关键事实始终原文保留，不被摘要压缩</li>
+<li><strong>Fact State 独立维护</strong>：不依赖对话历史，单独存储关键事实</li>
+<li><strong>档位切换</strong>：根据窗口占用自动切换，Balanced Mode 是主状态</li>
+</ol>
+<hr>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>上下文管理这事，说简单也简单——把历史对话塞进 Prompt 就能跑起来；说难也难——要扛住多轮、长任务、工具过期、用户变卦，得在窗口编排、摘要压缩、细节召回、用户画像、长任务防漂移上下不少功夫。</p>
+<p>核心就一句话：<strong>Context Window = f(Context)，这个 f 的质量直接决定了 Agent 的上限。</strong></p>
+<p>说到底，Agent 和传统软件最大的不同是：传统软件的数据流是确定的，但 Agent 的”数据流”很大程度上取决于上下文——模型看到什么信息，就会做出什么决策。三篇写下来，我自己的一个体会是：意图识别、规划执行、上下文管理，这三件事不是独立的——意图识别决定”往窗口里塞什么”，上下文管理决定”怎么塞、塞多少”，规划执行决定”塞完之后怎么用”。它们是同一条链上的不同环节，任何一环掉链子，整个 Agent 都会出问题。模型能力会不断进化，但只要窗口有限，上下文管理就永远是一个核心问题。</p>
+<p>如果你也在做 Agent，我的建议和前两篇一样：先跑起来，再逐步优化。先有效果，再谈效率。关键事实独立维护、硬约束不被摘要压缩这两件事，值得从第一天就埋进去。</p>
+</article>
+
+<div class="article-tags slide-up"><a class="tag" href="/tags/AI/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>AI</a><a class="tag" href="/tags/Agent/"><svg class="icon" data-icon="default:hashtag" aria-hidden="true"></svg>Agent</a></div>
+
+<div class="article-footer slide-up">
+
+
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https:&#x2F;&#x2F;sswfive.xyz&#x2F;2026&#x2F;09&#x2F;06&#x2F;agent-context-management&#x2F;" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg" /></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https%3A%2F%2Fsswfive.xyz%2F2026%2F09%2F06%2Fagent-context-management%2F"/>
+        </div>
+        
+      </div>
+    </section>
+    </div>
+
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/09/06/agent-rag-notes/">AI Agent智能检索RAG学习笔记</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/09/06/agent-evaluation/">Agent系统开发手记（五）：评估与反馈</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread with-fancybox"><div class="lazy-icon"></div></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.44.0">Stellar 1.44.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right" data-ui-surface="sidebar"><div class="widgets">
+
+
+
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false">
+  
+    <div class="widget-header dis-select">
+      <span class="name">本文目录</span>
+      <a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a>
+    </div>
+  
+  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E8%AE%A9%E6%88%91%E5%A4%B4%E7%96%BC%E7%9A%84%E5%9C%BA%E6%99%AF%E8%AF%B4%E8%B5%B7"><span class="toc-text">从一个让我头疼的场景说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E6%90%9E%E6%B8%85%E6%A5%9A%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5"><span class="toc-text">先搞清楚两个概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Context-Item%EF%BC%9A%E4%B8%80%E7%A7%8D%E7%BB%9F%E4%B8%80%E6%8A%BD%E8%B1%A1"><span class="toc-text">Context Item：一种统一抽象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E6%9C%B4%E7%B4%A0%E4%B9%9F%E6%9C%80%E5%AE%9E%E7%94%A8%E7%9A%84%EF%BC%9A%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-text">最朴素也最实用的：滑动窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E7%A7%8D%EF%BC%9A%E6%B7%B7%E5%90%88%E7%AD%96%E7%95%A5"><span class="toc-text">变种：混合策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B1%82%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%9A%E6%8A%8A%E5%A4%8D%E6%9D%82%E9%97%AE%E9%A2%98%E6%8B%86%E5%BC%80"><span class="toc-text">分层上下文：把复杂问题拆开</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%88%86"><span class="toc-text">按生命周期分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E6%9D%83%E5%A8%81%E6%80%A7%E5%88%86"><span class="toc-text">按权威性分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E5%86%B7%E7%83%AD%E7%A8%8B%E5%BA%A6%E5%88%86"><span class="toc-text">按冷热程度分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AA%97%E5%8F%A3%E5%8A%A8%E6%80%81%E7%BC%96%E6%8E%92%EF%BC%9A%E6%AF%8F%E6%AC%A1%E6%94%BE%E4%BB%80%E4%B9%88%E3%80%81%E6%94%BE%E5%A4%9A%E5%B0%91"><span class="toc-text">窗口动态编排：每次放什么、放多少</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%9B%E9%80%89"><span class="toc-text">筛选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9"><span class="toc-text">压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F"><span class="toc-text">排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%A3%E4%BD%8D%E8%AE%BE%E8%AE%A1"><span class="toc-text">档位设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%98%E5%8F%AF%E4%BB%A5%E7%BB%93%E5%90%88%E6%9B%B4%E5%A4%9A%E5%9B%A0%E7%B4%A0"><span class="toc-text">还可以结合更多因素</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98%E8%A6%81%E4%B8%8E%E7%BB%86%E8%8A%82%E5%8F%AC%E5%9B%9E%EF%BC%9A%E4%B8%80%E5%AF%B9%E5%8F%8C%E7%94%9F%E5%AD%90"><span class="toc-text">摘要与细节召回：一对双生子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%91%98%E8%A6%81%E7%9A%84%E5%87%A0%E7%A7%8D%E7%B1%BB%E5%9E%8B"><span class="toc-text">摘要的几种类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%91%98%E8%A6%81%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%9F%E6%88%90%EF%BC%9F"><span class="toc-text">摘要什么时候生成？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E5%8F%AF%E8%AF%BB%E6%91%98%E8%A6%81"><span class="toc-text">模型可读摘要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%86%E8%8A%82%E5%8F%AC%E5%9B%9E"><span class="toc-text">细节召回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%B2%E7%AA%81%E8%A3%81%E5%86%B3"><span class="toc-text">冲突裁决</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%9A%B4%E8%AE%BA"><span class="toc-text">一个暴论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F%EF%BC%9AAgent-%E7%9A%84%E6%9D%80%E6%89%8B%E9%94%8F"><span class="toc-text">用户画像：Agent 的杀手锏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E7%94%BB%E5%83%8F%E8%BF%9C%E8%BF%9C%E4%B8%8D%E5%A4%9F"><span class="toc-text">传统画像远远不够</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E8%AF%A5%E5%BB%BA%E6%A8%A1%E7%9A%84%E7%BB%B4%E5%BA%A6"><span class="toc-text">应该建模的维度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%BB%E5%83%8F%E4%BB%8E%E5%93%AA%E6%9D%A5%EF%BC%9F"><span class="toc-text">画像从哪来？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%BB%E5%83%8F%E5%BD%B1%E5%93%8D-Agent-%E7%9A%84%E5%93%AA%E4%BA%9B%E7%8E%AF%E8%8A%82%EF%BC%9F"><span class="toc-text">画像影响 Agent 的哪些环节？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E6%97%B6%E6%9C%BA%E4%B9%9F%E5%BE%88%E5%85%B3%E9%94%AE"><span class="toc-text">提取时机也很关键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%BB%E5%83%8F%E5%86%B2%E7%AA%81%E6%80%8E%E4%B9%88%E8%A3%81%E5%86%B3%EF%BC%9F"><span class="toc-text">画像冲突怎么裁决？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%82%E7%BA%A7%E8%AE%BE%E8%AE%A1"><span class="toc-text">层级设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E4%B8%8D%E6%98%AF%E4%B8%80%E6%97%B6%E5%85%B4%E8%B5%B7%EF%BC%9F"><span class="toc-text">怎么判断不是一时兴起？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%8E%A7%E5%88%B6"><span class="toc-text">生命周期控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B%EF%BC%9A%E7%94%B5%E5%95%86%E5%9C%BA%E6%99%AF"><span class="toc-text">一个实战案例：电商场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%95%BF%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E7%9A%84%E7%BB%88%E6%9E%81%E8%80%83%E9%AA%8C"><span class="toc-text">长任务：上下文管理的终极考验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E7%A7%8D%E6%BC%82%E7%A7%BB"><span class="toc-text">六种漂移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%96%B9%E6%A1%88%EF%BC%9A%E8%B5%B0%E4%B8%80%E6%AD%A5%E6%A3%80%E6%9F%A5%E4%B8%80%E6%AD%A5"><span class="toc-text">基础方案：走一步检查一步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E6%96%B9%E6%A1%88%EF%BC%9A%E5%BC%82%E6%AD%A5%E6%A3%80%E6%9F%A5-%E4%BA%8B%E4%BB%B6%E6%BA%AF%E6%BA%90"><span class="toc-text">高级方案：异步检查 + 事件溯源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%AF%84%E4%BC%B0%E6%95%88%E6%9E%9C"><span class="toc-text">怎么评估效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E5%B1%95%E7%A4%BA"><span class="toc-text">示例展示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%BD%AE"><span class="toc-text">第一轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E8%BD%AE"><span class="toc-text">第二轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E8%BD%AE%E5%88%B0%E7%AC%AC%E4%BA%94%E8%BD%AE"><span class="toc-text">第三轮到第五轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E8%BD%AE"><span class="toc-text">第六轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E5%B0%8F%E7%BB%93"><span class="toc-text">示例小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-text">写在最后</span></a></li></ol></div>
+  <div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M11.9426 1.25H12.0574C14.3658 1.24999 16.1748 1.24998 17.5863 1.43975C19.031 1.63399 20.1711 2.03933 21.0659 2.93414C21.9607 3.82895 22.366 4.96897 22.5603 6.41371C22.75 7.82519 22.75 9.63423 22.75 11.9426V12.0574C22.75 14.3658 22.75 16.1748 22.5603 17.5863C22.366 19.031 21.9607 20.1711 21.0659 21.0659C20.1711 21.9607 19.031 22.366 17.5863 22.5603C16.1748 22.75 14.3658 22.75 12.0574 22.75H11.9426C9.63423 22.75 7.82519 22.75 6.41371 22.5603C4.96897 22.366 3.82895 21.9607 2.93414 21.0659C2.03933 20.1711 1.63399 19.031 1.43975 17.5863C1.24998 16.1748 1.24999 14.3658 1.25 12.0574V11.9426C1.24999 9.63423 1.24998 7.82519 1.43975 6.41371C1.63399 4.96897 2.03933 3.82895 2.93414 2.93414C3.82895 2.03933 4.96897 1.63399 6.41371 1.43975C7.82519 1.24998 9.63423 1.24999 11.9426 1.25ZM6.61358 2.92637C5.33517 3.09825 4.56445 3.42514 3.9948 3.9948C3.42514 4.56445 3.09825 5.33517 2.92637 6.61358C2.75159 7.91356 2.75 9.62177 2.75 12C2.75 14.3782 2.75159 16.0864 2.92637 17.3864C3.09825 18.6648 3.42514 19.4355 3.9948 20.0052C4.56445 20.5749 5.33517 20.9018 6.61358 21.0736C7.91356 21.2484 9.62177 21.25 12 21.25C14.3782 21.25 16.0864 21.2484 17.3864 21.0736C18.6648 20.9018 19.4355 20.5749 20.0052 20.0052C20.5749 19.4355 20.9018 18.6648 21.0736 17.3864C21.2484 16.0864 21.25 14.3782 21.25 12C21.25 9.62177 21.2484 7.91356 21.0736 6.61358C20.9018 5.33517 20.5749 4.56445 20.0052 3.9948C19.4355 3.42514 18.6648 3.09825 17.3864 2.92637C16.0864 2.75159 14.3782 2.75 12 2.75C9.62177 2.75 7.91356 2.75159 6.61358 2.92637ZM12 9.56066L9.53033 12.0303C9.23744 12.3232 8.76256 12.3232 8.46967 12.0303C8.17678 11.7374 8.17678 11.2626 8.46967 10.9697L11.4697 7.96967C11.7626 7.67678 12.2374 7.67678 12.5303 7.96967L15.5303 10.9697C15.8232 11.2626 15.8232 11.7374 15.5303 12.0303C15.2374 12.3232 14.7626 12.3232 14.4697 12.0303L12 9.56066ZM12 13.5607L9.53033 16.0303C9.23744 16.3232 8.76256 16.3232 8.46967 16.0303C8.17678 15.7374 8.17678 15.2626 8.46967 14.9697L11.4697 11.9697C11.7626 11.6768 12.2374 11.6768 12.5303 11.9697L15.5303 14.9697C15.8232 15.2626 15.8232 15.7374 15.5303 16.0303C15.2374 16.3232 14.7626 16.3232 14.4697 16.0303L12 13.5607Z" clip-rule="evenodd"/></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M10.4606 1.25H13.5394C15.1427 1.24999 16.3997 1.24999 17.4039 1.34547C18.4274 1.44279 19.2655 1.64457 20.0044 2.09732C20.7781 2.57144 21.4286 3.22194 21.9027 3.99563C22.3554 4.73445 22.5572 5.57256 22.6545 6.59611C22.75 7.60029 22.75 8.85725 22.75 10.4606V11.5278C22.75 12.6691 22.75 13.564 22.7007 14.2868C22.6505 15.0223 22.5468 15.6344 22.3123 16.2004C21.7287 17.6093 20.6093 18.7287 19.2004 19.3123C18.3955 19.6457 17.4786 19.7197 16.2233 19.7413C15.7842 19.7489 15.5061 19.7545 15.2941 19.7779C15.096 19.7999 15.0192 19.832 14.9742 19.8582C14.9268 19.8857 14.8622 19.936 14.7501 20.0898C14.6287 20.2564 14.4916 20.4865 14.2742 20.8539L13.7321 21.7697C12.9585 23.0767 11.0415 23.0767 10.2679 21.7697L9.72579 20.8539C9.50835 20.4865 9.37122 20.2564 9.24985 20.0898C9.13772 19.936 9.07313 19.8857 9.02572 19.8582C8.98078 19.832 8.90399 19.7999 8.70588 19.7779C8.49387 19.7545 8.21575 19.7489 7.77666 19.7413C6.52138 19.7197 5.60454 19.6457 4.79957 19.3123C3.39066 18.7287 2.27128 17.6093 1.68769 16.2004C1.45323 15.6344 1.3495 15.0223 1.29932 14.2868C1.24999 13.564 1.25 12.6691 1.25 11.5278L1.25 10.4606C1.24999 8.85726 1.24999 7.60029 1.34547 6.59611C1.44279 5.57256 1.64457 4.73445 2.09732 3.99563C2.57144 3.22194 3.22194 2.57144 3.99563 2.09732C4.73445 1.64457 5.57256 1.44279 6.59611 1.34547C7.60029 1.24999 8.85726 1.24999 10.4606 1.25ZM6.73809 2.83873C5.82434 2.92561 5.24291 3.09223 4.77938 3.37628C4.20752 3.72672 3.72672 4.20752 3.37628 4.77938C3.09223 5.24291 2.92561 5.82434 2.83873 6.73809C2.75079 7.663 2.75 8.84876 2.75 10.5V11.5C2.75 12.6751 2.75041 13.5189 2.79584 14.1847C2.84081 14.8438 2.92737 15.2736 3.07351 15.6264C3.50486 16.6678 4.33223 17.4951 5.3736 17.9265C5.88923 18.1401 6.54706 18.2199 7.8025 18.2416L7.83432 18.2421C8.23232 18.249 8.58109 18.2549 8.87097 18.287C9.18246 18.3215 9.4871 18.3912 9.77986 18.5615C10.0702 18.7304 10.2795 18.9559 10.4621 19.2063C10.6307 19.4378 10.804 19.7306 11.0004 20.0623L11.5587 21.0057C11.7515 21.3313 12.2485 21.3313 12.4412 21.0057L12.9996 20.0623C13.1959 19.7306 13.3692 19.4378 13.5379 19.2063C13.7204 18.9559 13.9298 18.7304 14.2201 18.5615C14.5129 18.3912 14.8175 18.3215 15.129 18.287C15.4189 18.2549 15.7676 18.249 16.1656 18.2421L16.1975 18.2416C17.4529 18.2199 18.1108 18.1401 18.6264 17.9265C19.6678 17.4951 20.4951 16.6678 20.9265 15.6264C21.0726 15.2736 21.1592 14.8438 21.2042 14.1847C21.2496 13.5189 21.25 12.6751 21.25 11.5V10.5C21.25 8.84876 21.2492 7.663 21.1613 6.73809C21.0744 5.82434 20.9078 5.24291 20.6237 4.77938C20.2733 4.20752 19.7925 3.72672 19.2206 3.37628C18.7571 3.09223 18.1757 2.92561 17.2619 2.83873C16.337 2.75079 15.1512 2.75 13.5 2.75H10.5C8.84876 2.75 7.663 2.75079 6.73809 2.83873ZM7.25 9C7.25 8.58579 7.58579 8.25 8 8.25H16C16.4142 8.25 16.75 8.58579 16.75 9C16.75 9.41421 16.4142 9.75 16 9.75H8C7.58579 9.75 7.25 9.41421 7.25 9ZM7.25 12.5C7.25 12.0858 7.58579 11.75 8 11.75H13.5C13.9142 11.75 14.25 12.0858 14.25 12.5C14.25 12.9142 13.9142 13.25 13.5 13.25H8C7.58579 13.25 7.25 12.9142 7.25 12.5Z" clip-rule="evenodd"/></svg><span>参与讨论</span></a></div>
+</widget>
+
+
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  window.canonical["param"] = {"permalink":"https://sswfive.xyz/2026/09/06/agent-context-management/","checklink":"/js/plugins/video.js"};
+  // Fix: Ensure page is at the correct top position on data load
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'auto';
+  }
+  (function() {
+    const scrollHandler = () => {
+      // 存在有效锚点时，等待布局稳定后滚动到目标
+      // （浏览器原生锚点滚动发生在布局完成前，长文章的懒加载图片/异步组件会把目标顶偏）
+      const hash = window.location.hash;
+      if (hash.length > 1) {
+        let anchorId = hash.slice(1);
+        try {
+          anchorId = decodeURIComponent(anchorId);
+        } catch (e) {
+          // 片段含非法编码时按原样查找
+        }
+        const anchor = document.getElementById(anchorId);
+        if (anchor) {
+          // #start 锚点贴顶，不预留 offset；其余锚点与 TOC 点击滚动保持一致
+          const offset = anchorId === 'start' ? 0 : 32;
+          const targetY = () => anchor.getBoundingClientRect().top + window.scrollY - offset;
+          let timer = null;
+          let lastY = null;
+          let quiet = 0;
+          let attempts = 0;
+          // 记录最近一次资源加载完成时间，判断异步数据/图片是否仍在改变布局
+          let lastResourceTime = performance.now();
+          let observer = null;
+          try {
+            observer = new PerformanceObserver(function (list) {
+              lastResourceTime = performance.now();
+            });
+            observer.observe({ entryTypes: ['resource'] });
+          } catch (e) {}
+          // 统计进行中的 fetch/XHR 请求，异步组件（timeline 等）未完成前不判定布局稳定
+          let pendingRequests = 0;
+          const trackRequest = (fn) => {
+            pendingRequests++;
+            try {
+              const result = fn();
+              if (result && typeof result.finally === 'function') {
+                result.finally(function () {
+                  pendingRequests = Math.max(0, pendingRequests - 1);
+                });
+              } else {
+                pendingRequests = Math.max(0, pendingRequests - 1);
+              }
+              return result;
+            } catch (e) {
+              pendingRequests = Math.max(0, pendingRequests - 1);
+              throw e;
+            }
+          };
+          if (typeof window.fetch === 'function') {
+            const origFetch = window.fetch.bind(window);
+            window.fetch = function () {
+              const args = arguments;
+              return trackRequest(function () {
+                return origFetch.apply(window, args);
+              });
+            };
+          }
+          if (window.XMLHttpRequest) {
+            const origOpen = window.XMLHttpRequest.prototype.open;
+            const origSend = window.XMLHttpRequest.prototype.send;
+            window.XMLHttpRequest.prototype.open = function () {
+              this.__anchorTracked = true;
+              return origOpen.apply(this, arguments);
+            };
+            window.XMLHttpRequest.prototype.send = function () {
+              if (this.__anchorTracked) {
+                pendingRequests++;
+                const done = () => {
+                  if (this.__anchorTracked) {
+                    this.__anchorTracked = false;
+                    pendingRequests = Math.max(0, pendingRequests - 1);
+                  }
+                };
+                this.addEventListener('loadend', done);
+              }
+              return origSend.apply(this, arguments);
+            };
+          }
+          const cancel = () => {
+            if (timer !== null) {
+              clearInterval(timer);
+              timer = null;
+            }
+            if (observer !== null) {
+              try {
+                observer.disconnect();
+              } catch (e) {}
+            }
+          };
+          const adjust = () => {
+            const y = targetY();
+            const atTarget = Math.abs(window.scrollY - y) <= 2;
+            if (!atTarget || lastY === null || Math.abs(y - lastY) > 2) {
+              window.scrollTo({ top: y, behavior: 'instant' });
+              lastY = y;
+              quiet = 0;
+            } else {
+              quiet++;
+            }
+            attempts++;
+            const resourceQuiet = performance.now() - lastResourceTime > 3000;
+            // 位置连续 1.8 秒无变化、无进行中的请求且最近 3 秒无资源加载才视为稳定；最长等待 30 秒
+            if ((quiet >= 3 && pendingRequests === 0 && resourceQuiet) || attempts >= 50) {
+              cancel();
+            }
+          };
+          requestAnimationFrame(() => {
+            // 锚点链接打开时直接定位，不做动画；用户主动点击（如 TOC）仍走平滑滚动
+            window.scrollTo({ top: targetY(), behavior: 'instant' });
+            timer = setInterval(adjust, 600);
+          });
+          // 用户主动滚动时停止自动校正
+          window.addEventListener('wheel', cancel, { passive: true });
+          window.addEventListener('touchstart', cancel, { passive: true });
+          window.addEventListener('mousedown', cancel, { passive: true });
+          window.addEventListener('keydown', cancel, { passive: true });
+          return;
+        }
+      }
+      // 没有锚点时始终保持页面顶部；Wiki Hero 只在用户显式访问 #start 时定位正文。
+      window.scrollTo(0, 0);
+    };
+    if (document.readyState !== 'loading') scrollHandler();
+    else document.addEventListener('DOMContentLoaded', scrollHandler);
+  })();
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    },
+    // 图标由构建期生成的 /js/stellar-icons.js 填充（defer，早于 DOMContentLoaded 就绪）
+    icons: {},
+    services: {"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"},"rss":{"js":"/js/services/rss.js"}},
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"lazy_load":true,"cache_ttl":86400,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    data_cache: {"enable":true,"default_ttl":3600,"ttl":{"giscus":600,"waline":600,"artalk":600,"memos":600,"memos-user":86400,"sites":86400,"friends":86400,"friends_and_posts":86400,"siteinfo":86400},"max_entries":200},
+  };
+  const deps = {
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js`
+  }
+
+  // 主题切换提示文案（供 /js/theme.js 使用）
+  window.__STELLAR_I18N__ = {
+    light: `切换到浅色模式`,
+    dark: `切换到深色模式`,
+    auto: `切换到跟随系统配色`,
+  };
+
+  // 搜索跳转高亮：URL 带 ?kw= 时按需加载，定位正文中的匹配词
+  (function () {
+    try {
+      if (!window.location.search) return;
+      if (!new URLSearchParams(window.location.search).has('kw')) return;
+      document.addEventListener('DOMContentLoaded', function () {
+        // utils 由 /js/utils.js 定义（同时暴露 window.utils）；
+        // 未就绪时由 bootstrap 队列兜底，此处按就绪状态判断
+        if (typeof utils === 'object' && typeof utils.js === 'function') {
+          utils.js('/js/search/highlight.js', { defer: true }).catch(function () {});
+        }
+      });
+    } catch (e) {}
+  })();
+</script>
+
+
+<script>
+  // 插件注册队列：utils.js 尚未就绪时先缓存注册请求，就绪后统一补跑，
+  // 保证解析期注册的插件不因加载时序丢失。
+  window.stellar = window.stellar || {};
+  window.stellar._pluginQueue = window.stellar._pluginQueue || [];
+  window.stellar.initPlugin = function (fn, name, options) {
+    if (typeof utils === 'object' && typeof utils.initPlugin === 'function') {
+      return utils.initPlugin(fn, name, options);
+    }
+    window.stellar._pluginQueue.push({ fn: fn, name: name, options: options || {} });
+  };
+  window.stellar._flushPlugins = function () {
+    var pending = window.stellar._pluginQueue.splice(0);
+    if (typeof utils !== 'object' || typeof utils.initPlugin !== 'function') return;
+    for (var i = 0; i < pending.length; i++) {
+      try {
+        utils.initPlugin(pending[i].fn, pending[i].name, pending[i].options);
+      } catch (e) {
+        console.error('[Stellar] 插件补注册失败:', e);
+      }
+    }
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof utils === 'object') return;
+    // utils 未就绪时补载；加载成功后由 utils.js 内部补跑插件队列
+    var s = document.createElement('script');
+    // 用 setAttribute 赋值 src，避免被基于 `s.src = "..."` 的正则
+    // （图片懒加载 / 脚本延迟优化器）误改写
+    s.setAttribute('src', '/js/utils.js?v=1.44.0');
+    s.async = false;
+    s.onerror = function () {
+      console.error('[Stellar] 无法加载 /js/utils.js，已启用内容兜底显示（sr-fallback）');
+      document.documentElement.classList.add('sr-fallback');
+    };
+    document.head.appendChild(s);
+  });
+</script>
+
+
+<!-- core: utils 必须同步加载（页尾内联插件片段在解析期即调用 utils.initPlugin） -->
+<script src="/js/utils.js?v=1.44.0"></script>
+<script>
+  // 解析期检测 utils 是否已就绪；未就绪时同步补载，
+  // 保证「utils 先于页尾插件片段定义」的不变量。
+  if (typeof utils === 'undefined') {
+    document.write('<script src="/js/utils.js?v=1.44.0"><\/script>');
+  }
+</script>
+<script defer src="/js/stellar-icons.js?v=1.44.0"></script>
+<!-- 非首屏图标异步加载：占位符替换依赖构建期生成的 js/icons/{ns}.json -->
+<script defer src="/js/icons.js?v=1.44.0" data-version="1.44.0"></script>
+<script defer src="/js/plugins/dropdown.js?v=1.44.0"></script>
+<script src="/js/main.js?v=1.44.0" defer></script>
+<script defer src="/js/theme.js?v=1.44.0"></script>
+
+
+
+<script>
+  // 先声明配置与初始化监听，再异步加载库：
+  // 保证库执行时 lazyLoadOptions 已就绪，避免 async 脚本抢先执行导致自初始化失败
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      // {% image %} 没有 .lazy-box 包裹，回退到父元素查找加载图标
+      const wrapper = el.closest('.lazy-box') || el.parentElement;
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // 监听初始化事件，获取 LazyLoad 实例
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  // 兜底：动态插入的 .lazy 元素（如站点自定义脚本在 update() 之后追加的图片）
+  // 不会被 vanilla-lazyload 自动扫描，未注册的 img.lazy 会被 CSS opacity:0 永久隐藏。
+  // MutationObserver 检测到新增 .lazy 元素后自动调用 update() 重新注册。
+  if (window.MutationObserver) {
+    window.lazyMutationObserver = new MutationObserver((mutations) => {
+      if (window.lazyMutationObserver._pending) return;
+      const hasLazy = mutations.some((m) =>
+        Array.prototype.some.call(m.addedNodes, (node) =>
+          node.nodeType === 1 &&
+          (node.matches?.('.lazy') || !!node.querySelector?.('.lazy'))
+        )
+      );
+      if (!hasLazy) return;
+      window.lazyMutationObserver._pending = requestAnimationFrame(() => {
+        window.lazyMutationObserver._pending = null;
+        window.lazyLoadInstance?.update();
+      });
+    });
+    window.lazyMutationObserver.observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+</script>
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  
+  function initWaline() {
+    const el = document.getElementById('waline_container');
+    if (!el) return;
+
+    function load_waline() {
+      utils.css('/css/comments/waline.css?v=1.44.0');
+      utils.css('https://unpkg.com/@waline/client@v3/dist/waline.css');
+      utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline-meta.css');
+
+      const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+      const waline = init(Object.assign({"js":"https://unpkg.com/@waline/client@v3/dist/waline.js","css":"https://unpkg.com/@waline/client@v3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline-meta.css","serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"dark":"auto","locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    }
+    
+    util.viewportLazyload(el, load_waline);
+  }
+  
+  // Initialize on page load
+  initWaline();
+</script>
+
+
+
+
+<script defer src="/js/services.js?v=1.44.0"></script>
+<script>
+  // 防御：bootstrap 被第三方优化器改写/移除导致 window.stellar.initPlugin 缺失时，
+  // 在此补一个等价注册点：utils 就绪时直接委托，未就绪时入队，utils 加载后自动补跑。
+  if (typeof window.stellar === 'undefined' || typeof window.stellar.initPlugin !== 'function') {
+    window.stellar = window.stellar || {};
+    window.stellar._pluginQueue = window.stellar._pluginQueue || [];
+    window.stellar.initPlugin = function (fn, name, options) {
+      if (typeof utils === 'object' && typeof utils.initPlugin === 'function') {
+        return utils.initPlugin(fn, name, options);
+      }
+      window.stellar._pluginQueue.push({ fn: fn, name: name, options: options || {} });
+    };
+    window.stellar._flushPlugins = function () {
+      var pending = window.stellar._pluginQueue.splice(0);
+      if (typeof utils !== 'object' || typeof utils.initPlugin !== 'function') return;
+      for (var i = 0; i < pending.length; i++) {
+        try {
+          utils.initPlugin(pending[i].fn, pending[i].name, pending[i].options);
+        } catch (e) {
+          console.error('[Stellar] 插件补注册失败:', e);
+        }
+      }
+    };
+  }
+</script>
+
+<script>window.addEventListener('DOMContentLoaded', function () { utils.js('/js/search/shortcut.js', { defer: true }); });</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = Object.assign({}, ctx.search, {
+      path: `/search.json`,
+      local_search: {"field":"all","path":"/search.json","content":true,"lazy_load":true,"cache_ttl":86400,"skip_search":null,"sort":"-date"},
+    });
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script>
+<script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    mode: `auto`,
+    selector: `.timenode p>img, .md-text img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  // auto=按需：页面存在可弹窗图片才加载；global=全局：所有页面加载
+  const isGlobal = ctx.fancybox.mode === 'global';
+  // 评论区图片（artalk/twikoo/waline）显示较小，自动支持放大；
+  // 仅绑定各评论服务的评论内容区，编辑器、表情面板等非内容区图片不弹窗
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon]):not([class*="emo"]), .with-fancybox .tk-content img:not([atk-emoticon]):not([class*="emo"]), .with-fancybox .wl-content img:not([atk-emoticon]):not([class*="emo"])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = isGlobal;
+  if (!needFancybox) {
+    needFancybox = document.querySelectorAll(selector).length !== 0;
+    if (!needFancybox) {
+      // 图片型评论系统容器：评论区图片小图需要 fancybox
+      const withFancybox = document.getElementsByClassName('with-fancybox');
+      if (withFancybox != undefined && withFancybox.length > 0) {
+        needFancybox = true;
+      }
+    }
+    if (!needFancybox) {
+      // 动态数据服务：memos 渲染的图片需要 fancybox
+      const memos = document.getElementsByClassName('ds-memos');
+      if (memos != undefined && memos.length > 0) {
+        needFancybox = true;
+      }
+    }
+  }
+  if (needFancybox) {
+    utils.css(`/css/plugins/fancybox.css?v=1.44.0`);
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      if (isGlobal) {
+        // 全局模式：正文所有非内联图片均可弹窗
+        selector += ', .md-text img:not(.inline):not([atk-emoticon])';
+      }
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  stellar.initPlugin(() => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`/css/plugins/swiper.css?v=1.44.0`);
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  }, 'swiper');
+</script>
+<script>
+  (function () {
+    // 兜底看门狗独立于插件初始化：3 秒内未完成 reveal 时强制显示 .slide-up 内容
+    let fallbackApplied = false;
+    const revealFallback = () => {
+      if (fallbackApplied) return;
+      fallbackApplied = true;
+      document.documentElement.classList.add('sr-fallback');
+    };
+    const watchdog = setTimeout(() => revealFallback(), 3000);
+
+    stellar.initPlugin(() => {
+      const els = Array.prototype.slice.call(document.querySelectorAll('.slide-up'));
+      if (els.length === 0) {
+        clearTimeout(watchdog);
+        return;
+      }
+
+    // 吸顶/固定定位容器内的元素始终在视口内（或由容器控制显隐），
+    // 但 ScrollReveal 按文档坐标判断可见性，会误判这类元素为不可见，
+    // 导致带锚点/恢复滚动位置打开页面时组件一直不显示。
+    // 解决方式：以最近的吸顶/固定祖先作为该组元素的容器，
+    // 使可见性判断恒成立，入场动画保留且不再依赖主文档滚动。
+    const findPinnedContainer = (el) => {
+      let node = el;
+      while (node && node.nodeType === 1) {
+        const pos = window.getComputedStyle(node).position;
+        if (pos === 'sticky' || pos === 'fixed') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    // 最近的滚动容器（overflow-y: auto/scroll）
+    // 吸顶容器内可能存在内部滚动容器（如侧栏 .widgets），
+    // 若直接用吸顶容器做 reveal 容器，折叠区下方的元素永远不会进入视口，导致一直不显示。
+    const findScrollContainer = (el) => {
+      let node = el.parentElement;
+      while (node && node.nodeType === 1) {
+        const oy = window.getComputedStyle(node).overflowY;
+        if (oy === 'auto' || oy === 'scroll') return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    const pinnedGroups = new Map(); // 容器 -> 元素列表
+    const targets = [];
+    els.forEach((el) => {
+      const pinned = findPinnedContainer(el);
+      if (pinned) {
+        // 优先使用最近的滚动容器，其次才用吸顶容器
+        const container = findScrollContainer(el) || pinned;
+        const group = pinnedGroups.get(container) || [];
+        group.push(el);
+        pinnedGroups.set(container, group);
+      } else {
+        targets.push(el);
+      }
+    });
+    if (pinnedGroups.size === 0 && targets.length === 0) {
+      clearTimeout(watchdog);
+      return;
+    }
+
+    const slideUp = {
+      distance: `8px`,
+      duration: `1000`,
+      interval: `100`,
+      scale: `1`,
+      opacity: 0,
+      easing: "ease-out"
+    };
+
+    utils.js(`https://gcore.jsdelivr.net/npm/scrollreveal@4.0/dist/scrollreveal.min.js`, { defer: true })
+      .then(() => {
+        if (fallbackApplied) return;
+        if (typeof ScrollReveal !== 'function') {
+          revealFallback();
+          return;
+        }
+        try {
+          const sr = ScrollReveal();
+          if (targets.length > 0) {
+            sr.reveal(targets, { ...slideUp });
+          }
+          pinnedGroups.forEach((group, container) => {
+            sr.reveal(group, { ...slideUp, container: container });
+          });
+          clearTimeout(watchdog);
+        } catch (err) {
+          console.error('[Plugin scrollreveal] 初始化失败:', err);
+          revealFallback();
+        }
+      })
+      .catch((err) => {
+        console.error('[Plugin scrollreveal] 加载失败:', err);
+        revealFallback();
+      });
+    }, 'scrollreveal');
+  })();
+</script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script defer type="text/javascript" src="https://gcore.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  stellar.initPlugin(() => {
+    const els = document.querySelectorAll('.mermaid');
+    if (els.length > 0) {
+      if (false) {
+        utils.css(`/css/plugins/mermaid.css?v=1.44.0`);
+      }
+      const mermaid_config = {
+        startOnLoad: false,
+        theme:
+          "auto" == "auto" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "neutral",
+        logLevel: 3,
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          curve: "linear"
+        },
+        gantt: {
+          axisFormat: "%Y/%m/%d"
+        },
+        sequence: {
+          actorMargin: 50
+        }
+      }
+      mermaid.initialize(mermaid_config);
+      mermaid.run();
+    }
+  }, 'mermaid');
+</script>
+<script>
+  stellar.initPlugin(() => {
+    const codeElements = document.querySelectorAll('.code');
+    if (codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js', { defer: true }).then(() => {
+        if (typeof createCopyButtons === 'function') {
+          createCopyButtons(codeElements);
+        }
+      });
+    }
+  }, 'copycode');
+</script>
+<script>
+  stellar.initPlugin(() => {
+    const els = Array.prototype.slice.call(document.querySelectorAll('[data-text-adaptive]'));
+    if (els.length === 0) return;
+    utils.js('/js/color.js').then(() => utils.js('/js/plugins/adaptive-text.js')).then(() => {
+      if (typeof applyAdaptiveText === 'function') {
+        applyAdaptiveText(els);
+      }
+    });
+  }, 'adaptive-text');
+</script>
+
+
+
+<!-- inject -->
+
+</div></body></html>
