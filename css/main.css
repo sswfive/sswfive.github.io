@@ -1029,7 +1029,7 @@ body[data-page-layout='index_wiki'] {
   }
 }
 pre {
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
   font-size: 0.875rem;
   tab-size: 4;
   -moz-tab-size: 4;
@@ -1753,7 +1753,7 @@ a.button.start.gradient {
 }
 code {
   -moz-osx-font-smoothing: auto;
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
 }
 p>code:not([class]),
 li>code:not([class]) {
@@ -1768,7 +1768,7 @@ pre:not([class]):has(>code) {
   margin: var(--gap-p) 0;
   border-radius: 16px;
   overflow: hidden;
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
   box-sizing: border-box;
 }
 @media screen and (min-width: 500px) {
@@ -1879,7 +1879,7 @@ pre:not([class]):has(>code) {
 }
 .md-text .gist .blob-code-inner {
   color: var(--text-p1);
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
 }
 table:not([class]) {
   border-collapse: collapse;
@@ -2136,7 +2136,7 @@ html {
   height: 100%;
   width: 100%;
   overflow-y: scroll;
-  font-family: "LXGW WenKai Screen", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: system-ui, "Microsoft Yahei", "Segoe UI", Arial, sans-serif;
   font-size: var(--fs-root);
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -2223,7 +2223,7 @@ input {
 }
 input.copy-area {
   display: block;
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
   font-size: calc(var(--fs-content-base) - 3px);
   font-weight: 700;
   color: var(--text-p3);
@@ -3552,7 +3552,7 @@ button.ui-collection__item:not(.is-icon-only) {
   color: var(--text-banner-theme);
   background: color-mix(in srgb, var(--text-banner-theme, var(--background)) 20%, transparent);
   backdrop-filter: blur(12px) brightness(0.8);
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
 }
 .cover-content.wiki-hero .wiki-cover-terminal .wiki-cover-terminal-toolbar {
   display: flex;
@@ -3887,7 +3887,7 @@ button.ui-collection__item:not(.is-icon-only) {
   border-right: 1px dashed var(--block-border);
 }
 .paginator-wrap .current {
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
   background: var(--block);
 }
 .paginator-wrap .extend {
@@ -5433,7 +5433,7 @@ a.tag-plugin.button:hover {
   border-radius: 4px;
   background: hsla(var(--hue) var(--sat) var(--light) / 0.2);
   color: var(--theme);
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
   font-size: calc(var(--fs-content-base) - 3px);
   font-weight: 700;
   flex-shrink: 0;
@@ -6465,7 +6465,7 @@ p>strong>span.tag-plugin.icon {
   border-bottom-width: 2px;
   background: var(--card);
   padding: 2px 4px 1px 4px;
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
   font-weight: 700;
 }
 .md-text psw {
@@ -6497,7 +6497,7 @@ p>strong>span.tag-plugin.icon {
   color: var(--theme);
   line-height: 1;
   font-weight: 700;
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
 }
 .md-text h1 sup,
 .md-text h2 sup,
@@ -8439,7 +8439,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   appearance: none;
   width: 100%;
   box-sizing: border-box;
-  font-family: "LXGW WenKai Screen", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: system-ui, "Microsoft Yahei", "Segoe UI", Arial, sans-serif;
   font-size: calc(var(--fs-content-base) - 2px);
   padding: 12px 0;
   color: var(--text);
@@ -8532,7 +8532,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   margin: 0;
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  font-family: "LXGW WenKai Screen", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: system-ui, "Microsoft Yahei", "Segoe UI", Arial, sans-serif;
   font-size: calc(var(--fs-content-base) - 2px);
   color: var(--text-p1);
 }
@@ -8639,7 +8639,7 @@ details.toc[open] >div.body section .header+.doc_tree {
   min-width: 0;
   border-radius: 4px;
   color: var(--text-meta);
-  font-family: "LXGW WenKai Screen", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: system-ui, "Microsoft Yahei", "Segoe UI", Arial, sans-serif;
   font-size: calc(var(--fs-content-base) - 4px);
   font-weight: 600;
   line-height: 1;
@@ -9758,7 +9758,7 @@ html[data-leftbar-state='collapsed'] .site-shell:not([data-drawer='leftbar']) .s
 }
 .post-list #archive .archive-header {
   display: inline-block;
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 0.5em;
@@ -9789,7 +9789,7 @@ html[data-leftbar-state='collapsed'] .site-shell:not([data-drawer='leftbar']) .s
   border-bottom: 1px dashed var(--text-meta);
 }
 .post-list .archive-list a.post time {
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
   margin-right: 1em;
   font-weight: 700;
   flex-shrink: 0;
@@ -9830,7 +9830,7 @@ html[data-leftbar-state='collapsed'] .site-shell:not([data-drawer='leftbar']) .s
 }
 .post-list #cats a.cat .badge {
   font-weight: 700;
-  font-family: "LXGW WenKai Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+  font-family: Menlo, Monaco, Consolas, system-ui, monospace, sans-serif;
   opacity: 0.5;
   font-size: calc(var(--fs-content-base) - 4px);
 }

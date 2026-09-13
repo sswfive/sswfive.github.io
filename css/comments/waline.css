@@ -129,7 +129,7 @@ body[data-page-layout='index_wiki'] {
 }
 .md-text .cmt-body.waline .wl-editor {
   font-size: var(--waline-font-size);
-  font-family: "LXGW WenKai Screen", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: system-ui, "Microsoft Yahei", "Segoe UI", Arial, sans-serif;
 }
 .md-text .cmt-body.waline .wl-content .wl-emoji,
 .md-text .cmt-body.waline .wl-content .vemoji {
