@@ -2,31 +2,18 @@
   --fs-root: 16px;
   --fs-content-base: var(--fs-root);
   --fs-content: var(--fs-content-base);
-  --width-main: 720px;
+  --width-main-article: 800px;
+  --width-main-wiki-list: 1000px;
+  --width-main: var(--width-main-article);
   --fsh2: calc(var(--fs-content) + 11px);
   --fsh3: calc(var(--fs-content) + 7px);
   --fsh4: calc(var(--fs-content) + 4px);
-  --side-content-width: 224px;
+  --side-content-width: 200px;
   --gap-base: 16px;
   --gap-page: 16px;
   --rightbar-width-extra: calc(var(--gap-base) * 2);
   --gap-p: calc(var(--fs-content-base) + 4px);
   --gap-p-compact: calc(var(--fs-content-base) * 0.75);
-}
-@media screen and (min-width: 1180px) {
-  :root {
-    --gap-page: 32px;
-  }
-}
-@media screen and (min-width: 2048px) {
-  :root {
-    --width-main: 780px;
-  }
-}
-@media screen and (min-width: 2560px) {
-  :root {
-    --width-main: 860px;
-  }
 }
 @media screen and (max-width: 768px) {
   :root {
@@ -35,9 +22,12 @@
 }
 @media screen and (max-width: 667px) {
   :root {
-    --fs-root: calc(16px + 2px);
+    --fs-root: calc(16px + 1px);
     --side-content-width: 224px;
   }
+}
+body[data-page-layout='index_wiki'] {
+  --width-main: var(--width-main-wiki-list);
 }
 .cmt-body.artalk .artalk {
   margin-top: 1rem;
@@ -58,7 +48,7 @@
   background: var(--text-p3);
 }
 .cmt-body.artalk .artalk .atk-main-editor {
-  border-radius: 12px;
+  border-radius: 16px;
 }
 .cmt-body.artalk .artalk .atk-main-editor .atk-header,
 .cmt-body.artalk .artalk .atk-main-editor .atk-editor-user-wrap {
@@ -105,7 +95,7 @@
   display: none;
 }
 .cmt-body.artalk .artalk .atk-list-comments-wrap>.atk-comment-wrap {
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--card);
   box-shadow: 0 0 8px 0px rgba(0,0,0,0.02);
 }
@@ -199,7 +189,7 @@
   border: none;
 }
 .cmt-body.artalk .atk-loading {
-  border-radius: 12px;
+  border-radius: 16px;
 }
 .cmt-body.artalk .atk-main-editor .atk-editor-user-wrap .atk-editor-user .atk-user-profile-btn {
   padding: 0;
@@ -247,7 +237,7 @@
 }
 .md-text .cmt-body.artalk .artalk p >img {
   margin: var(--gap-p) auto;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 .md-text .cmt-body.artalk .artalk a>img {
   display: inline;
