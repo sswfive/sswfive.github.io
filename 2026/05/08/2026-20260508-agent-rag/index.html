@@ -1,0 +1,984 @@
+
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/2.0.0-rc.5" theme-name="Stellar" theme-version="2.0.0-rc.5">
+  <link rel="canonical" href="https://sswfive.xyz/2026/05/08/2026-20260508-agent-rag/" data-stellar-page-meta="">
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title data-stellar-page-meta>Agent系统开发手记（四）：智能检索与RAG - ssw5ive</title>
+  <script data-stellar-script="core">
+    (function () {
+      var key = 'stellar:v2:leftbar-state';
+      var fallback = "expanded";
+      try {
+        var value = localStorage.getItem(key);
+        document.documentElement.dataset.leftbarState = value === 'collapsed' || value === 'expanded' ? value : fallback;
+      } catch (error) {
+        document.documentElement.dataset.leftbarState = fallback;
+      }
+    })();
+  </script>
+
+  <meta name="description" content="Agent 系列第四篇：智能检索与 RAG 的架构设计，从海量知识中精准召回信息。" data-stellar-page-meta="">
+<meta property="og:type" content="article" data-stellar-page-meta="">
+<meta property="og:title" content="Agent系统开发手记（四）：智能检索与RAG" data-stellar-page-meta="">
+<meta property="og:url" content="https://sswfive.xyz/2026/05/08/2026-20260508-agent-rag/" data-stellar-page-meta="">
+<meta property="og:site_name" content="ssw5ive" data-stellar-page-meta="">
+<meta property="og:description" content="Agent 系列第四篇：智能检索与 RAG 的架构设计，从海量知识中精准召回信息。" data-stellar-page-meta="">
+<meta property="og:locale" content="zh_CN" data-stellar-page-meta="">
+<meta property="article:author" content="sswfive" data-stellar-page-meta="">
+<meta property="article:published_time" content="2026-05-08T12:21:45.000Z" data-stellar-page-meta="">
+<meta property="article:modified_time" content="2026-09-15T14:04:41.000Z" data-stellar-page-meta="">
+<meta property="article:tag" content="AI" data-stellar-page-meta="">
+<meta property="article:tag" content="Agent" data-stellar-page-meta="">
+<meta name="twitter:card" content="summary" data-stellar-page-meta="">
+<meta name="twitter:creator" content="@sswfive" data-stellar-page-meta=""><meta name="twitter:title" content="Agent系统开发手记（四）：智能检索与RAG" data-stellar-page-meta="">
+  
+  
+  <meta name="keywords" content="AI,Agent" data-stellar-page-meta="">
+
+  <!-- feed -->
+  
+    
+
+    
+      
+        <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
+      
+    
+  
+
+  <link rel="preload" href="/css/main.css?v=2.0.0-rc.5" as="style">
+  <link rel="stylesheet" href="/css/main.css?v=2.0.0-rc.5">
+  <style>:root{--text-loading:"正在加载";--text-loading-error:"加载失败，请稍后重试。"}</style>
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json" data-stellar-page-meta="">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"dateCreated":"2026-05-08T20:21:45+08:00","dateModified":"2026-09-15T22:04:41+08:00","datePublished":"2026-05-08T20:21:45+08:00","description":"写在前面这是”Agent 系统开发手记”系列的第四篇。第一篇聊了意图识别——把用户想干嘛搞清楚，第二篇聊了规划、纠偏与执行循环——让 Agent 一步步受控地走向目标，第三篇聊了上下文管理——在有限窗口里让模型看到它真正需要的信息。这三篇做完，我以为 Agent 的基本骨架差不多了，直到我遇到了检索这个问题。\n说实话，刚开始做 Agent 的时候，我对 RAG 的理解就是”文档切 Chunk...","headline":"Agent系统开发手记（四）：智能检索与RAG","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2026/05/08/2026-20260508-agent-rag/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"url":"https://sswfive.xyz/2026/05/08/2026-20260508-agent-rag/","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"],"keywords":"AI, Agent","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"}</script>
+  <style>
+  /* 中文排版优化 */
+  .md-text { line-height: 1.8; letter-spacing: 0.02em; }
+  .md-text p { margin-bottom: 1em; }
+  .md-text h2 { margin-top: 2em; margin-bottom: 0.8em; }
+  .md-text h3 { margin-top: 1.6em; margin-bottom: 0.6em; }
+  .md-text pre { border-radius: 8px; }
+  .md-text code { border-radius: 4px; padding: 0.15em 0.4em; }
+  .md-text blockquote { border-radius: 8px; }
+  .social-wrap { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 0.25rem !important; }
+  .social-wrap .social { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
+  .social-wrap .social svg, .social-wrap .social img { display: block; margin: auto; width: 1em; height: 1em; }
+</style>
+
+
+  <link rel="stylesheet" href="/css/stellar-icons.css?v=7c185ad1a9a79674">
+  <link rel="preload" as="script" href="/js/stellar-icons.js?v=69733527783f5b02">
+  
+  
+</head>
+<body data-page-type="content" data-page-layout="post" data-article-style="tech"><div data-stellar-runtime-region id="site-cover" class="site-cover"></div><div class="site-shell" id="start" data-regions="leftbar rightbar"><div class="site-workspace">
+<aside data-stellar-runtime-region id="leftbar-region" class="site-region site-region--leftbar" data-region="leftbar" aria-label="Leftbar"><div class="site-region__surface ui-surface"><div class="site-region__decoration" aria-hidden="true"></div><div class="site-region__viewport"><header class="site-region__header site-region__zone site-region__zone--top">
+    <div class="widget-instance widget-instance--brand" data-widget-id="leftbar:fixed:brand" data-presentation="leftbar" data-leftbar-rail>
+<header class="brand-header brand-header--regular brand-header--site"><div class="brand-wrap"><a class="brand-image brand-image--avatar" href="&#x2F;about&#x2F;"><img no-lazy src="&#x2F;images&#x2F;logo.JPG" alt="" onerror="this.onerror&#x3D;null;this.src&#x3D;&quot;&#x2F;images&#x2F;stellar-error.491ee870f4940739.svg&quot;"></a><a class="brand-title" href="&#x2F;about&#x2F;"><div class="brand-name">ssw5ive</div><div class="brand-tagline cap">循此苦旅 以达星辰... | 一念净心花开遍世界</div></a></div><div class="brand-search">
+
+<div class="ui-collection" data-layout="list" data-variant="nav" data-density="auto">
+  
+    
+<button class="ui-collection__item ui-interactive card-hover card-hover--spotlight search-trigger has-hover-surface" type="button" title="搜索" aria-label="搜索" data-shell-action="open-search" data-search-instance="leftbar-brand-search" data-search-domain="topic:ai" data-search-domain-label="AI" data-search-domain-blog="true">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Adapted from Google Material Icons by Material Design Authors - https://github.com/material-icons/material-icons/blob/master/LICENSE --><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3M3 13h3M3 18h8M16.83 13.83l3.76 3.76"/><circle cx="14" cy="11" r="4"/></g></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">搜索</span>
+      
+      
+    </span>
+  
+  <kbd class="search-shortcut" aria-hidden="true">⌘K</kbd>
+
+  
+</button>
+
+  
+</div>
+
+
+</div></header>
+</div>
+  </header>
+  <div class="site-region__body site-region__zone site-region__zone--body">
+    <div class="widget-instance widget-instance--menu" data-widget-id="leftbar:fixed:menu" data-presentation="leftbar" data-leftbar-rail>
+
+
+<nav class="menu dis-select">
+<div class="ui-collection" data-layout="list" data-variant="nav" data-density="auto">
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight is-active" href="&#x2F;" title="文章" aria-current="page">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">文章</span>
+      
+      
+    </span>
+  
+  
+  <span class="ui-collection__indicator"></span>
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;ziliao&#x2F;" title="资源">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">资源</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;friends&#x2F;" title="咖啡">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.25 11.88c-.01.177.015.39.065.818l.401 3.428A5.515 5.515 0 0 0 8.193 21h3.614a5.52 5.52 0 0 0 5.028-3.25H19a3.75 3.75 0 1 0 0-7.5h-2.279a2 2 0 0 0-.618-.22c-.174-.03-.39-.03-.82-.03H4.717c-.43 0-.645 0-.819.03a2 2 0 0 0-1.646 1.85m15.487-.13q.008.065.012.13c.01.177-.014.39-.064.818l-.401 3.428l-.016.124H19a2.25 2.25 0 0 0 0-4.5z"/><path d="M10.53 1.47a.75.75 0 0 1 0 1.06a.666.666 0 0 0 0 .94a2.164 2.164 0 0 1 0 3.06a.75.75 0 0 1-1.06-1.06c.26-.26.26-.68 0-.94a2.164 2.164 0 0 1 0-3.06a.75.75 0 0 1 1.06 0m-4.5 1.5a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.116.116A.75.75 0 0 1 4.47 6.97l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0m9.5 0a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.117.116a.75.75 0 1 1-1.06-1.06l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0" opacity=".5"/></g></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">咖啡</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+</div>
+
+</nav>
+
+</div>
+    <div class="widgets widget-stack widget-stack--leftbar widget-stack--body"><div class="widget-instance widget-instance--related" data-widget-id="leftbar:0:related" data-presentation="leftbar" data-leftbar-rail>
+
+<widget class="widget-wrapper related-widget">
+  
+    <div class="widget-header dis-select">
+      <span class="name">专栏：AI</span>
+      
+    </div>
+  
+  <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;10&#x2F;2026-20260510-agent-evaluation&#x2F;" title="Agent系统开发手记（五）：评估与反馈">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（五）：评估与反馈</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight is-active" href="&#x2F;2026&#x2F;05&#x2F;08&#x2F;2026-20260508-agent-rag&#x2F;" title="Agent系统开发手记（四）：智能检索与RAG" aria-current="page">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（四）：智能检索与RAG</span>
+      
+      
+    </span>
+  
+  
+  <span class="ui-collection__indicator"></span>
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;05&#x2F;2026-20260505-agent-context-management&#x2F;" title="Agent系统开发手记（三）：上下文管理">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（三）：上下文管理</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;03&#x2F;2026-20260503-agent-plan-replan-tao&#x2F;" title="Agent系统开发手记（二）：规划、纠偏与执行循环">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（二）：规划、纠偏与执行循环</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;01&#x2F;2026-20260501-agent-intent-recognition&#x2F;" title="Agent系统开发手记（一）：意图识别">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（一）：意图识别</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;03&#x2F;11&#x2F;2026-20260311-prompt-engineering-guide&#x2F;" title="提示词实践笔记：系统提示词和用户提示词">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">提</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">提示词实践笔记：系统提示词和用户提示词</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;01&#x2F;29&#x2F;2026-20260129-agent-from-design-of-claude-code&#x2F;" title="从Claude Code的架构设计浅析Agent">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">从</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">从Claude Code的架构设计浅析Agent</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;04&#x2F;14&#x2F;2025-20250414-daily-study-ai&#x2F;" title="每天学点AI">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">每</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">每天学点AI</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;04&#x2F;09&#x2F;2025-20250409-mlflow-deploy&#x2F;" title="MLflow：模型生命周期管理工具的使用">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">M</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">MLflow：模型生命周期管理工具的使用</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;03&#x2F;15&#x2F;2025-20250315-kserve-deploy&#x2F;" title="Kserve：云原生环境中的模型部署与推理组件的使用">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">K</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Kserve：云原生环境中的模型部署与推理组件的使用</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;03&#x2F;15&#x2F;2025-20250315-modelops-tech&#x2F;" title="关于ModelOps的相关技术整理汇总">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">关</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">关于ModelOps的相关技术整理汇总</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2023&#x2F;08&#x2F;16&#x2F;2023-20230816-machine-learning-basics&#x2F;" title="机器学习基础">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">机</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">机器学习基础</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+</div></div>
+  
+</widget>
+
+
+</div></div>
+  </div>
+  <footer class="site-region__footer">
+    
+    <div class="site-region__system ui-collection" data-layout="inline" data-variant="nav" data-density="compact">
+      <div class="site-region__settings"><div class="widget-instance widget-instance--settings" data-widget-id="leftbar:fixed:settings" data-presentation="leftbar" data-leftbar-rail>
+<a class="settings-widget ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;settings&#x2F;" data-profile-provider="waline" data-profile-identity-enabled="true" data-profile-fallback-avatar="https:&#x2F;&#x2F;gcore.jsdelivr.net&#x2F;gh&#x2F;cdn-x&#x2F;placeholder@1.0.12&#x2F;avatar&#x2F;round&#x2F;3442075.svg" data-settings-placement="leftbar" data-settings-label="设置" aria-label="设置" title="设置">
+  <span class="settings-widget__avatar" aria-hidden="true">
+    <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M12.4277 2C11.3139 2 10.2995 2.6007 8.27081 3.80211L7.58466 4.20846C5.55594 5.40987 4.54158 6.01057 3.98466 7C3.42773 7.98943 3.42773 9.19084 3.42773 11.5937V12.4063C3.42773 14.8092 3.42773 16.0106 3.98466 17C4.54158 17.9894 5.55594 18.5901 7.58466 19.7915L8.27081 20.1979C10.2995 21.3993 11.3139 22 12.4277 22C13.5416 22 14.5559 21.3993 16.5847 20.1979L17.2708 19.7915C19.2995 18.5901 20.3139 17.9894 20.8708 17C21.4277 16.0106 21.4277 14.8092 21.4277 12.4063V11.5937C21.4277 9.19084 21.4277 7.98943 20.8708 7C20.3139 6.01057 19.2995 5.40987 17.2708 4.20846L16.5847 3.80211C14.5559 2.6007 13.5416 2 12.4277 2Z" clip-rule="evenodd" opacity=".5"/><path d="M12.4277 8.25C10.3567 8.25 8.67773 9.92893 8.67773 12C8.67773 14.0711 10.3567 15.75 12.4277 15.75C14.4988 15.75 16.1777 14.0711 16.1777 12C16.1777 9.92893 14.4988 8.25 12.4277 8.25Z"/></g></svg></span>
+  </span>
+  <span class="settings-widget__name ui-collection__title">设置</span>
+</a>
+</div></div>
+      <button type="button" class="leftbar-state-toggle ui-collection__item ui-interactive card-hover card-hover--spotlight is-icon-only" aria-label="Collapse leftbar" aria-expanded="true" data-shell-action="toggle-leftbar"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.172 4.172C2 5.343 2 7.229 2 11v2c0 3.771 0 5.657 1.172 6.828S6.229 21 10 21h5V3h-5C6.229 3 4.343 3 3.172 4.172" clip-rule="evenodd" opacity=".5"/><path fill="currentColor" d="M5.5 9.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zm1 4a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 0-1.5zM22 13v-2c0-3.771 0-5.657-1.172-6.828c-.974-.975-3.192-1.139-5.828-1.166v17.988c2.636-.027 4.854-.191 5.828-1.166C22 18.657 22 16.771 22 13"/></svg></span></button>
+    </div>
+  </footer></div></div></aside>
+<main data-stellar-runtime-region class="site-main" id="main">
+
+
+<div class="article-banner-wrap slide-up"><div class="article banner top">
+  <div class="content">
+    
+    <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2026/05/10/2026-20260510-agent-evaluation/">AI</a>
+</div><div class="right"><span class="cap reading">5809 字 · 预计阅读 20 分钟</span></div></div><div class="meta-row">
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-05-08T12:21:45.000Z">2026年5月8日</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-15T14:04:41.000Z">2026年9月15日</time></span></div>
+</div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Agent系统开发手记（四）：智能检索与RAG</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div></div>
+<article class="md-text content slide-up"><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>这是”Agent 系统开发手记”系列的第四篇。第一篇聊了意图识别——把用户想干嘛搞清楚，第二篇聊了规划、纠偏与执行循环——让 Agent 一步步受控地走向目标，第三篇聊了上下文管理——在有限窗口里让模型看到它真正需要的信息。这三篇做完，我以为 Agent 的基本骨架差不多了，直到我遇到了检索这个问题。</p>
+<p>说实话，刚开始做 Agent 的时候，我对 RAG 的理解就是”文档切 Chunk、生成向量、存到 Milvus、查的时候 Top-K 召回”。后来真正做技术选型 Agent 才发现，这个理解跟”后端就是写 CRUD”一样肤浅。用户问”我们的场景适合用什么消息队列”，Agent 需要去知识库里找技术文档；用户说”刚才那个方案的性能数据呢”，Agent 需要检索之前的对话历史；用户问”Redis 7.0 和 6.x 的区别”，Agent 需要精确定位版本相关的技术细节——这些场景表面上都是”检索”，但背后的机制完全不同。</p>
+<p>第三篇里我聊过，Context Window 的构建是一个五步流水线：<code>Retrieve → Select → Compress → Order → Inject</code>。其中 Retrieve 这一步，就是检索。当时只是提了一嘴，真正做的时候才发现，”怎么把需要的信息捞出来”这件事，远比我想象的复杂。这篇文章就把自己在检索上踩过的坑整理下来。</p>
+<hr>
+<h2 id="从一个让我头疼的场景说起"><a href="#从一个让我头疼的场景说起" class="headerlink" title="从一个让我头疼的场景说起"></a>从一个让我头疼的场景说起</h2><p>我那个技术选型 Agent 跑了一段时间之后，收到了一个用户投诉。</p>
+<p>用户问：”我们团队要选一个消息队列，日均消息量大概 500 万，要求延迟低、运维简单，有什么推荐？”</p>
+<p>Agent 回答了一大堆关于 Kafka 的内容——高吞吐、分区机制、生态成熟。看起来挺专业的，但用户实际想要的是一个运维简单的方案，而 Kafka 的运维复杂度在消息队列里算是高的。Agent 推荐 Kafka，本质上是因为知识库里关于 Kafka 的文档最多、最长，向量检索召回的内容自然也最多。</p>
+<p>更坑的是，用户追问”Kafka 运维复杂度怎么样”，Agent 又从知识库里捞出一篇”Kafka 运维最佳实践”，洋洋洒洒讲了一堆监控、调优、故障处理的内容。用户看完的结论是：”这运维也太复杂了吧，你刚才还推荐这个？”</p>
+<p>我去排查了一下原因，发现问题出在好几个地方：</p>
+<ul>
+<li>检索的时候没有理解”运维简单”是一个硬约束，直接拿用户的完整问题去向量检索了</li>
+<li>知识库里 Kafka 的文档最多，向量相似度高的内容自然偏向 Kafka</li>
+<li>没有把”运维简单”这个约束和”技术特性”分开检索</li>
+<li>召回的内容没有经过约束过滤，直接全塞给了模型</li>
+</ul>
+<blockquote>
+<p>这个问题和第三篇里聊的上下文管理直接相关——检索出来的内容如果没经过筛选就塞进 Context Window，模型看到的就是一堆噪声。第一篇里聊的意图识别也在这里起了作用——“运维简单”到底是硬约束还是软偏好，直接影响检索策略。但当时我对这些都没什么感觉，直到真正踩了坑才知道。</p>
+</blockquote>
+<hr>
+<h2 id="先搞清楚一个认知：RAG-不等于-Agent-检索"><a href="#先搞清楚一个认知：RAG-不等于-Agent-检索" class="headerlink" title="先搞清楚一个认知：RAG 不等于 Agent 检索"></a>先搞清楚一个认知：RAG 不等于 Agent 检索</h2><p>刚开始做 Agent 的时候，我把”检索”和”RAG”画等号。后来才发现，<strong>RAG 只是 Agent 检索中的一种场景</strong>。</p>
+<p>Agent 需要”去找东西”的场景远不止知识库问答：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>检索目标</th>
+<th>数据来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>知识库问答</td>
+<td>技术文档、产品说明</td>
+<td>向量数据库</td>
+</tr>
+<tr>
+<td>对话历史召回</td>
+<td>用户之前说的约束、确认的方案</td>
+<td>对话记录</td>
+</tr>
+<tr>
+<td>工具结果查询</td>
+<td>之前查过的性能数据、配置信息</td>
+<td>工具输出缓存</td>
+</tr>
+<tr>
+<td>实时数据获取</td>
+<td>当前系统状态、最新价格</td>
+<td>业务数据库、外部 API</td>
+</tr>
+<tr>
+<td>中间产物检索</td>
+<td>之前分析过的方案对比、计算结果</td>
+<td>Agent 自身产生的数据</td>
+</tr>
+</tbody></table></div>
+<p>所以如果面试官或者同事问”你们的检索怎么做”，只回答”Chunk、Embedding、Top-K”是远远不够的。真正需要回答的是：</p>
+<ol>
+<li><strong>什么时候需要检索？</strong> ——不是每一步都需要查</li>
+<li><strong>到底要查询什么？</strong> ——从目标推导信息缺口</li>
+<li><strong>应该去哪里查询？</strong> ——不同信息在不同地方</li>
+<li><strong>一次没查到怎么办？</strong> ——迭代式检索</li>
+<li><strong>查出来太多怎么办？</strong> ——过滤、排序、截断</li>
+</ol>
+<p>这五个问题才是 Agent 检索的核心。</p>
+<hr>
+<h2 id="查询什么：让-Agent-知道自己缺什么"><a href="#查询什么：让-Agent-知道自己缺什么" class="headerlink" title="查询什么：让 Agent 知道自己缺什么"></a>查询什么：让 Agent 知道自己缺什么</h2><p>第一个坑是：Agent 怎么知道自己应该查询什么？</p>
+<p>最简单的做法是直接拿用户输入去检索。比如用户问”Redis 适不适合我们的场景”，直接拿这句话去向量检索。但这样做的效果通常很差——“这个”指代什么？”我们的场景”具体是什么场景？模型不知道，检索也不知道。</p>
+<p>我在实践中摸索出一个四步法：</p>
+<p><strong>第一步：明确当前要做出的判断。</strong> 查询是手段不是目的。比如用户问”Redis 适不适合我们的场景”，首先要解析出判断标准——用户关心的是什么？是高可用、运维成本，还是性能？</p>
+<p><strong>第二步：推导所需证据。</strong> 如果判断标准是”高可用”，那就需要知道 Redis Sentinel 和 Redis Cluster 的高可用机制、故障恢复时间、数据一致性保证等。</p>
+<p><strong>第三步：区分已知和未知。</strong> 如果用户之前说过”我们的 QPS 是 5 万”，那这个信息已经知道了，不需要再查。</p>
+<p><strong>第四步：判断缺口是否值得查询。</strong> 不是所有信息都值得查。有些信息不重要，或者不影响最终判断。在资源紧张的时候，可以跳过不关键的查询——这是一种降级机制。</p>
+<p>这四步说起来简单，但实现的时候需要在 Prompt 里明确教会 Agent 这个思考过程。我的做法是在 System Prompt 里加一段指引：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"retrieval_planning"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"instruction"</span><span class="punctuation">:</span> <span class="string">"在发起检索之前，先回答以下问题："</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"questions"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">"我要做出什么判断？"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">"做出这个判断需要哪些证据？"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">"我已经知道什么？"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">"我还缺什么？"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">"缺失的信息是否值得查询？"</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h2 id="去哪里检索：查询空间不是固定的"><a href="#去哪里检索：查询空间不是固定的" class="headerlink" title="去哪里检索：查询空间不是固定的"></a>去哪里检索：查询空间不是固定的</h2><p>第二个坑是：Agent 怎么知道应该去哪里找信息？</p>
+<p>我一开始的设计是给 Agent 一个统一的 <code>search(query)</code> 工具，背后接向量数据库。后来发现这远远不够。</p>
+<p>举个例子，用户问”Redis 7.0 的 Function 特性怎么样”，这个问题：</p>
+<ul>
+<li>技术文档在知识库里（向量数据库）</li>
+<li>但 Redis 7.0 的版本发布时间在官网上（外部 API）</li>
+<li>用户之前讨论过 Redis 版本选择在对话历史里（对话记录）</li>
+</ul>
+<p>一个 <code>search(query)</code> 工具根本覆盖不了这些场景。</p>
+<p>后来我重新设计了检索架构，核心思路是<strong>查询空间是动态的</strong>：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"query_space"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"knowledge_base"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">      <span class="attr">"description"</span><span class="punctuation">:</span> <span class="string">"技术文档、产品说明、最佳实践"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"suitable_for"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"技术特性查询"</span><span class="punctuation">,</span> <span class="string">"方案对比"</span><span class="punctuation">,</span> <span class="string">"配置说明"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"retrieval_method"</span><span class="punctuation">:</span> <span class="string">"vector_search"</span></span><br><span class="line">    <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"conversation_history"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">      <span class="attr">"description"</span><span class="punctuation">:</span> <span class="string">"用户之前说过的话、确认的方案"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"suitable_for"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"用户约束"</span><span class="punctuation">,</span> <span class="string">"已确认决策"</span><span class="punctuation">,</span> <span class="string">"偏好"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"retrieval_method"</span><span class="punctuation">:</span> <span class="string">"keyword_search"</span></span><br><span class="line">    <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"tool_cache"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">      <span class="attr">"description"</span><span class="punctuation">:</span> <span class="string">"之前工具调用的结果"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"suitable_for"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"性能数据"</span><span class="punctuation">,</span> <span class="string">"配置信息"</span><span class="punctuation">,</span> <span class="string">"测试结果"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"retrieval_method"</span><span class="punctuation">:</span> <span class="string">"id_lookup"</span></span><br><span class="line">    <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"external_api"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">      <span class="attr">"description"</span><span class="punctuation">:</span> <span class="string">"实时数据"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"suitable_for"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"最新版本"</span><span class="punctuation">,</span> <span class="string">"实时价格"</span><span class="punctuation">,</span> <span class="string">"系统状态"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"retrieval_method"</span><span class="punctuation">:</span> <span class="string">"api_call"</span></span><br><span class="line">    <span class="punctuation">}</span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>这里有个关键点：<strong>可查询空间会随着任务执行不断变化</strong>。比如第一轮检索发现 Redis 7.0 有 Function 特性，第二轮可能就需要去查 Function 的性能测试数据——这个数据源在第一轮的时候根本不需要考虑。</p>
+<p>如果用 ES 做检索，还有一个实用技巧：<strong>Index Profile（索引说明）</strong>。给每个索引建一份元数据说明，告诉 Agent 这个索引存了什么、适合查什么、不适合查什么：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"index_name"</span><span class="punctuation">:</span> <span class="string">"refund_records"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"description"</span><span class="punctuation">:</span> <span class="string">"存储用户退款申请及支付渠道处理状态"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"suitable_for"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"查询退款是否成功"</span><span class="punctuation">,</span> <span class="string">"查询退款为什么没有到账"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"not_suitable_for"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"查询商品是否允许退款"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"fields"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"order_id"</span><span class="punctuation">,</span> <span class="string">"user_id"</span><span class="punctuation">,</span> <span class="string">"refund_status"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"freshness"</span><span class="punctuation">:</span> <span class="string">"near_real_time"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"authority"</span><span class="punctuation">:</span> <span class="string">"refund_service"</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>这样 Agent 在决定去哪里查的时候，可以先看 Index Profile，而不是盲目地把所有索引都搜一遍。索引多了之后，还可以做成索引树——先检索”哪个索引最可能有答案”，再检索具体索引。</p>
+<hr>
+<h2 id="Chunk-切割：不是一刀切就完事了"><a href="#Chunk-切割：不是一刀切就完事了" class="headerlink" title="Chunk 切割：不是一刀切就完事了"></a>Chunk 切割：不是一刀切就完事了</h2><p>第三个坑是 Chunk 切割。</p>
+<p>最开始我用的是最简单的方案：每 500 Token 切一段，Overlap 50 Token。效果嘛……能用，但经常出问题：</p>
+<ul>
+<li>一个完整的 API 说明被从中间切开了，前半段有参数说明，后半段有返回值，但分别在两个 Chunk 里</li>
+<li>表格被切成了好几段，每段都没有表头，模型看到的是一堆没有上下文的数字</li>
+<li>一张架构图的说明文字被切到了不同的 Chunk，图和说明对不上</li>
+</ul>
+<p>后来我改成了<strong>混合切割方案</strong>：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">文档结构确定大边界 → 语义判断内部边界 → 长度限制负责兜底</span><br></pre></td></tr></tbody></table></figure>
+
+<p>具体来说：</p>
+<ol>
+<li>先按文档的标题、章节结构切割</li>
+<li>如果某个章节太长，再用语义相似度判断在哪里切</li>
+<li>如果语义切割后某个 Chunk 还是太长，就用固定长度兜底</li>
+</ol>
+<p>对于特殊内容，我做了单独处理：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>内容类型</th>
+<th>处理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>表格</td>
+<td>整表为一个 Chunk，附带表名和表头；大表格按行分组，每组重复表头</td>
+</tr>
+<tr>
+<td>代码</td>
+<td>按函数/类切割，保留函数签名和注释</td>
+</tr>
+<tr>
+<td>图片</td>
+<td>提取周围文本作为描述，同时保存原图</td>
+</tr>
+<tr>
+<td>长列表</td>
+<td>保留共同标题，按语义分组切割</td>
+</tr>
+</tbody></table></div>
+<h3 id="父子文档：小粒度召回，大粒度阅读"><a href="#父子文档：小粒度召回，大粒度阅读" class="headerlink" title="父子文档：小粒度召回，大粒度阅读"></a>父子文档：小粒度召回，大粒度阅读</h3><p>单一切割粒度有一个经典矛盾：切小了，召回精准但上下文不完整；切大了，上下文完整但噪声多。</p>
+<p>我最终采用的方案是<strong>父子文档</strong>：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原始文档 → 切成大 Chunk（父文档） → 每个父文档切成小 Chunk（子文档）</span><br><span class="line">                                        ↓</span><br><span class="line">查询时：子文档向量检索 → 命中后找父文档 → 父文档放入上下文</span><br></pre></td></tr></tbody></table></figure>
+
+<p>比如知识库里有一段 Redis 高可用说明：</p>
+<blockquote>
+<p>Redis Sentinel 提供自动故障转移，适合中小规模部署。Redis Cluster 提供分片和高可用，适合大规模部署。Cluster 的运维复杂度显著高于 Sentinel。</p>
+</blockquote>
+<p>如果用户问”Redis Cluster 运维复杂度怎么样”，子文档”Cluster 的运维复杂度显著高于 Sentinel”会被精准召回。但如果只把这一句话给模型，它缺少上下文——为什么复杂？和 Sentinel 比具体复杂在哪？</p>
+<p>父子文档的做法是：用这句话（子文档）做召回，命中后找到包含完整高可用对比的整个段落（父文档），把父文档给模型。这样既找得准，又看得全。</p>
+<p><strong>父文档排序</strong>用 RRF 算法：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Score(P) = Σ 1/(k + rank(c_i))</span><br></pre></td></tr></tbody></table></figure>
+
+<p>其中 <code>rank(c_i)</code> 是子文档在召回结果中的排序位置。一个父文档下被召回的子文档越多、排名越靠前，父文档的最终得分就越高。</p>
+<h3 id="层次文档：从父子到多层"><a href="#层次文档：从父子到多层" class="headerlink" title="层次文档：从父子到多层"></a>层次文档：从父子到多层</h3><p>父子文档还可以扩展成<strong>层次文档</strong>——从整份文档到段落到句子，建多层结构：</p>
+<ul>
+<li>第一层：整份文档</li>
+<li>第二层：章节</li>
+<li>第三层：小节</li>
+<li>第四层：段落</li>
+<li>第五层：句子或独立事实</li>
+</ul>
+<p>每一层都可以额外保存摘要。检索时根据问题类型选择不同的召回层次：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>问题类型</th>
+<th>优先召回层次</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>事实型、参数型</td>
+<td>段落级或事实级</td>
+</tr>
+<tr>
+<td>解释型、原因型</td>
+<td>小节级</td>
+</tr>
+<tr>
+<td>总结型、概览型</td>
+<td>章节级或文档级摘要</td>
+</tr>
+<tr>
+<td>对比型、综合型</td>
+<td>多个层次同时召回</td>
+</tr>
+</tbody></table></div>
+<p>比如用户问”Redis 7.0 和 6.x 的区别”（对比型），需要同时召回版本特性的小节级内容；用户问”Redis 是什么”（总结型），召回文档级摘要就够了。</p>
+<hr>
+<h2 id="查询改写：别直接拿用户原话去检索"><a href="#查询改写：别直接拿用户原话去检索" class="headerlink" title="查询改写：别直接拿用户原话去检索"></a>查询改写：别直接拿用户原话去检索</h2><p>第四个坑是查询改写。</p>
+<p>用户输入往往是口语化的、模糊的，直接拿去检索效果很差。我在实践中总结了几条改写规则：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>规则</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>保留硬约束</td>
+<td>不遗漏用户明确限制</td>
+<td>“预算有限” → 保留为过滤条件</td>
+</tr>
+<tr>
+<td>消除歧义</td>
+<td>结合上下文确定含义</td>
+<td>“Redis” → 根据上下文确定是 Sentinel 还是 Cluster</td>
+</tr>
+<tr>
+<td>统一术语</td>
+<td>转换为标准术语</td>
+<td>“消息中间件” → “消息队列”</td>
+</tr>
+<tr>
+<td>从问题转向缺口</td>
+<td>改写成需要补齐的证据</td>
+<td>“Redis 怎么样” → “Redis 高可用机制、运维复杂度、性能指标”</td>
+</tr>
+<tr>
+<td>禁止补充事实</td>
+<td>不能加入没有证据的内容</td>
+<td>不要把”可能”变成”确定”</td>
+</tr>
+</tbody></table></div>
+<h3 id="HyDE：先猜答案再检索"><a href="#HyDE：先猜答案再检索" class="headerlink" title="HyDE：先猜答案再检索"></a>HyDE：先猜答案再检索</h3><p>一个特别好用的技巧是 <strong>HyDE（Hypothetical Document Embeddings）</strong>。</p>
+<p>用户问”Redis Cluster 运维复杂度怎么样”，直接把这句话向量化，能表达的信息很有限。HyDE 的做法是先让模型生成一份”假想的答案”：</p>
+<blockquote>
+<p>Redis Cluster 运维复杂度较高，主要体现在节点管理、数据迁移、故障排查等方面。需要关注分片策略、slot 分配、集群扩缩容等操作……</p>
+</blockquote>
+<p>然后拿这段假想文档去向量检索，找到真实的技术文档。因为真实文档通常以”陈述答案”的方式写作，而用户 Query 以”提出问题”的方式表达，HyDE 生成的假想答案能缩小这个语义差距。</p>
+<p><strong>注意</strong>：HyDE 生成的不是真实答案，可能包含错误。它的作用只是帮助定位语义相近的文档，不能直接作为最终证据。</p>
+<h3 id="5W1H：把模糊问题拆成可查询的子问题"><a href="#5W1H：把模糊问题拆成可查询的子问题" class="headerlink" title="5W1H：把模糊问题拆成可查询的子问题"></a>5W1H：把模糊问题拆成可查询的子问题</h3><p>还有一种改写思路是用 <strong>5W1H</strong> 框架把用户的模糊问题拆解成具体的、可查询的子问题：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>What</td>
+<td>发生了什么</td>
+<td>退款当前是什么状态</td>
+</tr>
+<tr>
+<td>Who</td>
+<td>涉及谁</td>
+<td>哪一个用户、订单、支付渠道</td>
+</tr>
+<tr>
+<td>When</td>
+<td>什么时候发生</td>
+<td>退款何时发起、最后一次状态更新</td>
+</tr>
+<tr>
+<td>Where</td>
+<td>发生在哪里</td>
+<td>卡在退款服务还是支付渠道</td>
+</tr>
+<tr>
+<td>Why</td>
+<td>为什么会发生</td>
+<td>是否存在失败码或回调异常</td>
+</tr>
+<tr>
+<td>How</td>
+<td>怎样执行的</td>
+<td>退款链路已执行了哪些步骤</td>
+</tr>
+</tbody></table></div>
+<p>这个方法特别适合用户输入非常笼统的场景。比如用户问”Redis 怎么样”，拆解后变成：What（Redis 有哪些特性）、Who（我们的团队能不能 hold 住）、How（运维复杂度怎么样）、When（版本选择）——每一个子问题都可以独立检索。</p>
+<hr>
+<h2 id="召回优化：多路召回-混合排序"><a href="#召回优化：多路召回-混合排序" class="headerlink" title="召回优化：多路召回 + 混合排序"></a>召回优化：多路召回 + 混合排序</h2><p>第五个坑是召回效果。</p>
+<p>单一路由的检索效果有天花板。向量检索擅长语义匹配，但对精确匹配（错误码、版本号）效果不稳定；关键字检索擅长精确匹配，但对同义词无能为力。</p>
+<p>我的方案是<strong>多路召回 + 混合排序</strong>：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">用户查询</span><br><span class="line">  ├─ 向量检索 → 语义相似的技术文档</span><br><span class="line">  ├─ 关键字检索 → 精确匹配的错误码、版本号</span><br><span class="line">  └─ 对话历史检索 → 用户之前说的约束</span><br><span class="line">       ↓</span><br><span class="line">  统一结构 → 硬条件过滤 → 去重 → RRF 排序 → 业务规则调整</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>RRF 排序</strong>的核心公式：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RRF Score = Σ 1/(k + rank)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>它不关心原始分数，只关心排名。某个 Chunk 如果同时被多路召回且排名都靠前，最终分数就更高。这个算法简单、稳定，而且不需要解决不同检索系统分数不可比的问题。</p>
+<p><strong>业务规则调整</strong>的例子：</p>
+<ul>
+<li>官方文档优先于社区博客</li>
+<li>当前版本优先于历史版本</li>
+<li>标题精确命中可以加权</li>
+<li>高度重复的结果降权</li>
+</ul>
+<h3 id="怎么评估检索效果？"><a href="#怎么评估检索效果？" class="headerlink" title="怎么评估检索效果？"></a>怎么评估检索效果？</h3><p>做了多路召回、混合排序，怎么知道效果好不好？我主要看这几类指标：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Recall@K</td>
+<td>标准相关内容中有多少出现在前 K 个结果</td>
+<td>衡量召回覆盖率</td>
+</tr>
+<tr>
+<td>Precision@K</td>
+<td>前 K 个结果中有多少真正相关</td>
+<td>衡量结果精准度</td>
+</tr>
+<tr>
+<td>Hit Rate@K</td>
+<td>前 K 个中至少出现一个正确结果</td>
+<td>快速判断”有没有召回”</td>
+</tr>
+<tr>
+<td>MRR</td>
+<td>第一个正确结果排在什么位置</td>
+<td>衡量排序质量</td>
+</tr>
+<tr>
+<td>NDCG</td>
+<td>同时考虑相关性等级和排序位置</td>
+<td>有分级相关性时最准确</td>
+</tr>
+<tr>
+<td>证据覆盖率</td>
+<td>必需证据中有多少被成功召回</td>
+<td>Agent 场景最核心的指标</td>
+</tr>
+</tbody></table></div>
+<p>在 Agent 场景里，我最关注的是<strong>证据覆盖率</strong>——不是”召回来的东西相不相关”，而是”做出判断需要的证据有没有被召回来”。Recall@K 再高，如果关键证据没召回，Agent 的结论照样可能是错的。</p>
+<hr>
+<h2 id="迭代式检索：一次查不够就多查几次"><a href="#迭代式检索：一次查不够就多查几次" class="headerlink" title="迭代式检索：一次查不够就多查几次"></a>迭代式检索：一次查不够就多查几次</h2><p>第六个坑是一次检索经常查不全。</p>
+<p>用户问”为什么昨天上线之后订单接口响应时间突然升高”，第一轮检索可能只召回发布记录——“上线了新的优惠计算模块”。但仅凭这个信息不能确定就是原因，还需要查数据库慢查询、缓存命中率、下游接口耗时等。</p>
+<p>这就是<strong>迭代式检索</strong>：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第一轮检索 → 判断证据是否充分 → 不充分 → 生成下一轮 Query → 第二轮检索 → ...</span><br><span class="line">                                                          ↓</span><br><span class="line">                                                    证据充分 / 达到预算 → 停止</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>判断证据是否充分</strong>是关键。我的做法是让模型输出结构化评估：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"sufficient"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"known_facts"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"昨天发布了新的优惠计算模块"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"missing_evidence"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">"优惠计算模块的平均执行耗时"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">"数据库慢查询情况"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">"缓存命中率变化"</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>missing_evidence</code> 就是下一轮检索的输入。</p>
+<p><strong>停止条件</strong>要同时设效果和成本两类：</p>
+<ul>
+<li>效果条件：证据充分、连续两轮无新信息</li>
+<li>成本条件：达到最大轮数、超时、Token 预算用完</li>
+</ul>
+<blockquote>
+<p>这里和第二篇聊的 TAO 状态循环有一个呼应：迭代式检索的”检索—评估—补充检索”循环，本质上就是一个针对检索任务的 Observe-Think-Act 循环。每一轮检索都是一次 Act，评估证据充分性就是 Observe，决定下一步查什么就是 Think。</p>
+</blockquote>
+<hr>
+<h2 id="性能优化：能不查就不查"><a href="#性能优化：能不查就不查" class="headerlink" title="性能优化：能不查就不查"></a>性能优化：能不查就不查</h2><p>检索链路越复杂，延迟和成本越高。我的优化策略是三层：</p>
+<h3 id="第一层：基础优化"><a href="#第一层：基础优化" class="headerlink" title="第一层：基础优化"></a>第一层：基础优化</h3><ul>
+<li>优化中间件索引和 Mapping</li>
+<li>避免生成宽泛昂贵的 Query</li>
+<li>消除重复 Embedding 和重复查询</li>
+<li>能预计算的不要放到在线链路</li>
+</ul>
+<h3 id="第二层：最小充分检索"><a href="#第二层：最小充分检索" class="headerlink" title="第二层：最小充分检索"></a>第二层：最小充分检索</h3><p>不要试图一次性解决所有问题，找出当前最小的、可以独立完成的目标。</p>
+<p>比如用户问”帮我看看 Redis Cluster 适不适合我们，如果适合再看看怎么部署”。第一阶段只需要判断”适不适合”——如果结论是不适合，部署方案根本不需要查。</p>
+<p><strong>判断最小目标的原则</strong>：完成之后能否给用户一个有意义的结果。如果能，它就是一个合适的最小目标。</p>
+<h3 id="第三层：预算控制"><a href="#第三层：预算控制" class="headerlink" title="第三层：预算控制"></a>第三层：预算控制</h3><p>给每次检索设置 Budget：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"retrieval_budget"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"max_time_ms"</span><span class="punctuation">:</span> <span class="number">3000</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"max_rounds"</span><span class="punctuation">:</span> <span class="number">3</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"max_queries"</span><span class="punctuation">:</span> <span class="number">10</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"max_documents"</span><span class="punctuation">:</span> <span class="number">50</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"token_budget"</span><span class="punctuation">:</span> <span class="number">8000</span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>简单问题走轻量路径，证据不足再逐步升级；预算不足则主动降级，用当前最好的结果回答。</p>
+<blockquote>
+<p>这个思路和第三篇聊的动态编排是一回事——不是预先规定一条固定策略，而是根据当前状态动态决定下一步怎么做。上下文管理里的动态编排控制的是”往窗口里塞什么”，检索里的预算控制的是”花多少资源去找”。</p>
+</blockquote>
+<h3 id="缓存：能不查就不查"><a href="#缓存：能不查就不查" class="headerlink" title="缓存：能不查就不查"></a>缓存：能不查就不查</h3><p>还有最后一层优化：<strong>缓存</strong>。同样的查询反复出现是很常见的——同一个用户在不同轮次问类似的问题，或者不同用户问同一个热门话题。</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>缓存类型</th>
+<th>适用场景</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>检索结果缓存</td>
+<td>同一 Query 短时间内重复出现</td>
+<td>原始查询要先改写再匹配缓存，不然”Redis 怎么样”和”Redis 好不好”匹配不上</td>
+</tr>
+<tr>
+<td>最终答案缓存</td>
+<td>FAQ、制度查询等答案稳定的问题</td>
+<td>依赖实时数据时容易返回过期答案，要谨慎</td>
+</tr>
+</tbody></table></div>
+<p>我的建议是<strong>优先缓存检索结果，谨慎缓存最终答案</strong>。检索结果缓存的”过期”影响相对可控（最多就是返回稍旧的文档），但最终答案缓存过期可能直接给出错误结论。</p>
+<hr>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>做了一段时间 Agent 检索之后，我最大的感受是：<strong>RAG 只是检索的起点，不是终点。</strong></p>
+<p>Chunk、Embedding、Top-K 这些是基础，但真正让检索好用的是围绕它们的一系列机制：</p>
+<ul>
+<li><strong>查询规划</strong>：让 Agent 知道自己缺什么、去哪里找</li>
+<li><strong>查询改写</strong>：把用户口语转换成有效的检索 Query</li>
+<li><strong>多路召回</strong>：不同检索方式互补</li>
+<li><strong>迭代式检索</strong>：一次查不够就多查几次</li>
+<li><strong>性能优化</strong>：能不查就不查，能少查就少查</li>
+</ul>
+<p>这些东西看起来零散，但其实是一条线：<strong>怎么让 Agent 在需要的时候，用合适的代价，找到真正需要的信息。</strong></p>
+<p>第三篇里我写过一个公式：<code>Context Window = f(Context)</code>。现在可以把 <code>f</code> 里的 Retrieve 这一步展开看了——它不是一个简单的 <code>search(query)</code>，而是一个包含查询规划、查询改写、多路召回、迭代补充、性能控制的完整子系统。</p>
+<p>到这里，意图识别、规划与执行、上下文管理、智能检索——Agent 的四个核心模块都聊完了。回头看这四篇，其实它们不是独立的：意图识别决定检索什么，检索结果进入上下文，上下文影响规划决策，规划又触发新的检索。这是一个循环，而这个循环，可能就是 Agent 系统最本质的东西。</p>
+</article>
+<div class="article-tags slide-up"><a class="tag" href="/tags/AI/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>AI</a><a class="tag" href="/tags/Agent/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>Agent</a></div>
+
+
+  <div class="article-share slide-up" id="share">
+    <div class="body">
+      <div class="social-wrap dis-select"><a class="social share-item qrcode ui-interactive is-icon-only" onclick="util.toggle(&quot;share-qrcode&quot;)" aria-label="分享文章: QR Code" title="分享文章: QR Code"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M10.553 13.447c-.424-.424-.95-.596-1.535-.675c-.553-.074-1.25-.074-2.086-.074H5.827c-.58 0-1.065 0-1.459.037c-.411.04-.795.124-1.146.34c-.345.21-.634.5-.845.844c-.216.352-.3.735-.34 1.147C2 15.459 2 15.944 2 16.525v.068c0 .884 0 1.597.055 2.17c.056.592.175 1.108.459 1.571c.288.47.682.864 1.152 1.152c.463.284.979.403 1.57.46C5.81 22 6.524 22 7.407 22h.07c.58 0 1.064 0 1.458-.037c.412-.04.795-.124 1.147-.34c.344-.21.633-.5.844-.844c.216-.352.3-.736.34-1.147c.037-.394.037-.879.037-1.46v-1.104c0-.836 0-1.533-.074-2.086c-.079-.584-.251-1.111-.675-1.535m-1.62-11.41c.412.04.795.124 1.147.34c.344.21.633.5.844.845c.216.351.3.735.34 1.146c.037.394.037.879.037 1.46v1.104c0 .836 0 1.533-.074 2.086c-.079.584-.251 1.111-.675 1.535s-.95.596-1.535.675c-.553.074-1.25.074-2.086.074H5.827c-.58 0-1.065 0-1.459-.037c-.411-.04-.795-.124-1.146-.34a2.56 2.56 0 0 1-.845-.844c-.216-.352-.3-.735-.34-1.147C2 8.54 2 8.056 2 7.475v-.068c0-.884 0-1.597.055-2.17c.056-.592.175-1.108.459-1.571c.288-.47.682-.864 1.152-1.152c.463-.284.979-.403 1.57-.46C5.81 2 6.524 2 7.407 2h.07c.58 0 1.064 0 1.458.037M16.593 2h-.068c-.58 0-1.065 0-1.46.037c-.41.04-.794.124-1.146.34c-.344.21-.633.5-.844.845c-.216.351-.3.735-.34 1.146c-.037.394-.037.879-.037 1.46v1.104c0 .836 0 1.533.074 2.086c.079.584.251 1.111.675 1.535s.95.596 1.535.675c.553.074 1.25.074 2.086.074h1.105c.58 0 1.065 0 1.459-.037c.411-.04.795-.124 1.146-.34c.345-.21.634-.5.845-.844c.216-.352.3-.735.34-1.147C22 8.54 22 8.056 22 7.475v-.068c0-.884 0-1.597-.055-2.17c-.056-.592-.175-1.108-.459-1.571a3.5 3.5 0 0 0-1.152-1.152c-.463-.284-.979-.403-1.57-.46C18.19 2 17.477 2 16.594 2" opacity=".5"/><path fill="currentColor" d="M14.093 21.302a.698.698 0 1 1-1.396 0v-2.79h1.396z" opacity=".4"/><path fill="currentColor" d="M21.302 12.698a.7.7 0 0 0-.697.697v3.256H22v-3.256a.7.7 0 0 0-.698-.697" opacity=".5"/><path fill="currentColor" d="M16.076 16.617c-.076.184-.076.417-.076.883s0 .699.076.883a1 1 0 0 0 .541.54c.184.077.417.077.883.077s.699 0 .883-.076a1 1 0 0 0 .54-.541c.077-.184.077-.417.077-.883s0-.699-.076-.883a1 1 0 0 0-.541-.54C18.199 16 17.966 16 17.5 16s-.699 0-.883.076a1 1 0 0 0-.54.541"/><path fill="currentColor" d="M22 18.535v-.023h-1.396c0 .443 0 .74-.016.97c-.015.224-.043.333-.073.405a1.16 1.16 0 0 1-.629.63c-.072.029-.18.056-.405.072c-.23.015-.527.016-.97.016h-1.86V22h1.883c.414 0 .759 0 1.042-.02a2.6 2.6 0 0 0 .844-.175a2.56 2.56 0 0 0 1.384-1.384c.112-.27.156-.549.176-.844c.02-.283.02-.628.02-1.042" opacity=".7"/><path fill="currentColor" d="M12.697 16.616v.035h1.396c0-.668 0-1.116.035-1.458c.034-.33.093-.482.16-.583a1.2 1.2 0 0 1 .321-.32c.101-.068.254-.128.584-.161c.342-.035.79-.036 1.458-.036h1.86v-1.395h-1.896c-.623 0-1.142 0-1.563.043c-.44.044-.85.142-1.218.388c-.28.187-.519.426-.706.706c-.246.368-.343.777-.388 1.217c-.043.421-.043.94-.043 1.564" opacity=".6"/><path fill="currentColor" d="M5.508 18.69c.219.155.528.155 1.146.155c.619 0 .928 0 1.146-.155a.8.8 0 0 0 .2-.199c.154-.218.154-.527.154-1.146s0-.927-.155-1.146A.8.8 0 0 0 7.8 16c-.218-.155-.527-.155-1.146-.155s-.927 0-1.146.155a.8.8 0 0 0-.199.2c-.155.218-.155.527-.155 1.145c0 .619 0 .928.155 1.146a.8.8 0 0 0 .2.2M6.654 8.155c-.618 0-.927 0-1.146-.155a.8.8 0 0 1-.199-.2c-.155-.217-.155-.527-.155-1.145c0-.619 0-.928.155-1.146a.8.8 0 0 1 .2-.2c.218-.154.527-.154 1.145-.154c.619 0 .928 0 1.146.155a.8.8 0 0 1 .2.199c.154.218.154.527.154 1.146s0 .928-.155 1.146A.8.8 0 0 1 7.8 8c-.218.155-.527.155-1.146.155M16.2 8c.218.155.527.155 1.146.155s.927 0 1.146-.155a.8.8 0 0 0 .199-.199c.155-.218.155-.528.155-1.146c0-.619 0-.928-.155-1.146a.8.8 0 0 0-.2-.2c-.218-.154-.527-.154-1.145-.154c-.619 0-.928 0-1.146.155a.8.8 0 0 0-.2.199c-.154.218-.154.527-.154 1.146s0 .928.155 1.146A.8.8 0 0 0 16.2 8"/></svg></span></a><a class="social share-item weibo ui-interactive is-icon-only" href="https:&#x2F;&#x2F;service.weibo.com&#x2F;share&#x2F;share.php?url&#x3D;https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F08%2F2026-20260508-agent-rag%2F&amp;title&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%99%BA%E8%83%BD%E6%A3%80%E7%B4%A2%E4%B8%8ERAG%20-%20ssw5ive&amp;summary&#x3D;Agent%20%E7%B3%BB%E5%88%97%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E6%99%BA%E8%83%BD%E6%A3%80%E7%B4%A2%E4%B8%8E%20RAG%20%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%8C%E4%BB%8E%E6%B5%B7%E9%87%8F%E7%9F%A5%E8%AF%86%E4%B8%AD%E7%B2%BE%E5%87%86%E5%8F%AC%E5%9B%9E%E4%BF%A1%E6%81%AF%E3%80%82" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: Weibo" title="分享文章: Weibo"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439l-.002.004zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.601l.014-.028zm.176-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.793-.201-3.642-2.161-4.149zm7.563-1.224c-.346-.105-.57-.18-.405-.615.375-.977.42-1.804 0-2.404-.781-1.112-2.915-1.053-5.364-.03 0 0-.766.331-.571-.271.376-1.217.315-2.224-.27-2.809-1.338-1.337-4.869.045-7.888 3.08C1.309 10.87 0 13.273 0 15.348c0 3.981 5.099 6.395 10.086 6.395 6.536 0 10.888-3.801 10.888-6.82 0-1.822-1.547-2.854-2.915-3.284v.01zm1.908-5.092c-.766-.856-1.908-1.187-2.96-.962-.436.09-.706.511-.616.932.09.42.511.691.932.602.511-.105 1.067.044 1.442.465.376.421.466.977.316 1.473-.136.406.089.856.51.992.405.119.857-.105.992-.512.33-1.021.12-2.178-.646-3.035l.03.045zm2.418-2.195c-1.576-1.757-3.905-2.419-6.054-1.968-.496.104-.812.587-.706 1.081.104.496.586.813 1.082.707 1.532-.331 3.185.15 4.296 1.383 1.112 1.246 1.429 2.943.947 4.416-.165.48.106 1.007.586 1.157.479.165.991-.104 1.157-.586.675-2.088.241-4.478-1.338-6.235l.03.045z"/></svg></span></a><a class="social share-item x ui-interactive is-icon-only" href="https:&#x2F;&#x2F;x.com&#x2F;intent&#x2F;tweet?text&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%99%BA%E8%83%BD%E6%A3%80%E7%B4%A2%E4%B8%8ERAG%20-%20ssw5ive&amp;url&#x3D;https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F08%2F2026-20260508-agent-rag%2F" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: X" title="分享文章: X"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M14.234 10.162L22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299l-.929-1.329L3.076 1.56h3.182l5.965 8.532l.929 1.329l7.754 11.09h-3.182z"/></svg></span></a><a class="social share-item telegram ui-interactive is-icon-only" href="https:&#x2F;&#x2F;t.me&#x2F;share&#x2F;url?url&#x3D;https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F08%2F2026-20260508-agent-rag%2F&amp;text&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%99%BA%E8%83%BD%E6%A3%80%E7%B4%A2%E4%B8%8ERAG%20-%20ssw5ive" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: Telegram" title="分享文章: Telegram"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12a12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.5.5 0 0 1 .171.325c.016.093.036.306.02.472c-.18 1.898-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.065-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024q-.159.037-5.061 3.345q-.72.495-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.245-1.349-.374-1.297-.789q.04-.324.893-.663q5.247-2.286 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635"/></svg></span></a><a class="social share-item whatsapp ui-interactive is-icon-only" href="https:&#x2F;&#x2F;wa.me&#x2F;?text&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%99%BA%E8%83%BD%E6%A3%80%E7%B4%A2%E4%B8%8ERAG%20-%20ssw5ive%0Ahttps%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F08%2F2026-20260508-agent-rag%2F" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: WhatsApp" title="分享文章: WhatsApp"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52s.198-.298.298-.497c.099-.198.05-.371-.025-.52s-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51a13 13 0 0 0-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074s2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413s.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214l-3.741.982l.998-3.648l-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884c2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.82 11.82 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.9 11.9 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.82 11.82 0 0 0-3.48-8.413"/></svg></span></a><a class="social share-item email ui-interactive is-icon-only" href="mailto:?subject&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%99%BA%E8%83%BD%E6%A3%80%E7%B4%A2%E4%B8%8ERAG%20-%20ssw5ive&amp;body&#x3D;https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F08%2F2026-20260508-agent-rag%2F" aria-label="分享文章: Email" title="分享文章: Email"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M3.172 5.172C2 6.343 2 8.229 2 12s0 5.657 1.172 6.828C4.343 20 6.229 20 10 20h4c3.771 0 5.657 0 6.828-1.172C22 17.657 22 15.771 22 12s0-5.657-1.172-6.828C19.657 4 17.771 4 14 4h-4C6.229 4 4.343 4 3.172 5.172m15.404 2.348a.75.75 0 0 1-.096 1.056l-2.196 1.83c-.887.739-1.605 1.338-2.24 1.746-.66.424-1.303.693-2.044.693s-1.384-.269-2.045-.693c-.634-.408-1.352-1.007-2.239-1.745L5.52 8.576a.75.75 0 1 1 .96-1.152l2.159 1.799c.933.777 1.58 1.315 2.128 1.667.529.34.888.455 1.233.455s.704-.115 1.233-.455c.547-.352 1.195-.89 2.128-1.667l2.159-1.8a.75.75 0 0 1 1.056.097" clip-rule="evenodd"/></svg></span></a></div>
+      <div class="share-qrcode" id="share-qrcode" style="opacity:0;height:0"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&amp;data=https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F08%2F2026-20260508-agent-rag%2F" onerror="this.onerror&#x3D;null;this.src&#x3D;&quot;&#x2F;images&#x2F;stellar-error.491ee870f4940739.svg&quot;"/></div>
+    </div>
+  </div>
+
+
+
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note"><svg class="icon" viewBox="0 0 1 1" data-icon="default:arrow-left" aria-hidden="true"></svg> 较新文章</div><a href="/2026/05/10/2026-20260510-agent-evaluation/">Agent系统开发手记（五）：评估与反馈</a></div><div class="item" id="next"><div class="note">较早文章 <svg class="icon" viewBox="0 0 1 1" data-icon="default:arrow-right" aria-hidden="true"></svg></div><a href="/2026/05/05/2026-20260505-agent-context-management/">Agent系统开发手记（三）：上下文管理</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    
+    
+    <section class="body cmt-body waline">
+      
+
+<div id="waline_container" class="waline_thread with-fancybox"><div class="lazy-icon"></div></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p><a target="_blank" rel="noopener" href="https://github.com/sswfive">GitHub</a> · <a target="_blank" rel="noopener" href="https://x.com/sswfive">X(Twitter)</a> · <a href="/atom.xml">订阅 RSS</a><br>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/2.0.0-rc.5">Stellar 2.0.0-rc.5</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。<br><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+</main>
+<aside data-stellar-runtime-region id="rightbar-region" class="site-region site-region--rightbar" data-region="rightbar" aria-label="Rightbar"><div class="site-region__surface ui-drawer-surface"><div class="site-region__viewport"><div class="widgets widget-stack widget-stack--rightbar widget-stack--rightbar"><div class="widget-instance widget-instance--toc" data-widget-id="rightbar:1:toc" data-presentation="rightbar">
+
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false">
+  
+    <div class="widget-header dis-select">
+      <span class="name">本文目录</span>
+      <button type="button" class="cap-action ui-interactive card-hover card-hover--spotlight" data-shell-action="toggle-toc" aria-label="Toggle table of contents" aria-pressed="false"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></span></button>
+    </div>
+  
+  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E8%AE%A9%E6%88%91%E5%A4%B4%E7%96%BC%E7%9A%84%E5%9C%BA%E6%99%AF%E8%AF%B4%E8%B5%B7"><span class="toc-text">从一个让我头疼的场景说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%85%88%E6%90%9E%E6%B8%85%E6%A5%9A%E4%B8%80%E4%B8%AA%E8%AE%A4%E7%9F%A5%EF%BC%9ARAG-%E4%B8%8D%E7%AD%89%E4%BA%8E-Agent-%E6%A3%80%E7%B4%A2"><span class="toc-text">先搞清楚一个认知：RAG 不等于 Agent 检索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E6%9F%A5%E8%AF%A2%E4%BB%80%E4%B9%88%EF%BC%9A%E8%AE%A9-Agent-%E7%9F%A5%E9%81%93%E8%87%AA%E5%B7%B1%E7%BC%BA%E4%BB%80%E4%B9%88"><span class="toc-text">查询什么：让 Agent 知道自己缺什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%8E%BB%E5%93%AA%E9%87%8C%E6%A3%80%E7%B4%A2%EF%BC%9A%E6%9F%A5%E8%AF%A2%E7%A9%BA%E9%97%B4%E4%B8%8D%E6%98%AF%E5%9B%BA%E5%AE%9A%E7%9A%84"><span class="toc-text">去哪里检索：查询空间不是固定的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#Chunk-%E5%88%87%E5%89%B2%EF%BC%9A%E4%B8%8D%E6%98%AF%E4%B8%80%E5%88%80%E5%88%87%E5%B0%B1%E5%AE%8C%E4%BA%8B%E4%BA%86"><span class="toc-text">Chunk 切割：不是一刀切就完事了</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%88%B6%E5%AD%90%E6%96%87%E6%A1%A3%EF%BC%9A%E5%B0%8F%E7%B2%92%E5%BA%A6%E5%8F%AC%E5%9B%9E%EF%BC%8C%E5%A4%A7%E7%B2%92%E5%BA%A6%E9%98%85%E8%AF%BB"><span class="toc-text">父子文档：小粒度召回，大粒度阅读</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E5%B1%82%E6%AC%A1%E6%96%87%E6%A1%A3%EF%BC%9A%E4%BB%8E%E7%88%B6%E5%AD%90%E5%88%B0%E5%A4%9A%E5%B1%82"><span class="toc-text">层次文档：从父子到多层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E6%9F%A5%E8%AF%A2%E6%94%B9%E5%86%99%EF%BC%9A%E5%88%AB%E7%9B%B4%E6%8E%A5%E6%8B%BF%E7%94%A8%E6%88%B7%E5%8E%9F%E8%AF%9D%E5%8E%BB%E6%A3%80%E7%B4%A2"><span class="toc-text">查询改写：别直接拿用户原话去检索</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#HyDE%EF%BC%9A%E5%85%88%E7%8C%9C%E7%AD%94%E6%A1%88%E5%86%8D%E6%A3%80%E7%B4%A2"><span class="toc-text">HyDE：先猜答案再检索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#5W1H%EF%BC%9A%E6%8A%8A%E6%A8%A1%E7%B3%8A%E9%97%AE%E9%A2%98%E6%8B%86%E6%88%90%E5%8F%AF%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%AD%90%E9%97%AE%E9%A2%98"><span class="toc-text">5W1H：把模糊问题拆成可查询的子问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%8F%AC%E5%9B%9E%E4%BC%98%E5%8C%96%EF%BC%9A%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E-%E6%B7%B7%E5%90%88%E6%8E%92%E5%BA%8F"><span class="toc-text">召回优化：多路召回 + 混合排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E6%80%8E%E4%B9%88%E8%AF%84%E4%BC%B0%E6%A3%80%E7%B4%A2%E6%95%88%E6%9E%9C%EF%BC%9F"><span class="toc-text">怎么评估检索效果？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E8%BF%AD%E4%BB%A3%E5%BC%8F%E6%A3%80%E7%B4%A2%EF%BC%9A%E4%B8%80%E6%AC%A1%E6%9F%A5%E4%B8%8D%E5%A4%9F%E5%B0%B1%E5%A4%9A%E6%9F%A5%E5%87%A0%E6%AC%A1"><span class="toc-text">迭代式检索：一次查不够就多查几次</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%EF%BC%9A%E8%83%BD%E4%B8%8D%E6%9F%A5%E5%B0%B1%E4%B8%8D%E6%9F%A5"><span class="toc-text">性能优化：能不查就不查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%AC%AC%E4%B8%80%E5%B1%82%EF%BC%9A%E5%9F%BA%E7%A1%80%E4%BC%98%E5%8C%96"><span class="toc-text">第一层：基础优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%AC%AC%E4%BA%8C%E5%B1%82%EF%BC%9A%E6%9C%80%E5%B0%8F%E5%85%85%E5%88%86%E6%A3%80%E7%B4%A2"><span class="toc-text">第二层：最小充分检索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%AC%AC%E4%B8%89%E5%B1%82%EF%BC%9A%E9%A2%84%E7%AE%97%E6%8E%A7%E5%88%B6"><span class="toc-text">第三层：预算控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%BC%93%E5%AD%98%EF%BC%9A%E8%83%BD%E4%B8%8D%E6%9F%A5%E5%B0%B1%E4%B8%8D%E6%9F%A5"><span class="toc-text">缓存：能不查就不查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-text">写在最后</span></a></li></ol></div>
+  <div class="widget-footer"><a class="top ui-interactive" onclick="util.scrollTop()"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M20.536 3.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464" opacity=".5"/><path fill="currentColor" d="M9.53 12.03a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 1 1-1.06 1.06L12 9.56z"/><path fill="currentColor" d="M9.53 16.03a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 1 1-1.06 1.06L12 13.56z"/></svg></span><span>回到顶部</span></a><a class="buttom ui-interactive" onclick="util.scrollComment()"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M7.25 9A.75.75 0 0 1 8 8.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 9m0 3.5a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75"/></svg></span><span>参与讨论</span></a></div>
+</widget>
+
+
+</div></div></div></div></aside>
+</div><button type="button" class="site-scrim" data-shell-action="dismiss-drawer" aria-label="Close navigation" tabindex="-1"></button><div data-stellar-runtime-region class="site-dock" role="group" aria-label="Layout panels">
+  <button type="button" class="site-dock__button site-dock__button--rightbar ui-interactive" aria-label="Open rightbar" aria-controls="rightbar-region" aria-expanded="false" data-shell-action="toggle-rightbar-drawer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" class="site-dock__button site-dock__button--leftbar ui-interactive" aria-label="Open leftbar" aria-controls="leftbar-region" aria-expanded="false" data-shell-action="toggle-leftbar-drawer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+
+<dialog data-stellar-runtime-region class="search-dialog" id="site-search-dialog" aria-labelledby="site-search-title">
+  <div class="search-dialog__panel search-wrapper" id="site-search-wrapper" searching="false">
+    <div class="search-dialog__header">
+      <div class="search-form" role="search">
+        <span class="search-button" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Adapted from Google Material Icons by Material Design Authors - https://github.com/material-icons/material-icons/blob/master/LICENSE --><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3M3 13h3M3 18h8M16.83 13.83l3.76 3.76"/><circle cx="14" cy="11" r="4"/></g></svg></span>
+        <input type="search" class="search-input" id="site-search-input" aria-labelledby="site-search-title" placeholder="搜索">
+      </div>
+      <button type="button" class="search-dialog__close" data-shell-action="close-search" aria-label="关闭搜索">×</button>
+    </div>
+    
+      <div class="search-dialog__scope" role="radiogroup" aria-labelledby="site-search-title" hidden>
+        <label class="search-dialog__scope-option" data-search-scope-option="all">
+          <input class="ui-radio" type="radio" name="site-search-scope" value="all">
+          <span>全站</span>
+        </label>
+        <label class="search-dialog__scope-option" data-search-scope-option="blog" hidden>
+          <input class="ui-radio" type="radio" name="site-search-scope" value="blog">
+          <span>博客</span>
+        </label>
+        <label class="search-dialog__scope-option" data-search-scope-option="current" hidden>
+          <input class="ui-radio" type="radio" name="site-search-scope" value="current">
+          <span data-search-scope-current-label></span>
+        </label>
+      </div>
+    
+    <h2 class="search-dialog__title" id="site-search-title">站内搜索</h2>
+    <div class="search-result" id="site-search-result"></div>
+    <div class="search-no-result">没有找到内容！</div>
+  </div>
+</dialog>
+</div><div class="site-scripts">
+<script data-stellar-script="core" src="/js/stellar-icons.js?v=69733527783f5b02"></script>
+
+<script data-stellar-script="defines">
+  window.canonical = window.stellarClientData.canonical;
+  const ctx = window.stellarClientData.ctx;
+  window.canonical.param = {permalink: "https://sswfive.xyz/2026/05/08/2026-20260508-agent-rag/", checklink: ctx.services.video.js};
+  ctx.date_suffix = {"just":"刚刚","min":"分钟前","hour":"小时前","day":"天前"};
+  if (ctx.search) Object.assign(ctx.search, {"more":"更多","no_more":"没有更多了"});
+  const def = window.stellarClientData.def;
+  window.ctx = ctx;
+  window.def = def;
+</script>
+
+
+<!-- core: 迁移期 DOM/资源兼容工具；Extension 注册与生命周期由 ESM runtime 所有 -->
+<script data-stellar-script="core" src="/js/utils.js?v=2.0.0-rc.5"></script>
+<script data-stellar-script="core" src="/js/main.js?v=2.0.0-rc.5" defer></script>
+<script data-stellar-script="core" defer src="/js/profile.js?v=2.0.0-rc.5"></script>
+
+
+
+
+
+<script data-stellar-script="core" type="application/json" id="stellar-runtime-config">{"version":1,"root":"/","policy":{"cache":{"enabled":true,"defaultTtl":3600,"ttl":{"giscus":600,"waline":600,"artalk":600,"memos":600,"memos-user":86400,"sites":86400,"friends":86400,"friends_and_posts":86400,"siteinfo":86400},"maxEntries":200},"request":{"retries":2,"timeoutMs":5000,"idleTimeoutMs":3000,"maxCacheEntryBytes":204800},"features":{"codeCopyToastMs":2500},"providers":{"linkPrefetch":"flying_pages","lightbox":"fancybox","diagrams":"mermaid"}},"extensions":[{"id":"pin-slider","module":"/js/runtime/extensions/pin-slider.js","scope":"region","when":{"selector":".pin-slider"},"config":{}},{"id":"page-controls","module":"/js/runtime/extensions/page-controls.js","scope":"region","when":{"always":true},"config":{"highlight":"/js/search/highlight.js","tagtree":"/js/tagtree.js"}},{"id":"partial-navigation","module":"/js/runtime/extensions/partial-navigation.js","scope":"document","when":{"always":true},"config":{}},{"id":"color-scheme-switch","module":"/js/runtime/extensions/color-scheme-switch.js","scope":"document","when":{"always":true},"config":{"messages":{"light":"切换到浅色模式","dark":"切换到深色模式","auto":"切换到跟随系统配色"}}},{"id":"search","module":"/js/runtime/extensions/search.js","scope":"document","when":{"selector":".search-input"},"config":{"provider":"local","options":{"scope":"all","includeContent":true,"cacheTtlSeconds":86400},"assets":{"client":null,"provider":"/js/search/local-search.js","shortcut":"/js/search/shortcut.js"}}},{"id":"hero-effect","module":"/js/runtime/extensions/hero-effect.js","scope":"region","when":{"selector":"canvas[data-hero-effect]"},"config":{}},{"id":"lazy-loading","module":"/js/runtime/extensions/lazy-loading.js","scope":"document","when":{"always":true},"config":{"asset":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"}},{"id":"deferred-icons","module":"/js/runtime/extensions/deferred-icons.js","scope":"region","when":{"selector":"svg.icon[data-icon]"},"config":{}},{"id":"dropdown","module":"/js/runtime/extensions/dropdown.js","scope":"region","when":{"selector":"details.dropdown"},"config":{}},{"id":"services","module":"/js/runtime/extensions/services.js","scope":"region","when":{"selector":"#artalk_container, #twikoo_container, #waline_container, .data-service, [class*='ds-'], a[cardlink], a[data-md-link][data-siteinfo-api], .site-card [data-siteinfo-api], .voice\u003eaudio, .video\u003evideo, .chat-file"},"config":{"marked":"https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js"}},{"id":"comments","module":"/js/runtime/extensions/comments.js","scope":"region","when":{"selector":"#comments"},"config":{"provider":"waline","options":{"serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]},"pageTitle":"Agent系统开发手记（四）：智能检索与RAG","assets":{"localCss":"/css/comments/waline.css","js":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline.js","css":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline.css","metaCss":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline-meta.css"}}},{"id":"settings","module":"/js/runtime/extensions/settings.js","scope":"region","when":{"selector":".settings-page"},"config":{}},{"id":"link-prefetch","module":"/js/runtime/extensions/link-prefetch.js","scope":"document","when":{"always":true},"config":{"asset":"https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"}},{"id":"lightbox","module":"/js/runtime/extensions/lightbox.js","scope":"region","when":{"selector":"[data-fancybox]:not(.error), .with-fancybox, .ds-memos, .timenode p\u003eimg"},"config":{"enabled":true,"selector":".timenode p\u003eimg","assets":{"localCss":"/css/plugins/fancybox.css","js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"}}},{"id":"reveal","module":"/js/runtime/extensions/reveal.js","scope":"region","when":{"selector":".slide-up"},"config":{"enabled":true,"duration":800,"interval":200,"distance":8,"blur":4}},{"id":"mathjax","module":"/js/runtime/extensions/mathjax.js","scope":"region","when":{"selector":".has-jax, script[type^='math/tex']"},"config":{"options":{},"asset":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"}},{"id":"diagrams","module":"/js/runtime/extensions/diagrams.js","scope":"region","when":{"selector":".mermaid"},"config":{"theme":"neutral","provider":"mermaid","assets":{"js":"https://gcore.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"},"colorScheme":"auto"}},{"id":"code-copy","module":"/js/runtime/extensions/code-copy.js","scope":"region","when":{"selector":".code"},"config":{"assets":{"js":"/js/plugins/copycode.js"},"messages":{"label":"复制","copied":"复制成功","denied":"未获得剪贴板权限","unsupported":"当前浏览器不支持剪贴板或页面不是 HTTPS"}}},{"id":"adaptive-text","module":"/js/runtime/extensions/adaptive-text.js","scope":"region","when":{"selector":"[data-text-adaptive]"},"config":{"assets":{"colorJs":"/js/color.js","js":"/js/plugins/adaptive-text.js"}}},{"id":"card-hover","module":"/js/runtime/extensions/card-hover.js","scope":"region","when":{"selector":".card-hover"},"config":{"spotlight":true,"tilt":false,"assets":{"js":"/js/plugins/card-hover.js"}}},{"id":"swiper","module":"/js/runtime/extensions/swiper.js","scope":"region","when":{"selector":"#swiper-api"},"config":{"assets":{"localCss":"/css/plugins/swiper.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js","css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css"}}}]}</script>
+<script data-stellar-script="core" type="module" src="/js/runtime/index.js?v=2.0.0-rc.5&runtime=1"></script>
+
+
+<!-- inject -->
+
+
+<script data-stellar-script="core" defer src="/js/navigation-init.js?v=2.0.0-rc.5"></script>
+</div></body></html>
+

@@ -1,0 +1,905 @@
+
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/2.0.0-rc.5" theme-name="Stellar" theme-version="2.0.0-rc.5">
+  <link rel="canonical" href="https://sswfive.xyz/2026/05/01/2026-20260501-agent-intent-recognition/" data-stellar-page-meta="">
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title data-stellar-page-meta>Agent系统开发手记（一）：意图识别 - ssw5ive</title>
+  <script data-stellar-script="core">
+    (function () {
+      var key = 'stellar:v2:leftbar-state';
+      var fallback = "expanded";
+      try {
+        var value = localStorage.getItem(key);
+        document.documentElement.dataset.leftbarState = value === 'collapsed' || value === 'expanded' ? value : fallback;
+      } catch (error) {
+        document.documentElement.dataset.leftbarState = fallback;
+      }
+    })();
+  </script>
+
+  <meta name="description" content="Agent 系列第一篇：意图识别的难点、方案选型与在实际场景中的落地。" data-stellar-page-meta="">
+<meta property="og:type" content="article" data-stellar-page-meta="">
+<meta property="og:title" content="Agent系统开发手记（一）：意图识别" data-stellar-page-meta="">
+<meta property="og:url" content="https://sswfive.xyz/2026/05/01/2026-20260501-agent-intent-recognition/" data-stellar-page-meta="">
+<meta property="og:site_name" content="ssw5ive" data-stellar-page-meta="">
+<meta property="og:description" content="Agent 系列第一篇：意图识别的难点、方案选型与在实际场景中的落地。" data-stellar-page-meta="">
+<meta property="og:locale" content="zh_CN" data-stellar-page-meta="">
+<meta property="article:author" content="sswfive" data-stellar-page-meta="">
+<meta property="article:published_time" content="2026-05-01T14:00:00.000Z" data-stellar-page-meta="">
+<meta property="article:modified_time" content="2026-09-15T14:04:41.000Z" data-stellar-page-meta="">
+<meta property="article:tag" content="AI" data-stellar-page-meta="">
+<meta property="article:tag" content="Agent" data-stellar-page-meta="">
+<meta name="twitter:card" content="summary" data-stellar-page-meta="">
+<meta name="twitter:creator" content="@sswfive" data-stellar-page-meta=""><meta name="twitter:title" content="Agent系统开发手记（一）：意图识别" data-stellar-page-meta="">
+  
+  
+  <meta name="keywords" content="AI,Agent" data-stellar-page-meta="">
+
+  <!-- feed -->
+  
+    
+
+    
+      
+        <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
+      
+    
+  
+
+  <link rel="preload" href="/css/main.css?v=2.0.0-rc.5" as="style">
+  <link rel="stylesheet" href="/css/main.css?v=2.0.0-rc.5">
+  <style>:root{--text-loading:"正在加载";--text-loading-error:"加载失败，请稍后重试。"}</style>
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json" data-stellar-page-meta="">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"dateCreated":"2026-05-01T22:00:00+08:00","dateModified":"2026-09-15T22:04:41+08:00","datePublished":"2026-05-01T22:00:00+08:00","description":"写在前面最近在做 Agent 相关的事情，踩了不少坑。其中让我印象最深的，就是意图识别。\n说实话，刚开始做的时候，我觉得意图识别不就是调用一次大模型，让它判断用户想干嘛嘛。结果真正跑起来才发现，这玩意儿远没有想象中那么简单。用户的输入千奇百怪——病句、代词、缩写、黑话，想到什么说什么。你要是不处理好这一步，后面所有的流程都是在沙子上盖楼。\n这篇文章是”AI Agent 系统设计”系列的第一篇...","headline":"Agent系统开发手记（一）：意图识别","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2026/05/01/2026-20260501-agent-intent-recognition/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"url":"https://sswfive.xyz/2026/05/01/2026-20260501-agent-intent-recognition/","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"],"keywords":"AI, Agent","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"}</script>
+  <style>
+  /* 中文排版优化 */
+  .md-text { line-height: 1.8; letter-spacing: 0.02em; }
+  .md-text p { margin-bottom: 1em; }
+  .md-text h2 { margin-top: 2em; margin-bottom: 0.8em; }
+  .md-text h3 { margin-top: 1.6em; margin-bottom: 0.6em; }
+  .md-text pre { border-radius: 8px; }
+  .md-text code { border-radius: 4px; padding: 0.15em 0.4em; }
+  .md-text blockquote { border-radius: 8px; }
+  .social-wrap { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 0.25rem !important; }
+  .social-wrap .social { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
+  .social-wrap .social svg, .social-wrap .social img { display: block; margin: auto; width: 1em; height: 1em; }
+</style>
+
+
+  <link rel="stylesheet" href="/css/stellar-icons.css?v=7c185ad1a9a79674">
+  <link rel="preload" as="script" href="/js/stellar-icons.js?v=69733527783f5b02">
+  
+  
+</head>
+<body data-page-type="content" data-page-layout="post" data-article-style="tech"><div data-stellar-runtime-region id="site-cover" class="site-cover"></div><div class="site-shell" id="start" data-regions="leftbar rightbar"><div class="site-workspace">
+<aside data-stellar-runtime-region id="leftbar-region" class="site-region site-region--leftbar" data-region="leftbar" aria-label="Leftbar"><div class="site-region__surface ui-surface"><div class="site-region__decoration" aria-hidden="true"></div><div class="site-region__viewport"><header class="site-region__header site-region__zone site-region__zone--top">
+    <div class="widget-instance widget-instance--brand" data-widget-id="leftbar:fixed:brand" data-presentation="leftbar" data-leftbar-rail>
+<header class="brand-header brand-header--regular brand-header--site"><div class="brand-wrap"><a class="brand-image brand-image--avatar" href="&#x2F;about&#x2F;"><img no-lazy src="&#x2F;images&#x2F;logo.JPG" alt="" onerror="this.onerror&#x3D;null;this.src&#x3D;&quot;&#x2F;images&#x2F;stellar-error.491ee870f4940739.svg&quot;"></a><a class="brand-title" href="&#x2F;about&#x2F;"><div class="brand-name">ssw5ive</div><div class="brand-tagline cap">循此苦旅 以达星辰... | 一念净心花开遍世界</div></a></div><div class="brand-search">
+
+<div class="ui-collection" data-layout="list" data-variant="nav" data-density="auto">
+  
+    
+<button class="ui-collection__item ui-interactive card-hover card-hover--spotlight search-trigger has-hover-surface" type="button" title="搜索" aria-label="搜索" data-shell-action="open-search" data-search-instance="leftbar-brand-search" data-search-domain="topic:ai" data-search-domain-label="AI" data-search-domain-blog="true">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Adapted from Google Material Icons by Material Design Authors - https://github.com/material-icons/material-icons/blob/master/LICENSE --><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3M3 13h3M3 18h8M16.83 13.83l3.76 3.76"/><circle cx="14" cy="11" r="4"/></g></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">搜索</span>
+      
+      
+    </span>
+  
+  <kbd class="search-shortcut" aria-hidden="true">⌘K</kbd>
+
+  
+</button>
+
+  
+</div>
+
+
+</div></header>
+</div>
+  </header>
+  <div class="site-region__body site-region__zone site-region__zone--body">
+    <div class="widget-instance widget-instance--menu" data-widget-id="leftbar:fixed:menu" data-presentation="leftbar" data-leftbar-rail>
+
+
+<nav class="menu dis-select">
+<div class="ui-collection" data-layout="list" data-variant="nav" data-density="auto">
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight is-active" href="&#x2F;" title="文章" aria-current="page">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">文章</span>
+      
+      
+    </span>
+  
+  
+  <span class="ui-collection__indicator"></span>
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;ziliao&#x2F;" title="资源">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">资源</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;friends&#x2F;" title="咖啡">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.25 11.88c-.01.177.015.39.065.818l.401 3.428A5.515 5.515 0 0 0 8.193 21h3.614a5.52 5.52 0 0 0 5.028-3.25H19a3.75 3.75 0 1 0 0-7.5h-2.279a2 2 0 0 0-.618-.22c-.174-.03-.39-.03-.82-.03H4.717c-.43 0-.645 0-.819.03a2 2 0 0 0-1.646 1.85m15.487-.13q.008.065.012.13c.01.177-.014.39-.064.818l-.401 3.428l-.016.124H19a2.25 2.25 0 0 0 0-4.5z"/><path d="M10.53 1.47a.75.75 0 0 1 0 1.06a.666.666 0 0 0 0 .94a2.164 2.164 0 0 1 0 3.06a.75.75 0 0 1-1.06-1.06c.26-.26.26-.68 0-.94a2.164 2.164 0 0 1 0-3.06a.75.75 0 0 1 1.06 0m-4.5 1.5a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.116.116A.75.75 0 0 1 4.47 6.97l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0m9.5 0a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.117.116a.75.75 0 1 1-1.06-1.06l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0" opacity=".5"/></g></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">咖啡</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+</div>
+
+</nav>
+
+</div>
+    <div class="widgets widget-stack widget-stack--leftbar widget-stack--body"><div class="widget-instance widget-instance--related" data-widget-id="leftbar:0:related" data-presentation="leftbar" data-leftbar-rail>
+
+<widget class="widget-wrapper related-widget">
+  
+    <div class="widget-header dis-select">
+      <span class="name">专栏：AI</span>
+      
+    </div>
+  
+  <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;10&#x2F;2026-20260510-agent-evaluation&#x2F;" title="Agent系统开发手记（五）：评估与反馈">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（五）：评估与反馈</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;08&#x2F;2026-20260508-agent-rag&#x2F;" title="Agent系统开发手记（四）：智能检索与RAG">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（四）：智能检索与RAG</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;05&#x2F;2026-20260505-agent-context-management&#x2F;" title="Agent系统开发手记（三）：上下文管理">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（三）：上下文管理</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;03&#x2F;2026-20260503-agent-plan-replan-tao&#x2F;" title="Agent系统开发手记（二）：规划、纠偏与执行循环">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（二）：规划、纠偏与执行循环</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight is-active" href="&#x2F;2026&#x2F;05&#x2F;01&#x2F;2026-20260501-agent-intent-recognition&#x2F;" title="Agent系统开发手记（一）：意图识别" aria-current="page">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（一）：意图识别</span>
+      
+      
+    </span>
+  
+  
+  <span class="ui-collection__indicator"></span>
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;03&#x2F;11&#x2F;2026-20260311-prompt-engineering-guide&#x2F;" title="提示词实践笔记：系统提示词和用户提示词">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">提</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">提示词实践笔记：系统提示词和用户提示词</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;01&#x2F;29&#x2F;2026-20260129-agent-from-design-of-claude-code&#x2F;" title="从Claude Code的架构设计浅析Agent">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">从</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">从Claude Code的架构设计浅析Agent</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;04&#x2F;14&#x2F;2025-20250414-daily-study-ai&#x2F;" title="每天学点AI">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">每</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">每天学点AI</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;04&#x2F;09&#x2F;2025-20250409-mlflow-deploy&#x2F;" title="MLflow：模型生命周期管理工具的使用">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">M</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">MLflow：模型生命周期管理工具的使用</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;03&#x2F;15&#x2F;2025-20250315-kserve-deploy&#x2F;" title="Kserve：云原生环境中的模型部署与推理组件的使用">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">K</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Kserve：云原生环境中的模型部署与推理组件的使用</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;03&#x2F;15&#x2F;2025-20250315-modelops-tech&#x2F;" title="关于ModelOps的相关技术整理汇总">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">关</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">关于ModelOps的相关技术整理汇总</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2023&#x2F;08&#x2F;16&#x2F;2023-20230816-machine-learning-basics&#x2F;" title="机器学习基础">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">机</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">机器学习基础</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+</div></div>
+  
+</widget>
+
+
+</div></div>
+  </div>
+  <footer class="site-region__footer">
+    
+    <div class="site-region__system ui-collection" data-layout="inline" data-variant="nav" data-density="compact">
+      <div class="site-region__settings"><div class="widget-instance widget-instance--settings" data-widget-id="leftbar:fixed:settings" data-presentation="leftbar" data-leftbar-rail>
+<a class="settings-widget ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;settings&#x2F;" data-profile-provider="waline" data-profile-identity-enabled="true" data-profile-fallback-avatar="https:&#x2F;&#x2F;gcore.jsdelivr.net&#x2F;gh&#x2F;cdn-x&#x2F;placeholder@1.0.12&#x2F;avatar&#x2F;round&#x2F;3442075.svg" data-settings-placement="leftbar" data-settings-label="设置" aria-label="设置" title="设置">
+  <span class="settings-widget__avatar" aria-hidden="true">
+    <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M12.4277 2C11.3139 2 10.2995 2.6007 8.27081 3.80211L7.58466 4.20846C5.55594 5.40987 4.54158 6.01057 3.98466 7C3.42773 7.98943 3.42773 9.19084 3.42773 11.5937V12.4063C3.42773 14.8092 3.42773 16.0106 3.98466 17C4.54158 17.9894 5.55594 18.5901 7.58466 19.7915L8.27081 20.1979C10.2995 21.3993 11.3139 22 12.4277 22C13.5416 22 14.5559 21.3993 16.5847 20.1979L17.2708 19.7915C19.2995 18.5901 20.3139 17.9894 20.8708 17C21.4277 16.0106 21.4277 14.8092 21.4277 12.4063V11.5937C21.4277 9.19084 21.4277 7.98943 20.8708 7C20.3139 6.01057 19.2995 5.40987 17.2708 4.20846L16.5847 3.80211C14.5559 2.6007 13.5416 2 12.4277 2Z" clip-rule="evenodd" opacity=".5"/><path d="M12.4277 8.25C10.3567 8.25 8.67773 9.92893 8.67773 12C8.67773 14.0711 10.3567 15.75 12.4277 15.75C14.4988 15.75 16.1777 14.0711 16.1777 12C16.1777 9.92893 14.4988 8.25 12.4277 8.25Z"/></g></svg></span>
+  </span>
+  <span class="settings-widget__name ui-collection__title">设置</span>
+</a>
+</div></div>
+      <button type="button" class="leftbar-state-toggle ui-collection__item ui-interactive card-hover card-hover--spotlight is-icon-only" aria-label="Collapse leftbar" aria-expanded="true" data-shell-action="toggle-leftbar"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.172 4.172C2 5.343 2 7.229 2 11v2c0 3.771 0 5.657 1.172 6.828S6.229 21 10 21h5V3h-5C6.229 3 4.343 3 3.172 4.172" clip-rule="evenodd" opacity=".5"/><path fill="currentColor" d="M5.5 9.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zm1 4a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 0-1.5zM22 13v-2c0-3.771 0-5.657-1.172-6.828c-.974-.975-3.192-1.139-5.828-1.166v17.988c2.636-.027 4.854-.191 5.828-1.166C22 18.657 22 16.771 22 13"/></svg></span></button>
+    </div>
+  </footer></div></div></aside>
+<main data-stellar-runtime-region class="site-main" id="main">
+
+
+<div class="article-banner-wrap slide-up"><div class="article banner top">
+  <div class="content">
+    
+    <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2026/05/10/2026-20260510-agent-evaluation/">AI</a>
+</div><div class="right"><span class="cap reading">6878 字 · 预计阅读 23 分钟</span></div></div><div class="meta-row">
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-05-01T14:00:00.000Z">2026年5月1日</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-15T14:04:41.000Z">2026年9月15日</time></span></div>
+</div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Agent系统开发手记（一）：意图识别</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div></div>
+<article class="md-text content slide-up"><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>最近在做 Agent 相关的事情，踩了不少坑。其中让我印象最深的，就是<strong>意图识别</strong>。</p>
+<p>说实话，刚开始做的时候，我觉得意图识别不就是调用一次大模型，让它判断用户想干嘛嘛。结果真正跑起来才发现，这玩意儿远没有想象中那么简单。用户的输入千奇百怪——病句、代词、缩写、黑话，想到什么说什么。你要是不处理好这一步，后面所有的流程都是在沙子上盖楼。</p>
+<p>这篇文章是”AI Agent 系统设计”系列的第一篇，我想把自己在意图识别上的实践和思考整理下来。后续会陆续聊规划执行、上下文管理、工具调用等话题。</p>
+<hr>
+<h2 id="从一个让我头疼的场景说起"><a href="#从一个让我头疼的场景说起" class="headerlink" title="从一个让我头疼的场景说起"></a>从一个让我头疼的场景说起</h2><p>前阵子遇到一个典型的 case。用户在聊了一轮云服务的话题后，突然来了一句：</p>
+<blockquote>
+<p>“帮我找个更靠谱的”</p>
+</blockquote>
+<p>就这么一句话。缺主语、缺宾语，”靠谱”还是个主观判断词。Agent 该怎么理解？是找更靠谱的云服务商？还是更靠谱的技术方案？还是更靠谱的部署架构？</p>
+<p>我当时的第一反应是：这有啥难的，让大模型推理一下不就行了。结果发现，大模型确实能猜，但猜对猜错全看运气。而且更麻烦的是，这种模糊输入不是个例，用户说话就是这么随意。</p>
+<blockquote>
+<p>意图识别不是给用户输入贴个标签就完事了。它决定了三件事：</p>
+</blockquote>
+<p><strong>加载哪套 Prompt / 业务规范。</strong> 技术选型和架构设计的思考过程完全不同——技术选型要考虑业务场景、性能要求、团队技术栈、成本预算、运维能力；架构设计要看现有系统瓶颈、数据量级、可用性要求、扩展性需求。两个流程的 Prompt / Spec 完全不一样，意图识别错了，后面加载的业务规范就是错的。</p>
+<p><strong>往上下文窗口里塞什么内容。</strong> 不同意图需要的上下文不一样。技术选型重点放候选方案对比、社区活跃度、性能基准测试；架构设计重点放现有系统拓扑、流量模型、故障历史。在架构设计场景里塞一堆候选方案的社区 star 数，就是浪费上下文窗口。</p>
+<p><strong>调用哪个工具、进入哪个业务流程。</strong> 技术选型调方案检索工具，架构设计调系统拓扑分析工具，性能优化调压测工具。意图识别错了，工具调用大概率也错，或者大模型根本选不出合适的工具。最极端的情况下，意图识别之后会分发到不同的子 Agent 上，子 Agent 内部还可以进一步做子意图识别和分发。</p>
+<p>方向不对，后面做得再好也是白费功夫。</p>
+<hr>
+<h2 id="用户输入能有多乱"><a href="#用户输入能有多乱" class="headerlink" title="用户输入能有多乱"></a>用户输入能有多乱</h2><p>在说怎么做之前，先感受一下真实的用户输入：</p>
+<div class="md-table-scroll"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>代词指代</td>
+<td>“刚才那个方案可行吗？”</td>
+</tr>
+<tr>
+<td>说话不完整</td>
+<td>“成功率有多高？”</td>
+</tr>
+<tr>
+<td>口语化 / 病句</td>
+<td>“不对不对，我说的是另外那个”</td>
+</tr>
+<tr>
+<td>黑话 / 缩写</td>
+<td>“K8s / Kubernetes / 容器编排”</td>
+</tr>
+<tr>
+<td>主观判断</td>
+<td>“哪个更稳定？”</td>
+</tr>
+<tr>
+<td>依赖实时信息</td>
+<td>“目前哪家响应最快？”</td>
+</tr>
+</tbody></table></div>
+<p>这些问题不是调用一次大模型就能解决的。你得先做一步<strong>用户输入规范化</strong>，把用户的口语化表达整理成 Agent 能处理的结构化信息。</p>
+<hr>
+<h2 id="用户输入规范化"><a href="#用户输入规范化" class="headerlink" title="用户输入规范化"></a>用户输入规范化</h2><p>这一步我一开始没做，直接跳到了意图识别。结果发现 Agent 经常”听不懂”用户在说什么，尤其是涉及代词和省略句的时候。</p>
+<p>后来我加了这一步，效果好了很多。它的职责很明确：</p>
+<p><strong>能做的：</strong></p>
+<ul>
+<li>指代消解（”那个方案” → 具体是哪个方案）</li>
+<li>省略句补全（补主语、宾语）</li>
+<li>病句修正</li>
+<li>术语标准化</li>
+<li>多义词消歧</li>
+</ul>
+<p><strong>不能做的：</strong></p>
+<ul>
+<li>直接回答用户问题（这个最容易犯）</li>
+<li>执行工具</li>
+<li>做最终推荐</li>
+<li>自行补充事实</li>
+</ul>
+<blockquote>
+<p>我之前犯过一个错误：没有在 Prompt 里约束好职责边界，结果大模型”过于自主”，一股脑把输入规范化和意图识别全干了，甚至直接给了答案。所以 Prompt 里一定要明确说清楚：这一步只做规范化，不做别的。</p>
+</blockquote>
+<h3 id="处理时机"><a href="#处理时机" class="headerlink" title="处理时机"></a>处理时机</h3><p>输入规范化不是一步到位的，我把它分成了两个阶段：</p>
+<p><strong>初步处理</strong>：在意图识别之前，处理大部分输入。代词消解、病句修正这类工作在这一步完成。</p>
+<p><strong>深度处理</strong>：在 ReAct 循环中，处理那些依赖上下文的输入。比如”更靠谱”这种主观判断词，得结合具体场景才能理解它到底在说什么。</p>
+<h3 id="几个实用技巧"><a href="#几个实用技巧" class="headerlink" title="几个实用技巧"></a>几个实用技巧</h3><p><strong>1. 命名很重要</strong></p>
+<p>这个是我后来才意识到的。Agent 输出的时候，如果输出”方案一”、”方案二”这种，用户后续就会用”方案一”来引用。但如果你输出的是”T 方案”、”Redis 方案”这种有具体名字的，用户后续就容易用”T 方案”来代指。</p>
+<p>这种按名索引的好处是：能有效规避大模型推理阶段的引用错误。”方案一”和”方案二”太容易搞混了，但”TCC 方案”和”Redis 方案”不会。</p>
+<p><strong>2. 代词消解表格</strong></p>
+<p>我现在的做法是让模型输出一个代词消解的表格，作为关键事实贯穿整个对话：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">"那个方案"  →  基于 Redis 缓存的方案</span><br><span class="line">"刚才说的"  →  上一轮讨论的数据库选型</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这个表格在多轮对话里特别有用，不然 Agent 经常搞混指代关系。</p>
+<p><strong>3. 可量化</strong></p>
+<p>这很重要。任何未量化的形容词都会导致 Agent 输出漂移。</p>
+<p>用户说”找个更靠谱的”，你得让 Agent 把”靠谱”转化成具体指标：可用性 99.9%？响应时间 &lt; 100ms？有 SLA 保障？不量化的话，每次跑出来的结果可能都不一样。</p>
+<p><strong>4. 迭代式词汇表</strong></p>
+<p>同一个词在不同行业意思完全不同。CRM 在 IT 行业是客户关系管理，在医疗行业是临床研究管理。</p>
+<p>我的做法是维护一个词汇表，输入规范化前先检索，把结果注入上下文。然后离线分析多轮对话，把频繁出现的新词汇沉淀下来，达到一定阈值后自动入表。可以拆成公共词汇表和用户个人词汇表，效果更好。</p>
+<p><strong>5. 基于属性 + 检索的推理</strong></p>
+<p>这个是处理长时间跨度指代问题的。比如用户上周让你帮他选一个缓存方案，你推荐了 Redis Cluster。一周后用户说：</p>
+<blockquote>
+<p>“你上次说的那个支持分片的缓存方案……”</p>
+</blockquote>
+<p>这种问题有两个难点：一是时间跨度长，短期记忆没了；二是”支持分片的缓存方案”不是简单的”那个”，而是带属性的指代。</p>
+<p>我的做法分两步：先用”缓存、分片”这些属性关键词去历史对话里召回细节，再让大模型基于召回内容做指代消解。如果第一步检索不顺利，还可以让模型提取属性发起工具调用，再做一轮推理。</p>
+<p><strong>6. 结构化输出</strong></p>
+<p>有些时候，光靠自然语言处理还不够。可以让模型输出更加规范的结构，比如主谓宾三个字段，再加上定状补的解释。这样做的好处是：后续的工具调用可以直接从结构化输出里取参数，不用再让模型二次解析。</p>
+<p>比如用户说”帮我找个更靠谱的”，结构化输出可以是：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"subject"</span><span class="punctuation">:</span> <span class="string">"云服务商"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"predicate"</span><span class="punctuation">:</span> <span class="string">"找"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"object"</span><span class="punctuation">:</span> <span class="string">"更靠谱的"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"modifiers"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"靠谱"</span><span class="punctuation">:</span> <span class="string">"可用性高、响应快、有SLA保障"</span></span><br><span class="line">  <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="深度结合上面几点技巧还不够，还得结合更深层的上下文"><a href="#深度结合上面几点技巧还不够，还得结合更深层的上下文" class="headerlink" title="深度结合上面几点技巧还不够，还得结合更深层的上下文"></a>深度结合上面几点技巧还不够，还得结合更深层的上下文</h3><p>上面说的都是输入层面的处理。但很多时候，理解用户输入需要结合更深层的上下文信息：</p>
+<ul>
+<li><strong>用户画像</strong>：如果一个用户反复讨论某个技术栈，那他后续提到相关术语时，应该倾向于用他熟悉的语境去理解</li>
+<li><strong>关键事实</strong>：前面几轮 Agent 输出的要点、用户已经认可的结论、用户的偏好和态度</li>
+<li><strong>对话历史召回</strong>：可以是摘要，也可以是细节</li>
+</ul>
+<p>这些信息不是输入规范化本身能搞定的，需要在整个 Agent 系统层面来支持。但它们对输入规范化的效果影响很大——上下文越丰富，模型理解用户输入就越准确。</p>
+<hr>
+<h2 id="三层意图识别"><a href="#三层意图识别" class="headerlink" title="三层意图识别"></a>三层意图识别</h2><p>输入规范化之后，才是真正的意图识别。</p>
+<p>但在说三层模型之前，先聊一个问题：<strong>意图识别在什么时候做？</strong></p>
+<p>我见过三种做法：</p>
+<ol>
+<li><strong>和输入规范化混在一起</strong>：简单系统、领域专属 Agent 常用，一次性搞定</li>
+<li><strong>在进入 ReAct 循环之前独立做</strong>：这是我推荐的方式，边界清晰、可评估、可调试</li>
+<li><strong>在 ReAct 循环中做</strong>：更灵活，但更难控制，调试复杂</li>
+</ol>
+<p>我一开始就是直接调用深度推理大模型，简单粗暴。后来发现两个问题：一是成本高，二是大部分用户输入其实很标准，用深度推理有点杀鸡用牛刀。</p>
+<p>所以我改成了三层递进的方式：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">第一层：代码规则</span><br><span class="line">  │  关键字匹配、正则、页面引导</span><br><span class="line">  │  快、准、便宜</span><br><span class="line">  ↓ 没命中</span><br><span class="line">第二层：轻量级大模型</span><br><span class="line">  │  Flash / Mini 模型</span><br><span class="line">  │  处理标准表达</span><br><span class="line">  ↓ 置信度不够</span><br><span class="line">第三层：深度推理大模型</span><br><span class="line">    处理复杂场景</span><br></pre></td></tr></tbody></table></figure>
+
+<p>你会发现，大部分请求在第一层或第二层就搞定了，真正需要第三层的其实不多。</p>
+<p>但这里有个问题：第二层怎么判断”搞定了没有”？总不能让轻量模型随便输出一个意图就直接用吧。这就引出了置信度的机制。</p>
+<h3 id="置信度怎么用"><a href="#置信度怎么用" class="headerlink" title="置信度怎么用"></a>置信度怎么用</h3><p>模型输出意图的时候，同时输出一个置信度：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span> <span class="attr">"intent"</span><span class="punctuation">:</span> <span class="string">"tech_selection"</span><span class="punctuation">,</span> <span class="attr">"confidence"</span><span class="punctuation">:</span> <span class="number">0.91</span> <span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>我的阈值设置：</p>
+<ul>
+<li>大于 0.85：直接用</li>
+<li>0.6 到 0.85：再想想，或者问用户</li>
+<li>小于 0.6：交给深度推理模型</li>
+</ul>
+<blockquote>
+<p>有一点要注意：大模型输出的置信度不一定是真正的概率，它更像是一个”自我感觉分数”。别太当真，得结合其他信号一起判断。</p>
+</blockquote>
+<p>到这里，意图本身基本能识别了。但光知道用户想”做技术选型”还不够——什么场景？性能要求多高？预算多少？这些参数不补全，后面的流程也没法走。这就是接下来要聊的 Slot Filling。</p>
+<h3 id="Slot-Filling"><a href="#Slot-Filling" class="headerlink" title="Slot Filling"></a>Slot Filling</h3><p>Slot Filling 说白了就是从用户输入里抽取意图所需的参数。比如用户说”帮我找个消息队列方案”，意图是技术选型，但还缺一些信息：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"intent"</span><span class="punctuation">:</span> <span class="string">"tech_selection"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"slots"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"category"</span><span class="punctuation">:</span> <span class="string">"消息队列"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"missing_slots"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"scenario"</span><span class="punctuation">,</span> <span class="string">"throughput"</span><span class="punctuation">,</span> <span class="string">"budget"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>这里有个细节我觉得特别重要：<strong>约束要区分硬约束和软约束</strong>。</p>
+<ul>
+<li>硬约束：必须满足（”必须支持水平扩展”）</li>
+<li>软约束：尽量满足，不满足要告知用户（”最好是开源的”）</li>
+</ul>
+<blockquote>
+<p>我在用各种 Agent 的时候，最恼火的就是它无视我的硬约束。比如我明确说不要推荐某个品牌，结果它还是推了。这种体验非常差，用户会直接失去信任。</p>
+</blockquote>
+<p>上面说的是正常流程——意图识别到了，参数也补全了。但如果识别不出来呢？很多系统的做法是强行塞一个意图，结果驴唇不对马嘴。</p>
+<h3 id="识别不出来怎么办"><a href="#识别不出来怎么办" class="headerlink" title="识别不出来怎么办"></a>识别不出来怎么办</h3><p>很多系统的问题是，不管用户输入什么，都强行识别到某个意图上。但真实的用户输入经常是不完整、不清楚，甚至超出系统能力的。我觉得应该提供两个出口：</p>
+<ul>
+<li><strong>unsupported</strong>：用户的意图完全不在候选范围。比如用户对技术方案 Agent 说”帮我写一首诗”，这时候就该拒识，老老实实告诉用户你做不了。</li>
+<li><strong>unclear</strong>：意图之间有混淆，或者参数不够。比如用户说”帮我选个方案”，你其实可以先问一下场景和约束，而不是上来就推。</li>
+</ul>
+<blockquote>
+<p>我的理念是：好的回答比快的回答，用户体验更好。先收集完整参数再回答，比急着给一个可能不对的答案要好。</p>
+</blockquote>
+<p>说完了意图识别的整个流程，还有一个绕不开的话题：Prompt 到底怎么写。这一步写不好，前面说的全是白搭。</p>
+<h3 id="Prompt-怎么写"><a href="#Prompt-怎么写" class="headerlink" title="Prompt 怎么写"></a>Prompt 怎么写</h3><p>意图识别的 Prompt 我踩过不少坑。一开始写得很简单，就一句”请判断用户的意图”，结果大模型自由发挥，输出的意图名称、参数字段、置信度都不稳定。</p>
+<p>后来我总结了几个要点：</p>
+<p><strong>1. 定义候选意图</strong></p>
+<p>告诉模型当前系统支持哪些意图，形成一个封闭的枚举集合。不要让模型自己发明意图。</p>
+<p><strong>2. 定义意图边界</strong></p>
+<p>光列意图名称不够，还要解释边界。尤其是两个意图语义接近的时候，一定要澄清。比如”技术选型”和”架构设计”，用户说”帮我看看用什么数据库合适”，到底算哪个？你得在 Prompt 里说清楚。</p>
+<p><strong>3. 定义意图参数</strong></p>
+<p>告诉模型每个意图需要抽取哪些参数，哪些必选，哪些可选，可选参数的默认值是什么。</p>
+<p><strong>4. 加入 few-shot</strong></p>
+<p>不需要很多，关键是覆盖容易混淆的边界。如果 few-shot 太多不知道选哪些，可以用检索机制动态注入——这就是下面要说的动态 few-shot。</p>
+<p>到这里，意图识别的基本流程就跑通了。但跑通不等于跑好。做了一段时间后，我发现识别率上不去，很多时候不是模型的问题，而是系统设计本身有缺陷。</p>
+<hr>
+<h2 id="意图识别不准怎么办"><a href="#意图识别不准怎么办" class="headerlink" title="意图识别不准怎么办"></a>意图识别不准怎么办</h2><p>总结下来，我遇到过五类原因，每类都有对应的解法。</p>
+<h3 id="意图太多"><a href="#意图太多" class="headerlink" title="意图太多"></a>意图太多</h3><p>候选意图一多，问题就来了：把所有意图的定义、边界、参数、few-shot 全部塞进 Prompt，叠加已有的上下文内容，很容易超过大模型的窗口大小。而且就算没超，候选集合越大，分类混淆和上下文噪声也越高，准确率跟着掉。</p>
+<p><strong>方法一：层次意图</strong></p>
+<p>像菜单一样分级，先识别大类，再识别细类：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">技术选型 / 架构设计 / 性能优化 / ...</span><br><span class="line">    ↓</span><br><span class="line">数据库选型 / 缓存方案 / 消息队列 / ...</span><br><span class="line">    ↓</span><br><span class="line">关系型数据库 / NoSQL / NewSQL / ...</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>方法二：结合检索缩小候选集合</strong></p>
+<p>在意图识别之前加一个检索步骤，从全部候选意图里先粗召回 Top-N 个可能的意图，再只把这 N 个交给大模型精筛。N 可以动态调整——上下文窗口空闲的时候大一些，识别失败重试的时候也扩大。</p>
+<p><strong>方法三：动态 few-shot</strong></p>
+<p>意图多了，few-shot 也多了，全部塞进 Prompt 会很长。我的做法是把 few-shot 存到数据库里，每次根据用户输入检索最相关的 few-shot 注入 Prompt。这样既减少了无关 few-shot 的干扰，又保证了模型看到的都是最相关的案例。</p>
+<p>可以分成固定的 few-shot（比如 unclear 怎么处理、unsupported 怎么处理）和动态的 few-shot（跟当前输入相关的），效果更好。</p>
+<h3 id="意图边界模糊"><a href="#意图边界模糊" class="headerlink" title="意图边界模糊"></a>意图边界模糊</h3><p>“帮我看看有什么合适的消息队列”——这是想查信息，还是想做技术选型？</p>
+<p><strong>方法：保证意图正交</strong></p>
+<p>如果两个意图有重叠，要么拆出第三个意图，要么合并成一个意图用参数区分。</p>
+<blockquote>
+<p>说到底，不要把所有差异都建模成不同的意图，很多差异应该建模成不同的参数。</p>
+</blockquote>
+<h3 id="用户表达太口语化"><a href="#用户表达太口语化" class="headerlink" title="用户表达太口语化"></a>用户表达太口语化</h3><p>“这代码写得跟屎一样，怎么让它跑快点？”——没有出现”性能优化”，但意思就是这个。</p>
+<p><strong>方法：向量匹配兜底</strong></p>
+<p>把常见的口语化表达做成向量，长期积累。新输入进来先向量匹配，匹配上了就直接用对应的意图。</p>
+<p>这个方法在专属领域特别好用，因为用户表达就那么几种模式，甚至可以直接用内存做向量匹配，性能极好。而且这个方案有个额外的好处：它可以作为长期迭代的兜底机制——离线分析多轮对话，把那些”大模型有时候能识别、有时候识别不了”的奇怪输入沉淀下来，逐步充实向量库。</p>
+<h3 id="一句话多个意图"><a href="#一句话多个意图" class="headerlink" title="一句话多个意图"></a>一句话多个意图</h3><p>“帮我查一下最新版本，然后给个升级方案。”</p>
+<p><strong>方法：先判断是不是真的多意图</strong></p>
+<p>很多时候用户一句话里虽然提到了多件事，但本质上只有一个意图。比如”帮我查一下当前的 QPS，然后看看要不要加机器”——用户的真正意图是”容量评估”，”查 QPS”只是过程性的步骤描述，不是独立意图。如果系统真的拆成两个意图分别处理，反而把问题搞复杂了。</p>
+<p>所以第一步是让模型过滤掉这种过程性描述，只抓住最终意图。</p>
+<p>如果确实是多个独立意图，我的做法是每次只做一件事，做完问用户要不要继续。交互感更强，用户也不用等太久。而且说实话，用户真的不在意你是不是一次性解决了多个问题——你一次性处理多个意图，用户反而要等更长时间。</p>
+<h3 id="多轮对话的上下文问题"><a href="#多轮对话的上下文问题" class="headerlink" title="多轮对话的上下文问题"></a>多轮对话的上下文问题</h3><p>第二轮说”预算降到两万以内吧，另外要支持水平扩展”，单独看不知道在说什么，得结合第一轮。</p>
+<p><strong>方法：先跳过，后回滚</strong></p>
+<p>大多数时候用户意图不会变，可以先复用上一轮的意图直接执行。发现不对再回退重新识别。这个策略简单有效，值得一试。</p>
+<h3 id="多识别器仲裁"><a href="#多识别器仲裁" class="headerlink" title="多识别器仲裁"></a>多识别器仲裁</h3><p>这个思路是引入多个识别器，每个独立识别，投票决定最终结果。而且识别器不一定都是大模型——可以一个是向量匹配，一个是大模型，一个是规则引擎。三者投票，票数相当就澄清。</p>
+<p>还可以给不同识别器设权重，加权计算分数。比如向量匹配在专属领域很准，权重可以高一些；规则引擎在特定场景很准，但泛化能力差，权重低一些。</p>
+<h3 id="微调"><a href="#微调" class="headerlink" title="微调"></a>微调</h3><p>除了上面这些工程手段，还有一个选项：微调大模型。</p>
+<p>微调通常用在第二层——轻量级大模型上。通过准备一批标注好的意图识别数据，对模型进行微调，可以让它在你的业务领域上表现更好。</p>
+<p>但说实话，微调是个双刃剑。好处是一旦调好了，效果提升很明显；坏处是数据准备、效果评估、参数调优都有坑，踩进去很费时间。</p>
+<p>我的建议是：如果你的意图识别准确率已经到了一个瓶颈，工程手段都试过了，再考虑微调。别上来就微调，先把基础方案跑通。</p>
+<h3 id="迭代式反馈：一个通用的思维"><a href="#迭代式反馈：一个通用的思维" class="headerlink" title="迭代式反馈：一个通用的思维"></a>迭代式反馈：一个通用的思维</h3><p>上面提到了不少方案，其实它们有一个共同点：<strong>迭代式反馈</strong>。</p>
+<p>向量兜底、词汇表沉淀、动态 few-shot 积累——这些本质上都是同一种机制：在线上运行过程中，不断收集新出现的问题输入，沉淀下来，逐步完善系统。</p>
+<p>这个思维不仅适用于意图识别，也适用于 Agent 的其他环节。先跑起来，发现问题，沉淀经验，再优化。周而复始。</p>
+<hr>
+<h2 id="怎么评估效果"><a href="#怎么评估效果" class="headerlink" title="怎么评估效果"></a>怎么评估效果</h2><p>做系统不能只做不评。我主要看这几个维度的指标：</p>
+<p><strong>意图识别本身：</strong></p>
+<ul>
+<li><strong>Top-1 准确率</strong>：第一个意图是否正确，这是我最常看的指标</li>
+<li><strong>Top-K 准确率</strong>：前 K 个候选中是否包含正确意图</li>
+<li><strong>分意图准确率</strong>：低频意图的识别率，别被整体准确率骗了——如果 80% 的请求都是某一个意图，模型全猜它也能有 80% 的准确率</li>
+</ul>
+<p><strong>拒识和澄清：</strong></p>
+<ul>
+<li><strong>拒识准确率</strong>：应该拒识的时候，系统是否拒识了</li>
+<li><strong>误拒率</strong>：能处理的被错误拒识了</li>
+<li><strong>澄清触发准确率</strong>：缺信息的时候，有没有正确追问</li>
+</ul>
+<p><strong>Slot Filling：</strong></p>
+<ul>
+<li><strong>槽位准确率</strong>：抽出来的值对不对</li>
+<li><strong>槽位召回率</strong>：用户提供的信息有没有被抽出来</li>
+<li><strong>必填槽位完整率</strong>：启动流程必须的槽位齐不齐</li>
+<li><strong>约束识别准确率</strong>：硬约束 / 软偏好有没有识别出来</li>
+</ul>
+<hr>
+<h2 id="示例展示"><a href="#示例展示" class="headerlink" title="示例展示"></a>示例展示</h2><p>说了这么多，最后用一个完整的案例把上面的内容串起来。假设我们有一个旅行助手 Agent，用户是这样对话的：</p>
+<h3 id="第一轮"><a href="#第一轮" class="headerlink" title="第一轮"></a>第一轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“十一想去云南玩，帮我看下”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<p>模型输出：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"normalized_input"</span><span class="punctuation">:</span> <span class="string">"用户希望在十一国庆假期去云南省旅游，需要帮助规划"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"pronoun_resolution"</span><span class="punctuation">:</span> <span class="punctuation">{</span><span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>输入本身还算完整，没有太多需要消解的。</p>
+<p><strong>第二步：意图识别</strong></p>
+<p>走第二层轻量模型，输出：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"intent"</span><span class="punctuation">:</span> <span class="string">"trip_planning"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"confidence"</span><span class="punctuation">:</span> <span class="number">0.93</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"slots"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"destination"</span><span class="punctuation">:</span> <span class="string">"云南"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"travel_period"</span><span class="punctuation">:</span> <span class="string">"十一国庆"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"missing_slots"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"duration"</span><span class="punctuation">,</span> <span class="string">"budget"</span><span class="punctuation">,</span> <span class="string">"travel_style"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"clarification_question"</span><span class="punctuation">:</span> <span class="string">"好的，云南是个好选择！请问大概玩几天？预算大概多少？喜欢自然风光还是人文体验多一些？"</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>置信度 0.93，直接接受。但缺少关键参数，触发澄清。</p>
+<p>Agent 回复：询问天数、预算、旅行偏好。</p>
+<h3 id="第二轮"><a href="#第二轮" class="headerlink" title="第二轮"></a>第二轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“六七天吧，别太贵，想看风景”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<p>模型输出：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"normalized_input"</span><span class="punctuation">:</span> <span class="string">"用户计划旅行六到七天，预算有限，偏好自然风光"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"pronoun_resolution"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"别太贵"</span><span class="punctuation">:</span> <span class="string">"预算有限，具体金额待定"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>“别太贵”是个主观词，先记录下来，后面结合工具参数来量化。</p>
+<p><strong>第二步：意图识别</strong></p>
+<p>复用上一轮的 <code>trip_planning</code> 意图，补充槽位：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"intent"</span><span class="punctuation">:</span> <span class="string">"trip_planning"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"confidence"</span><span class="punctuation">:</span> <span class="number">0.95</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"slots"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"destination"</span><span class="punctuation">:</span> <span class="string">"云南"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"travel_period"</span><span class="punctuation">:</span> <span class="string">"十一国庆"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"duration"</span><span class="punctuation">:</span> <span class="string">"6-7天"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"budget"</span><span class="punctuation">:</span> <span class="string">"经济型"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"travel_style"</span><span class="punctuation">:</span> <span class="string">"自然风光"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"missing_slots"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"hard_constraints"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"十一假期期间"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"soft_constraints"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"预算有限"</span><span class="punctuation">,</span> <span class="string">"自然风光为主"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>参数齐了，进入执行流程。Agent 调用行程规划工具，参数中 <code>budget_level</code> 设为 “economy”，<code>scenery_weight</code> 设为 0.8。</p>
+<p>Agent 回复：推荐了一条昆明-大理-丽江的经典线路。</p>
+<h3 id="第三轮"><a href="#第三轮" class="headerlink" title="第三轮"></a>第三轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“那个雪山能不能上去？”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<p>这里有个指代问题——“那个雪山”是哪个？</p>
+<p>模型结合上一轮 Agent 推荐的内容，输出：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"normalized_input"</span><span class="punctuation">:</span> <span class="string">"用户询问玉龙雪山是否可以登顶或乘坐索道到达高处"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"pronoun_resolution"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"那个雪山"</span><span class="punctuation">:</span> <span class="string">"玉龙雪山（上一轮推荐线路中的景点）"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>代词消解成功，因为上一轮 Agent 提到了丽江线路中的玉龙雪山。</p>
+<p><strong>第二步：意图识别</strong></p>
+<p>这是一个新的意图——景点查询：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"intent"</span><span class="punctuation">:</span> <span class="string">"spot_query"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"confidence"</span><span class="punctuation">:</span> <span class="number">0.89</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"slots"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"spot_name"</span><span class="punctuation">:</span> <span class="string">"玉龙雪山"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"query_type"</span><span class="punctuation">:</span> <span class="string">"可达性"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>Agent 调用景点信息工具，返回玉龙雪山的索道信息和注意事项。</p>
+<h3 id="第四轮"><a href="#第四轮" class="headerlink" title="第四轮"></a>第四轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“行，就这个方案吧，酒店别太差”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<p>“就这个方案”需要消解：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"normalized_input"</span><span class="punctuation">:</span> <span class="string">"用户确认采纳当前推荐的行程方案，并对酒店提出要求"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"pronoun_resolution"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"这个方案"</span><span class="punctuation">:</span> <span class="string">"昆明-大理-丽江六日游方案（上一轮确认的线路）"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>第二步：意图识别</strong></p>
+<p>意图切换到了酒店预订：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"intent"</span><span class="punctuation">:</span> <span class="string">"hotel_booking"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"confidence"</span><span class="punctuation">:</span> <span class="number">0.91</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"slots"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"destination"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"昆明"</span><span class="punctuation">,</span> <span class="string">"大理"</span><span class="punctuation">,</span> <span class="string">"丽江"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"check_in"</span><span class="punctuation">:</span> <span class="string">"2026-10-01"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"check_out"</span><span class="punctuation">:</span> <span class="string">"2026-10-07"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"hard_constraints"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"soft_constraints"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"酒店别太差"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"clarification_question"</span><span class="punctuation">:</span> <span class="string">"酒店的话，大概什么价位可以接受？"</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>注意”酒店别太差”是个软约束，先不量化，追问一下具体预算。</p>
+<p>Agent 回复：询问酒店预算。</p>
+<h3 id="第五轮"><a href="#第五轮" class="headerlink" title="第五轮"></a>第五轮</h3><p>用户输入：</p>
+<blockquote>
+<p>“三星四星都行，别超500一晚”</p>
+</blockquote>
+<p><strong>第一步：用户输入规范化</strong></p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"normalized_input"</span><span class="punctuation">:</span> <span class="string">"用户要求酒店为三星或四星级，每晚价格不超过500元"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"pronoun_resolution"</span><span class="punctuation">:</span> <span class="punctuation">{</span><span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>第二步：意图识别</strong></p>
+<p>复用 <code>hotel_booking</code>，补充约束：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"intent"</span><span class="punctuation">:</span> <span class="string">"hotel_booking"</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"confidence"</span><span class="punctuation">:</span> <span class="number">0.96</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"slots"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"destination"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"昆明"</span><span class="punctuation">,</span> <span class="string">"大理"</span><span class="punctuation">,</span> <span class="string">"丽江"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"check_in"</span><span class="punctuation">:</span> <span class="string">"2026-10-01"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"check_out"</span><span class="punctuation">:</span> <span class="string">"2026-10-07"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"hotel_level"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"三星"</span><span class="punctuation">,</span> <span class="string">"四星"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"hard_constraints"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"price_per_night &lt;= 500"</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"soft_constraints"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"三星或四星"</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"need_clarification"</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>“别超500”是硬约束，”三星四星都行”是软约束。Agent 调用酒店搜索工具，参数中 <code>max_price</code> = 500，<code>star_level</code> = [3, 4]。</p>
+<h3 id="示例小结"><a href="#示例小结" class="headerlink" title="示例小结"></a>示例小结</h3><p>这个案例走下来，可以看到意图识别在实际对话中是怎么运作的：</p>
+<ol>
+<li><strong>用户输入规范化</strong>消解了”那个雪山”、”这个方案”、”别太贵”这些模糊表达</li>
+<li><strong>三层识别</strong>在大部分情况下用轻量模型就够了，置信度都在 0.85 以上</li>
+<li><strong>Slot Filling</strong>逐步补全参数，缺什么问什么</li>
+<li><strong>约束处理</strong>区分了硬约束（价格上限）和软约束（酒店星级偏好）</li>
+<li><strong>意图切换</strong>从行程规划到景点查询到酒店预订，每轮都在动态调整</li>
+<li><strong>代词消解表格</strong>贯穿整个对话，”那个雪山”和”这个方案”都能正确指代</li>
+</ol>
+<p>这就是意图识别在真实场景中的全貌。</p>
+<hr>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>意图识别这事，说简单也简单——调用一次大模型就能出结果；说难也难——要做到真正好用，需要在输入规范化、三层识别、参数补全、持续优化上下不少功夫。</p>
+<p>核心就一句话：<strong>深度整合上下文</strong>。</p>
+<p>说到底，Agent 的能力上限不在于模型有多强，而在于你能不能把用户的意图搞清楚。搞不清楚意图，后面的一切都是空中楼阁。</p>
+<p>如果你也在做 Agent，建议先跑起来，再逐步优化。先有效果，再谈效率。</p>
+</article>
+<div class="article-tags slide-up"><a class="tag" href="/tags/AI/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>AI</a><a class="tag" href="/tags/Agent/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>Agent</a></div>
+
+
+  <div class="article-share slide-up" id="share">
+    <div class="body">
+      <div class="social-wrap dis-select"><a class="social share-item qrcode ui-interactive is-icon-only" onclick="util.toggle(&quot;share-qrcode&quot;)" aria-label="分享文章: QR Code" title="分享文章: QR Code"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M10.553 13.447c-.424-.424-.95-.596-1.535-.675c-.553-.074-1.25-.074-2.086-.074H5.827c-.58 0-1.065 0-1.459.037c-.411.04-.795.124-1.146.34c-.345.21-.634.5-.845.844c-.216.352-.3.735-.34 1.147C2 15.459 2 15.944 2 16.525v.068c0 .884 0 1.597.055 2.17c.056.592.175 1.108.459 1.571c.288.47.682.864 1.152 1.152c.463.284.979.403 1.57.46C5.81 22 6.524 22 7.407 22h.07c.58 0 1.064 0 1.458-.037c.412-.04.795-.124 1.147-.34c.344-.21.633-.5.844-.844c.216-.352.3-.736.34-1.147c.037-.394.037-.879.037-1.46v-1.104c0-.836 0-1.533-.074-2.086c-.079-.584-.251-1.111-.675-1.535m-1.62-11.41c.412.04.795.124 1.147.34c.344.21.633.5.844.845c.216.351.3.735.34 1.146c.037.394.037.879.037 1.46v1.104c0 .836 0 1.533-.074 2.086c-.079.584-.251 1.111-.675 1.535s-.95.596-1.535.675c-.553.074-1.25.074-2.086.074H5.827c-.58 0-1.065 0-1.459-.037c-.411-.04-.795-.124-1.146-.34a2.56 2.56 0 0 1-.845-.844c-.216-.352-.3-.735-.34-1.147C2 8.54 2 8.056 2 7.475v-.068c0-.884 0-1.597.055-2.17c.056-.592.175-1.108.459-1.571c.288-.47.682-.864 1.152-1.152c.463-.284.979-.403 1.57-.46C5.81 2 6.524 2 7.407 2h.07c.58 0 1.064 0 1.458.037M16.593 2h-.068c-.58 0-1.065 0-1.46.037c-.41.04-.794.124-1.146.34c-.344.21-.633.5-.844.845c-.216.351-.3.735-.34 1.146c-.037.394-.037.879-.037 1.46v1.104c0 .836 0 1.533.074 2.086c.079.584.251 1.111.675 1.535s.95.596 1.535.675c.553.074 1.25.074 2.086.074h1.105c.58 0 1.065 0 1.459-.037c.411-.04.795-.124 1.146-.34c.345-.21.634-.5.845-.844c.216-.352.3-.735.34-1.147C22 8.54 22 8.056 22 7.475v-.068c0-.884 0-1.597-.055-2.17c-.056-.592-.175-1.108-.459-1.571a3.5 3.5 0 0 0-1.152-1.152c-.463-.284-.979-.403-1.57-.46C18.19 2 17.477 2 16.594 2" opacity=".5"/><path fill="currentColor" d="M14.093 21.302a.698.698 0 1 1-1.396 0v-2.79h1.396z" opacity=".4"/><path fill="currentColor" d="M21.302 12.698a.7.7 0 0 0-.697.697v3.256H22v-3.256a.7.7 0 0 0-.698-.697" opacity=".5"/><path fill="currentColor" d="M16.076 16.617c-.076.184-.076.417-.076.883s0 .699.076.883a1 1 0 0 0 .541.54c.184.077.417.077.883.077s.699 0 .883-.076a1 1 0 0 0 .54-.541c.077-.184.077-.417.077-.883s0-.699-.076-.883a1 1 0 0 0-.541-.54C18.199 16 17.966 16 17.5 16s-.699 0-.883.076a1 1 0 0 0-.54.541"/><path fill="currentColor" d="M22 18.535v-.023h-1.396c0 .443 0 .74-.016.97c-.015.224-.043.333-.073.405a1.16 1.16 0 0 1-.629.63c-.072.029-.18.056-.405.072c-.23.015-.527.016-.97.016h-1.86V22h1.883c.414 0 .759 0 1.042-.02a2.6 2.6 0 0 0 .844-.175a2.56 2.56 0 0 0 1.384-1.384c.112-.27.156-.549.176-.844c.02-.283.02-.628.02-1.042" opacity=".7"/><path fill="currentColor" d="M12.697 16.616v.035h1.396c0-.668 0-1.116.035-1.458c.034-.33.093-.482.16-.583a1.2 1.2 0 0 1 .321-.32c.101-.068.254-.128.584-.161c.342-.035.79-.036 1.458-.036h1.86v-1.395h-1.896c-.623 0-1.142 0-1.563.043c-.44.044-.85.142-1.218.388c-.28.187-.519.426-.706.706c-.246.368-.343.777-.388 1.217c-.043.421-.043.94-.043 1.564" opacity=".6"/><path fill="currentColor" d="M5.508 18.69c.219.155.528.155 1.146.155c.619 0 .928 0 1.146-.155a.8.8 0 0 0 .2-.199c.154-.218.154-.527.154-1.146s0-.927-.155-1.146A.8.8 0 0 0 7.8 16c-.218-.155-.527-.155-1.146-.155s-.927 0-1.146.155a.8.8 0 0 0-.199.2c-.155.218-.155.527-.155 1.145c0 .619 0 .928.155 1.146a.8.8 0 0 0 .2.2M6.654 8.155c-.618 0-.927 0-1.146-.155a.8.8 0 0 1-.199-.2c-.155-.217-.155-.527-.155-1.145c0-.619 0-.928.155-1.146a.8.8 0 0 1 .2-.2c.218-.154.527-.154 1.145-.154c.619 0 .928 0 1.146.155a.8.8 0 0 1 .2.199c.154.218.154.527.154 1.146s0 .928-.155 1.146A.8.8 0 0 1 7.8 8c-.218.155-.527.155-1.146.155M16.2 8c.218.155.527.155 1.146.155s.927 0 1.146-.155a.8.8 0 0 0 .199-.199c.155-.218.155-.528.155-1.146c0-.619 0-.928-.155-1.146a.8.8 0 0 0-.2-.2c-.218-.154-.527-.154-1.145-.154c-.619 0-.928 0-1.146.155a.8.8 0 0 0-.2.199c-.154.218-.154.527-.154 1.146s0 .928.155 1.146A.8.8 0 0 0 16.2 8"/></svg></span></a><a class="social share-item weibo ui-interactive is-icon-only" href="https:&#x2F;&#x2F;service.weibo.com&#x2F;share&#x2F;share.php?url&#x3D;https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F01%2F2026-20260501-agent-intent-recognition%2F&amp;title&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB%20-%20ssw5ive&amp;summary&#x3D;Agent%20%E7%B3%BB%E5%88%97%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9A%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB%E7%9A%84%E9%9A%BE%E7%82%B9%E3%80%81%E6%96%B9%E6%A1%88%E9%80%89%E5%9E%8B%E4%B8%8E%E5%9C%A8%E5%AE%9E%E9%99%85%E5%9C%BA%E6%99%AF%E4%B8%AD%E7%9A%84%E8%90%BD%E5%9C%B0%E3%80%82" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: Weibo" title="分享文章: Weibo"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439l-.002.004zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.601l.014-.028zm.176-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.793-.201-3.642-2.161-4.149zm7.563-1.224c-.346-.105-.57-.18-.405-.615.375-.977.42-1.804 0-2.404-.781-1.112-2.915-1.053-5.364-.03 0 0-.766.331-.571-.271.376-1.217.315-2.224-.27-2.809-1.338-1.337-4.869.045-7.888 3.08C1.309 10.87 0 13.273 0 15.348c0 3.981 5.099 6.395 10.086 6.395 6.536 0 10.888-3.801 10.888-6.82 0-1.822-1.547-2.854-2.915-3.284v.01zm1.908-5.092c-.766-.856-1.908-1.187-2.96-.962-.436.09-.706.511-.616.932.09.42.511.691.932.602.511-.105 1.067.044 1.442.465.376.421.466.977.316 1.473-.136.406.089.856.51.992.405.119.857-.105.992-.512.33-1.021.12-2.178-.646-3.035l.03.045zm2.418-2.195c-1.576-1.757-3.905-2.419-6.054-1.968-.496.104-.812.587-.706 1.081.104.496.586.813 1.082.707 1.532-.331 3.185.15 4.296 1.383 1.112 1.246 1.429 2.943.947 4.416-.165.48.106 1.007.586 1.157.479.165.991-.104 1.157-.586.675-2.088.241-4.478-1.338-6.235l.03.045z"/></svg></span></a><a class="social share-item x ui-interactive is-icon-only" href="https:&#x2F;&#x2F;x.com&#x2F;intent&#x2F;tweet?text&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB%20-%20ssw5ive&amp;url&#x3D;https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F01%2F2026-20260501-agent-intent-recognition%2F" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: X" title="分享文章: X"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M14.234 10.162L22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299l-.929-1.329L3.076 1.56h3.182l5.965 8.532l.929 1.329l7.754 11.09h-3.182z"/></svg></span></a><a class="social share-item telegram ui-interactive is-icon-only" href="https:&#x2F;&#x2F;t.me&#x2F;share&#x2F;url?url&#x3D;https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F01%2F2026-20260501-agent-intent-recognition%2F&amp;text&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB%20-%20ssw5ive" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: Telegram" title="分享文章: Telegram"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12a12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.5.5 0 0 1 .171.325c.016.093.036.306.02.472c-.18 1.898-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.065-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024q-.159.037-5.061 3.345q-.72.495-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.245-1.349-.374-1.297-.789q.04-.324.893-.663q5.247-2.286 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635"/></svg></span></a><a class="social share-item whatsapp ui-interactive is-icon-only" href="https:&#x2F;&#x2F;wa.me&#x2F;?text&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB%20-%20ssw5ive%0Ahttps%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F01%2F2026-20260501-agent-intent-recognition%2F" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: WhatsApp" title="分享文章: WhatsApp"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52s.198-.298.298-.497c.099-.198.05-.371-.025-.52s-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51a13 13 0 0 0-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074s2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413s.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214l-3.741.982l.998-3.648l-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884c2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.82 11.82 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.9 11.9 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.82 11.82 0 0 0-3.48-8.413"/></svg></span></a><a class="social share-item email ui-interactive is-icon-only" href="mailto:?subject&#x3D;Agent%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%89%8B%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB%20-%20ssw5ive&amp;body&#x3D;https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F01%2F2026-20260501-agent-intent-recognition%2F" aria-label="分享文章: Email" title="分享文章: Email"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M3.172 5.172C2 6.343 2 8.229 2 12s0 5.657 1.172 6.828C4.343 20 6.229 20 10 20h4c3.771 0 5.657 0 6.828-1.172C22 17.657 22 15.771 22 12s0-5.657-1.172-6.828C19.657 4 17.771 4 14 4h-4C6.229 4 4.343 4 3.172 5.172m15.404 2.348a.75.75 0 0 1-.096 1.056l-2.196 1.83c-.887.739-1.605 1.338-2.24 1.746-.66.424-1.303.693-2.044.693s-1.384-.269-2.045-.693c-.634-.408-1.352-1.007-2.239-1.745L5.52 8.576a.75.75 0 1 1 .96-1.152l2.159 1.799c.933.777 1.58 1.315 2.128 1.667.529.34.888.455 1.233.455s.704-.115 1.233-.455c.547-.352 1.195-.89 2.128-1.667l2.159-1.8a.75.75 0 0 1 1.056.097" clip-rule="evenodd"/></svg></span></a></div>
+      <div class="share-qrcode" id="share-qrcode" style="opacity:0;height:0"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&amp;data=https%3A%2F%2Fsswfive.xyz%2F2026%2F05%2F01%2F2026-20260501-agent-intent-recognition%2F" onerror="this.onerror&#x3D;null;this.src&#x3D;&quot;&#x2F;images&#x2F;stellar-error.491ee870f4940739.svg&quot;"/></div>
+    </div>
+  </div>
+
+
+
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note"><svg class="icon" viewBox="0 0 1 1" data-icon="default:arrow-left" aria-hidden="true"></svg> 较新文章</div><a href="/2026/05/03/2026-20260503-agent-plan-replan-tao/">Agent系统开发手记（二）：规划、纠偏与执行循环</a></div><div class="item" id="next"><div class="note">较早文章 <svg class="icon" viewBox="0 0 1 1" data-icon="default:arrow-right" aria-hidden="true"></svg></div><a href="/2026/04/15/2026-20260415-find-yourself/">AI洪流之中，停下脚步去寻找自我</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    
+    
+    <section class="body cmt-body waline">
+      
+
+<div id="waline_container" class="waline_thread with-fancybox"><div class="lazy-icon"></div></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p><a target="_blank" rel="noopener" href="https://github.com/sswfive">GitHub</a> · <a target="_blank" rel="noopener" href="https://x.com/sswfive">X(Twitter)</a> · <a href="/atom.xml">订阅 RSS</a><br>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/2.0.0-rc.5">Stellar 2.0.0-rc.5</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。<br><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+</main>
+<aside data-stellar-runtime-region id="rightbar-region" class="site-region site-region--rightbar" data-region="rightbar" aria-label="Rightbar"><div class="site-region__surface ui-drawer-surface"><div class="site-region__viewport"><div class="widgets widget-stack widget-stack--rightbar widget-stack--rightbar"><div class="widget-instance widget-instance--toc" data-widget-id="rightbar:1:toc" data-presentation="rightbar">
+
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false">
+  
+    <div class="widget-header dis-select">
+      <span class="name">本文目录</span>
+      <button type="button" class="cap-action ui-interactive card-hover card-hover--spotlight" data-shell-action="toggle-toc" aria-label="Toggle table of contents" aria-pressed="false"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></span></button>
+    </div>
+  
+  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E8%AE%A9%E6%88%91%E5%A4%B4%E7%96%BC%E7%9A%84%E5%9C%BA%E6%99%AF%E8%AF%B4%E8%B5%B7"><span class="toc-text">从一个让我头疼的场景说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5%E8%83%BD%E6%9C%89%E5%A4%9A%E4%B9%B1"><span class="toc-text">用户输入能有多乱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5%E8%A7%84%E8%8C%83%E5%8C%96"><span class="toc-text">用户输入规范化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E5%A4%84%E7%90%86%E6%97%B6%E6%9C%BA"><span class="toc-text">处理时机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E5%87%A0%E4%B8%AA%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-text">几个实用技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E6%B7%B1%E5%BA%A6%E7%BB%93%E5%90%88%E4%B8%8A%E9%9D%A2%E5%87%A0%E7%82%B9%E6%8A%80%E5%B7%A7%E8%BF%98%E4%B8%8D%E5%A4%9F%EF%BC%8C%E8%BF%98%E5%BE%97%E7%BB%93%E5%90%88%E6%9B%B4%E6%B7%B1%E5%B1%82%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-text">深度结合上面几点技巧还不够，还得结合更深层的上下文</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E4%B8%89%E5%B1%82%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB"><span class="toc-text">三层意图识别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%BD%AE%E4%BF%A1%E5%BA%A6%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-text">置信度怎么用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#Slot-Filling"><span class="toc-text">Slot Filling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E8%AF%86%E5%88%AB%E4%B8%8D%E5%87%BA%E6%9D%A5%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">识别不出来怎么办</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#Prompt-%E6%80%8E%E4%B9%88%E5%86%99"><span class="toc-text">Prompt 怎么写</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB%E4%B8%8D%E5%87%86%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-text">意图识别不准怎么办</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E6%84%8F%E5%9B%BE%E5%A4%AA%E5%A4%9A"><span class="toc-text">意图太多</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E6%84%8F%E5%9B%BE%E8%BE%B9%E7%95%8C%E6%A8%A1%E7%B3%8A"><span class="toc-text">意图边界模糊</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%94%A8%E6%88%B7%E8%A1%A8%E8%BE%BE%E5%A4%AA%E5%8F%A3%E8%AF%AD%E5%8C%96"><span class="toc-text">用户表达太口语化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E5%A4%9A%E4%B8%AA%E6%84%8F%E5%9B%BE"><span class="toc-text">一句话多个意图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E5%A4%9A%E8%BD%AE%E5%AF%B9%E8%AF%9D%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E9%97%AE%E9%A2%98"><span class="toc-text">多轮对话的上下文问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E5%A4%9A%E8%AF%86%E5%88%AB%E5%99%A8%E4%BB%B2%E8%A3%81"><span class="toc-text">多识别器仲裁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E5%BE%AE%E8%B0%83"><span class="toc-text">微调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E8%BF%AD%E4%BB%A3%E5%BC%8F%E5%8F%8D%E9%A6%88%EF%BC%9A%E4%B8%80%E4%B8%AA%E9%80%9A%E7%94%A8%E7%9A%84%E6%80%9D%E7%BB%B4"><span class="toc-text">迭代式反馈：一个通用的思维</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E6%80%8E%E4%B9%88%E8%AF%84%E4%BC%B0%E6%95%88%E6%9E%9C"><span class="toc-text">怎么评估效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E7%A4%BA%E4%BE%8B%E5%B1%95%E7%A4%BA"><span class="toc-text">示例展示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%AC%AC%E4%B8%80%E8%BD%AE"><span class="toc-text">第一轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%AC%AC%E4%BA%8C%E8%BD%AE"><span class="toc-text">第二轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%AC%AC%E4%B8%89%E8%BD%AE"><span class="toc-text">第三轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%AC%AC%E5%9B%9B%E8%BD%AE"><span class="toc-text">第四轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%AC%AC%E4%BA%94%E8%BD%AE"><span class="toc-text">第五轮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E7%A4%BA%E4%BE%8B%E5%B0%8F%E7%BB%93"><span class="toc-text">示例小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-text">写在最后</span></a></li></ol></div>
+  <div class="widget-footer"><a class="top ui-interactive" onclick="util.scrollTop()"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M20.536 3.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464" opacity=".5"/><path fill="currentColor" d="M9.53 12.03a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 1 1-1.06 1.06L12 9.56z"/><path fill="currentColor" d="M9.53 16.03a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 1 1-1.06 1.06L12 13.56z"/></svg></span><span>回到顶部</span></a><a class="buttom ui-interactive" onclick="util.scrollComment()"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M7.25 9A.75.75 0 0 1 8 8.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 9m0 3.5a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75"/></svg></span><span>参与讨论</span></a></div>
+</widget>
+
+
+</div></div></div></div></aside>
+</div><button type="button" class="site-scrim" data-shell-action="dismiss-drawer" aria-label="Close navigation" tabindex="-1"></button><div data-stellar-runtime-region class="site-dock" role="group" aria-label="Layout panels">
+  <button type="button" class="site-dock__button site-dock__button--rightbar ui-interactive" aria-label="Open rightbar" aria-controls="rightbar-region" aria-expanded="false" data-shell-action="toggle-rightbar-drawer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" class="site-dock__button site-dock__button--leftbar ui-interactive" aria-label="Open leftbar" aria-controls="leftbar-region" aria-expanded="false" data-shell-action="toggle-leftbar-drawer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+
+<dialog data-stellar-runtime-region class="search-dialog" id="site-search-dialog" aria-labelledby="site-search-title">
+  <div class="search-dialog__panel search-wrapper" id="site-search-wrapper" searching="false">
+    <div class="search-dialog__header">
+      <div class="search-form" role="search">
+        <span class="search-button" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Adapted from Google Material Icons by Material Design Authors - https://github.com/material-icons/material-icons/blob/master/LICENSE --><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3M3 13h3M3 18h8M16.83 13.83l3.76 3.76"/><circle cx="14" cy="11" r="4"/></g></svg></span>
+        <input type="search" class="search-input" id="site-search-input" aria-labelledby="site-search-title" placeholder="搜索">
+      </div>
+      <button type="button" class="search-dialog__close" data-shell-action="close-search" aria-label="关闭搜索">×</button>
+    </div>
+    
+      <div class="search-dialog__scope" role="radiogroup" aria-labelledby="site-search-title" hidden>
+        <label class="search-dialog__scope-option" data-search-scope-option="all">
+          <input class="ui-radio" type="radio" name="site-search-scope" value="all">
+          <span>全站</span>
+        </label>
+        <label class="search-dialog__scope-option" data-search-scope-option="blog" hidden>
+          <input class="ui-radio" type="radio" name="site-search-scope" value="blog">
+          <span>博客</span>
+        </label>
+        <label class="search-dialog__scope-option" data-search-scope-option="current" hidden>
+          <input class="ui-radio" type="radio" name="site-search-scope" value="current">
+          <span data-search-scope-current-label></span>
+        </label>
+      </div>
+    
+    <h2 class="search-dialog__title" id="site-search-title">站内搜索</h2>
+    <div class="search-result" id="site-search-result"></div>
+    <div class="search-no-result">没有找到内容！</div>
+  </div>
+</dialog>
+</div><div class="site-scripts">
+<script data-stellar-script="core" src="/js/stellar-icons.js?v=69733527783f5b02"></script>
+
+<script data-stellar-script="defines">
+  window.canonical = window.stellarClientData.canonical;
+  const ctx = window.stellarClientData.ctx;
+  window.canonical.param = {permalink: "https://sswfive.xyz/2026/05/01/2026-20260501-agent-intent-recognition/", checklink: ctx.services.video.js};
+  ctx.date_suffix = {"just":"刚刚","min":"分钟前","hour":"小时前","day":"天前"};
+  if (ctx.search) Object.assign(ctx.search, {"more":"更多","no_more":"没有更多了"});
+  const def = window.stellarClientData.def;
+  window.ctx = ctx;
+  window.def = def;
+</script>
+
+
+<!-- core: 迁移期 DOM/资源兼容工具；Extension 注册与生命周期由 ESM runtime 所有 -->
+<script data-stellar-script="core" src="/js/utils.js?v=2.0.0-rc.5"></script>
+<script data-stellar-script="core" src="/js/main.js?v=2.0.0-rc.5" defer></script>
+<script data-stellar-script="core" defer src="/js/profile.js?v=2.0.0-rc.5"></script>
+
+
+
+
+
+<script data-stellar-script="core" type="application/json" id="stellar-runtime-config">{"version":1,"root":"/","policy":{"cache":{"enabled":true,"defaultTtl":3600,"ttl":{"giscus":600,"waline":600,"artalk":600,"memos":600,"memos-user":86400,"sites":86400,"friends":86400,"friends_and_posts":86400,"siteinfo":86400},"maxEntries":200},"request":{"retries":2,"timeoutMs":5000,"idleTimeoutMs":3000,"maxCacheEntryBytes":204800},"features":{"codeCopyToastMs":2500},"providers":{"linkPrefetch":"flying_pages","lightbox":"fancybox","diagrams":"mermaid"}},"extensions":[{"id":"pin-slider","module":"/js/runtime/extensions/pin-slider.js","scope":"region","when":{"selector":".pin-slider"},"config":{}},{"id":"page-controls","module":"/js/runtime/extensions/page-controls.js","scope":"region","when":{"always":true},"config":{"highlight":"/js/search/highlight.js","tagtree":"/js/tagtree.js"}},{"id":"partial-navigation","module":"/js/runtime/extensions/partial-navigation.js","scope":"document","when":{"always":true},"config":{}},{"id":"color-scheme-switch","module":"/js/runtime/extensions/color-scheme-switch.js","scope":"document","when":{"always":true},"config":{"messages":{"light":"切换到浅色模式","dark":"切换到深色模式","auto":"切换到跟随系统配色"}}},{"id":"search","module":"/js/runtime/extensions/search.js","scope":"document","when":{"selector":".search-input"},"config":{"provider":"local","options":{"scope":"all","includeContent":true,"cacheTtlSeconds":86400},"assets":{"client":null,"provider":"/js/search/local-search.js","shortcut":"/js/search/shortcut.js"}}},{"id":"hero-effect","module":"/js/runtime/extensions/hero-effect.js","scope":"region","when":{"selector":"canvas[data-hero-effect]"},"config":{}},{"id":"lazy-loading","module":"/js/runtime/extensions/lazy-loading.js","scope":"document","when":{"always":true},"config":{"asset":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"}},{"id":"deferred-icons","module":"/js/runtime/extensions/deferred-icons.js","scope":"region","when":{"selector":"svg.icon[data-icon]"},"config":{}},{"id":"dropdown","module":"/js/runtime/extensions/dropdown.js","scope":"region","when":{"selector":"details.dropdown"},"config":{}},{"id":"services","module":"/js/runtime/extensions/services.js","scope":"region","when":{"selector":"#artalk_container, #twikoo_container, #waline_container, .data-service, [class*='ds-'], a[cardlink], a[data-md-link][data-siteinfo-api], .site-card [data-siteinfo-api], .voice\u003eaudio, .video\u003evideo, .chat-file"},"config":{"marked":"https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js"}},{"id":"comments","module":"/js/runtime/extensions/comments.js","scope":"region","when":{"selector":"#comments"},"config":{"provider":"waline","options":{"serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]},"pageTitle":"Agent系统开发手记（一）：意图识别","assets":{"localCss":"/css/comments/waline.css","js":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline.js","css":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline.css","metaCss":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline-meta.css"}}},{"id":"settings","module":"/js/runtime/extensions/settings.js","scope":"region","when":{"selector":".settings-page"},"config":{}},{"id":"link-prefetch","module":"/js/runtime/extensions/link-prefetch.js","scope":"document","when":{"always":true},"config":{"asset":"https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"}},{"id":"lightbox","module":"/js/runtime/extensions/lightbox.js","scope":"region","when":{"selector":"[data-fancybox]:not(.error), .with-fancybox, .ds-memos, .timenode p\u003eimg"},"config":{"enabled":true,"selector":".timenode p\u003eimg","assets":{"localCss":"/css/plugins/fancybox.css","js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"}}},{"id":"reveal","module":"/js/runtime/extensions/reveal.js","scope":"region","when":{"selector":".slide-up"},"config":{"enabled":true,"duration":800,"interval":200,"distance":8,"blur":4}},{"id":"mathjax","module":"/js/runtime/extensions/mathjax.js","scope":"region","when":{"selector":".has-jax, script[type^='math/tex']"},"config":{"options":{},"asset":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"}},{"id":"diagrams","module":"/js/runtime/extensions/diagrams.js","scope":"region","when":{"selector":".mermaid"},"config":{"theme":"neutral","provider":"mermaid","assets":{"js":"https://gcore.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"},"colorScheme":"auto"}},{"id":"code-copy","module":"/js/runtime/extensions/code-copy.js","scope":"region","when":{"selector":".code"},"config":{"assets":{"js":"/js/plugins/copycode.js"},"messages":{"label":"复制","copied":"复制成功","denied":"未获得剪贴板权限","unsupported":"当前浏览器不支持剪贴板或页面不是 HTTPS"}}},{"id":"adaptive-text","module":"/js/runtime/extensions/adaptive-text.js","scope":"region","when":{"selector":"[data-text-adaptive]"},"config":{"assets":{"colorJs":"/js/color.js","js":"/js/plugins/adaptive-text.js"}}},{"id":"card-hover","module":"/js/runtime/extensions/card-hover.js","scope":"region","when":{"selector":".card-hover"},"config":{"spotlight":true,"tilt":false,"assets":{"js":"/js/plugins/card-hover.js"}}},{"id":"swiper","module":"/js/runtime/extensions/swiper.js","scope":"region","when":{"selector":"#swiper-api"},"config":{"assets":{"localCss":"/css/plugins/swiper.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js","css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css"}}}]}</script>
+<script data-stellar-script="core" type="module" src="/js/runtime/index.js?v=2.0.0-rc.5&runtime=1"></script>
+
+
+<!-- inject -->
+
+
+<script data-stellar-script="core" defer src="/js/navigation-init.js?v=2.0.0-rc.5"></script>
+</div></body></html>
+
