@@ -1,0 +1,772 @@
+
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/2.0.0-rc.5" theme-name="Stellar" theme-version="2.0.0-rc.5">
+  <link rel="canonical" href="https://sswfive.xyz/2025/04/15/2025-20250415-llm-and-agent/" data-stellar-page-meta="">
+  
+  <meta name="generator" content="Hexo 8.1.1">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title data-stellar-page-meta>AI指挥师笔记（一）：先搞懂 LLM 和 Agent 是什么 - ssw5ive</title>
+  <script data-stellar-script="core">
+    (function () {
+      var key = 'stellar:v2:leftbar-state';
+      var fallback = "expanded";
+      try {
+        var value = localStorage.getItem(key);
+        document.documentElement.dataset.leftbarState = value === 'collapsed' || value === 'expanded' ? value : fallback;
+      } catch (error) {
+        document.documentElement.dataset.leftbarState = fallback;
+      }
+    })();
+  </script>
+
+  <meta name="description" content="同一个 Claude 模型，为什么不同工具用起来差别那么大？搞明白 LLM 和 Agent 的关系，才能把 AI 工具用明白。" data-stellar-page-meta="">
+<meta property="og:type" content="article" data-stellar-page-meta="">
+<meta property="og:title" content="AI指挥师笔记（一）：先搞懂 LLM 和 Agent 是什么" data-stellar-page-meta="">
+<meta property="og:url" content="https://sswfive.xyz/2025/04/15/2025-20250415-llm-and-agent/" data-stellar-page-meta="">
+<meta property="og:site_name" content="ssw5ive" data-stellar-page-meta="">
+<meta property="og:description" content="同一个 Claude 模型，为什么不同工具用起来差别那么大？搞明白 LLM 和 Agent 的关系，才能把 AI 工具用明白。" data-stellar-page-meta="">
+<meta property="og:locale" content="zh_CN" data-stellar-page-meta="">
+<meta property="article:author" content="sswfive" data-stellar-page-meta="">
+<meta property="article:published_time" content="2025-04-15T14:30:00.000Z" data-stellar-page-meta="">
+<meta property="article:modified_time" content="2026-09-16T08:39:40.000Z" data-stellar-page-meta="">
+<meta property="article:tag" content="AI" data-stellar-page-meta="">
+<meta property="article:tag" content="Agent" data-stellar-page-meta="">
+<meta property="article:tag" content="LLM" data-stellar-page-meta="">
+<meta name="twitter:card" content="summary" data-stellar-page-meta="">
+<meta name="twitter:creator" content="@sswfive" data-stellar-page-meta=""><meta name="twitter:title" content="AI指挥师笔记（一）：先搞懂 LLM 和 Agent 是什么" data-stellar-page-meta="">
+  
+  
+  <meta name="keywords" content="AI,LLM,Agent" data-stellar-page-meta="">
+
+  <!-- feed -->
+  
+    
+
+    
+      
+        <link rel="alternate" href="/atom.xml" title="ssw5ive" type="application/atom+xml">
+      
+    
+  
+
+  <link rel="preload" href="/css/main.css?v=2.0.0-rc.5" as="style">
+  <link rel="stylesheet" href="/css/main.css?v=2.0.0-rc.5">
+  <style>:root{--text-loading:"正在加载";--text-loading-error:"加载失败，请稍后重试。"}</style>
+
+
+  
+    <link rel="shortcut icon" href="/images/logo.JPG">
+  
+
+  
+
+  <script type="application/ld+json" data-stellar-page-meta="">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"dateCreated":"2025-04-15T22:30:00+08:00","dateModified":"2026-09-16T16:39:40+08:00","datePublished":"2025-04-15T22:30:00+08:00","description":"最近用 AI 编程工具越来越多，脑子里一直有个问题：Claude Code、Cursor、Codex，底下跑的都是 Claude 或 GPT，为什么体验差别这么大？\n花时间理了一下，核心就一句话：AI 干活的效果 = 模型能力 × Agent 工程水平。\n这两件事，行业术语分别叫 LLM 和 Agent。这篇笔记把它们之间的关系和常见术语整理清楚。","headline":"AI指挥师笔记（一）：先搞懂 LLM 和 Agent 是什么","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2025/04/15/2025-20250415-llm-and-agent/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"url":"https://sswfive.xyz/2025/04/15/2025-20250415-llm-and-agent/","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"],"keywords":"AI, LLM, Agent","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"}</script>
+  <style>
+  /* 中文排版优化 */
+  .md-text { line-height: 1.8; letter-spacing: 0.02em; }
+  .md-text p { margin-bottom: 1em; }
+  .md-text h2 { margin-top: 2em; margin-bottom: 0.8em; }
+  .md-text h3 { margin-top: 1.6em; margin-bottom: 0.6em; }
+  .md-text pre { border-radius: 8px; }
+  .md-text code { border-radius: 4px; padding: 0.15em 0.4em; }
+  .md-text blockquote { border-radius: 8px; }
+  .social-wrap { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 0.25rem !important; }
+  .social-wrap .social { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
+  .social-wrap .social svg, .social-wrap .social img { display: block; margin: auto; width: 1em; height: 1em; }
+</style>
+
+
+  <link rel="stylesheet" href="/css/stellar-icons.css?v=7c185ad1a9a79674">
+  <link rel="preload" as="script" href="/js/stellar-icons.js?v=69733527783f5b02">
+  
+  
+</head>
+<body data-page-type="content" data-page-layout="post" data-article-style="tech"><div data-stellar-runtime-region id="site-cover" class="site-cover"></div><div class="site-shell" id="start" data-regions="leftbar rightbar"><div class="site-workspace">
+<aside data-stellar-runtime-region id="leftbar-region" class="site-region site-region--leftbar" data-region="leftbar" aria-label="Leftbar"><div class="site-region__surface ui-surface"><div class="site-region__decoration" aria-hidden="true"></div><div class="site-region__viewport"><header class="site-region__header site-region__zone site-region__zone--top">
+    <div class="widget-instance widget-instance--brand" data-widget-id="leftbar:fixed:brand" data-presentation="leftbar" data-leftbar-rail>
+<header class="brand-header brand-header--regular brand-header--site"><div class="brand-wrap"><a class="brand-image brand-image--avatar" href="&#x2F;about&#x2F;"><img no-lazy src="&#x2F;images&#x2F;logo.JPG" alt="" onerror="this.onerror&#x3D;null;this.src&#x3D;&quot;&#x2F;images&#x2F;stellar-error.491ee870f4940739.svg&quot;"></a><a class="brand-title" href="&#x2F;about&#x2F;"><div class="brand-name">ssw5ive</div><div class="brand-tagline cap">循此苦旅 以达星辰... | 一念净心花开遍世界</div></a></div><div class="brand-search">
+
+<div class="ui-collection" data-layout="list" data-variant="nav" data-density="auto">
+  
+    
+<button class="ui-collection__item ui-interactive card-hover card-hover--spotlight search-trigger has-hover-surface" type="button" title="搜索" aria-label="搜索" data-shell-action="open-search" data-search-instance="leftbar-brand-search" data-search-domain="topic:ai" data-search-domain-label="AI" data-search-domain-blog="true">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Adapted from Google Material Icons by Material Design Authors - https://github.com/material-icons/material-icons/blob/master/LICENSE --><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3M3 13h3M3 18h8M16.83 13.83l3.76 3.76"/><circle cx="14" cy="11" r="4"/></g></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">搜索</span>
+      
+      
+    </span>
+  
+  <kbd class="search-shortcut" aria-hidden="true">⌘K</kbd>
+
+  
+</button>
+
+  
+</div>
+
+
+</div></header>
+</div>
+  </header>
+  <div class="site-region__body site-region__zone site-region__zone--body">
+    <div class="widget-instance widget-instance--menu" data-widget-id="leftbar:fixed:menu" data-presentation="leftbar" data-leftbar-rail>
+
+
+<nav class="menu dis-select">
+<div class="ui-collection" data-layout="list" data-variant="nav" data-density="auto">
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight is-active" href="&#x2F;" title="文章" aria-current="page">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">文章</span>
+      
+      
+    </span>
+  
+  
+  <span class="ui-collection__indicator"></span>
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;ziliao&#x2F;" title="资源">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">资源</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;friends&#x2F;" title="咖啡">
+  
+  <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.25 11.88c-.01.177.015.39.065.818l.401 3.428A5.515 5.515 0 0 0 8.193 21h3.614a5.52 5.52 0 0 0 5.028-3.25H19a3.75 3.75 0 1 0 0-7.5h-2.279a2 2 0 0 0-.618-.22c-.174-.03-.39-.03-.82-.03H4.717c-.43 0-.645 0-.819.03a2 2 0 0 0-1.646 1.85m15.487-.13q.008.065.012.13c.01.177-.014.39-.064.818l-.401 3.428l-.016.124H19a2.25 2.25 0 0 0 0-4.5z"/><path d="M10.53 1.47a.75.75 0 0 1 0 1.06a.666.666 0 0 0 0 .94a2.164 2.164 0 0 1 0 3.06a.75.75 0 0 1-1.06-1.06c.26-.26.26-.68 0-.94a2.164 2.164 0 0 1 0-3.06a.75.75 0 0 1 1.06 0m-4.5 1.5a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.116.116A.75.75 0 0 1 4.47 6.97l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0m9.5 0a.75.75 0 0 1 0 1.06l-.116.116a.69.69 0 0 0-.064.904a2.19 2.19 0 0 1-.203 2.864l-.117.116a.75.75 0 1 1-1.06-1.06l.116-.116a.69.69 0 0 0 .064-.904a2.19 2.19 0 0 1 .204-2.864l.116-.116a.75.75 0 0 1 1.06 0" opacity=".5"/></g></svg></span>
+  
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">咖啡</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+</div>
+
+</nav>
+
+</div>
+    <div class="widgets widget-stack widget-stack--leftbar widget-stack--body"><div class="widget-instance widget-instance--related" data-widget-id="leftbar:0:related" data-presentation="leftbar" data-leftbar-rail>
+
+<widget class="widget-wrapper related-widget">
+  
+    <div class="widget-header dis-select">
+      <span class="name">专栏：AI</span>
+      
+    </div>
+  
+  <div class="widget-body"><div class="ui-collection" data-layout="list" data-variant="nav" data-density="compact">
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;09&#x2F;23&#x2F;2026-20260923-jev-semantic-if&#x2F;" title="Jev：会理解语义的 if 语句">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">J</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Jev：会理解语义的 if 语句</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;10&#x2F;2026-20260510-agent-evaluation&#x2F;" title="Agent系统开发手记（五）：评估与反馈">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（五）：评估与反馈</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;08&#x2F;2026-20260508-agent-rag&#x2F;" title="Agent系统开发手记（四）：智能检索与RAG">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（四）：智能检索与RAG</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;05&#x2F;2026-20260505-agent-context-management&#x2F;" title="Agent系统开发手记（三）：上下文管理">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（三）：上下文管理</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;03&#x2F;2026-20260503-agent-plan-replan-tao&#x2F;" title="Agent系统开发手记（二）：规划、纠偏与执行循环">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（二）：规划、纠偏与执行循环</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;05&#x2F;01&#x2F;2026-20260501-agent-intent-recognition&#x2F;" title="Agent系统开发手记（一）：意图识别">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Agent系统开发手记（一）：意图识别</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;03&#x2F;11&#x2F;2026-20260311-prompt-engineering-guide&#x2F;" title="提示词实践笔记：系统提示词和用户提示词">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">提</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">提示词实践笔记：系统提示词和用户提示词</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2026&#x2F;01&#x2F;29&#x2F;2026-20260129-agent-from-design-of-claude-code&#x2F;" title="从Claude Code的架构设计浅析Agent">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">从</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">从Claude Code的架构设计浅析Agent</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight is-active" href="&#x2F;2025&#x2F;04&#x2F;15&#x2F;2025-20250415-llm-and-agent&#x2F;" title="AI指挥师笔记（一）：先搞懂 LLM 和 Agent 是什么" aria-current="page">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">A</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">AI指挥师笔记（一）：先搞懂 LLM 和 Agent 是什么</span>
+      
+      
+    </span>
+  
+  
+  <span class="ui-collection__indicator"></span>
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;04&#x2F;14&#x2F;2025-20250414-daily-study-ai&#x2F;" title="每天学点AI">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">每</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">每天学点AI</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;04&#x2F;09&#x2F;2025-20250409-mlflow-deploy&#x2F;" title="MLflow：模型生命周期管理工具的使用">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">M</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">MLflow：模型生命周期管理工具的使用</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;03&#x2F;15&#x2F;2025-20250315-kserve-deploy&#x2F;" title="Kserve：云原生环境中的模型部署与推理组件的使用">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">K</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">Kserve：云原生环境中的模型部署与推理组件的使用</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2025&#x2F;03&#x2F;15&#x2F;2025-20250315-modelops-tech&#x2F;" title="关于ModelOps的相关技术整理汇总">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">关</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">关于ModelOps的相关技术整理汇总</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+    
+<a class="ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;2023&#x2F;08&#x2F;16&#x2F;2023-20230816-machine-learning-basics&#x2F;" title="机器学习基础">
+  
+  
+  <span class="ui-collection__initial" aria-hidden="true">机</span>
+  
+    <span class="ui-collection__content">
+      
+      <span class="ui-collection__title">机器学习基础</span>
+      
+      
+    </span>
+  
+  
+  
+</a>
+
+  
+</div></div>
+  
+</widget>
+
+
+</div></div>
+  </div>
+  <footer class="site-region__footer">
+    
+    <div class="site-region__system ui-collection" data-layout="inline" data-variant="nav" data-density="compact">
+      <div class="site-region__settings"><div class="widget-instance widget-instance--settings" data-widget-id="leftbar:fixed:settings" data-presentation="leftbar" data-leftbar-rail>
+<a class="settings-widget ui-collection__item ui-interactive card-hover card-hover--spotlight" href="&#x2F;settings&#x2F;" data-profile-provider="waline" data-profile-identity-enabled="true" data-profile-fallback-avatar="https:&#x2F;&#x2F;gcore.jsdelivr.net&#x2F;gh&#x2F;cdn-x&#x2F;placeholder@1.0.12&#x2F;avatar&#x2F;round&#x2F;3442075.svg" data-settings-placement="leftbar" data-settings-label="设置" aria-label="设置" title="设置">
+  <span class="settings-widget__avatar" aria-hidden="true">
+    <span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="currentColor"><path fill-rule="evenodd" d="M12.4277 2C11.3139 2 10.2995 2.6007 8.27081 3.80211L7.58466 4.20846C5.55594 5.40987 4.54158 6.01057 3.98466 7C3.42773 7.98943 3.42773 9.19084 3.42773 11.5937V12.4063C3.42773 14.8092 3.42773 16.0106 3.98466 17C4.54158 17.9894 5.55594 18.5901 7.58466 19.7915L8.27081 20.1979C10.2995 21.3993 11.3139 22 12.4277 22C13.5416 22 14.5559 21.3993 16.5847 20.1979L17.2708 19.7915C19.2995 18.5901 20.3139 17.9894 20.8708 17C21.4277 16.0106 21.4277 14.8092 21.4277 12.4063V11.5937C21.4277 9.19084 21.4277 7.98943 20.8708 7C20.3139 6.01057 19.2995 5.40987 17.2708 4.20846L16.5847 3.80211C14.5559 2.6007 13.5416 2 12.4277 2Z" clip-rule="evenodd" opacity=".5"/><path d="M12.4277 8.25C10.3567 8.25 8.67773 9.92893 8.67773 12C8.67773 14.0711 10.3567 15.75 12.4277 15.75C14.4988 15.75 16.1777 14.0711 16.1777 12C16.1777 9.92893 14.4988 8.25 12.4277 8.25Z"/></g></svg></span>
+  </span>
+  <span class="settings-widget__name ui-collection__title">设置</span>
+</a>
+</div></div>
+      <button type="button" class="leftbar-state-toggle ui-collection__item ui-interactive card-hover card-hover--spotlight is-icon-only" aria-label="Collapse leftbar" aria-expanded="true" data-shell-action="toggle-leftbar"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.172 4.172C2 5.343 2 7.229 2 11v2c0 3.771 0 5.657 1.172 6.828S6.229 21 10 21h5V3h-5C6.229 3 4.343 3 3.172 4.172" clip-rule="evenodd" opacity=".5"/><path fill="currentColor" d="M5.5 9.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zm1 4a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 0-1.5zM22 13v-2c0-3.771 0-5.657-1.172-6.828c-.974-.975-3.192-1.139-5.828-1.166v17.988c2.636-.027 4.854-.191 5.828-1.166C22 18.657 22 16.771 22 13"/></svg></span></button>
+    </div>
+  </footer></div></div></aside>
+<main data-stellar-runtime-region class="site-main" id="main">
+
+
+<div class="article-banner-wrap slide-up"><div class="article banner top">
+  <div class="content">
+    
+    <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/topic/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/2026/09/23/2026-20260923-jev-semantic-if/">AI</a>
+</div><div class="right"><span class="cap reading">2109 字 · 预计阅读 8 分钟</span></div></div><div class="meta-row">
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-04-15T14:30:00.000Z">2025年4月15日</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-16T08:39:40.000Z">2026年9月16日</time></span></div>
+</div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>AI指挥师笔记（一）：先搞懂 LLM 和 Agent 是什么</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div></div>
+<article class="md-text content slide-up"><p>最近用 AI 编程工具越来越多，脑子里一直有个问题：Claude Code、Cursor、Codex，底下跑的都是 Claude 或 GPT，为什么体验差别这么大？</p>
+<p>花时间理了一下，核心就一句话：<strong>AI 干活的效果 = 模型能力 × Agent 工程水平。</strong></p>
+<p>这两件事，行业术语分别叫 <strong>LLM</strong> 和 <strong>Agent</strong>。这篇笔记把它们之间的关系和常见术语整理清楚。</p>
+<span id="more"></span>
+
+<h2 id="LLM：一个特别会接话的概率机器"><a href="#LLM：一个特别会接话的概率机器" class="headerlink" title="LLM：一个特别会接话的概率机器"></a>LLM：一个特别会接话的概率机器</h2><blockquote>
+<p>LLM = Large Language Model，大语言模型</p>
+</blockquote>
+<ul>
+<li><strong>核心原理</strong>：给一段已有文字，预测下一个字（token）最可能出现什么<ul>
+<li>输入”今天北京天气” → 模型算出下一个字最可能是”怎” → 输出后拼上去 → 继续猜下一个字 → 如此反复，拼成完整回答</li>
+<li>ChatGPT 里一个字一个字出现，不是特效，真的是一个字一个字”猜”出来的</li>
+</ul>
+</li>
+<li><strong>为什么猜得准？</strong> 规模效应。几百亿上千亿参数，啃过互联网几乎所有文本，”猜”就猜得惊人地准<ul>
+<li>但它并不真的”懂”，只是高级版的模式匹配</li>
+<li>类比：老中医背了几万份病历，看到症状八九不离十能开方——靠的不是理解人体底层原理，是见过足够多案例</li>
+</ul>
+</li>
+</ul>
+<h3 id="两个关键参数"><a href="#两个关键参数" class="headerlink" title="两个关键参数"></a>两个关键参数</h3><ul>
+<li><strong>温度（Temperature）</strong>：控制输出的随机程度<ul>
+<li>温度低 → 每次挑概率最大的字 → 稳但死板（写代码用）</li>
+<li>温度高 → 偶尔选冷门字 → 有创意但可能跑偏（写文案用）</li>
+</ul>
+</li>
+<li><strong>上下文窗口（Context Window）</strong>：模型每次回答时能看到的全部文字<ul>
+<li>包括：你的问题 + 历史对话 + 系统设定，全部拼在一起</li>
+<li>目前主流 200k ~ 1M token（几十万字），听起来大，Agent 场景消耗飞快</li>
+</ul>
+</li>
+<li><strong>关于”记忆”的误解</strong>：模型不是”记住”了你的话，而是每次回答都把整个上下文重新看一遍<ul>
+<li>聊太长、早期内容被挤出窗口 → 它就”失忆”了</li>
+<li>最佳实践：<strong>一个会话只聚焦一个问题，新问题开新会话</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="补充：Base-模型-vs-Instruct-模型"><a href="#补充：Base-模型-vs-Instruct-模型" class="headerlink" title="补充：Base 模型 vs Instruct 模型"></a>补充：Base 模型 vs Instruct 模型</h3><ul>
+<li><strong>Base 模型</strong>：纯概率预测，输入”中国的首都是” → 它接着写”北京，位于华北平原……”（在做文本补全）</li>
+<li><strong>Instruct 模型</strong>：经过指令微调 + RLHF，输入”中国的首都是” → 它回答”中国的首都是北京”（在回答问题）</li>
+<li>我们日常用的 ChatGPT、Claude 全是 Instruct 模型<ul>
+<li>PS：开源模型通常发布两个版本，如 Qwen2.5-7B（Base）和 Qwen2.5-7B-Instruct</li>
+</ul>
+</li>
+</ul>
+<h3 id="补充：思维链（Chain-of-Thought）"><a href="#补充：思维链（Chain-of-Thought）" class="headerlink" title="补充：思维链（Chain of Thought）"></a>补充：思维链（Chain of Thought）</h3><ul>
+<li><strong>现象</strong>：让模型先写出推理过程再给答案，比直接猜答案准确率高很多<ul>
+<li>例子：问”3个苹果买5个吃2个剩几个”，直接蹦数字可能错，先写”3+5=8, 8-2=6”就准了</li>
+<li>本质：每一步中间结果都成了后续推理的输入，相当于给自己打草稿</li>
+</ul>
+</li>
+<li><strong>推理模型</strong>：o1/o3、DeepSeek R1、Claude extended thinking 等，进一步做到”自我反思”——先给答案，再回头检查</li>
+<li><strong>新趋势</strong>（2025下半年起）：单一模型 + 思考强度参数，通过一个参数控制”想多久”<ul>
+<li>以前复杂任务要单独调推理模型，现在一套代码就够了</li>
+</ul>
+</li>
+</ul>
+<h2 id="LLM-vs-Agent：厨师和餐厅"><a href="#LLM-vs-Agent：厨师和餐厅" class="headerlink" title="LLM vs Agent：厨师和餐厅"></a>LLM vs Agent：厨师和餐厅</h2><blockquote>
+<p>这是最困扰我的问题，搞明白 LLM 原理后就有答案了。</p>
+</blockquote>
+<ul>
+<li><strong>LLM 的局限</strong>：它只是一个”非常聪明但只会说话的大脑”，没有钟不知道几点，没有手查不了数据库</li>
+<li><strong>Agent 的定义</strong>：给 LLM 装上手脚（工具），再放进一个循环里反复干活——这一整套工程就叫 Agent</li>
+<li><strong>类比</strong>：<ul>
+<li>LLM = 厨师（核心能力）</li>
+<li>Agent = 餐厅（厨房 + 食材库 + 菜品流程卡 + 品控）</li>
+<li><strong>同一个厨师，不同餐厅，出餐品质当然不一样</strong> → Claude Code 用着舒服，不光是模型强，工程也到位</li>
+<li><strong>同一间餐厅，不同厨师，出品也不一样</strong> → 给 Claude Code 接弱模型，照样拉胯</li>
+</ul>
+</li>
+</ul>
+<h2 id="Agent-内部在干什么？"><a href="#Agent-内部在干什么？" class="headerlink" title="Agent 内部在干什么？"></a>Agent 内部在干什么？</h2><h3 id="核心循环：想-→-做-→-看"><a href="#核心循环：想-→-做-→-看" class="headerlink" title="核心循环：想 → 做 → 看"></a>核心循环：想 → 做 → 看</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">接到任务，开始循环：</span><br><span class="line">    模型看看当前情况 → 决定下一步</span><br><span class="line">    需要用工具 → 调用，把结果记下来</span><br><span class="line">    判断完成 → 输出结果，结束</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>每轮三件事：<strong>想</strong>（推理）→ <strong>做</strong>（调工具）→ <strong>看</strong>（观察结果）</li>
+<li>学术上叫 ReAct（Reasoning + Acting），说白了就是人类解决问题的方式</li>
+<li>实际场景举例——“帮我找到登录接口的 bug”：<ol>
+<li>搜索登录相关文件</li>
+<li>读代码看逻辑</li>
+<li>发现可疑，读依赖文件确认</li>
+<li>定位 bug，改代码</li>
+<li>跑测试，确认修复</li>
+</ol>
+</li>
+<li><strong>副作用</strong>：每轮工具调用结果都追加到上下文 → 上下文不断增长 → 窗口撑满就”失忆”</li>
+</ul>
+<h3 id="工具调用：模型怎么”动手”的？"><a href="#工具调用：模型怎么”动手”的？" class="headerlink" title="工具调用：模型怎么”动手”的？"></a>工具调用：模型怎么”动手”的？</h3><ul>
+<li>模型本身只输出文字，它”调用工具”的方式是：<strong>输出一段文字，告诉程序想调哪个工具、传什么参数</strong></li>
+<li>程序拿到这段文字去执行，再把结果塞回上下文 → 全是文本在上下文里传来传去，没有魔法</li>
+<li>关键能力：<strong>指令遵从</strong>——模型能不能老实输出合法 JSON，不夹带废话<ul>
+<li>早期 GPT-3.5 经常在 JSON 前面来一句”好的，下面是结果”，程序直接崩</li>
+<li>现在的模型在这方面靠谱多了</li>
+</ul>
+</li>
+</ul>
+<h3 id="MCP：工具的”普通话”"><a href="#MCP：工具的”普通话”" class="headerlink" title="MCP：工具的”普通话”"></a>MCP：工具的”普通话”</h3><ul>
+<li><strong>问题</strong>：各家模型厂商定义工具的格式不一样，同一个工具在 OpenAI 和 Anthropic 那里写法完全不同<ul>
+<li>类比：简历去 A 公司要 Word，B 公司要 PDF，C 公司要纯文本——内容一样，光格式转换烦死人</li>
+</ul>
+</li>
+<li><strong>MCP（Model Context Protocol）</strong>：统一标准，写一次工具，所有支持 MCP 的 AI 工具都能用<ul>
+<li>目前已是行业事实标准</li>
+<li>注意：MCP 没引入新能力，只是把接口标准化了，底层还是 Tool Use</li>
+</ul>
+</li>
+</ul>
+<h2 id="更高级的能力"><a href="#更高级的能力" class="headerlink" title="更高级的能力"></a>更高级的能力</h2><blockquote>
+<p>Agent 有了模型和工具，基本能干活了。但要在真实场景里靠谱跑起来，还需要几样东西。</p>
+</blockquote>
+<h3 id="Skills：给-Agent-准备-SOP"><a href="#Skills：给-Agent-准备-SOP" class="headerlink" title="Skills：给 Agent 准备 SOP"></a>Skills：给 Agent 准备 SOP</h3><ul>
+<li><strong>定义</strong>：把操作流程文档化，交给 Agent 照着执行</li>
+<li>类比：与其让新实习生自己琢磨怎么发版，不如甩给他一份发版文档照着来</li>
+<li>巧妙设计：启动时只加载每个 Skill 的名字和一句话描述，需要用时再加载完整内容 → 省 token</li>
+</ul>
+<h3 id="RAG：让-Agent-翻你的内部资料"><a href="#RAG：让-Agent-翻你的内部资料" class="headerlink" title="RAG：让 Agent 翻你的内部资料"></a>RAG：让 Agent 翻你的内部资料</h3><ul>
+<li><strong>问题</strong>：模型只学过公开数据，问它”我们项目数据库怎么配的”，它答不上来</li>
+<li><strong>RAG（检索增强生成）</strong>：内部文档编码成语义向量存起来 → 用户提问时搜相关文档片段 → 塞进上下文 → 模型基于你的资料回答<ul>
+<li>关键词搜索搞不定同义词（”忘记密码” vs “账号找回”），语义向量能搞定</li>
+</ul>
+</li>
+</ul>
+<h3 id="记忆系统：别让-Agent-每次失忆"><a href="#记忆系统：别让-Agent-每次失忆" class="headerlink" title="记忆系统：别让 Agent 每次失忆"></a>记忆系统：别让 Agent 每次失忆</h3><ul>
+<li><strong>问题</strong>：新会话上下文全空，之前积累的偏好、踩过的坑全忘了</li>
+<li><strong>Auto Memory</strong>：对话后自动把有价值的信息沉淀到文件，下次新会话启动时自动加载<ul>
+<li>体感：这工具越用越懂我</li>
+</ul>
+</li>
+</ul>
+<h3 id="Harness：给-Agent-上保险"><a href="#Harness：给-Agent-上保险" class="headerlink" title="Harness：给 Agent 上保险"></a>Harness：给 Agent 上保险</h3><ul>
+<li><strong>问题</strong>：LLM 是概率模型，一定概率出错。长任务里上下文反复压缩，早期约束可能悄悄消失</li>
+<li><strong>Harness 工程</strong>：给 Agent 套确定性的兜底机制<ul>
+<li><strong>事前约束</strong>：程序层面强制，比如”没读过的文件不许改”——不靠模型自觉</li>
+<li><strong>事后反馈</strong>：改完代码自动跑测试，挂了把报错塞回上下文让它自己修</li>
+</ul>
+</li>
+<li>核心原则：<strong>能用程序检查的事，别靠模型判断</strong></li>
+</ul>
+<h2 id="一句话串起来"><a href="#一句话串起来" class="headerlink" title="一句话串起来"></a>一句话串起来</h2><blockquote>
+<p>回头看，所有这些概念有一个共同点。</p>
+</blockquote>
+<p>不管是思维链、工具调用、Agent 循环、MCP、Skills、RAG 还是记忆——<strong>全部都是文本，全部塞在上下文窗口里，交给同一个概率模型处理。</strong></p>
+<ul>
+<li>模型能力是天花板</li>
+<li><strong>上下文里塞什么、怎么塞、塞多少</strong>，决定了你离天花板有多近</li>
+<li>这就是为什么同一个模型，不同 Agent 工具效果差那么多</li>
+</ul>
+<p>随着模型越来越强，围绕模型做工程优化的价值也会水涨船高。这不光是厂商的事——怎么写好 Skills、怎么管好上下文、怎么让 token 花在刀刃上——这些都是我们每个 AI 指挥师可以着手的方向。</p>
+</article>
+<div class="article-tags slide-up"><a class="tag" href="/tags/AI/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>AI</a><a class="tag" href="/tags/LLM/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>LLM</a><a class="tag" href="/tags/Agent/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>Agent</a></div>
+
+
+  <div class="article-share slide-up" id="share">
+    <div class="body">
+      <div class="social-wrap dis-select"><a class="social share-item qrcode ui-interactive is-icon-only" onclick="util.toggle(&quot;share-qrcode&quot;)" aria-label="分享文章: QR Code" title="分享文章: QR Code"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M10.553 13.447c-.424-.424-.95-.596-1.535-.675c-.553-.074-1.25-.074-2.086-.074H5.827c-.58 0-1.065 0-1.459.037c-.411.04-.795.124-1.146.34c-.345.21-.634.5-.845.844c-.216.352-.3.735-.34 1.147C2 15.459 2 15.944 2 16.525v.068c0 .884 0 1.597.055 2.17c.056.592.175 1.108.459 1.571c.288.47.682.864 1.152 1.152c.463.284.979.403 1.57.46C5.81 22 6.524 22 7.407 22h.07c.58 0 1.064 0 1.458-.037c.412-.04.795-.124 1.147-.34c.344-.21.633-.5.844-.844c.216-.352.3-.736.34-1.147c.037-.394.037-.879.037-1.46v-1.104c0-.836 0-1.533-.074-2.086c-.079-.584-.251-1.111-.675-1.535m-1.62-11.41c.412.04.795.124 1.147.34c.344.21.633.5.844.845c.216.351.3.735.34 1.146c.037.394.037.879.037 1.46v1.104c0 .836 0 1.533-.074 2.086c-.079.584-.251 1.111-.675 1.535s-.95.596-1.535.675c-.553.074-1.25.074-2.086.074H5.827c-.58 0-1.065 0-1.459-.037c-.411-.04-.795-.124-1.146-.34a2.56 2.56 0 0 1-.845-.844c-.216-.352-.3-.735-.34-1.147C2 8.54 2 8.056 2 7.475v-.068c0-.884 0-1.597.055-2.17c.056-.592.175-1.108.459-1.571c.288-.47.682-.864 1.152-1.152c.463-.284.979-.403 1.57-.46C5.81 2 6.524 2 7.407 2h.07c.58 0 1.064 0 1.458.037M16.593 2h-.068c-.58 0-1.065 0-1.46.037c-.41.04-.794.124-1.146.34c-.344.21-.633.5-.844.845c-.216.351-.3.735-.34 1.146c-.037.394-.037.879-.037 1.46v1.104c0 .836 0 1.533.074 2.086c.079.584.251 1.111.675 1.535s.95.596 1.535.675c.553.074 1.25.074 2.086.074h1.105c.58 0 1.065 0 1.459-.037c.411-.04.795-.124 1.146-.34c.345-.21.634-.5.845-.844c.216-.352.3-.735.34-1.147C22 8.54 22 8.056 22 7.475v-.068c0-.884 0-1.597-.055-2.17c-.056-.592-.175-1.108-.459-1.571a3.5 3.5 0 0 0-1.152-1.152c-.463-.284-.979-.403-1.57-.46C18.19 2 17.477 2 16.594 2" opacity=".5"/><path fill="currentColor" d="M14.093 21.302a.698.698 0 1 1-1.396 0v-2.79h1.396z" opacity=".4"/><path fill="currentColor" d="M21.302 12.698a.7.7 0 0 0-.697.697v3.256H22v-3.256a.7.7 0 0 0-.698-.697" opacity=".5"/><path fill="currentColor" d="M16.076 16.617c-.076.184-.076.417-.076.883s0 .699.076.883a1 1 0 0 0 .541.54c.184.077.417.077.883.077s.699 0 .883-.076a1 1 0 0 0 .54-.541c.077-.184.077-.417.077-.883s0-.699-.076-.883a1 1 0 0 0-.541-.54C18.199 16 17.966 16 17.5 16s-.699 0-.883.076a1 1 0 0 0-.54.541"/><path fill="currentColor" d="M22 18.535v-.023h-1.396c0 .443 0 .74-.016.97c-.015.224-.043.333-.073.405a1.16 1.16 0 0 1-.629.63c-.072.029-.18.056-.405.072c-.23.015-.527.016-.97.016h-1.86V22h1.883c.414 0 .759 0 1.042-.02a2.6 2.6 0 0 0 .844-.175a2.56 2.56 0 0 0 1.384-1.384c.112-.27.156-.549.176-.844c.02-.283.02-.628.02-1.042" opacity=".7"/><path fill="currentColor" d="M12.697 16.616v.035h1.396c0-.668 0-1.116.035-1.458c.034-.33.093-.482.16-.583a1.2 1.2 0 0 1 .321-.32c.101-.068.254-.128.584-.161c.342-.035.79-.036 1.458-.036h1.86v-1.395h-1.896c-.623 0-1.142 0-1.563.043c-.44.044-.85.142-1.218.388c-.28.187-.519.426-.706.706c-.246.368-.343.777-.388 1.217c-.043.421-.043.94-.043 1.564" opacity=".6"/><path fill="currentColor" d="M5.508 18.69c.219.155.528.155 1.146.155c.619 0 .928 0 1.146-.155a.8.8 0 0 0 .2-.199c.154-.218.154-.527.154-1.146s0-.927-.155-1.146A.8.8 0 0 0 7.8 16c-.218-.155-.527-.155-1.146-.155s-.927 0-1.146.155a.8.8 0 0 0-.199.2c-.155.218-.155.527-.155 1.145c0 .619 0 .928.155 1.146a.8.8 0 0 0 .2.2M6.654 8.155c-.618 0-.927 0-1.146-.155a.8.8 0 0 1-.199-.2c-.155-.217-.155-.527-.155-1.145c0-.619 0-.928.155-1.146a.8.8 0 0 1 .2-.2c.218-.154.527-.154 1.145-.154c.619 0 .928 0 1.146.155a.8.8 0 0 1 .2.199c.154.218.154.527.154 1.146s0 .928-.155 1.146A.8.8 0 0 1 7.8 8c-.218.155-.527.155-1.146.155M16.2 8c.218.155.527.155 1.146.155s.927 0 1.146-.155a.8.8 0 0 0 .199-.199c.155-.218.155-.528.155-1.146c0-.619 0-.928-.155-1.146a.8.8 0 0 0-.2-.2c-.218-.154-.527-.154-1.145-.154c-.619 0-.928 0-1.146.155a.8.8 0 0 0-.2.199c-.154.218-.154.527-.154 1.146s0 .928.155 1.146A.8.8 0 0 0 16.2 8"/></svg></span></a><a class="social share-item weibo ui-interactive is-icon-only" href="https:&#x2F;&#x2F;service.weibo.com&#x2F;share&#x2F;share.php?url&#x3D;https%3A%2F%2Fsswfive.xyz%2F2025%2F04%2F15%2F2025-20250415-llm-and-agent%2F&amp;title&#x3D;AI%E6%8C%87%E6%8C%A5%E5%B8%88%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%85%88%E6%90%9E%E6%87%82%20LLM%20%E5%92%8C%20Agent%20%E6%98%AF%E4%BB%80%E4%B9%88%20-%20ssw5ive&amp;summary&#x3D;%E5%90%8C%E4%B8%80%E4%B8%AA%20Claude%20%E6%A8%A1%E5%9E%8B%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%E5%B7%A5%E5%85%B7%E7%94%A8%E8%B5%B7%E6%9D%A5%E5%B7%AE%E5%88%AB%E9%82%A3%E4%B9%88%E5%A4%A7%EF%BC%9F%E6%90%9E%E6%98%8E%E7%99%BD%20LLM%20%E5%92%8C%20Agent%20%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%8C%E6%89%8D%E8%83%BD%E6%8A%8A%20AI%20%E5%B7%A5%E5%85%B7%E7%94%A8%E6%98%8E%E7%99%BD%E3%80%82" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: Weibo" title="分享文章: Weibo"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439l-.002.004zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.601l.014-.028zm.176-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.793-.201-3.642-2.161-4.149zm7.563-1.224c-.346-.105-.57-.18-.405-.615.375-.977.42-1.804 0-2.404-.781-1.112-2.915-1.053-5.364-.03 0 0-.766.331-.571-.271.376-1.217.315-2.224-.27-2.809-1.338-1.337-4.869.045-7.888 3.08C1.309 10.87 0 13.273 0 15.348c0 3.981 5.099 6.395 10.086 6.395 6.536 0 10.888-3.801 10.888-6.82 0-1.822-1.547-2.854-2.915-3.284v.01zm1.908-5.092c-.766-.856-1.908-1.187-2.96-.962-.436.09-.706.511-.616.932.09.42.511.691.932.602.511-.105 1.067.044 1.442.465.376.421.466.977.316 1.473-.136.406.089.856.51.992.405.119.857-.105.992-.512.33-1.021.12-2.178-.646-3.035l.03.045zm2.418-2.195c-1.576-1.757-3.905-2.419-6.054-1.968-.496.104-.812.587-.706 1.081.104.496.586.813 1.082.707 1.532-.331 3.185.15 4.296 1.383 1.112 1.246 1.429 2.943.947 4.416-.165.48.106 1.007.586 1.157.479.165.991-.104 1.157-.586.675-2.088.241-4.478-1.338-6.235l.03.045z"/></svg></span></a><a class="social share-item x ui-interactive is-icon-only" href="https:&#x2F;&#x2F;x.com&#x2F;intent&#x2F;tweet?text&#x3D;AI%E6%8C%87%E6%8C%A5%E5%B8%88%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%85%88%E6%90%9E%E6%87%82%20LLM%20%E5%92%8C%20Agent%20%E6%98%AF%E4%BB%80%E4%B9%88%20-%20ssw5ive&amp;url&#x3D;https%3A%2F%2Fsswfive.xyz%2F2025%2F04%2F15%2F2025-20250415-llm-and-agent%2F" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: X" title="分享文章: X"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M14.234 10.162L22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299l-.929-1.329L3.076 1.56h3.182l5.965 8.532l.929 1.329l7.754 11.09h-3.182z"/></svg></span></a><a class="social share-item telegram ui-interactive is-icon-only" href="https:&#x2F;&#x2F;t.me&#x2F;share&#x2F;url?url&#x3D;https%3A%2F%2Fsswfive.xyz%2F2025%2F04%2F15%2F2025-20250415-llm-and-agent%2F&amp;text&#x3D;AI%E6%8C%87%E6%8C%A5%E5%B8%88%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%85%88%E6%90%9E%E6%87%82%20LLM%20%E5%92%8C%20Agent%20%E6%98%AF%E4%BB%80%E4%B9%88%20-%20ssw5ive" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: Telegram" title="分享文章: Telegram"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12a12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.5.5 0 0 1 .171.325c.016.093.036.306.02.472c-.18 1.898-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.065-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024q-.159.037-5.061 3.345q-.72.495-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.245-1.349-.374-1.297-.789q.04-.324.893-.663q5.247-2.286 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635"/></svg></span></a><a class="social share-item whatsapp ui-interactive is-icon-only" href="https:&#x2F;&#x2F;wa.me&#x2F;?text&#x3D;AI%E6%8C%87%E6%8C%A5%E5%B8%88%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%85%88%E6%90%9E%E6%87%82%20LLM%20%E5%92%8C%20Agent%20%E6%98%AF%E4%BB%80%E4%B9%88%20-%20ssw5ive%0Ahttps%3A%2F%2Fsswfive.xyz%2F2025%2F04%2F15%2F2025-20250415-llm-and-agent%2F" target="_blank" rel="external nofollow noopener noreferrer" aria-label="分享文章: WhatsApp" title="分享文章: WhatsApp"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Simple Icons - https://creativecommons.org/publicdomain/zero/1.0/ --><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52s.198-.298.298-.497c.099-.198.05-.371-.025-.52s-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51a13 13 0 0 0-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074s2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413s.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214l-3.741.982l.998-3.648l-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884c2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.82 11.82 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.9 11.9 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.82 11.82 0 0 0-3.48-8.413"/></svg></span></a><a class="social share-item email ui-interactive is-icon-only" href="mailto:?subject&#x3D;AI%E6%8C%87%E6%8C%A5%E5%B8%88%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%85%88%E6%90%9E%E6%87%82%20LLM%20%E5%92%8C%20Agent%20%E6%98%AF%E4%BB%80%E4%B9%88%20-%20ssw5ive&amp;body&#x3D;https%3A%2F%2Fsswfive.xyz%2F2025%2F04%2F15%2F2025-20250415-llm-and-agent%2F" aria-label="分享文章: Email" title="分享文章: Email"><span class="share-item__icon ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" fill-rule="evenodd" d="M3.172 5.172C2 6.343 2 8.229 2 12s0 5.657 1.172 6.828C4.343 20 6.229 20 10 20h4c3.771 0 5.657 0 6.828-1.172C22 17.657 22 15.771 22 12s0-5.657-1.172-6.828C19.657 4 17.771 4 14 4h-4C6.229 4 4.343 4 3.172 5.172m15.404 2.348a.75.75 0 0 1-.096 1.056l-2.196 1.83c-.887.739-1.605 1.338-2.24 1.746-.66.424-1.303.693-2.044.693s-1.384-.269-2.045-.693c-.634-.408-1.352-1.007-2.239-1.745L5.52 8.576a.75.75 0 1 1 .96-1.152l2.159 1.799c.933.777 1.58 1.315 2.128 1.667.529.34.888.455 1.233.455s.704-.115 1.233-.455c.547-.352 1.195-.89 2.128-1.667l2.159-1.8a.75.75 0 0 1 1.056.097" clip-rule="evenodd"/></svg></span></a></div>
+      <div class="share-qrcode" id="share-qrcode" style="opacity:0;height:0"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&amp;data=https%3A%2F%2Fsswfive.xyz%2F2025%2F04%2F15%2F2025-20250415-llm-and-agent%2F" onerror="this.onerror&#x3D;null;this.src&#x3D;&quot;&#x2F;images&#x2F;stellar-error.491ee870f4940739.svg&quot;"/></div>
+    </div>
+  </div>
+
+
+
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note"><svg class="icon" viewBox="0 0 1 1" data-icon="default:arrow-left" aria-hidden="true"></svg> 较新文章</div><a href="/2025/04/23/2025-20250423-email-push/">通过SMTP实现邮件推送服务</a></div><div class="item" id="next"><div class="note">较早文章 <svg class="icon" viewBox="0 0 1 1" data-icon="default:arrow-right" aria-hidden="true"></svg></div><a href="/2025/04/14/2025-20250414-daily-study-ai/">每天学点AI</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    
+    
+    <section class="body cmt-body waline">
+      
+
+<div id="waline_container" class="waline_thread with-fancybox"><div class="lazy-icon"></div></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p><a target="_blank" rel="noopener" href="https://github.com/sswfive">GitHub</a> · <a target="_blank" rel="noopener" href="https://x.com/sswfive">X(Twitter)</a> · <a href="/atom.xml">订阅 RSS</a><br>本站由 <a href="/">sswfive</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/2.0.0-rc.5">Stellar 2.0.0-rc.5</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。<br><span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div></footer>
+</main>
+<aside data-stellar-runtime-region id="rightbar-region" class="site-region site-region--rightbar" data-region="rightbar" aria-label="Rightbar"><div class="site-region__surface ui-drawer-surface"><div class="site-region__viewport"><div class="widgets widget-stack widget-stack--rightbar widget-stack--rightbar"><div class="widget-instance widget-instance--toc" data-widget-id="rightbar:1:toc" data-presentation="rightbar">
+
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false">
+  
+    <div class="widget-header dis-select">
+      <span class="name">本文目录</span>
+      <button type="button" class="cap-action ui-interactive card-hover card-hover--spotlight" data-shell-action="toggle-toc" aria-label="Toggle table of contents" aria-pressed="false"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></span></button>
+    </div>
+  
+  <div class="widget-body"><ol class="toc ui-collection-adapter"><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#LLM%EF%BC%9A%E4%B8%80%E4%B8%AA%E7%89%B9%E5%88%AB%E4%BC%9A%E6%8E%A5%E8%AF%9D%E7%9A%84%E6%A6%82%E7%8E%87%E6%9C%BA%E5%99%A8"><span class="toc-text">LLM：一个特别会接话的概率机器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E4%B8%A4%E4%B8%AA%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0"><span class="toc-text">两个关键参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E8%A1%A5%E5%85%85%EF%BC%9ABase-%E6%A8%A1%E5%9E%8B-vs-Instruct-%E6%A8%A1%E5%9E%8B"><span class="toc-text">补充：Base 模型 vs Instruct 模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E8%A1%A5%E5%85%85%EF%BC%9A%E6%80%9D%E7%BB%B4%E9%93%BE%EF%BC%88Chain-of-Thought%EF%BC%89"><span class="toc-text">补充：思维链（Chain of Thought）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#LLM-vs-Agent%EF%BC%9A%E5%8E%A8%E5%B8%88%E5%92%8C%E9%A4%90%E5%8E%85"><span class="toc-text">LLM vs Agent：厨师和餐厅</span></a></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#Agent-%E5%86%85%E9%83%A8%E5%9C%A8%E5%B9%B2%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">Agent 内部在干什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E6%A0%B8%E5%BF%83%E5%BE%AA%E7%8E%AF%EF%BC%9A%E6%83%B3-%E2%86%92-%E5%81%9A-%E2%86%92-%E7%9C%8B"><span class="toc-text">核心循环：想 → 做 → 看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%80%8E%E4%B9%88%E2%80%9D%E5%8A%A8%E6%89%8B%E2%80%9D%E7%9A%84%EF%BC%9F"><span class="toc-text">工具调用：模型怎么”动手”的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#MCP%EF%BC%9A%E5%B7%A5%E5%85%B7%E7%9A%84%E2%80%9D%E6%99%AE%E9%80%9A%E8%AF%9D%E2%80%9D"><span class="toc-text">MCP：工具的”普通话”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E6%9B%B4%E9%AB%98%E7%BA%A7%E7%9A%84%E8%83%BD%E5%8A%9B"><span class="toc-text">更高级的能力</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#Skills%EF%BC%9A%E7%BB%99-Agent-%E5%87%86%E5%A4%87-SOP"><span class="toc-text">Skills：给 Agent 准备 SOP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#RAG%EF%BC%9A%E8%AE%A9-Agent-%E7%BF%BB%E4%BD%A0%E7%9A%84%E5%86%85%E9%83%A8%E8%B5%84%E6%96%99"><span class="toc-text">RAG：让 Agent 翻你的内部资料</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#%E8%AE%B0%E5%BF%86%E7%B3%BB%E7%BB%9F%EF%BC%9A%E5%88%AB%E8%AE%A9-Agent-%E6%AF%8F%E6%AC%A1%E5%A4%B1%E5%BF%86"><span class="toc-text">记忆系统：别让 Agent 每次失忆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link ui-interactive" href="#Harness%EF%BC%9A%E7%BB%99-Agent-%E4%B8%8A%E4%BF%9D%E9%99%A9"><span class="toc-text">Harness：给 Agent 上保险</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link ui-interactive" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E4%B8%B2%E8%B5%B7%E6%9D%A5"><span class="toc-text">一句话串起来</span></a></li></ol></div>
+  <div class="widget-footer"><a class="top ui-interactive" onclick="util.scrollTop()"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M20.536 3.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464" opacity=".5"/><path fill="currentColor" d="M9.53 12.03a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 1 1-1.06 1.06L12 9.56z"/><path fill="currentColor" d="M9.53 16.03a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 1 1-1.06 1.06L12 13.56z"/></svg></span><span>回到顶部</span></a><a class="buttom ui-interactive" onclick="util.scrollComment()"><span class="ui-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M7.25 9A.75.75 0 0 1 8 8.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 9m0 3.5a.75.75 0 0 1 .75-.75h5.5a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75"/></svg></span><span>参与讨论</span></a></div>
+</widget>
+
+
+</div></div></div></div></aside>
+</div><button type="button" class="site-scrim" data-shell-action="dismiss-drawer" aria-label="Close navigation" tabindex="-1"></button><div data-stellar-runtime-region class="site-dock" role="group" aria-label="Layout panels">
+  <button type="button" class="site-dock__button site-dock__button--rightbar ui-interactive" aria-label="Open rightbar" aria-controls="rightbar-region" aria-expanded="false" data-shell-action="toggle-rightbar-drawer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" class="site-dock__button site-dock__button--leftbar ui-interactive" aria-label="Open leftbar" aria-controls="leftbar-region" aria-expanded="false" data-shell-action="toggle-leftbar-drawer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+
+<dialog data-stellar-runtime-region class="search-dialog" id="site-search-dialog" aria-labelledby="site-search-title">
+  <div class="search-dialog__panel search-wrapper" id="site-search-wrapper" searching="false">
+    <div class="search-dialog__header">
+      <div class="search-form" role="search">
+        <span class="search-button" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Adapted from Google Material Icons by Material Design Authors - https://github.com/material-icons/material-icons/blob/master/LICENSE --><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3M3 13h3M3 18h8M16.83 13.83l3.76 3.76"/><circle cx="14" cy="11" r="4"/></g></svg></span>
+        <input type="search" class="search-input" id="site-search-input" aria-labelledby="site-search-title" placeholder="搜索">
+      </div>
+      <button type="button" class="search-dialog__close" data-shell-action="close-search" aria-label="关闭搜索">×</button>
+    </div>
+    
+      <div class="search-dialog__scope" role="radiogroup" aria-labelledby="site-search-title" hidden>
+        <label class="search-dialog__scope-option" data-search-scope-option="all">
+          <input class="ui-radio" type="radio" name="site-search-scope" value="all">
+          <span>全站</span>
+        </label>
+        <label class="search-dialog__scope-option" data-search-scope-option="blog" hidden>
+          <input class="ui-radio" type="radio" name="site-search-scope" value="blog">
+          <span>博客</span>
+        </label>
+        <label class="search-dialog__scope-option" data-search-scope-option="current" hidden>
+          <input class="ui-radio" type="radio" name="site-search-scope" value="current">
+          <span data-search-scope-current-label></span>
+        </label>
+      </div>
+    
+    <h2 class="search-dialog__title" id="site-search-title">站内搜索</h2>
+    <div class="search-result" id="site-search-result"></div>
+    <div class="search-no-result">没有找到内容！</div>
+  </div>
+</dialog>
+</div><div class="site-scripts">
+<script data-stellar-script="core" src="/js/stellar-icons.js?v=69733527783f5b02"></script>
+
+<script data-stellar-script="defines">
+  window.canonical = window.stellarClientData.canonical;
+  const ctx = window.stellarClientData.ctx;
+  window.canonical.param = {permalink: "https://sswfive.xyz/2025/04/15/2025-20250415-llm-and-agent/", checklink: ctx.services.video.js};
+  ctx.date_suffix = {"just":"刚刚","min":"分钟前","hour":"小时前","day":"天前"};
+  if (ctx.search) Object.assign(ctx.search, {"more":"更多","no_more":"没有更多了"});
+  const def = window.stellarClientData.def;
+  window.ctx = ctx;
+  window.def = def;
+</script>
+
+
+<!-- core: 迁移期 DOM/资源兼容工具；Extension 注册与生命周期由 ESM runtime 所有 -->
+<script data-stellar-script="core" src="/js/utils.js?v=2.0.0-rc.5"></script>
+<script data-stellar-script="core" src="/js/main.js?v=2.0.0-rc.5" defer></script>
+<script data-stellar-script="core" defer src="/js/profile.js?v=2.0.0-rc.5"></script>
+
+
+
+
+
+<script data-stellar-script="core" type="application/json" id="stellar-runtime-config">{"version":1,"root":"/","policy":{"cache":{"enabled":true,"defaultTtl":3600,"ttl":{"giscus":600,"waline":600,"artalk":600,"memos":600,"memos-user":86400,"sites":86400,"friends":86400,"friends_and_posts":86400,"siteinfo":86400},"maxEntries":200},"request":{"retries":2,"timeoutMs":5000,"idleTimeoutMs":3000,"maxCacheEntryBytes":204800},"features":{"codeCopyToastMs":2500},"providers":{"linkPrefetch":"flying_pages","lightbox":"fancybox","diagrams":"mermaid"}},"extensions":[{"id":"pin-slider","module":"/js/runtime/extensions/pin-slider.js","scope":"region","when":{"selector":".pin-slider"},"config":{}},{"id":"page-controls","module":"/js/runtime/extensions/page-controls.js","scope":"region","when":{"always":true},"config":{"highlight":"/js/search/highlight.js","tagtree":"/js/tagtree.js"}},{"id":"partial-navigation","module":"/js/runtime/extensions/partial-navigation.js","scope":"document","when":{"always":true},"config":{}},{"id":"color-scheme-switch","module":"/js/runtime/extensions/color-scheme-switch.js","scope":"document","when":{"always":true},"config":{"messages":{"light":"切换到浅色模式","dark":"切换到深色模式","auto":"切换到跟随系统配色"}}},{"id":"search","module":"/js/runtime/extensions/search.js","scope":"document","when":{"selector":".search-input"},"config":{"provider":"local","options":{"scope":"all","includeContent":true,"cacheTtlSeconds":86400},"assets":{"client":null,"provider":"/js/search/local-search.js","shortcut":"/js/search/shortcut.js"}}},{"id":"hero-effect","module":"/js/runtime/extensions/hero-effect.js","scope":"region","when":{"selector":"canvas[data-hero-effect]"},"config":{}},{"id":"lazy-loading","module":"/js/runtime/extensions/lazy-loading.js","scope":"document","when":{"always":true},"config":{"asset":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"}},{"id":"deferred-icons","module":"/js/runtime/extensions/deferred-icons.js","scope":"region","when":{"selector":"svg.icon[data-icon]"},"config":{}},{"id":"dropdown","module":"/js/runtime/extensions/dropdown.js","scope":"region","when":{"selector":"details.dropdown"},"config":{}},{"id":"services","module":"/js/runtime/extensions/services.js","scope":"region","when":{"selector":"#artalk_container, #twikoo_container, #waline_container, .data-service, [class*='ds-'], a[cardlink], a[data-md-link][data-siteinfo-api], .site-card [data-siteinfo-api], .voice\u003eaudio, .video\u003evideo, .chat-file"},"config":{"marked":"https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js"}},{"id":"comments","module":"/js/runtime/extensions/comments.js","scope":"region","when":{"selector":"#comments"},"config":{"provider":"waline","options":{"serverURL":"https://blog-comment-seven-psi.vercel.app","commentCount":true,"pageview":false,"locale":{"placeholder":"欢迎您的评论。"},"emoji":["https://gcore.jsdelivr.net/gh/norevi/waline-blobcatemojis@1.0/blobs"]},"pageTitle":"AI指挥师笔记（一）：先搞懂 LLM 和 Agent 是什么","assets":{"localCss":"/css/comments/waline.css","js":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline.js","css":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline.css","metaCss":"https://gcore.jsdelivr.net/npm/@waline/client@3.15.2/dist/waline-meta.css"}}},{"id":"settings","module":"/js/runtime/extensions/settings.js","scope":"region","when":{"selector":".settings-page"},"config":{}},{"id":"link-prefetch","module":"/js/runtime/extensions/link-prefetch.js","scope":"document","when":{"always":true},"config":{"asset":"https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"}},{"id":"lightbox","module":"/js/runtime/extensions/lightbox.js","scope":"region","when":{"selector":"[data-fancybox]:not(.error), .with-fancybox, .ds-memos, .timenode p\u003eimg"},"config":{"enabled":true,"selector":".timenode p\u003eimg","assets":{"localCss":"/css/plugins/fancybox.css","js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"}}},{"id":"reveal","module":"/js/runtime/extensions/reveal.js","scope":"region","when":{"selector":".slide-up"},"config":{"enabled":true,"duration":800,"interval":200,"distance":8,"blur":4}},{"id":"mathjax","module":"/js/runtime/extensions/mathjax.js","scope":"region","when":{"selector":".has-jax, script[type^='math/tex']"},"config":{"options":{},"asset":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"}},{"id":"diagrams","module":"/js/runtime/extensions/diagrams.js","scope":"region","when":{"selector":".mermaid"},"config":{"theme":"neutral","provider":"mermaid","assets":{"js":"https://gcore.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"},"colorScheme":"auto"}},{"id":"code-copy","module":"/js/runtime/extensions/code-copy.js","scope":"region","when":{"selector":".code"},"config":{"assets":{"js":"/js/plugins/copycode.js"},"messages":{"label":"复制","copied":"复制成功","denied":"未获得剪贴板权限","unsupported":"当前浏览器不支持剪贴板或页面不是 HTTPS"}}},{"id":"adaptive-text","module":"/js/runtime/extensions/adaptive-text.js","scope":"region","when":{"selector":"[data-text-adaptive]"},"config":{"assets":{"colorJs":"/js/color.js","js":"/js/plugins/adaptive-text.js"}}},{"id":"card-hover","module":"/js/runtime/extensions/card-hover.js","scope":"region","when":{"selector":".card-hover"},"config":{"spotlight":true,"tilt":false,"assets":{"js":"/js/plugins/card-hover.js"}}},{"id":"swiper","module":"/js/runtime/extensions/swiper.js","scope":"region","when":{"selector":"#swiper-api"},"config":{"assets":{"localCss":"/css/plugins/swiper.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js","css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css"}}}]}</script>
+<script data-stellar-script="core" type="module" src="/js/runtime/index.js?v=2.0.0-rc.5&runtime=1"></script>
+
+
+<!-- inject -->
+
+
+<script data-stellar-script="core" defer src="/js/navigation-init.js?v=2.0.0-rc.5"></script>
+</div></body></html>
+
