@@ -2346,6 +2346,24 @@ svg.loading {
 .article-footer .loading-wrap {
   background: none;
 }
+.loading-wrap.navigation-loading {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--card);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  pointer-events: none;
+}
+.loading-wrap.navigation-loading .lazy-icon {
+  flex-shrink: 0;
+  margin: 0;
+}
 .md-text a[data-md-link] > .md-link-icon,
 .article-footer a[data-md-link] > .md-link-icon {
   --ui-icon-size: 1.2em;
@@ -3351,6 +3369,10 @@ button.ui-collection__item:not(.is-icon-only) {
   overflow: hidden;
   background: var(--background);
 }
+.cover-content.wiki-hero .wiki-cover-background.has-parallax {
+  top: var(--hero-parallax-inset, 0%);
+  bottom: var(--hero-parallax-inset, 0%);
+}
 .cover-content.wiki-hero .wiki-cover-background.image .wiki-cover-background-image,
 .cover-content.wiki-hero .wiki-cover-background.image .wiki-cover-background-blur {
   position: absolute;
@@ -3375,6 +3397,26 @@ button.ui-collection__item:not(.is-icon-only) {
   inset: 0;
   pointer-events: none;
   background: linear-gradient(to bottom, transparent 0%, transparent 80%, var(--background) 100%);
+}
+.cover-content.wiki-hero .wiki-cover-background.has-video {
+  background: #000;
+}
+.cover-content.wiki-hero .wiki-cover-background.has-video .wiki-cover-background-video {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.cover-content.wiki-hero .wiki-cover-background.has-video .wiki-cover-background-overlay {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(0,0,0,0.15);
 }
 .cover-content.wiki-hero .wiki-cover-background.has-effect:not(.image) {
   background: var(--hero-effect-background, #000);
@@ -8374,6 +8416,18 @@ details.toc[open] >div.body section .header+.doc_tree {
 .widget-instance--menu .menu .ui-collection__item {
   font-size: calc(var(--fs-content-base) - 1px);
 }
+.site-region--leftbar .widget-instance--menu .ui-collection[data-layout='grid'] {
+  --ui-grid-min: 0px;
+}
+.site-region--leftbar .widget-instance--menu .ui-collection[data-layout='grid'][data-variant='icon'] .ui-collection__item {
+  padding-inline: 0;
+}
+.site-region--leftbar .widget-instance--menu .ui-collection[data-layout='grid'][data-variant='icon'] .ui-collection__content {
+  display: none;
+}
+.site-region--leftbar .widget-instance--menu .ui-collection[data-layout='grid'][data-variant='icon'] .ui-collection__initial {
+  display: block;
+}
 .search-wrapper {
   padding-bottom: 32px;
   width: 100%;
@@ -9337,7 +9391,7 @@ html[data-leftbar-state='collapsed'] .site-shell:not([data-drawer='leftbar']) .s
   top: 4px;
   left: 0;
   width: 4px;
-  height: max(0px, calc(var(--toc-active-height, 8px) - 8px));
+  height: calc(var(--toc-active-height, 8px) - 8px);
   border-radius: 4px;
   background: var(--theme);
   opacity: var(--toc-active-opacity, 0);
