@@ -11,12 +11,13 @@
   <rights>All rights reserved 2026, sswfive</rights>
   <subtitle>一念净心花开遍世界</subtitle>
   <title>ssw5ive</title>
-  <updated>2026-09-23T08:42:23.000Z</updated>
+  <updated>2026-10-03T17:44:16.000Z</updated>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
     <category term="AI工程" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/"/>
+    <category term="LLM与工程化" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/LLM%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     <category term="AI" scheme="https://sswfive.xyz/tags/AI/"/>
     <category term="LLM" scheme="https://sswfive.xyz/tags/LLM/"/>
     <category term="Agent" scheme="https://sswfive.xyz/tags/Agent/"/>
@@ -28,13 +29,14 @@
     <published>2026-09-23T14:10:00.000Z</published>
     <summary>Jev 这几天火得一塌糊涂。翻完官方文档和几篇解读，一句话：它想给软件加上一种会理解语义的 if 语句。</summary>
     <title>Jev：会理解语义的 if 语句</title>
-    <updated>2026-09-23T08:42:23.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
     <category term="AI工程" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/"/>
+    <category term="LLM与工程化" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/LLM%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     <category term="AI" scheme="https://sswfive.xyz/tags/AI/"/>
     <category term="Agent" scheme="https://sswfive.xyz/tags/Agent/"/>
     <content>
@@ -45,13 +47,14 @@
     <published>2026-05-10T13:06:29.000Z</published>
     <summary>Agent 系列第五篇：评估指标设计、反馈机制与 Agent 系统的持续优化。</summary>
     <title>Agent系统开发手记（五）：评估与反馈</title>
-    <updated>2026-09-15T14:04:41.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
     <category term="AI工程" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/"/>
+    <category term="LLM与工程化" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/LLM%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     <category term="AI" scheme="https://sswfive.xyz/tags/AI/"/>
     <category term="Agent" scheme="https://sswfive.xyz/tags/Agent/"/>
     <content>
@@ -62,13 +65,14 @@
     <published>2026-05-08T12:21:45.000Z</published>
     <summary>Agent 系列第四篇：智能检索与 RAG 的架构设计，从海量知识中精准召回信息。</summary>
     <title>Agent系统开发手记（四）：智能检索与RAG</title>
-    <updated>2026-09-15T14:04:41.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
     <category term="AI工程" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/"/>
+    <category term="LLM与工程化" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/LLM%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     <category term="AI" scheme="https://sswfive.xyz/tags/AI/"/>
     <category term="Agent" scheme="https://sswfive.xyz/tags/Agent/"/>
     <content>
@@ -79,13 +83,14 @@
     <published>2026-05-05T08:35:00.000Z</published>
     <summary>Agent 系列第三篇：Context 抽象、窗口编排与摘要压缩，在有限窗口管理关键信息。</summary>
     <title>Agent系统开发手记（三）：上下文管理</title>
-    <updated>2026-09-15T14:04:41.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
     <category term="AI工程" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/"/>
+    <category term="LLM与工程化" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/LLM%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     <category term="AI" scheme="https://sswfive.xyz/tags/AI/"/>
     <category term="Agent" scheme="https://sswfive.xyz/tags/Agent/"/>
     <content>
@@ -96,13 +101,14 @@
     <published>2026-05-03T13:30:00.000Z</published>
     <summary>Agent 系列第二篇：Plan 五要素、TAO 状态循环与 Replan 机制让 Agent 受控执行。</summary>
     <title>Agent系统开发手记（二）：规划、纠偏与执行循环</title>
-    <updated>2026-09-15T14:04:41.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
     <category term="AI工程" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/"/>
+    <category term="LLM与工程化" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/LLM%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     <category term="AI" scheme="https://sswfive.xyz/tags/AI/"/>
     <category term="Agent" scheme="https://sswfive.xyz/tags/Agent/"/>
     <content>
@@ -113,13 +119,13 @@
     <published>2026-05-01T14:00:00.000Z</published>
     <summary>Agent 系列第一篇：意图识别的难点、方案选型与在实际场景中的落地。</summary>
     <title>Agent系统开发手记（一）：意图识别</title>
-    <updated>2026-09-15T14:04:41.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
-    <category term="个人随笔" scheme="https://sswfive.xyz/categories/%E4%B8%AA%E4%BA%BA%E9%9A%8F%E7%AC%94/"/>
+    <category term="随笔与思考" scheme="https://sswfive.xyz/categories/%E9%9A%8F%E7%AC%94%E4%B8%8E%E6%80%9D%E8%80%83/"/>
     <category term="个人成长" scheme="https://sswfive.xyz/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     <category term="AI" scheme="https://sswfive.xyz/tags/AI/"/>
     <content>
@@ -130,13 +136,14 @@
     <published>2026-04-15T15:55:56.000Z</published>
     <summary>在 AI 快速发展的洪流中，停下脚步反思技术人的自我价值与方向。</summary>
     <title>AI洪流之中，停下脚步去寻找自我</title>
-    <updated>2026-09-15T14:04:41.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
     <category term="AI工程" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/"/>
+    <category term="LLM与工程化" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/LLM%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     <category term="AI" scheme="https://sswfive.xyz/tags/AI/"/>
     <category term="提示词" scheme="https://sswfive.xyz/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/"/>
     <content>
@@ -147,13 +154,14 @@
     <published>2026-03-11T15:00:00.000Z</published>
     <summary>系统提示词与用户提示词的设计思路、常见模式与实际协作经验。</summary>
     <title>提示词实践笔记：系统提示词和用户提示词</title>
-    <updated>2026-09-15T14:04:41.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
     <category term="AI工程" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/"/>
+    <category term="LLM与工程化" scheme="https://sswfive.xyz/categories/AI%E5%B7%A5%E7%A8%8B/LLM%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     <category term="AI" scheme="https://sswfive.xyz/tags/AI/"/>
     <category term="Agent" scheme="https://sswfive.xyz/tags/Agent/"/>
     <content>
@@ -169,7 +177,7 @@
 <h2 id="关于Claude-Code"><a]]>
     </summary>
     <title>从Claude Code的架构设计浅析Agent</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
@@ -190,7 +198,7 @@
       <![CDATA[<p>在众多Python包管理工具中，uv的热度近两年持续攀升，并受到越来越多的开发者的认可与采用。一个关键原因是，uv被公认为目前社区中依赖管理速度最快的工具。尽管许多人将其出色的性能归功于其采用Rust语言开发，但实际上，uv的性能表现更主要源于其开发团队的设计思路和工程决策]]>
     </summary>
     <title>Python依赖管理利器：不止Rust，uv如此速度的背后真实原因</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T16:51:17.000Z</updated>
   </entry>
   <entry>
     <author>
@@ -211,7 +219,7 @@
 <p>最近读到一篇文章《<a]]>
     </summary>
     <title>Python开发者必知的性能数据与实用技巧</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T16:51:17.000Z</updated>
   </entry>
   <entry>
     <author>
@@ -228,13 +236,14 @@
     <published>2025-12-23T12:30:00.000Z</published>
     <summary>Python 常用库速查表：按用途分类整理的标准库与第三方库汇总。</summary>
     <title>Python常用库汇总</title>
-    <updated>2026-09-15T13:52:42.000Z</updated>
+    <updated>2026-10-03T16:51:17.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
-    <category term="编程技术" scheme="https://sswfive.xyz/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/"/>
+    <category term="软件工程" scheme="https://sswfive.xyz/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
+    <category term="设计与架构" scheme="https://sswfive.xyz/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%9E%B6%E6%9E%84/"/>
     <category term="Web开发" scheme="https://sswfive.xyz/tags/Web%E5%BC%80%E5%8F%91/"/>
     <category term="缓存" scheme="https://sswfive.xyz/tags/%E7%BC%93%E5%AD%98/"/>
     <content>
@@ -245,13 +254,13 @@
     <published>2025-11-06T01:45:49.000Z</published>
     <summary>从浏览器和 HTTP 协议的视角理解强缓存、协商缓存的机制与实践。</summary>
     <title>从前端视角理解浏览器和HTTP的缓存机制</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
-    <category term="个人随笔" scheme="https://sswfive.xyz/categories/%E4%B8%AA%E4%BA%BA%E9%9A%8F%E7%AC%94/"/>
+    <category term="随笔与思考" scheme="https://sswfive.xyz/categories/%E9%9A%8F%E7%AC%94%E4%B8%8E%E6%80%9D%E8%80%83/"/>
     <category term="个人成长" scheme="https://sswfive.xyz/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
     <category term="阅读笔记" scheme="https://sswfive.xyz/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"/>
     <content>
@@ -264,7 +273,7 @@
       <![CDATA[<p>这个周六的晚上，朋友在群里分享了一篇微信公众号文章<a href="https://mp.weixin.qq.com/s/QOef7-YF_-XHKYm1Y729tA" data-md-link=""><span class="md-link-icon ui-icon"]]>
     </summary>
     <title>阅后记：刘润2025年度演讲《进化的力量》</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
@@ -285,13 +294,13 @@
 <ul]]>
     </summary>
     <title>Python开发必备：解锁魔法方法的实用技巧大全</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T16:51:17.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
-    <category term="实用工具" scheme="https://sswfive.xyz/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/"/>
+    <category term="工具与效率" scheme="https://sswfive.xyz/categories/%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%95%88%E7%8E%87/"/>
     <category term="Mac" scheme="https://sswfive.xyz/tags/Mac/"/>
     <category term="字体" scheme="https://sswfive.xyz/tags/%E5%AD%97%E4%BD%93/"/>
     <content>
@@ -302,13 +311,13 @@
     <published>2025-09-22T14:38:30.000Z</published>
     <summary>Mac 上的字体搭配方案：JetBrains Mono 编程字体与霞鹜文楷中文显示字体。</summary>
     <title>我在Mac上使用的字体搭配方案</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
       <name>sswfive</name>
     </author>
-    <category term="实用工具" scheme="https://sswfive.xyz/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/"/>
+    <category term="工具与效率" scheme="https://sswfive.xyz/categories/%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%95%88%E7%8E%87/"/>
     <category term="Mac" scheme="https://sswfive.xyz/tags/Mac/"/>
     <category term="终端" scheme="https://sswfive.xyz/tags/%E7%BB%88%E7%AB%AF/"/>
     <content>
@@ -321,7 +330,7 @@
       <![CDATA[<p>最近把用了五年的 <a href="https://github.com/gnachman/iTerm2" data-md-link=""><span class="md-link-icon ui-icon" aria-hidden="true"><svg]]>
     </summary>
     <title>效率工具：我将终端工具从iTerm2迁移到了Alacritty</title>
-    <updated>2026-08-24T18:30:29.000Z</updated>
+    <updated>2026-10-03T17:44:16.000Z</updated>
   </entry>
   <entry>
     <author>
@@ -341,7 +350,7 @@
       <![CDATA[<p>在Python的世界里，我们每天都在和 <code>list</code>、<code>tuple</code>、<code>dict</code>、<code>set</code>]]>
     </summary>
     <title>Python中的数据类型用法剖析：从底层实现到高效应用</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T16:51:17.000Z</updated>
   </entry>
   <entry>
     <author>
@@ -362,7 +371,7 @@
 <p>先来看一个直观的对比，即]]>
     </summary>
     <title>用了pathlib后，我再也不想碰os.path了！</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T16:51:17.000Z</updated>
   </entry>
   <entry>
     <author>
@@ -382,6 +391,6 @@
       <![CDATA[<p>本周读到了一篇文章《<a href="https://tonybaloney.github.io/posts/why-isnt-python-async-more-popular.html" data-md-link=""><span]]>
     </summary>
     <title>Python异步编程十年沉浮：且看3.14版本重要更新</title>
-    <updated>2026-09-13T09:17:47.000Z</updated>
+    <updated>2026-10-03T16:51:17.000Z</updated>
   </entry>
 </feed>

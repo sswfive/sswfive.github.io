@@ -42,14 +42,13 @@
 <meta property="og:locale" content="zh_CN" data-stellar-page-meta="">
 <meta property="article:author" content="sswfive" data-stellar-page-meta="">
 <meta property="article:published_time" content="2023-06-20T14:14:00.000Z" data-stellar-page-meta="">
-<meta property="article:modified_time" content="2026-09-13T09:17:47.000Z" data-stellar-page-meta="">
-<meta property="article:tag" content="架构" data-stellar-page-meta="">
+<meta property="article:modified_time" content="2026-10-03T17:44:16.000Z" data-stellar-page-meta="">
 <meta property="article:tag" content="高可用" data-stellar-page-meta="">
 <meta name="twitter:card" content="summary" data-stellar-page-meta="">
 <meta name="twitter:creator" content="@sswfive" data-stellar-page-meta=""><meta name="twitter:title" content="容量治理" data-stellar-page-meta="">
   
   
-  <meta name="keywords" content="架构,高可用" data-stellar-page-meta="">
+  <meta name="keywords" content="高可用" data-stellar-page-meta="">
 
   <!-- feed -->
   
@@ -73,7 +72,7 @@
 
   
 
-  <script type="application/ld+json" data-stellar-page-meta="">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"dateCreated":"2023-06-20T22:14:00+08:00","dateModified":"2026-09-13T17:17:47+08:00","datePublished":"2023-06-20T22:14:00+08:00","description":"概述容量治理的三个重要手段：扩容、限流与降级，这三个手段分别基于不同的视角来实施，在容量保障中发挥着不同的作用和价值。\n容量保障是需要考虑成本的。\n扩容的实践要点认知\n扩容通俗的理解就是在集群中不断加入新的服务器资源的过程，一般也称伸缩性，主要用于应对流量增长的能力\n对待扩容应该秉承谨慎的态度，鼓励将快速扩容作为应急手段，但作为容量质量的手段要谨慎，警惕无脑扩容和滥用扩容\n要建立服务性能优化...","headline":"容量治理","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2023/06/20/2023-20230620-capacity-governance/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"url":"https://sswfive.xyz/2023/06/20/2023-20230620-capacity-governance/","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"],"keywords":"架构, 高可用","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"}</script>
+  <script type="application/ld+json" data-stellar-page-meta="">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"dateCreated":"2023-06-20T22:14:00+08:00","dateModified":"2026-10-04T01:44:16+08:00","datePublished":"2023-06-20T22:14:00+08:00","description":"概述容量治理的三个重要手段：扩容、限流与降级，这三个手段分别基于不同的视角来实施，在容量保障中发挥着不同的作用和价值。\n容量保障是需要考虑成本的。\n扩容的实践要点认知\n扩容通俗的理解就是在集群中不断加入新的服务器资源的过程，一般也称伸缩性，主要用于应对流量增长的能力\n对待扩容应该秉承谨慎的态度，鼓励将快速扩容作为应急手段，但作为容量质量的手段要谨慎，警惕无脑扩容和滥用扩容\n要建立服务性能优化...","headline":"容量治理","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2023/06/20/2023-20230620-capacity-governance/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"url":"https://sswfive.xyz/2023/06/20/2023-20230620-capacity-governance/","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"],"keywords":"高可用","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"}</script>
   <style>
   /* 中文排版优化 */
   .md-text { line-height: 1.8; letter-spacing: 0.02em; }
@@ -215,9 +214,9 @@
   <div class="content">
     
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8EDevOps/">云原生与DevOps</a>
 </div><div class="right"><span class="cap reading">1772 字 · 预计阅读 6 分钟</span></div></div><div class="meta-row">
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2023-06-20T14:14:00.000Z">2023年6月20日</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-13T09:17:47.000Z">2026年9月13日</time></span></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2023-06-20T14:14:00.000Z">2023年6月20日</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-10-03T17:44:16.000Z">2026年10月4日</time></span></div>
 </div></div>
     
     <div class="bottom only-title">
@@ -353,7 +352,7 @@
 </tr>
 </tbody></table></div>
 </article>
-<div class="article-tags slide-up"><a class="tag" href="/tags/%E6%9E%B6%E6%9E%84/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>架构</a><a class="tag" href="/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>高可用</a></div>
+<div class="article-tags slide-up"><a class="tag" href="/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>高可用</a></div>
 
 
   <div class="article-share slide-up" id="share">

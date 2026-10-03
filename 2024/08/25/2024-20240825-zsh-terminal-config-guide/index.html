@@ -42,16 +42,15 @@
 <meta property="og:locale" content="zh_CN" data-stellar-page-meta="">
 <meta property="article:author" content="sswfive" data-stellar-page-meta="">
 <meta property="article:published_time" content="2024-08-24T16:00:00.000Z" data-stellar-page-meta="">
-<meta property="article:modified_time" content="2026-09-13T09:17:47.000Z" data-stellar-page-meta="">
+<meta property="article:modified_time" content="2026-10-03T17:44:16.000Z" data-stellar-page-meta="">
 <meta property="article:tag" content="Mac" data-stellar-page-meta="">
 <meta property="article:tag" content="zsh" data-stellar-page-meta="">
-<meta property="article:tag" content="效率工具" data-stellar-page-meta="">
 <meta property="article:tag" content="终端" data-stellar-page-meta="">
 <meta name="twitter:card" content="summary" data-stellar-page-meta="">
 <meta name="twitter:creator" content="@sswfive" data-stellar-page-meta=""><meta name="twitter:title" content="Mac 终端：zsh配置手记" data-stellar-page-meta="">
   
   
-  <meta name="keywords" content="Mac,zsh,终端,效率工具" data-stellar-page-meta="">
+  <meta name="keywords" content="Mac,zsh,终端" data-stellar-page-meta="">
 
   <!-- feed -->
   
@@ -75,7 +74,7 @@
 
   
 
-  <script type="application/ld+json" data-stellar-page-meta="">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"dateCreated":"2024-08-25T00:00:00+08:00","dateModified":"2026-09-13T17:17:47+08:00","datePublished":"2024-08-25T00:00:00+08:00","description":"zsh 配置文件体系zsh 通过一系列配置文件定制 shell 行为，根据作用范围可分为系统级和用户级，按执行时机又分为四类。\n系统范围配置文件对所有用户生效，存放在 /etc/ 目录下：\n\n\n\n配置文件\n执行时机\n用途\n\n\n\n/etc/zshenv\n每次 zsh 启动\n设置全局环境变量\n\n\n/etc/zshrc\n交互式启动\n终端外观、别名、函数定义\n\n\n/etc/zlogin\n用户登录时\n...","headline":"Mac 终端：zsh配置手记","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2024/08/25/2024-20240825-zsh-terminal-config-guide/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"url":"https://sswfive.xyz/2024/08/25/2024-20240825-zsh-terminal-config-guide/","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"],"keywords":"Mac, zsh, 终端, 效率工具","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"}</script>
+  <script type="application/ld+json" data-stellar-page-meta="">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"dateCreated":"2024-08-25T00:00:00+08:00","dateModified":"2026-10-04T01:44:16+08:00","datePublished":"2024-08-25T00:00:00+08:00","description":"zsh 配置文件体系zsh 通过一系列配置文件定制 shell 行为，根据作用范围可分为系统级和用户级，按执行时机又分为四类。\n系统范围配置文件对所有用户生效，存放在 /etc/ 目录下：\n\n\n\n配置文件\n执行时机\n用途\n\n\n\n/etc/zshenv\n每次 zsh 启动\n设置全局环境变量\n\n\n/etc/zshrc\n交互式启动\n终端外观、别名、函数定义\n\n\n/etc/zlogin\n用户登录时\n...","headline":"Mac 终端：zsh配置手记","mainEntityOfPage":{"@type":"WebPage","@id":"https://sswfive.xyz/2024/08/25/2024-20240825-zsh-terminal-config-guide/"},"publisher":{"@type":"Organization","name":"sswfive","sameAs":["https://github.com/sswfive","https://x.com/sswfive"]},"url":"https://sswfive.xyz/2024/08/25/2024-20240825-zsh-terminal-config-guide/","image":["https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"],"keywords":"Mac, zsh, 终端","thumbnailUrl":"https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg"}</script>
   <style>
   /* 中文排版优化 */
   .md-text { line-height: 1.8; letter-spacing: 0.02em; }
@@ -217,9 +216,9 @@
   <div class="content">
     
     <div class="top bread-nav footnote"><div class="top-row"><div class="left" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">实用工具</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%95%88%E7%8E%87/">工具与效率</a>
 </div><div class="right"><span class="cap reading">1935 字 · 预计阅读 7 分钟</span></div></div><div class="meta-row">
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-08-24T16:00:00.000Z">2024年8月25日</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-13T09:17:47.000Z">2026年9月13日</time></span></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-08-24T16:00:00.000Z">2024年8月25日</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-10-03T17:44:16.000Z">2026年10月4日</time></span></div>
 </div></div>
     
     <div class="bottom only-title">
@@ -429,7 +428,7 @@
 <p>针对 GitHub 仓库自动切换用户名和邮箱，避免在公司项目中误用个人 GitHub 信息提交代码。需自行修改 <code>githubName</code> 和 <code>githubEmail</code> 的值：</p>
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ -d .git ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">local</span> githubName=<span class="string">""</span>   <span class="comment"># GitHub 用户名</span></span><br><span class="line">  <span class="built_in">local</span> githubEmail=<span class="string">""</span>  <span class="comment"># GitHub 邮箱</span></span><br><span class="line">  <span class="built_in">local</span> url=$(git remote get-url origin)</span><br><span class="line">  <span class="built_in">local</span> localName=$(git config user.name)</span><br><span class="line">  <span class="built_in">local</span> localEmail=$(git config user.email)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [[ <span class="variable">$url</span> =~ <span class="string">"github.com/maomao1996"</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">"\033[34m当前为 GitHub 项目\033[0m"</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$githubName</span> &amp;&amp; <span class="variable">$githubName</span> != <span class="variable">$localName</span> ]]; <span class="keyword">then</span></span><br><span class="line">      git config user.name <span class="string">"<span class="variable">$githubName</span>"</span></span><br><span class="line">      <span class="built_in">echo</span> -e <span class="string">"已将当前仓库的 name 从 \033[33m<span class="variable">$localName</span>\033[0m 修改为 \033[32m<span class="variable">$githubName</span>\033[0m"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$githubEmail</span> &amp;&amp; <span class="variable">$githubEmail</span> != <span class="variable">$localEmail</span> ]]; <span class="keyword">then</span></span><br><span class="line">      git config user.email <span class="string">"<span class="variable">$githubEmail</span>"</span></span><br><span class="line">      <span class="built_in">echo</span> -e <span class="string">"已将当前仓库的 email 从 \033[33m<span class="variable">$localEmail</span>\033[0m 修改为 \033[32m<span class="variable">$githubEmail</span>\033[0m"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></tbody></table></figure>
 </article>
-<div class="article-tags slide-up"><a class="tag" href="/tags/Mac/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>Mac</a><a class="tag" href="/tags/zsh/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>zsh</a><a class="tag" href="/tags/%E7%BB%88%E7%AB%AF/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>终端</a><a class="tag" href="/tags/%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>效率工具</a></div>
+<div class="article-tags slide-up"><a class="tag" href="/tags/Mac/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>Mac</a><a class="tag" href="/tags/zsh/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>zsh</a><a class="tag" href="/tags/%E7%BB%88%E7%AB%AF/"><svg class="icon" viewBox="0 0 1 1" data-icon="default:hashtag" aria-hidden="true"></svg>终端</a></div>
 
 
   <div class="article-share slide-up" id="share">
